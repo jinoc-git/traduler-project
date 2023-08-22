@@ -71,7 +71,10 @@ const SideBar: React.FC = () => {
                 return (
                   <div key={plan.title}>
                     <div>{plan.title}</div>
-                    <div>{plan?.dates.join(',')}</div>
+                    {/* <div>{plan?.dates.join(',')}</div> */}
+                    <div>
+                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                    </div>
                   </div>
                 );
               })}
@@ -92,7 +95,7 @@ const SideBar: React.FC = () => {
                 return (
                   <div key={plan.title}>
                     <div>{plan.title}</div>
-                    <div>{plan?.dates.join(',')}</div>
+                    {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
                   </div>
                 );
               })}

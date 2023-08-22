@@ -11,12 +11,6 @@ const Pay = () => {
   });
   const [totalExpense, setTotalExpense] = useState<number>(0);
 
-  // 총 지출 내역
-  useEffect(() => {
-    const sum = pay.reduce((total, item) => total + item.expense, 0);
-    setTotalExpense(sum);
-  }, [pay]);
-
   const addPay = () => {
     if (newPay.expense > 0) {
       setPay((prevPay) => [...prevPay, newPay]);
@@ -39,6 +33,12 @@ const Pay = () => {
   const formatCommas = (number: number) => {
     return number.toLocaleString();
   };
+
+  // 총 지출 내역
+  useEffect(() => {
+    const sum = pay.reduce((total, item) => total + item.expense, 0);
+    setTotalExpense(sum);
+  }, [pay]);
 
   return (
     <div className="pl-10">

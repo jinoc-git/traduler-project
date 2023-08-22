@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import { getPlans } from '@api/plans';
+import Pay from '@components/pay/pay';
 import { useQuery } from '@tanstack/react-query';
 
 const Main = () => {
@@ -19,6 +20,7 @@ const Main = () => {
       >
         계획 추가하기
       </button>
+      <Pay />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import { getPlans } from '@api/plans';
+import AddPay from '@components/pay/AddPay';
 import Pay from '@components/pay/Pay';
 import { useQuery } from '@tanstack/react-query';
 
@@ -20,6 +21,7 @@ const Main = () => {
       >
         계획 추가하기
       </button>
+      <AddPay />
       <Pay />
     </div>
   );

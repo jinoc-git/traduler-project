@@ -1,6 +1,7 @@
 import { supabase } from './supabaseAuth';
 
 export interface Plan {
+  id: string;
   title: string;
   dates: string[];
   plan_state: 'planning' | 'traveling' | 'end';
@@ -8,11 +9,9 @@ export interface Plan {
 
 const getPlans = async (): Promise<Plan[] | null> => {
   try {
-    const { data, error } = await supabase
-      .from('plans')
-      .select('title, dates, plan_state');
+    const { data, error } = await supabase.from('plans').select();
 
-    if (error != null) {
+    if (error !== null) {
       console.log(error);
       return null;
     }

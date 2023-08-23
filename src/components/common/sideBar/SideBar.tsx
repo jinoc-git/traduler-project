@@ -45,10 +45,10 @@ const SideBar: React.FC = () => {
     <>
       <div
         className={` h-[100vh] w-[250px] bg-white transition-transform duration-300 ease-in-out border-r-10 ${
-          isMenuOpen ? 'transform translate-x-0' : 'transform -translate-x-50'
+          isMenuOpen ? 'transform translate-x-0' : ''
         }`}
       >
-        <div className="text-2xl mb-4 flex items-center justify-end pr-4">
+        <div className="text-2xl mb-4 flex items-center pr-4">
           <div className="cursor-pointer " onClick={toggleMenu}>
             ☰
           </div>
@@ -67,17 +67,24 @@ const SideBar: React.FC = () => {
 
             <div>
               <div>예정된 여행</div>
-              {startPlans?.map((plan) => {
-                return (
-                  <div key={plan.title}>
-                    <div>{plan.title}</div>
-                    {/* <div>{plan?.dates.join(',')}</div> */}
-                    <div>
-                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+              {startPlans
+                ?.slice()
+                .sort(
+                  (a, b) =>
+                    new Date(a.dates[0]).getTime() -
+                    new Date(b.dates[0]).getTime(),
+                )
+                .map((plan) => {
+                  return (
+                    <div key={plan.id}>
+                      <div>{plan.title}</div>
+                      {/* <div>{plan?.dates.join(',')}</div> */}
+                      <div>
+                        {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
               {/* <div>장소이름(기간)</div>
               <div>장소이름(기간)</div> */}
             </div>
@@ -91,14 +98,21 @@ const SideBar: React.FC = () => {
                 <div>다녀온 여행이없습니다.</div>
               )} */}
               <div>다녀온 여행</div>
-              {endPlans?.map((plan) => {
-                return (
-                  <div key={plan.title}>
-                    <div>{plan.title}</div>
-                    {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                  </div>
-                );
-              })}
+              {endPlans
+                ?.slice()
+                .sort(
+                  (a, b) =>
+                    new Date(a.dates[0]).getTime() -
+                    new Date(b.dates[0]).getTime(),
+                )
+                .map((plan) => {
+                  return (
+                    <div key={plan.id}>
+                      <div>{plan.title}</div>
+                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                    </div>
+                  );
+                })}
               {/* <div>전주 (23.06.06 ~2306.07)</div>
               <div>다낭 (23.06.06 ~2306.07)</div> */}
             </div>

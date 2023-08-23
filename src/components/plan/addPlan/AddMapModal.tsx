@@ -11,11 +11,12 @@ interface InputType {
 }
 
 interface PropsType {
-  setPins: React.Dispatch<React.SetStateAction<PinContentsType[]>>;
+  setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  currentPage: number;
 }
 
-const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
+const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   // 수정하기 눌렀을 때 해당 pin에 대한 정보를 store에서 불러옴
   const { pin, resetPin } = updatePinStore();
 
@@ -41,10 +42,6 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
       placeName: pin != null ? pin.placeName : '',
     },
   });
-
-  useEffect(() => {
-    getMap(' ');
-  }, []);
 
   const getMap = (data: string) => {
     if (mapRef.current === null) {
@@ -129,9 +126,22 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
       placeName: data.placeName as string,
     };
 
-    setPins((state) => [...state, newContents]);
+    setPins((state) => {
+      console.log('장소추가', newContents);
+      return state.map((item, idx) => {
+        if (idx === currentPage) {
+          console.log('장소추가', currentPage);
+          return [...item, newContents];
+        }
+        return item;
+      });
+    });
     setIsOpenModal(false);
   };
+
+  useEffect(() => {
+    getMap(' ');
+  }, []);
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">

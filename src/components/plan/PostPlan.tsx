@@ -10,7 +10,7 @@ export interface PlanFormData {
 }
 
 const PostPlan: React.FC = () => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
   const { setDates } = datesStore();
 
@@ -25,7 +25,7 @@ const PostPlan: React.FC = () => {
     const dates: string[] = [];
     const currentDate = new Date(startDate);
     const lastDate = new Date(endDate);
-    currentDate.setDate(currentDate.getDate() + 1);
+    // currentDate.setDate(currentDate.getDate() + 1);
     lastDate.setDate(lastDate.getDate() + 1);
 
     while (currentDate <= lastDate) {

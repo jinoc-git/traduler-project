@@ -8,7 +8,7 @@ export const addPlan = async (
   userId: string,
   title: string,
   totalCost: number,
-  pins: PinContentsType[],
+  pins: PinContentsType[][],
   dates: string[],
 ) => {
   const planId = uuid();

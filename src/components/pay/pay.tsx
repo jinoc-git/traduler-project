@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from 'react';
 
 interface Pays {
+  place: string;
   expense: number;
 }
 
+// interface InputField {
+//   location: string;
+//   amount: number;
+// }
+
 const Pay = () => {
   const [pay, setPay] = useState<Pays[]>([]);
-  const [newPay, setNewPay] = useState<Pays>({
-    expense: 0,
-  });
-  const [totalExpense, setTotalExpense] = useState<number>(0);
+  const [newPay, setNewPay] = useState<number>(0); // 새로운 금액 입력 상태 추가
+  const [totalPay, setTotalPay] = useState<number>(0);
 
-  const addPay = () => {
-    if (newPay.expense > 0) {
-      setPay((prevPay) => [...prevPay, newPay]);
-      setNewPay({ expense: 0 });
-    }
+  const changePayHandler = (index: number, inputText: string) => {
+    const sanitizedValue = inputText.replace(/,/g, '');
+    const expense = sanitizedValue !== '' ? parseFloat(sanitizedValue) : 0;
+    const newPay = [...pay];
+    newPay[index].expense = expense;
+    setPay(newPay);
   };
 
-  const addButtonHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputText = event.target.value;
-    const sanitizedValue = inputText.replace(/,/g, ''); // 쉼표 제거
-    const expense = sanitizedValue !== '' ? parseFloat(sanitizedValue) : 0;
+  const handleAdd = () => {
+    if (newPay > 0) {
+      setPay((prevPay) => [...prevPay, { place: '', expense: newPay }]);
+      setNewPay(0);
+    }
 
-    setNewPay((prevPay) => ({
-      ...prevPay,
-      expense: isNaN(expense) ? 0 : expense,
-    }));
+    setPay((prev) => [...prev, { place: '', expense: newPay }]);
   };
 
   // 세 자릿 수마다 쉼표 추가
@@ -37,7 +40,7 @@ const Pay = () => {
   // 총 지출 내역
   useEffect(() => {
     const sum = pay.reduce((total, item) => total + item.expense, 0);
-    setTotalExpense(sum);
+    setTotalPay(sum);
   }, [pay]);
 
   return (
@@ -48,32 +51,50 @@ const Pay = () => {
       <br />
       <div className="text-2xl font-bold text-blue-500">내가 여행할 장소</div>
       <br />
-
       {pay.map((item, index) => (
         <div key={index} className="flex w-3/4">
           <div>
             <div className="text-2xl text-black">{index + 1}</div>
             <div className="ml-3 bg-slate-300 h-20 text-2xl font-bold text-blue-500">
-              하나로 마트
+              하나로마트
+              {/* {item.place} */}
               <br />￦{item.expense.toLocaleString()}
             </div>
           </div>
         </div>
       ))}
       <div className="mt-20">지출내역 추가하기</div>
-      <input
-        className="text-2xl font-bold text-blue-500"
-        type="text"
-        value={formatCommas(newPay.expense)}
-        onChange={addButtonHandler}
-      />
-      <button className="text-2xl text-blue-500" onClick={addPay}>
-        +
+      {pay.map((input, index) => (
+        <div key={index}>
+          장소
+          <input
+            className="text-2xl font-bold text-blue-500"
+            type="text"
+            value={input.place}
+            // onChange={(event) => {
+            //   const newInputs = [...additionalInputs];
+            //   newInputs[index].location = event.target.value;
+            //   setAdditionalInputs(newInputs);
+            // }}
+          />
+          금액
+          <input
+            className="text-2xl font-bold text-blue-500"
+            type="text"
+            value={formatCommas(input.expense)}
+            onChange={(event) => {
+              changePayHandler(index, event.target.value);
+            }}
+          />
+        </div>
+      ))}
+      <button className="text-2xl text-blue-500" onClick={handleAdd}>
+        추가
       </button>
       <div>
         <p>총 지출 내역(결과페이지에 사용)</p>
         <p className="text-2xl font-bold text-blue-500">
-          총 지출: ￦{formatCommas(totalExpense)}
+          총 지출: ￦{formatCommas(totalPay)}
         </p>
       </div>
     </div>

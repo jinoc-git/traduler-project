@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import { getPlans } from '@api/plans';
-import Pay from '@components/pay/pay';
+import Pay from '@components/pay/Pay';
 import { useQuery } from '@tanstack/react-query';
 
 const Main = () => {

@@ -12,7 +12,7 @@ const SideBar: React.FC = () => {
     getPlans,
   );
 
-  console.log('data=>', data);
+  // console.log('data=>', data);
 
   const toggleMenu: () => void = () => {
     setIsMenuOpen(!isMenuOpen);

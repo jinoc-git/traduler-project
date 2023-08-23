@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import getPlans from '@api/plans';
 import Pay from '@components/pay/pay';
+import CardSection from '@components/plan/listingPlan/CardSection';
 import { useQuery } from '@tanstack/react-query';
 
 const Main = () => {
@@ -20,6 +21,7 @@ const Main = () => {
       >
         계획 추가하기
       </button>
+      <CardSection />
       <Pay />
     </div>
   );

@@ -31,7 +31,7 @@ const SignUpForm = () => {
       console.log('회원가입 에러');
       return false;
     }
-    reset()
+    reset();
     console.log('성공');
   };
 

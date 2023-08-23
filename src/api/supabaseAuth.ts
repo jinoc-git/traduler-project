@@ -1,3 +1,4 @@
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { createClient } from '@supabase/supabase-js';
 import { type Database } from 'types/supabase';
 
@@ -55,5 +56,34 @@ export const signInWithSB = async (email: string, password: string) => {
 };
 
 export const signOutForSB = async () => {
-    await supabase.auth.signOut();
+  await supabase.auth.signOut();
+};
+
+export const uploadProfileImg = async (avatarFile: File, email: string) => {
+  const { data, error: storageError } = await supabase.storage
+    .from('profile_img')
+    .upload(`${email}/${uuid()}`, avatarFile, {
+      cacheControl: '3600',
+      upsert: false,
+    });
+
+  const isStorageError = Boolean(storageError);
+  if (isStorageError) {
+    return storageError;
+  }
+  if (data !== null) {
+    return data.path;
+  }
+};
+
+export const updateUserProfile = async (path: string) => {
+  const URL = process.env.REACT_APP_SB_STORAGE_URL as string;
+  const { data } = await supabase.auth.updateUser({
+    data: { profileImg: `${URL}/${path}` },
+  });
+
+  const isSuccess = Boolean(data);
+  if (isSuccess) {
+    return data.user;
+  }
 };

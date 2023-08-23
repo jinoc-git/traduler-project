@@ -12,6 +12,7 @@ interface UserStore {
   user: UserInfo | null;
   // isLogin: boolean;
   authObserver: () => void;
+  setUser: (user: UserInfo) => void;
   resetUser: () => void;
 }
 
@@ -23,19 +24,23 @@ export const userStore = create<UserStore>((set, get) => {
         const {
           id,
           email,
-          user_metadata: { nickname },
+          user_metadata: { nickname, profileImg },
         } = session.user;
 
         const user: UserInfo = {
           id,
           email: email as string,
           nickname,
-          profileImg: null,
+          profileImg: profileImg ?? null,
         };
 
         set({ user });
       }
     });
+  };
+
+  const setUser = (user: UserInfo) => {
+    set({ user });
   };
 
   const resetUser = () => {
@@ -46,6 +51,7 @@ export const userStore = create<UserStore>((set, get) => {
     user: null,
     // isLogin: false,
     authObserver,
+    setUser,
     resetUser,
   };
 });

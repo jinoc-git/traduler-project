@@ -26,7 +26,7 @@ const AddPlanContents = ({ currentPage, dates, pins, setPins }: PropsType) => {
   const { updateClick } = updatePinStore();
   const updatePin = (idx: number) => {
     const pin = pins[currentPage][idx];
-    updateClick(pin);
+    updateClick(pin, idx);
     openModal();
   };
 
@@ -53,6 +53,7 @@ const AddPlanContents = ({ currentPage, dates, pins, setPins }: PropsType) => {
   }, [dates]);
 
   useEffect(() => {
+    console.log('pins', pins);
     if (pins[currentPage] === undefined || pins[currentPage].length === 0) {
       getMap();
     } else if (pins[currentPage].length !== 0) {

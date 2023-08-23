@@ -18,7 +18,7 @@ interface PropsType {
 
 const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   // 수정하기 눌렀을 때 해당 pin에 대한 정보를 store에서 불러옴
-  const { pin, resetPin } = updatePinStore();
+  const { pin, idx, resetPin } = updatePinStore();
 
   const [position, setPosition] = useState({
     La: 37.566826004661,
@@ -67,6 +67,13 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       setMarkers((state) => [...state, marker]);
       setPosition({ La: pin.lng as number, Ma: pin.lat as number });
       getAddress(pin.lat as number, pin.lng as number);
+      window.kakao.maps.event.addListener(marker, 'dragend', function () {
+        setPosition({
+          La: marker.getPosition().Ma,
+          Ma: marker.getPosition().La,
+        });
+      });
+      marker.setDraggable(true);
     }
 
     function placesSearchCB(data: string | any[], status: any) {
@@ -126,17 +133,36 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       placeName: data.placeName as string,
     };
 
-    setPins((state) => {
-      console.log('장소추가', newContents);
-      return state.map((item, idx) => {
-        if (idx === currentPage) {
-          console.log('장소추가', currentPage);
-          return [...item, newContents];
-        }
-        return item;
+    // 수정하기 눌렀을 때
+    if (pin !== null) {
+      setPins((state) => {
+        console.log('장소수정', newContents);
+        return state.map((item, i) => {
+          if (i === currentPage) {
+            console.log('장소수정', currentPage);
+            item[idx] = newContents;
+            return [...item];
+          }
+          return item;
+        });
       });
-    });
+    }
+    // 장소추가 눌렀을 때
+    else {
+      setPins((state) => {
+        console.log('장소추가', newContents);
+        return state.map((item, i) => {
+          if (i === currentPage) {
+            console.log('장소추가', currentPage);
+            return [...item, newContents];
+          }
+          return item;
+        });
+      });
+    }
+
     setIsOpenModal(false);
+    resetPin();
   };
 
   useEffect(() => {

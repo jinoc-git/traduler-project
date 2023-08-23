@@ -60,11 +60,11 @@ const AddPlan = () => {
       <p>링크 공유하기</p>
       <p>친구 초대하기</p>
       <PostPlan />
-      <div className="flex gap-5">
+      <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 0}
-          className="cursor-pointer disabled:hidden"
+          className="cursor-pointer disabled:text-transparent disabled:cursor-none"
         >
           ⬅️
         </button>
@@ -72,7 +72,7 @@ const AddPlan = () => {
         <button
           onClick={handleNextPage}
           disabled={currentPage === dates.length - 1}
-          className="cursor-pointer disabled:hidden"
+          className="cursor-pointer disabled:text-transparent disabled:cursor-none"
         >
           ➡️
         </button>

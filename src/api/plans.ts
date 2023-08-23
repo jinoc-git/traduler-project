@@ -41,10 +41,27 @@ export const addPlan = async (
   }
 };
 
-export const getPlans = async () => {
+// export const getPlans = async () => {
+//   const { data, error } = await supabase.from('plans').select();
+//   if (error != null) {
+//     console.log('에러 발생', error);
+//   }
+//   return data;
+// };
+
+const getPlans = async (): Promise<PlanType[] | null> => {
   const { data, error } = await supabase.from('plans').select();
-  if (error != null) {
-    console.log('에러 발생', error);
+
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
   }
-  return data;
+  if (data !== null) {
+    const plans: PlanType[] = data as PlanType[];
+    return plans;
+  }
+
+  return null;
 };
+
+export default getPlans;

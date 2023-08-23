@@ -32,7 +32,15 @@ const AddPlanContents = ({ currentPage, dates, pins, setPins }: PropsType) => {
 
   // pin 삭제 버튼
   const deletePin = (idx: number) => {
-    const deletedPins = pins.filter((pin, i) => i !== idx);
+    console.log(pins);
+    const deletedPins = pins.map((pin, i) => {
+      if (i === currentPage) {
+        console.log(pin);
+        return pin.filter((_, j) => j !== idx);
+      }
+      return pin;
+    });
+    console.log(pins);
     setPins(deletedPins);
     markers.map((marker, i) => {
       if (i === idx) {
@@ -190,9 +198,15 @@ const AddPlanContents = ({ currentPage, dates, pins, setPins }: PropsType) => {
             );
           })}
         </div>
-        <button type="button" onClick={openModal} className="p-5 bg-slate-500">
-          장소 추가하기
-        </button>
+        {dates.length !== 0 && (
+          <button
+            type="button"
+            onClick={openModal}
+            className="p-5 bg-slate-500"
+          >
+            장소 추가하기
+          </button>
+        )}
       </div>
       {isOpenModal && (
         <AddMapModal

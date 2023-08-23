@@ -21,8 +21,8 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   const { pin, idx, resetPin } = updatePinStore();
 
   const [position, setPosition] = useState({
-    La: 37.566826004661,
-    Ma: 126.978652258309,
+    La: 0,
+    Ma: 0,
   });
   const [markers, setMarkers] = useState<any[]>([]);
   const mapRef = useRef<any>(null);
@@ -133,7 +133,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       placeName: data.placeName as string,
     };
 
-    // 수정하기 눌렀을 때
+    // 수정하기 시
     if (pin !== null) {
       setPins((state) => {
         console.log('장소수정', newContents);
@@ -147,7 +147,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         });
       });
     }
-    // 장소추가 눌렀을 때
+    // 장소추가 시
     else {
       setPins((state) => {
         console.log('장소추가', newContents);
@@ -163,6 +163,13 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
 
     setIsOpenModal(false);
     resetPin();
+  };
+
+  const disabledSubmit = () => {
+    if (position.La === 0 || position.Ma === 0) {
+      return true;
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -225,8 +232,8 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
           <p>{errorsPlaceName?.placeName?.message}</p>
           <button
             type="submit"
-            disabled={isSubmittingPlaceName}
-            className="bg-slate-400"
+            disabled={isSubmittingPlaceName || disabledSubmit()}
+            className="bg-slate-400 disabled:bg-black"
           >
             저장
           </button>

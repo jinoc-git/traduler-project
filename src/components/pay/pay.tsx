@@ -5,11 +5,6 @@ interface Pays {
   expense: number;
 }
 
-// interface InputField {
-//   location: string;
-//   amount: number;
-// }
-
 const Pay = () => {
   const [pay, setPay] = useState<Pays[]>([]);
   const [newPay, setNewPay] = useState<number>(0); // 새로운 금액 입력 상태 추가
@@ -23,7 +18,7 @@ const Pay = () => {
     setPay(newPay);
   };
 
-  const handleAdd = () => {
+  const addHandler = () => {
     if (newPay > 0) {
       setPay((prevPay) => [...prevPay, { place: '', expense: newPay }]);
       setNewPay(0);
@@ -88,7 +83,7 @@ const Pay = () => {
           />
         </div>
       ))}
-      <button className="text-2xl text-blue-500" onClick={handleAdd}>
+      <button className="text-2xl text-blue-500" onClick={addHandler}>
         추가
       </button>
       <div>

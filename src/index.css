@@ -13,3 +13,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.main-layout {
+  width: 800px;
+  margin: 0 auto;
+}

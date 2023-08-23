@@ -5,6 +5,7 @@ interface UserInfo {
   id: string;
   email: string;
   nickname: string;
+  profileImg: string | null;
 }
 
 interface UserStore {
@@ -29,6 +30,7 @@ export const userStore = create<UserStore>((set, get) => {
           id,
           email: email as string,
           nickname,
+          profileImg: null,
         };
 
         set({ user });

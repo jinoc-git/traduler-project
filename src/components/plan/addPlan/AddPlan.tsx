@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import { type PinContentsType } from '@api/pins';
 import { addPlan } from '@api/plans';
 import { datesStore } from '@store/datesStore';
-import { pinsStore } from '@store/pinsStore';
 import { userStore } from '@store/userStore';
 
 import AddPlanContents from './AddPlanContents';
@@ -17,13 +17,9 @@ interface InputType {
 const AddPlan = () => {
   const user = userStore((state) => state.user);
   const userId = user?.id;
-
   const { dates } = datesStore();
-  const { pins } = pinsStore();
-  console.log('pins', pins);
-
+  const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -82,9 +78,10 @@ const AddPlan = () => {
         </button>
       </div>
       <AddPlanContents
-        date={dates[currentPage]}
         dates={dates}
         currentPage={currentPage}
+        pins={pins}
+        setPins={setPins}
       />
       <form onSubmit={handleSubmit(submitPlan)}>
         <button

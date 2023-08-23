@@ -6,17 +6,14 @@ import { updatePinStore } from '@store/updatePinStore';
 
 import AddMapModal from './AddMapModal';
 
-const AddPlanContents = ({
-  date,
-  currentPage,
-  dates,
-}: {
-  date: string;
+interface PropsType {
   currentPage: number;
   dates: string[];
-}) => {
-  console.log('현재 페이지 날짜', date);
-  console.log('현재 페이지', currentPage);
+  pins: PinContentsType[][];
+  setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
+}
+
+const AddPlanContents = ({ currentPage, dates, pins, setPins }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
@@ -24,7 +21,6 @@ const AddPlanContents = ({
   const mapRef = useRef<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [linePaths, setLinePaths] = useState<any[]>([]);
-  const [pins, setPins] = useState<PinContentsType[][]>([]);
 
   // pin 수정 버튼
   const { updateClick } = updatePinStore();
@@ -57,15 +53,12 @@ const AddPlanContents = ({
   }, [dates]);
 
   useEffect(() => {
-    console.log(pins);
-    if (pins[currentPage] === undefined) {
-      console.log('pin 없다');
+    if (pins[currentPage] === undefined || pins[currentPage].length === 0) {
       getMap();
     } else if (pins[currentPage].length !== 0) {
-      console.log('pin 있다');
       getMarkerMap(pins[currentPage]);
     }
-  }, [pins]);
+  }, [pins, currentPage, dates]);
 
   const getMap = () => {
     if (mapRef.current === null) {
@@ -84,6 +77,12 @@ const AddPlanContents = ({
       );
       const zoomControl = new window.kakao.maps.ZoomControl();
       map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+    } else {
+      const latlng = new window.kakao.maps.LatLng(
+        37.566826004661,
+        126.978652258309,
+      );
+      mapRef.current.setCenter(latlng);
     }
   };
 

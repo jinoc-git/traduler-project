@@ -22,7 +22,9 @@ export const addPlan = async (
     dates,
     plan_state: 'planning',
   };
+
   const { data, error } = await supabase.from('plans').insert(plan);
+
   for (let i = 0; i < dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,

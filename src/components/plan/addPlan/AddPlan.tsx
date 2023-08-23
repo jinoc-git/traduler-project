@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { type PinContentsType } from '@api/pins';
 import { addPlan } from '@api/plans';
+import PostPlan from '@components/plan/PostPlan';
 import { datesStore } from '@store/datesStore';
 import { userStore } from '@store/userStore';
 
 import AddPlanContents from './AddPlanContents';
-import PostPlan from '../PostPlan';
 
 interface InputType {
   title?: string;

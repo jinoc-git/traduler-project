@@ -99,3 +99,54 @@ export const updateUserProfileImage = async (path: string, userId: string) => {
     return data.user;
   }
 };
+
+export const checkUserNickname = async (nickname: string) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('nickname')
+    .eq('nickname', nickname);
+
+  console.log(error);
+  if (data !== null && data.length === 0) {
+    return true;
+  }
+  if (data !== null && data.length > 0) {
+    return false;
+  }
+};
+
+export const updateUserNickname = async (nickname: string, userId: string) => {
+  const { data } = await supabase.auth.updateUser({
+    data: { nickname },
+  });
+
+  const { error } = await supabase
+    .from('users')
+    .update({ nickname })
+    .eq('id', userId)
+    .select();
+
+  const isUserTableError = Boolean(error);
+  if (isUserTableError) {
+    console.log(error);
+    return null;
+  }
+
+  const isSuccess = Boolean(data);
+  if (isSuccess) {
+    if (data.user !== null && data.user !== undefined) {
+      const {
+        id,
+        email,
+        user_metadata: { nickname, profileImg },
+      } = data.user;
+
+      return {
+        id,
+        email: email as string,
+        nickname,
+        profileImg,
+      };
+    }
+  }
+};

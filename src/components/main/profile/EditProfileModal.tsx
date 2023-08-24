@@ -1,93 +1,194 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { updateUserProfileImage, uploadProfileImg } from '@api/supabaseAuth';
+import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { defaultImage } from '@assets/index';
+import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
-import fileValidator from '@utils/fileValidator';
+import { updateUserAvatar } from '@utils/updateUserProfile';
 
 interface EditProfileModalProps {
   handler: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface EditProfileForm {
+  avatar: FileList;
+  nickname: string;
+}
+
 const EditProfileModal = ({ handler }: EditProfileModalProps) => {
-  const [profileImg, setProfileImg] = useState<File | null>();
   const [previewImg, setPreviewImg] = useState<string>('');
+  const [isDuplicate, setIsDuplicate] = useState<boolean>(true);
+
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+
+  const { nicknameValidator } = useFormValidator();
 
   const onClickCloseModalHandler = () => {
     handler(false);
   };
 
-  const onChangeImgFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { files },
-    } = e;
-    if (files === null) return;
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<EditProfileForm>({ mode: 'onChange' });
 
-    const isValid = fileValidator(files[0]);
-    if (!isValid) {
-      alert('잘못된 형식입니다');
-      return;
+  const preview = watch('avatar');
+  const nickname = watch('nickname');
+  const blockSubmitBtn =
+    (preview?.length === 0 && nickname === '') ||
+    (nickname !== '' && isDuplicate);
+
+  const checkNicknameDuplication = async () => {
+    const res = await checkUserNickname(nickname);
+    if (res) {
+      setIsDuplicate(!res);
+    } else {
+      console.log('닉네임 중복');
     }
-
-    const previewUrl = URL.createObjectURL(files[0]);
-    setPreviewImg(previewUrl);
-    setProfileImg(files[0]);
   };
 
-  const onClickEditProfileBtn = async () => {
-    if (profileImg !== null && profileImg !== undefined && user !== null) {
-      const filePath = await uploadProfileImg(profileImg, user.email);
+  const onSubmitEditProfileBtn: SubmitHandler<EditProfileForm> = async (
+    data,
+  ) => {
+    if (data.nickname !== '' && isDuplicate) return;
+    if (user == null) return;
 
-      if (typeof filePath !== 'string') {
-        console.log('업로드 에러');
-        return false;
-      }
+    // 닉네임 변경
+    if (data.nickname !== '') {
+      const res = await updateUserNickname(data.nickname, user.id);
 
-      const res = await updateUserProfileImage(filePath, user.id);
-
-      if (res !== null && res !== undefined) {
-        const {
-          id,
-          email,
-          user_metadata: { nickname, profileImg },
-        } = res;
-
+      if (res) {
+        const { id, email, nickname, profileImg } = res;
         setUser({
           id,
-          email: email as string,
+          email,
           nickname,
           profileImg,
         });
       }
     }
+
+    // 프로필 사진 변경
+    if (data.avatar[0]) {
+      const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
+
+      if (res) {
+        const { id, email, nickname, profileImg } = res;
+        setUser({
+          id,
+          email,
+          nickname,
+          profileImg,
+        });
+      }
+    }
+
+    onClickCloseModalHandler();
   };
 
   useEffect(() => {
-    if (user !== null && typeof user.profileImg === 'string') {
+    setIsDuplicate(true);
+  }, [nickname]);
+
+  useEffect(() => {
+    if (preview && preview.length > 0) {
+      const file = preview[0];
+      setPreviewImg(URL.createObjectURL(file));
+    } else if (user !== null && typeof user.profileImg === 'string') {
       setPreviewImg(user.profileImg);
     }
-  }, []);
+    return () => {
+      setPreviewImg('');
+      setIsDuplicate(true);
+    };
+  }, [preview]);
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
-      <div className="flex flex-col p-10 items-center justify-between align-middle bg-white h-[400px]">
-        <img
-          src={previewImg !== '' ? previewImg : defaultImage}
-          alt="프로필이미지"
-          className="w-[85px] h-[85px] rounded-full ring ring-white object-cover"
+      <form
+        className="relative flex flex-col p-10 items-center justify-between align-middle bg-white h-[400px]"
+        onSubmit={handleSubmit(onSubmitEditProfileBtn)}
+      >
+        <button
+          className="w-6 h-6 absolute top-2 right-2"
+          type="button"
+          onClick={onClickCloseModalHandler}
+        >
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 17 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 1L1 16"
+              stroke="#606060"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M1 1L16 16"
+              stroke="#606060"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <label htmlFor="avatar">
+          <img
+            src={previewImg !== '' ? previewImg : defaultImage}
+            alt="프로필이미지"
+            className="w-[85px] h-[85px] rounded-full ring ring-black object-cover cursor-pointer"
+          />
+        </label>
+        <input
+          id="avatar"
+          type="file"
+          {...register('avatar')}
+          accept=".jpg, .jpeg, .png"
+          className="border hidden"
         />
-        <input type="file" onChange={onChangeImgFileHandler} />
+        <p className="text-center">
+          프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
+          정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
+        </p>
         <div>
-          <button className="bg-slate-400 mr-2" onClick={onClickEditProfileBtn}>
-            수정
+          <input
+            type="text"
+            {...register('nickname', { ...nicknameValidator, required: false })}
+            className="border"
+            placeholder={user?.nickname}
+          />
+          <button
+            type="button"
+            onClick={checkNicknameDuplication}
+            className="border"
+          >
+            중복확인
           </button>
-          <button className="bg-slate-400" onClick={onClickCloseModalHandler}>
-            취소
+          {errors.nickname !== null && <p>{errors.nickname?.message}</p>}
+        </div>
+        <div>
+          <button type="button" className="bg-slate-400 mr-2">
+            사진 제거
+          </button>
+          <button
+            disabled={blockSubmitBtn}
+            type="submit"
+            className="bg-slate-400"
+          >
+            프로필 변경 {isSubmitting && '제출중'}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

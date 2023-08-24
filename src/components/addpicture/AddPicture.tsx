@@ -44,6 +44,13 @@ const AddImg: React.FC<Props> = ({
     }
   };
 
+  const handleRemoveImage = (index: number) => {
+    const result = JSON.parse(JSON.stringify(imgSrcList));
+    result.splice(index, 1);
+    setImgSrcList(result);
+    handleImgSrcList?.(result);
+  };
+
   useEffect(() => {
     if (data?.length != null) {
       setImgSrcList(data);

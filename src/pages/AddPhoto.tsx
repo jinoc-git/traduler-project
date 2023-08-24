@@ -1,9 +1,19 @@
-import React from 'react'
+import React from 'react';
+
+import AddPicture from '@components/addpicture/AddPicture';
 
 const AddPhoto = () => {
-  return (
-    <div>AddPhoto</div>
-  )
-}
+  const handleFile = (file: File) => {
+    console.log('File received:', file);
+  };
 
-export default AddPhoto
+  return (
+    <>
+      <h2> 사진</h2>
+      <h3>10개 까지 추가 가능합니다.</h3>
+      <AddPicture handleFile={handleFile} />;
+    </>
+  );
+};
+
+export default AddPhoto;

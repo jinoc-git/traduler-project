@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@types/*": ["./types/*"],
+      "types/*": ["./types/*"],
       "@api/*": ["./api/*"],
       "@assets": ["./assets/index.ts"],
       "@assets/*": ["./assets/*"],

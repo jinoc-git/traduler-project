@@ -1,2 +1,2 @@
 // export { default as logoColor } from './logo-color.png';
-export {}
+export { default as defaultImage } from './defaultImg.png';

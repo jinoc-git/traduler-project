@@ -6,7 +6,7 @@ import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { defaultImage } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
-import { updateUserAvatar } from '@utils/updateUserProfile';
+import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
 
 interface EditProfileModalProps {
   handler: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,6 +20,7 @@ interface EditProfileForm {
 const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [isDuplicate, setIsDuplicate] = useState<boolean>(true);
+  const [isRemoveAvatar, setIsRemoveAvatar] = useState<boolean>(false);
 
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
@@ -39,9 +40,10 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const preview = watch('avatar');
   const nickname = watch('nickname');
-  const blockSubmitBtn =
-    (preview?.length === 0 && nickname === '') ||
-    (nickname !== '' && isDuplicate);
+  const blockSubmitBtn = isRemoveAvatar
+    ? false
+    : (preview?.length === 0 && nickname === '') ||
+      (nickname !== '' && isDuplicate);
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
@@ -88,7 +90,27 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
       }
     }
 
+    // 프로필 이미지 삭제
+    if (isRemoveAvatar) {
+      const res = await removeUserAvartar(user.id);
+
+      if (res) {
+        const { id, email, nickname, profileImg } = res;
+        setUser({
+          id,
+          email,
+          nickname,
+          profileImg,
+        });
+      }
+    }
+
     onClickCloseModalHandler();
+  };
+
+  const removeAvartarBtnHandler = () => {
+    setPreviewImg('');
+    setIsRemoveAvatar(true);
   };
 
   useEffect(() => {
@@ -177,7 +199,11 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           {errors.nickname !== null && <p>{errors.nickname?.message}</p>}
         </div>
         <div>
-          <button type="button" className="bg-slate-400 mr-2">
+          <button
+            type="button"
+            onClick={removeAvartarBtnHandler}
+            className="bg-slate-400 mr-2"
+          >
             사진 제거
           </button>
           <button

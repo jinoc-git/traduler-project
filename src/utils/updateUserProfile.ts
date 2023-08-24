@@ -1,4 +1,8 @@
-import { updateUserProfileImage, uploadProfileImg } from '@api/supabaseAuth';
+import {
+  deleteUserProfileImage,
+  updateUserProfileImage,
+  uploadProfileImg,
+} from '@api/supabaseAuth';
 
 export const updateUserAvatar = async (
   file: File,
@@ -25,6 +29,24 @@ export const updateUserAvatar = async (
       email: email as string,
       nickname,
       profileImg,
+    };
+  }
+};
+
+export const removeUserAvartar = async (userId: string) => {
+  const res = await deleteUserProfileImage(userId);
+  if (res !== null && res !== undefined) {
+    const {
+      id,
+      email,
+      user_metadata: { nickname },
+    } = res;
+
+    return {
+      id,
+      email: email as string,
+      nickname,
+      profileImg: null,
     };
   }
 };

@@ -100,6 +100,28 @@ export const updateUserProfileImage = async (path: string, userId: string) => {
   }
 };
 
+export const deleteUserProfileImage = async (userId: string) => {
+  const { data } = await supabase.auth.updateUser({
+    data: { profileImg: null },
+  });
+
+  const { error } = await supabase
+    .from('users')
+    .update({ avatar_url: null })
+    .eq('id', userId)
+    .select();
+
+  const isUserTableError = Boolean(error);
+  if (isUserTableError) {
+    console.log(error);
+    return null;
+  }
+
+  if (data !== null) {
+    return data.user
+  }
+};
+
 export const checkUserNickname = async (nickname: string) => {
   const { data, error } = await supabase
     .from('users')

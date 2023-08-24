@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from '@components/common/header/Header';
 import SideBar from '@components/common/sideBar/SideBar';
 import AddPlan from '@components/plan/addPlan/AddPlan';
+import Ending from '@pages/Ending';
 import Main from '@pages/Main';
 import Plan from '@pages/Plan';
 import SignIn from '@pages/SignIn';
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/plan" element={<Plan />} />
         <Route path="/addPlan" element={<AddPlan />} />
+        <Route path="/ending" element={<Ending />} />
       </Routes>
     </BrowserRouter>
   );

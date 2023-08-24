@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import getPlans from '@api/plans';
+import { getPlans } from '@api/plans';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
 

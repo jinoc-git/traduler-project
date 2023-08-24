@@ -17,7 +17,7 @@ interface InputType {
 const AddPlan = () => {
   const user = userStore((state) => state.user);
   const userId = user?.id;
-  const { dates } = datesStore();
+  const { dates, resetDates } = datesStore();
   const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
   const {
@@ -31,6 +31,7 @@ const AddPlan = () => {
     if (userId !== null) {
       await addPlan(userId as string, watch('title') as string, 0, pins, dates);
       navigate('/');
+      resetDates();
     }
   };
 

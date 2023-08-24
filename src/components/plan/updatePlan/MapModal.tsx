@@ -10,7 +10,13 @@ interface InputType {
   placeName?: string;
 }
 
-const MapModal = ({ openModal }: { openModal: () => void }) => {
+const MapModal = ({
+  openModal,
+  date,
+}: {
+  openModal: () => void;
+  date: string;
+}) => {
   const [position, setPosition] = useState({ La: 0, Ma: 0 });
   const [markers, setMarkers] = useState<any[]>([]);
   const mapRef = useRef<any>(null);
@@ -29,6 +35,7 @@ const MapModal = ({ openModal }: { openModal: () => void }) => {
       placeName: '',
     },
   });
+  const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
 
   const getMap = (data: string, mapRef: any) => {
     if (mapRef.current === null) {
@@ -85,12 +92,19 @@ const MapModal = ({ openModal }: { openModal: () => void }) => {
       placeName: data.placeName as string,
     };
 
-    mutation.mutate(newContents);
+    mutation.mutate([date, planId, newContents]);
+    openModal();
   };
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: addPin,
+    mutationFn: async ([date, planId, newContents]: [
+      string,
+      string,
+      PinContentsType,
+    ]) => {
+      await addPin(date, planId, newContents);
+    },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['pins'] });
     },

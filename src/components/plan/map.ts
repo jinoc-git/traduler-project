@@ -17,6 +17,7 @@ export const getMap = () => {
 
 // 마커가 있는 지도 가져오기
 export const getMarkerMap = (data: PinContentsType[]) => {
+  console.log(data);
   const positions = data?.map((pin: PinContentsType) => {
     const position = {
       title: pin.placeName,
@@ -24,12 +25,15 @@ export const getMarkerMap = (data: PinContentsType[]) => {
     };
     return position;
   });
+  console.log(positions[0]);
 
   const mapContainer = document.getElementById('map');
   const mapOption = {
     center: positions[0].latlng, // 지도의 중심좌표
     level: 4,
   };
+  console.log(mapContainer);
+  console.log(mapOption);
   const map = new window.kakao.maps.Map(mapContainer, mapOption);
 
   const mapTypeControl = new window.kakao.maps.MapTypeControl();

@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 
-import { getPins } from '@api/pins';
-import { useQuery } from '@tanstack/react-query';
-
 import MapModal from './MapModal';
 
-const AddMap = () => {
+interface PropsType {
+  currentPage: number;
+  dates: string[];
+}
+
+const Pins = ({ currentPage, dates }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-
-  const { data: pins } = useQuery({ queryKey: ['pins'], queryFn: getPins });
+  // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
+  // const { data: pins } = useQuery(['pins'], fetchPinsData);
+  // console.log(pins);
 
   return (
     <>
       <div>
-        {pins?.map((pin, idx: number) => {
+        {/* {pins?.[currentPage]?.contents.map((pin, idx: number) => {
           return (
             <div key={idx}>
               <p>{idx + 1}</p>
@@ -29,14 +32,16 @@ const AddMap = () => {
               <button className="m-4 bg-slate-400">삭제</button>
             </div>
           );
-        })}
+        })} */}
       </div>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>
-      {isOpenModal && <MapModal openModal={openModal} />}
+      {isOpenModal && (
+        <MapModal openModal={openModal} date={dates[currentPage]} />
+      )}
     </>
   );
 };
 
-export default AddMap;
+export default Pins;

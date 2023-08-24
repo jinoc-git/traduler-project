@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+
+import imageCompression from 'browser-image-compression';
 
 interface Props {
   data?: string[];
@@ -16,6 +18,38 @@ const AddImg: React.FC<Props> = ({
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [imgSrcList, setImgSrcList] = useState<string[]>([]);
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    const options = {
+      maxSizeMB: 2,
+      maxWidthOrHeight: 1920,
+    };
+
+    if (file != null) {
+      const compressedFile = await imageCompression(file, options);
+      const formData = new FormData();
+      formData.append('image', compressedFile);
+      handleFile(compressedFile);
+
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(compressedFile);
+      fileReader.onload = (e) => {
+        const result = e?.target?.result as string;
+        const updatedImgSrcList = [...imgSrcList, result];
+        setImgSrcList(updatedImgSrcList);
+        handleImgSrcList?.(updatedImgSrcList);
+      };
+    }
+  };
+
+  useEffect(() => {
+    if (data?.length != null) {
+      setImgSrcList(data);
+      handleImgSrcList?.(data);
+    }
+  }, [data?.length]);
 
   return (
     <div className="flex w-full overflow-auto scrollbar-hide">

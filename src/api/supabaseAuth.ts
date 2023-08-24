@@ -76,11 +76,23 @@ export const uploadProfileImg = async (avatarFile: File, email: string) => {
   }
 };
 
-export const updateUserProfile = async (path: string) => {
-  const URL = process.env.REACT_APP_SB_STORAGE_URL as string;
+export const updateUserProfileImage = async (path: string, userId: string) => {
+  const URL = `${process.env.REACT_APP_SB_STORAGE_URL as string}/${path}`;
   const { data } = await supabase.auth.updateUser({
-    data: { profileImg: `${URL}/${path}` },
+    data: { profileImg: URL },
   });
+
+  const { error } = await supabase
+    .from('users')
+    .update({ avatar_url: URL })
+    .eq('id', userId)
+    .select();
+
+  const isUserTableError = Boolean(error);
+  if (isUserTableError) {
+    console.log(error);
+    return null;
+  }
 
   const isSuccess = Boolean(data);
   if (isSuccess) {

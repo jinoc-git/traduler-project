@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { updateUserProfile, uploadProfileImg } from '@api/supabaseAuth';
+import { updateUserProfileImage, uploadProfileImg } from '@api/supabaseAuth';
 import { defaultImage } from '@assets/index';
 import { userStore } from '@store/userStore';
 import fileValidator from '@utils/fileValidator';
@@ -45,13 +45,15 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         return false;
       }
 
-      const res = await updateUserProfile(filePath);
+      const res = await updateUserProfileImage(filePath, user.id);
+
       if (res !== null && res !== undefined) {
         const {
           id,
           email,
           user_metadata: { nickname, profileImg },
         } = res;
+
         setUser({
           id,
           email: email as string,
@@ -61,6 +63,12 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (user !== null && typeof user.profileImg === 'string') {
+      setPreviewImg(user.profileImg);
+    }
+  }, []);
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">

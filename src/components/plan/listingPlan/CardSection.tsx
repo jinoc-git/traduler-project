@@ -23,12 +23,10 @@ const CardSection = () => {
 
   return (
     <div>
-      <div className="flex flex-row">
-        <div>예정된 계획</div>
-        <div>|</div>
-        <div>다녀온 여행</div>
+      <div></div>
+      <div>
+        <Card data={data} />
       </div>
-      <Card data={data} />
     </div>
   );
 };

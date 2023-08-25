@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
 import { signUpWithSB } from '@api/supabaseAuth';
-import useSignUpFormValidator from '@hooks/useSignUpFormValidator';
+import useFormValidator from '@hooks/useFormValidator';
 import { AuthError } from '@supabase/supabase-js';
 
 interface UserSignUpForm {
@@ -21,7 +21,7 @@ const SignUpForm = () => {
   } = useForm<UserSignUpForm>({ mode: 'onChange' });
 
   const { nicknameValidator, emailValidator, passwordValidator } =
-    useSignUpFormValidator();
+  useFormValidator();
 
   const onSubmitSignUpHandler: SubmitHandler<UserSignUpForm> = async (data) => {
     const { email, password, nickname } = data;
@@ -31,7 +31,7 @@ const SignUpForm = () => {
       console.log('회원가입 에러');
       return false;
     }
-    reset()
+    reset();
     console.log('성공');
   };
 

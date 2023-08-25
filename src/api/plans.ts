@@ -8,7 +8,7 @@ export const addPlan = async (
   userId: string,
   title: string,
   totalCost: number,
-  pins: PinContentsType[],
+  pins: PinContentsType[][],
   dates: string[],
 ) => {
   const planId = uuid();
@@ -23,28 +23,45 @@ export const addPlan = async (
     plan_state: 'planning',
   };
   const { data, error } = await supabase.from('plans').insert(plan);
-  const { data: pinsdata, error: errorPins } = await supabase
-    .from('pins')
-    .insert({
+  for (let i = 0; i < dates.length; i++) {
+    const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,
-      contents: pins as Json[],
-      date: '2023-08-21',
+      contents: pins[i] as Json[],
+      date: dates[i],
     });
-
-  if (error != null || errorPins != null) {
-    console.log(error);
-    console.log(errorPins);
+    if (errorPins != null) {
+      console.log(`오류발생 ${i}번째 pin`, errorPins);
+    }
   }
 
-  if (data !== null || pinsdata !== null) {
-    return { data, pinsdata };
+  if (error != null) {
+    console.log(error);
+  }
+
+  if (data !== null) {
+    return { data };
   }
 };
 
-export const getPlans = async () => {
+// export const getPlans = async () => {
+//   const { data, error } = await supabase.from('plans').select();
+//   if (error != null) {
+//     console.log('에러 발생', error);
+//   }
+//   return data;
+// };
+
+export const getPlans = async (): Promise<PlanType[] | null> => {
   const { data, error } = await supabase.from('plans').select();
-  if (error != null) {
-    console.log('에러 발생', error);
+
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
   }
-  return data;
+  if (data !== null) {
+    const plans: PlanType[] = data as PlanType[];
+    return plans;
+  }
+
+  return null;
 };

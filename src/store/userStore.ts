@@ -20,6 +20,7 @@ export const userStore = create<UserStore>((set, get) => {
   const authObserver = () => {
     supabase.auth.onAuthStateChange((event, session) => {
       const currentUser = get().user;
+      console.log(session)
       if (session !== null && currentUser === null) {
         const {
           id,

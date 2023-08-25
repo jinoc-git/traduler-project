@@ -17,16 +17,16 @@ const Header = () => {
     resetUser();
     navigate('/');
   };
-
+  
   useEffect(() => {
     authObserver();
   }, [user]);
 
   return (
-    <header className="flex justify-between">
+    <header className="flex justify-between fixed w-screen h-[52px] p-3">
       <h1
         onClick={() => {
-          navigate('/');
+          navigate('/main');
         }}
       >
         LOGO
@@ -38,6 +38,7 @@ const Header = () => {
           onClick={() => {
             navigate('/signup');
           }}
+          className="w-[147px]"
         >
           회원가입
         </button>
@@ -46,6 +47,7 @@ const Header = () => {
           onClick={() => {
             navigate('/signin');
           }}
+          className="w-[147px]"
         >
           로그인
         </button>

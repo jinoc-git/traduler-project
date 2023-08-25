@@ -73,7 +73,7 @@ const AddPlan = () => {
       💰예산 금액
       <input
         className="text-2xl font-bold text-blue-500"
-        type="text"
+        type="number"
         value={totalCost}
         onChange={(event) => {
           setTotalCost(event.target.value);

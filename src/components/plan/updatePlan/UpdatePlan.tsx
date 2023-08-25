@@ -28,6 +28,7 @@ const UpdatePlan = () => {
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: plan, isLoading } = useQuery(
     ['plan'],
+    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPlan(planId),
   );
   const { data: pin } = useQuery(

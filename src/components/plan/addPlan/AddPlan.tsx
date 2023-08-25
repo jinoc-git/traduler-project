@@ -27,9 +27,17 @@ const AddPlan = () => {
     formState: { errors, isSubmitting },
   } = useForm<InputType>();
 
+  const [totalCost, setTotalCost] = useState('0');
+
   const submitPlan = async () => {
     if (userId !== null) {
-      await addPlan(userId as string, watch('title') as string, 0, pins, dates);
+      await addPlan(
+        userId as string,
+        watch('title') as string,
+        parseInt(totalCost, 10),
+        pins,
+        dates,
+      );
       navigate('/');
       resetDates();
     }
@@ -42,6 +50,11 @@ const AddPlan = () => {
   const handlePreviousPage = () => {
     setCurrentPage(currentPage - 1);
   };
+
+  // 세 자릿 수마다 쉼표 추가
+  // const formatCommas = (number: number) => {
+  //   return number.toLocaleString();
+  // };
 
   return (
     <>
@@ -58,6 +71,24 @@ const AddPlan = () => {
         })}
       />
       <p>{errors?.title?.message}</p>
+      💰예산 금액
+      <input
+        className="text-2xl font-bold text-blue-500"
+        type="text"
+        value={totalCost}
+        onChange={(event) => {
+          setTotalCost(event.target.value);
+        }}
+      />
+      <form onSubmit={handleSubmit(submitPlan)}>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="p-5 mt-10 bg-slate-500"
+        >
+          저장하기
+        </button>
+      </form>
       <p>링크 공유하기</p>
       <p>친구 초대하기</p>
       <PostPlan />
@@ -90,15 +121,6 @@ const AddPlan = () => {
         setPins={setPins}
         setCurrentPage={setCurrentPage}
       />
-      <form onSubmit={handleSubmit(submitPlan)}>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="p-5 mt-10 bg-slate-500"
-        >
-          저장하기
-        </button>
-      </form>
     </>
   );
 };

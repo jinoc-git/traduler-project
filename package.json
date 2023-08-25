@@ -16,6 +16,7 @@
     "@types/react-datepicker": "^4.15.0",
     "@types/react-dom": "^18.0.0",
     "axios": "^1.4.0",
+    "browser-image-compression": "^2.0.2",
     "date-fns": "^2.30.0",
     "eslint": "^8.0.1",
     "eslint-plugin-prettier": "^5.0.0",

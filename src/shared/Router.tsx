@@ -6,6 +6,7 @@ import AddPlan from '@components/plan/addPlan/AddPlan';
 import AddPhoto from '@pages/AddPhoto';
 import Ending from '@pages/Ending';
 import Main from '@pages/Main';
+import NotFound from '@pages/NotFound';
 import Plan from '@pages/Plan';
 import SignIn from '@pages/SignIn';
 import SignUp from '@pages/SignUp';
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/addPlan" element={<AddPlan />} />
         <Route path="/ending" element={<Ending />} />
         <Route path="/addPhoto" element={<AddPhoto />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

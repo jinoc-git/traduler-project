@@ -21,7 +21,7 @@ const SignUpForm = () => {
   } = useForm<UserSignUpForm>({ mode: 'onChange' });
 
   const { nicknameValidator, emailValidator, passwordValidator } =
-  useFormValidator();
+    useFormValidator();
 
   const onSubmitSignUpHandler: SubmitHandler<UserSignUpForm> = async (data) => {
     const { email, password, nickname } = data;
@@ -36,50 +36,57 @@ const SignUpForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitSignUpHandler)}>
-      <label htmlFor="nickname">닉네임</label>
-      <input
-        type="text"
-        id="nickname"
-        {...register('nickname', nicknameValidator)}
-        className="border"
-      />
-      {errors.nickname !== null && <p>{errors?.nickname?.message}</p>}
+    <main className="flex justify-center items-center w-screen h-screen">
+      <form
+        onSubmit={handleSubmit(onSubmitSignUpHandler)}
+        className="w-[450px] border "
+      >
+        <label htmlFor="nickname">닉네임</label>
+        <input
+          type="text"
+          id="nickname"
+          {...register('nickname', nicknameValidator)}
+          className="border"
+        />
+        {errors.nickname !== null && <p>{errors?.nickname?.message}</p>}
 
-      <label htmlFor="email">이메일</label>
-      <input
-        type="text"
-        id="email"
-        {...register('email', emailValidator)}
-        className="border"
-      />
-      {errors.email !== null && <p>{errors?.email?.message}</p>}
+        <label htmlFor="email">이메일</label>
+        <input
+          type="text"
+          id="email"
+          {...register('email', emailValidator)}
+          className="border"
+        />
+        {errors.email !== null && <p>{errors?.email?.message}</p>}
 
-      <label htmlFor="password">비밀번호</label>
-      <input
-        type="text"
-        id="password"
-        {...register('password', passwordValidator)}
-        className="border"
-      />
-      {errors.password !== null && <p>{errors?.password?.message}</p>}
+        <label htmlFor="password">비밀번호</label>
+        <input
+          type="text"
+          id="password"
+          {...register('password', passwordValidator)}
+          className="border"
+        />
+        {errors.password !== null && <p>{errors?.password?.message}</p>}
 
-      <label htmlFor="confirmPassword">비밀번호 확인</label>
-      <input
-        type="text"
-        id="confirmPassword"
-        {...register('confirmPassword', {
-          required: true,
-          validate: (v, fv) => fv.password === v,
-        })}
-        className="border"
-      />
-      {errors.confirmPassword !== undefined && <p>비밀번호를 확인해 주세요</p>}
+        <label htmlFor="confirmPassword">비밀번호 확인</label>
+        <input
+          type="text"
+          id="confirmPassword"
+          {...register('confirmPassword', {
+            required: true,
+            validate: (v, fv) => fv.password === v,
+          })}
+          className="border"
+        />
+        {errors.confirmPassword !== undefined && (
+          <p>비밀번호를 확인해 주세요</p>
+        )}
 
-      <button disabled={isSubmitting || !isValid} className="border rounded">
-        회원가입
-      </button>
-    </form>
+        <button disabled={isSubmitting || !isValid} className="border rounded">
+          회원가입
+        </button>
+      </form>
+    </main>
   );
 };
 

@@ -55,6 +55,21 @@ export const signInWithSB = async (email: string, password: string) => {
   }
 };
 
+export const signInWithGoogle = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      skipBrowserRedirect: true,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
+    },
+  });
+
+  console.log(data, error);
+};
+
 export const signOutForSB = async () => {
   await supabase.auth.signOut();
 };
@@ -77,7 +92,9 @@ export const uploadProfileImg = async (avatarFile: File, email: string) => {
 };
 
 export const updateUserProfileImage = async (path: string, userId: string) => {
-  const URL = `${process.env.REACT_APP_SB_STORAGE_URL as string}/${path}`;
+  const URL = `${
+    process.env.REACT_APP_SB_STORAGE_URL as string
+  }/profile_img/${path}`;
   const { data } = await supabase.auth.updateUser({
     data: { profileImg: URL },
   });
@@ -118,7 +135,7 @@ export const deleteUserProfileImage = async (userId: string) => {
   }
 
   if (data !== null) {
-    return data.user
+    return data.user;
   }
 };
 

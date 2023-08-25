@@ -114,6 +114,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
+          pictures: string[];
           plan_state: 'planning' | 'traveling' | 'end';
           title: string;
           total_cost: number;
@@ -124,6 +125,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
+          pictures?: string[];
           plan_state: 'planning' | 'traveling' | 'end';
           title: string;
           total_cost: number;
@@ -134,6 +136,7 @@ export interface Database {
           dates?: string[];
           id?: string;
           isDeleted?: boolean;
+          pictures?: string[];
           plan_state?: 'planning' | 'traveling' | 'end';
           title?: string;
           total_cost?: number;

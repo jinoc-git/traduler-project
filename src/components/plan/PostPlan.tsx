@@ -1,31 +1,32 @@
 /* eslint-disable no-unmodified-loop-condition */
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-// import { getPlan } from '@api/plans';
+import { getPlan } from '@api/plans';
 import Calendar from '@components/plan/Calendar';
 import { datesStore } from '@store/datesStore';
-// import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface PlanFormData {
   date: string | null;
 }
 
 const PostPlan: React.FC = () => {
-  // const today = new Date();
-  // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
-  // const { data: plan } = useQuery(['plan'], async () => await getPlan(planId));
-  // const dataDates: string[] = plan?.[0].dates as string[];
+  const { id } = useParams();
+  const planId: string = id as string;
+  const { data: plan } = useQuery(['plan'], async () => await getPlan(planId));
+  const dataDates: string[] = plan?.[0].dates as string[];
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const { setDates } = datesStore();
 
-  // useEffect(() => {
-  //   if (plan != null) {
-  //     console.log(dataDates);
-  //     setStartDate(new Date(dataDates[0]));
-  //     setEndDate(new Date(dataDates[dataDates.length - 1]));
-  //   }
-  // }, [plan]);
+  useEffect(() => {
+    if (plan != null) {
+      console.log(dataDates);
+      setStartDate(new Date(dataDates[0]));
+      setEndDate(new Date(dataDates[dataDates.length - 1]));
+    }
+  }, [plan]);
 
   const StartDateChangeHandler = (date: Date | null) => {
     setStartDate(date);

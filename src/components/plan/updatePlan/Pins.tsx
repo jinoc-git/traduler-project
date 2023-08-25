@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
@@ -16,7 +17,9 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-  const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
+  const { id } = useParams();
+  const planId: string = id as string;
+  // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
+import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
 import { getPlan } from '@api/plans';
@@ -14,7 +15,8 @@ declare global {
 }
 
 const UpdatePlan = () => {
-  const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
+  const { id } = useParams();
+  const planId: string = id as string;
   const [dates, setDates] = useState<string[]>();
   const [currentPage, setCurrentPage] = useState(0);
   const handleNextPage = () => {
@@ -35,6 +37,7 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (pin !== undefined) {
+      console.log(pin?.[0].contents);
       setPinArr(pin?.[0].contents as []);
     }
   }, [pin]);

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
@@ -40,7 +41,8 @@ const MapModal = ({
       placeName: pin !== null ? (pin.placeName as string) : '',
     },
   });
-  const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
+  const { id } = useParams();
+  const planId: string = id as string;
 
   // 장소 검색 버튼
   const onSubmit: SubmitHandler<InputType> = (data) => {};

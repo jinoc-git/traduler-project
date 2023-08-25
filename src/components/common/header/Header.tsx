@@ -7,7 +7,8 @@ import { userStore } from '@store/userStore';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
+  console.log(hash)
 
   const authObserver = userStore((state) => state.authObserver);
   const resetUser = userStore((state) => state.resetUser);

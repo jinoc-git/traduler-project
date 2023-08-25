@@ -158,7 +158,6 @@ export interface Database {
           email: string;
           id: string;
           nickname: string;
-          password: string;
         };
         Insert: {
           avatar_url?: string | null
@@ -166,7 +165,6 @@ export interface Database {
           email: string;
           id: string;
           nickname: string;
-          password: string;
         };
         Update: {
           avatar_url?: string | null
@@ -174,7 +172,6 @@ export interface Database {
           email?: string;
           id?: string;
           nickname?: string;
-          password?: string;
         };
 
         Relationships: [

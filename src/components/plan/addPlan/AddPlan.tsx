@@ -85,10 +85,10 @@ const AddPlan = () => {
         )}
       </div>
       <AddPlanContents
-        dates={dates}
         currentPage={currentPage}
         pins={pins}
         setPins={setPins}
+        setCurrentPage={setCurrentPage}
       />
       <form onSubmit={handleSubmit(submitPlan)}>
         <button

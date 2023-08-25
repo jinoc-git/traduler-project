@@ -29,9 +29,6 @@ const PostPlan: React.FC = () => {
     lastDate.setDate(lastDate.getDate() + 1);
 
     while (currentDate <= lastDate) {
-      console.log('startDate : ', startDate);
-      console.log('currentDate : ', currentDate);
-      console.log('lastDate : ', lastDate);
       dates.push(currentDate.toISOString().slice(0, 10));
       currentDate.setDate(currentDate.getDate() + 1);
     }
@@ -40,7 +37,7 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (startDate != null && endDate != null) {
-      console.log('allPlanDates', allPlanDates(startDate, endDate));
+      // console.log('allPlanDates', allPlanDates(startDate, endDate));
       const dates = allPlanDates(startDate, endDate);
       setDates(dates);
     }

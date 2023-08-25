@@ -23,6 +23,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
+    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPin(planId, currentPage),
   );
 

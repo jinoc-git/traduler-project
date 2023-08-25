@@ -14,6 +14,7 @@ export interface PlanFormData {
 const PostPlan: React.FC = () => {
   const { id } = useParams();
   const planId: string = id as string;
+  // eslint-disable-next-line @typescript-eslint/return-await
   const { data: plan } = useQuery(['plan'], async () => await getPlan(planId));
   const dataDates: string[] = plan?.[0].dates as string[];
   const [startDate, setStartDate] = useState<Date | null>(null);

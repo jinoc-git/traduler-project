@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@components/common/header/Header';
-// import SideBar from '@components/common/sideBar/SideBar';
+import SideBar from '@components/common/sideBar/SideBar';
 import AddPlan from '@components/plan/addPlan/AddPlan';
-import Ending from '@pages/Ending';
 import AddPhoto from '@pages/AddPhoto';
+import Ending from '@pages/Ending';
 import Main from '@pages/Main';
 import Plan from '@pages/Plan';
 import SignIn from '@pages/SignIn';
@@ -14,7 +14,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Header />
-      {/* <SideBar /> */}
+      <SideBar />
       <Routes>
         <Route path="/main" element={<Main />} />
         <Route path="/signin" element={<SignIn />} />

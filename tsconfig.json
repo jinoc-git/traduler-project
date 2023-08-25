@@ -26,7 +26,8 @@
       "@shared/*": ["./shared/*"],
       "@store/*": ["./store/*"],
       "@utils/*": ["./utils/*"]
-    }
+    },
+    "types": ["kakao.maps.d.ts"]
   },
   "include": ["src", "craco.config.js"]
 }

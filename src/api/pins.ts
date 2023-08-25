@@ -8,28 +8,39 @@ export interface PinContentsType {
   placeName?: string;
 }
 
-export const getPins = async () => {
-  const date = '2023-08-21';
-  const planId = '39022bd5-4c1e-4ee0-bb5b-b802baa9bbaf';
+export interface AddPinType {
+  date: string;
+  planId: string;
+  newContents: PinContentsType;
+}
 
-  const { data, error } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
+export const getPin = async (planId: string, currentpage: number) => {
+  const { data: dates, error: plansError } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
 
-  if (error != null) {
-    console.log(error);
+  if (dates !== null) {
+    const { data, error } = await supabase
+      .from('pins')
+      .select('contents')
+      .match({ plan_id: planId, date: dates[0].dates[currentpage] });
+    if (error !== null) {
+      console.log(error);
+    }
+    return data;
   }
-
-  if (data !== null) {
-    return data[0].contents;
+  if (plansError !== null) {
+    console.log(plansError);
   }
 };
 
-export const addPin = async (newContents: PinContentsType) => {
-  const date = '2023-08-21';
-  const planId = '39022bd5-4c1e-4ee0-bb5b-b802baa9bbaf';
-
+export const addPin = async (
+  date: string,
+  planId: string,
+  newContents: PinContentsType,
+) => {
+  console.log(date);
   const { data: oldContents, error: olderror } = await supabase
     .from('pins')
     .select('contents')
@@ -54,4 +65,58 @@ export const addPin = async (newContents: PinContentsType) => {
     console.log('olderror', olderror);
     console.log(error);
   }
+};
+
+export const deletePin = async (
+  date: string,
+  planId: string,
+  deletedPin: PinContentsType[],
+) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: deletedPin as Json[] })
+    .match({ plan_id: planId, date });
+
+  if (error != null) {
+    console.log(error);
+  }
+
+  return data;
+};
+
+export const updatePin = async (
+  idx: number,
+  date: string,
+  planId: string,
+  newContents: PinContentsType,
+) => {
+  const { data: oldContents, error: olderror } = await supabase
+    .from('pins')
+    .select('contents')
+    .match({ plan_id: planId, date });
+
+  let Arr: Array<Json | PinContentsType> = [];
+  if (oldContents != null) {
+    Arr = oldContents[0].contents.map((content, i) => {
+      if (i === idx) {
+        console.log(content);
+        console.log(newContents);
+        return newContents;
+      }
+      return content;
+    });
+  }
+
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: Arr as Json[] })
+    .match({ plan_id: planId, date })
+    .select();
+
+  if (error != null || olderror != null) {
+    console.log('olderror', olderror);
+    console.log(error);
+  }
+
+  return data;
 };

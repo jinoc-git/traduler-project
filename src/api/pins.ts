@@ -66,3 +66,57 @@ export const addPin = async (
     console.log(error);
   }
 };
+
+export const deletePin = async (
+  date: string,
+  planId: string,
+  deletedPin: PinContentsType[],
+) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: deletedPin as Json[] })
+    .match({ plan_id: planId, date });
+
+  if (error != null) {
+    console.log(error);
+  }
+
+  return data;
+};
+
+export const updatePin = async (
+  idx: number,
+  date: string,
+  planId: string,
+  newContents: PinContentsType,
+) => {
+  const { data: oldContents, error: olderror } = await supabase
+    .from('pins')
+    .select('contents')
+    .match({ plan_id: planId, date });
+
+  let Arr: Array<Json | PinContentsType> = [];
+  if (oldContents != null) {
+    Arr = oldContents[0].contents.map((content, i) => {
+      if (i === idx) {
+        console.log(content);
+        console.log(newContents);
+        return newContents;
+      }
+      return content;
+    });
+  }
+
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: Arr as Json[] })
+    .match({ plan_id: planId, date })
+    .select();
+
+  if (error != null || olderror != null) {
+    console.log('olderror', olderror);
+    console.log(error);
+  }
+
+  return data;
+};

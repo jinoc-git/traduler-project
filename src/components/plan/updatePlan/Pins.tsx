@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import { updatePinStore } from '@store/updatePinStore';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import MapModal from './MapModal';
 
@@ -12,14 +16,48 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-  // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
-  // const { data: pins } = useQuery(['pins'], fetchPinsData);
-  // console.log(pins);
+  const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
+  const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
+  const { data: pin } = useQuery(
+    ['pin', planId, currentPage],
+    async () => await getPin(planId, currentPage),
+  );
+
+  const { updateClick } = updatePinStore();
+  const handleUpdate = (idx: number) => {
+    const updatePin = pinArr[idx];
+    updateClick(updatePin, idx);
+    openModal();
+  };
+  const handleDelete = (idx: number) => {
+    const deletedPin = pinArr.filter((pin, i) => i !== idx);
+    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
+  };
+
+  const queryClient = useQueryClient();
+  const deletemutation = useMutation({
+    mutationFn: async ([date, planId, deletedPin]: [
+      string,
+      string,
+      PinContentsType[],
+    ]) => {
+      await deletePin(date, planId, deletedPin);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['pin'] });
+    },
+  });
+
+  useEffect(() => {
+    if (pin !== undefined) {
+      setPinArr(pin?.[0].contents as []);
+    }
+  }, [pin]);
 
   return (
     <>
       <div>
-        {/* {pins?.[currentPage]?.contents.map((pin, idx: number) => {
+        {pinArr.map((pin, idx: number) => {
           return (
             <div key={idx}>
               <p>{idx + 1}</p>
@@ -28,11 +66,25 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                   typeof pin === 'object' &&
                   'placeName' in pin && <span>{pin.placeName as string}</span>}
               </p>
-              <button className="m-4 bg-slate-400">수정</button>
-              <button className="m-4 bg-slate-400">삭제</button>
+              <button
+                className="m-4 bg-slate-400"
+                onClick={() => {
+                  handleUpdate(idx);
+                }}
+              >
+                수정
+              </button>
+              <button
+                className="m-4 bg-slate-400"
+                onClick={() => {
+                  handleDelete(idx);
+                }}
+              >
+                삭제
+              </button>
             </div>
           );
-        })} */}
+        })}
       </div>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기

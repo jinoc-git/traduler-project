@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType, getPin } from '@api/pins';
 import { getPlan } from '@api/plans';
@@ -42,9 +42,6 @@ const UpdatePlan = () => {
     }
   }, [pin]);
 
-  console.log('date', dates?.[currentPage]);
-  console.log('pin', pin);
-
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
       setDates(plan[0].dates);
@@ -55,7 +52,6 @@ const UpdatePlan = () => {
     return <div className="w-full h-[500px] bg-slate-300">로딩중...</div>;
   }
 
-  console.log('pinArr', pinArr);
   return (
     <div>
       <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
@@ -86,6 +82,7 @@ const UpdatePlan = () => {
                 : 126.978652258309,
           }}
           style={{ width: '100vw', height: '500px' }}
+          level={3}
         >
           {pinArr?.map((pin, idx) => {
             return (
@@ -99,6 +96,15 @@ const UpdatePlan = () => {
               </div>
             );
           })}
+          <Polyline
+            path={pinArr.map((pin) => {
+              return { lat: pin.lat as number, lng: pin.lng as number };
+            })}
+            strokeWeight={5} // 선의 두께 입니다
+            strokeColor={'#FFAE00'} // 선의 색깔입니다
+            strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+            strokeStyle={'solid'} // 선의 스타일입니다
+          />
         </Map>
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />

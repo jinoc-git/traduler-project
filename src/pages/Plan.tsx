@@ -1,8 +1,7 @@
 import React from 'react';
 
 import PostPlan from '@components/plan/PostPlan';
-import Map from '@components/plan/updatePlan/Map';
-import Pins from '@components/plan/updatePlan/Pins';
+import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 
 const Plan = () => {
   return (
@@ -10,8 +9,7 @@ const Plan = () => {
       <PostPlan />
       <div>날짜 선택하기</div>
       <div>친구 초대하기</div>
-      <Map />
-      <Pins />
+      <UpdatePlan />
     </div>
   );
 };

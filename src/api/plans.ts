@@ -22,7 +22,9 @@ export const addPlan = async (
     dates,
     plan_state: 'planning',
   };
+
   const { data, error } = await supabase.from('plans').insert(plan);
+
   for (let i = 0; i < dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,
@@ -43,15 +45,18 @@ export const addPlan = async (
   }
 };
 
-// export const getPlans = async () => {
-//   const { data, error } = await supabase.from('plans').select();
-//   if (error != null) {
-//     console.log('에러 발생', error);
-//   }
-//   return data;
-// };
+export const getPlan = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('plans')
+    .select()
+    .eq('id', planId);
+  if (error != null) {
+    console.log('에러 발생', error);
+  }
+  return data;
+};
 
-const getPlans = async (): Promise<PlanType[] | null> => {
+export const getPlans = async (): Promise<PlanType[] | null> => {
   const { data, error } = await supabase.from('plans').select();
 
   if (error !== null) {
@@ -66,4 +71,21 @@ const getPlans = async (): Promise<PlanType[] | null> => {
   return null;
 };
 
-export default getPlans;
+export const getTotalCost = async (userId: string): Promise<number | null> => {
+  const { data, error } = await supabase
+    .from('plans')
+    .select('total_cost')
+    .eq('users_id', userId);
+
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
+  }
+  if (data !== null && data.length > 0) {
+    const totalCost = data[0].total_cost;
+    console.log('api통신', data);
+    return totalCost;
+  }
+
+  return null;
+};

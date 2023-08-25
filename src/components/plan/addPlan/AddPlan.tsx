@@ -17,7 +17,7 @@ interface InputType {
 const AddPlan = () => {
   const user = userStore((state) => state.user);
   const userId = user?.id;
-  const { dates } = datesStore();
+  const { dates, resetDates } = datesStore();
   const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
   const {
@@ -39,6 +39,7 @@ const AddPlan = () => {
         dates,
       );
       navigate('/');
+      resetDates();
     }
   };
 
@@ -115,10 +116,10 @@ const AddPlan = () => {
         )}
       </div>
       <AddPlanContents
-        dates={dates}
         currentPage={currentPage}
         pins={pins}
         setPins={setPins}
+        setCurrentPage={setCurrentPage}
       />
     </>
   );

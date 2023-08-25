@@ -153,7 +153,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         console.log('장소추가', newContents);
         return state.map((item, i) => {
           if (i === currentPage) {
-            console.log('장소추가', currentPage);
             return [...item, newContents];
           }
           return item;

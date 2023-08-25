@@ -80,13 +80,13 @@ const Card: React.FC<CardProps> = ({ data }) => {
           const koreanEndDay = daysInKorean[endDayOfWeek];
 
           return (
-            <div
-              key={plan.id}
-              onClick={() => {
-                navigate(`/plan/${plan.id}`);
-              }}
-            >
-              <div className="flex mb-4 border-2 w-[1000px] h-[200px]">
+            <div key={plan.id}>
+              <div
+                className="flex mb-4 border-2 w-[1000px] h-[200px]"
+                onClick={() => {
+                  navigate(`/plan/${plan.id}`);
+                }}
+              >
                 <div className="w-1/5 h-12">
                   {plan.plan_state === 'planning'
                     ? '예정된 여행'

@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { getPlans } from '@api/plans';
+import { useSidebarStore } from '@store/sidebarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
 
 const SideBar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
+  const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
+  // const toggleMenu = useSidebarStore((state) => state.toggleMenu);
+  // const { isMenuOpen } = useSidebarStore();
+  // const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
   // supabase데이터 뿌려주기
   const { data, isLoading, isError } = useQuery<PlanType[] | null>(
     ['plans'],
@@ -14,9 +18,9 @@ const SideBar: React.FC = () => {
 
   // console.log('data=>', data);
 
-  const toggleMenu: () => void = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const toggleMenu: () => void = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
 
   const endPlans = data?.filter((plan) => plan.plan_state === 'end');
 
@@ -35,16 +39,16 @@ const SideBar: React.FC = () => {
   return (
     <>
       <div
-        className={` h-[100vh] w-[250px] bg-white transition-transform duration-300 ease-in-out border-r-10 ${
-          isMenuOpen ? 'transform translate-x-0' : ''
+        className={`fixed mt-[60px] h-[100vh] w-[250px] bg-gray transition-transform duration-300 ease-in-out border-r-10 ${
+          isMenuOpen ? 'transform translate-x-0' : '-translate-x-[220px]'
         }`}
-        style={{ zIndex: 20, top: 0, left: 0 }}
+        // style={{ zIndex: 20, top: 0, left: 0 }}
       >
-        <div className="text-2xl mb-4 flex items-center pr-4">
+        {/* <div className="text-2xl mb-4 flex items-center pr-4">
           <div className="cursor-pointer " onClick={toggleMenu}>
             ☰
           </div>
-        </div>
+        </div> */}
         {isMenuOpen && (
           <div>
             <div>

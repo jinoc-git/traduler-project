@@ -7,7 +7,6 @@ const Plan = () => {
   return (
     <div>
       <PostPlan />
-      <div>날짜 선택하기</div>
       <div>친구 초대하기</div>
       <UpdatePlan />
     </div>

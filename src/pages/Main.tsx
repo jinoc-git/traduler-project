@@ -17,7 +17,7 @@ const Main = () => {
   return (
     <main
       className={`transition-margin duration-300 ease-in-out ${
-        isMenuOpen ? 'ml-[250px]' : 'ml-0'
+        isMenuOpen ? 'ml-[250px]' : 'ml-[30px]'
       }`}
     >
       <div className="absolute top-0 w-screen h-[363px] bg-[#393939] z-[-1]"></div>

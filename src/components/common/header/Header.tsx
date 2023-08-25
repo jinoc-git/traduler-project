@@ -30,13 +30,13 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between fixed w-screen p-3 ${
+      className={`flex justify-between fixed w-screen p-3 ml-1 ${
         isMenuOpen ? '' : 'bg-opacity-70'
       }`}
     >
-      <div className=" flex items-center">
+      <div className=" flex items-center ">
         <div
-          className={`cursor-pointer ${isMenuOpen ? '' : 'block'}`}
+          className={`cursor-pointer  bg-gray-200 ${isMenuOpen ? '' : 'block'}`}
           onClick={toggleMenu} // Toggle the menu when clicking the icon
         >
           ☰

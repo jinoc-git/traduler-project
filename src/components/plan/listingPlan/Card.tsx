@@ -82,7 +82,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
           return (
             <div key={plan.id}>
               <div
-                className="flex mb-4 border-2 w-[1000px] h-[200px]"
+                className="flex mb-4 border-2 w-[998px] h-[200px]"
                 onClick={() => {
                   navigate(`/plan/${plan.id}`);
                 }}

@@ -38,7 +38,7 @@ const SideBar: React.FC = () => {
         className={` h-[100vh] w-[250px] bg-white transition-transform duration-300 ease-in-out border-r-10 ${
           isMenuOpen ? 'transform translate-x-0' : ''
         }`}
-        // style={{ top: 100, left: 0 }}
+        style={{ zIndex: 20, top: 0, left: 0 }}
       >
         <div className="text-2xl mb-4 flex items-center pr-4">
           <div className="cursor-pointer " onClick={toggleMenu}>

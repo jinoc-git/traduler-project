@@ -46,14 +46,16 @@ export const addPlan = async (
 };
 
 export const getPlan = async (planId: string) => {
-  const { data, error } = await supabase
-    .from('plans')
-    .select()
-    .eq('id', planId);
-  if (error != null) {
-    console.log('에러 발생', error);
+  if (planId !== undefined) {
+    const { data, error } = await supabase
+      .from('plans')
+      .select()
+      .eq('id', planId);
+    if (error != null) {
+      console.log('에러 발생', error);
+    }
+    return data;
   }
-  return data;
 };
 
 export const getPlans = async (): Promise<PlanType[] | null> => {
@@ -88,4 +90,15 @@ export const getTotalCost = async (userId: string): Promise<number | null> => {
   }
 
   return null;
+};
+
+export const updateDatePlan = async (planId: string, dates: string[]) => {
+  const { error } = await supabase
+    .from('plans')
+    .update({ dates })
+    .eq('id', planId);
+
+  if (error !== null) {
+    console.log(error);
+  }
 };

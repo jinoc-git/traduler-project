@@ -44,7 +44,9 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
+      // plan을 불러왔을때
       setDates(plan[0].dates);
+      setCurrentPage(0);
     }
   }, [plan]);
 

@@ -153,7 +153,7 @@ export interface Database {
       };
       users: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string | null;
           created_at: string;
           email: string;
           id: string;
@@ -161,7 +161,7 @@ export interface Database {
           password: string;
         };
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string | null;
           created_at?: string;
           email: string;
           id: string;
@@ -169,7 +169,7 @@ export interface Database {
           password: string;
         };
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string | null;
           created_at?: string;
           email?: string;
           id?: string;
@@ -203,5 +203,6 @@ export interface Database {
 }
 
 export type PinType = Database['public']['Tables']['pins']['Update'];
+export type PinInsertType = Database['public']['Tables']['pins']['Insert'];
 export type UserType = Database['public']['Tables']['users']['Row'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];

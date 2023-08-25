@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -56,6 +56,10 @@ const AddPlan = () => {
   //   return number.toLocaleString();
   // };
 
+  useEffect(() => {
+    resetDates();
+  }, []);
+
   return (
     <>
       <input
@@ -91,7 +95,7 @@ const AddPlan = () => {
       </form>
       <p>링크 공유하기</p>
       <p>친구 초대하기</p>
-      <PostPlan />
+      <PostPlan state={'addPlan'} />
       <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
         {dates.length !== 0 ? (
           <>

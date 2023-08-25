@@ -1,4 +1,4 @@
-import { type Json } from 'types/supabase';
+import { type Json, type PinInsertType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
@@ -119,4 +119,12 @@ export const updatePin = async (
   }
 
   return data;
+};
+
+export const newDatePin = async (newPin: PinInsertType) => {
+  const { error } = await supabase.from('pins').insert(newPin);
+
+  if (error !== null) {
+    console.log(error);
+  }
 };

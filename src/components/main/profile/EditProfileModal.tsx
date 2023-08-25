@@ -40,7 +40,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const preview = watch('avatar');
   const nickname = watch('nickname');
-  const blockSubmitBtn = isRemoveAvatar
+
+
+  const shouldBlockSubmitBtn = isRemoveAvatar
     ? false
     : (preview?.length === 0 && nickname === '') ||
       (nickname !== '' && isDuplicate);
@@ -78,7 +80,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     // 프로필 사진 변경
     if (data.avatar[0]) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
-
+      console.log(res);
       if (res) {
         const { id, email, nickname, profileImg } = res;
         setUser({
@@ -207,7 +209,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             사진 제거
           </button>
           <button
-            disabled={blockSubmitBtn}
+            disabled={shouldBlockSubmitBtn}
             type="submit"
             className="bg-slate-400"
           >

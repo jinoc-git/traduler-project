@@ -30,16 +30,37 @@ export const signUpWithSB = async (
   }
 
   const id = data.user?.id;
-  const { error: usersError } = await supabase.from('users').insert({
+  const user = {
     id: id as string,
     email,
-    password,
+    nickname,
+  };
+
+  const res = await insertUser(user);
+
+  const isUsersTableError = Boolean(res);
+  if (isUsersTableError) {
+    return res;
+  }
+};
+
+export interface InsertUserType {
+  id: string;
+  email: string;
+  nickname: string;
+}
+
+export const insertUser = async (user: InsertUserType) => {
+  const { id, email, nickname } = user;
+  const { error } = await supabase.from('users').insert({
+    id,
+    email,
     nickname,
   });
 
-  const isUsersError = Boolean(usersError);
-  if (isUsersError) {
-    return usersError;
+  const isUsersTableError = Boolean(error);
+  if (isUsersTableError) {
+    return error;
   }
 };
 
@@ -56,18 +77,16 @@ export const signInWithSB = async (email: string, password: string) => {
 };
 
 export const signInWithGoogle = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      // skipBrowserRedirect: true,
+      redirectTo: 'http://localhost:3000/welcome',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
       },
     },
   });
-
-  console.log(data, error);
 };
 
 export const signOutForSB = async () => {

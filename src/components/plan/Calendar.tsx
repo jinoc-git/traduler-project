@@ -19,7 +19,7 @@ const Calendar: React.FC<CalendarProps> = ({
   StartDateChangeHandler,
   EndDateChangeHandler,
 }) => {
-  const today = new Date();
+  // const today = new Date();
 
   return (
     <>
@@ -36,7 +36,6 @@ const Calendar: React.FC<CalendarProps> = ({
         selectsStart
         startDate={startDate}
         endDate={endDate}
-        minDate={today}
         locale="ko"
         className="react-datepicker"
       />

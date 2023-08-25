@@ -49,14 +49,7 @@ const AddPlanContents = ({
   useEffect(() => {
     // pins에 내용이 없을 떄
     if (pins.length === 0) {
-      // if (dates.length >= currentPage) {
-      //   console.log(dates.length);
-      //   console.log(currentPage);
-      //   console.log('dates', dates);
-      //   console.log('pins', pins);
       setCurrentPage(() => 0);
-      //   return;
-      // }
       setPins(() => {
         const newPins = [];
         for (let i = 0; i < dates.length; i++) {

@@ -14,9 +14,6 @@ declare global {
 }
 
 const UpdatePlan = () => {
-  // const mapRef = useRef<any>(null);
-  // const [markers, setMarkers] = useState<any[]>([]);
-  // const [linePaths, setLinePaths] = useState<any[]>([]);
   const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
   const [dates, setDates] = useState<string[]>();
   const [currentPage, setCurrentPage] = useState(0);

@@ -1,20 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 
 import imageCompression from 'browser-image-compression';
 
-interface Props {
-  data?: string[];
-  limit?: number;
-  handleFile: (val: File) => void;
-  handleImgSrcList?: (val: string[]) => void;
+interface TypePicture {
+  limit: number;
+  setUploadedFiles: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-const AddImg: React.FC<Props> = ({
-  data,
-  limit = 10,
-  handleFile,
-  handleImgSrcList,
-}) => {
+const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [imgSrcList, setImgSrcList] = useState<string[]>([]);
@@ -29,38 +22,31 @@ const AddImg: React.FC<Props> = ({
 
     if (file != null) {
       const compressedFile = await imageCompression(file, options);
-      const formData = new FormData();
-      formData.append('image', compressedFile);
-      handleFile(compressedFile);
+      const url = URL.createObjectURL(compressedFile);
 
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(compressedFile);
-      fileReader.onload = (e) => {
-        const result = e?.target?.result as string;
-        const updatedImgSrcList = [...imgSrcList, result];
-        setImgSrcList(updatedImgSrcList);
-        handleImgSrcList?.(updatedImgSrcList);
-      };
+      setImgSrcList((prev) => [...prev, url]);
+      setUploadedFiles((prev) => [...prev, compressedFile]);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    const result = JSON.parse(JSON.stringify(imgSrcList));
-    result.splice(index, 1);
-    setImgSrcList(result);
-    handleImgSrcList?.(result);
+    setImgSrcList((prev) => {
+      const removed = [...prev];
+      removed.splice(index, 1);
+      return removed;
+    });
+    setUploadedFiles((prev) => {
+      const removed = [...prev];
+      removed.splice(index, 1);
+      return removed;
+    });
   };
-
-  useEffect(() => {
-    if (data?.length != null) {
-      setImgSrcList(data);
-      handleImgSrcList?.(data);
-    }
-  }, [data?.length]);
 
   return (
     <div className="flex w-full overflow-auto scrollbar-hide">
       {imgSrcList?.map((el, i) => {
+        console.log('12312313', el);
+
         return (
           <div
             key={i}
@@ -85,7 +71,7 @@ const AddImg: React.FC<Props> = ({
       {limit !== imgSrcList?.length ? (
         <div>
           <input
-            accept="image/*"
+            accept=".jpg, .jpeg, .png"
             ref={fileRef}
             onChange={onFileChange}
             type="file"
@@ -105,4 +91,4 @@ const AddImg: React.FC<Props> = ({
   );
 };
 
-export default AddImg;
+export default AddPicture;

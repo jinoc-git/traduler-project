@@ -21,13 +21,13 @@ export const updateUserAvatar = async (
     const {
       id,
       email,
-      user_metadata: { nickname, profileImg },
+      user_metadata: { nickname, profileImg, name },
     } = res;
 
     return {
       id,
       email: email as string,
-      nickname,
+      nickname: nickname === undefined ? name : nickname,
       profileImg,
     };
   }

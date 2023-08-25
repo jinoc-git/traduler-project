@@ -1,9 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@components/common/header/Header';
-import SideBar from '@components/common/sideBar/SideBar';
+// import SideBar from '@components/common/sideBar/SideBar';
 import AddPlan from '@components/plan/addPlan/AddPlan';
 import AddPhoto from '@pages/AddPhoto';
+import AuthLoading from '@pages/AuthLoading';
 import Ending from '@pages/Ending';
 import Main from '@pages/Main';
 import Plan from '@pages/Plan';
@@ -14,7 +15,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Header />
-      <SideBar />
+      {/* <SideBar /> */}
       <Routes>
         <Route path="/main" element={<Main />} />
         <Route path="/signin" element={<SignIn />} />
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/addPlan" element={<AddPlan />} />
         <Route path="/ending" element={<Ending />} />
         <Route path="/addPhoto" element={<AddPhoto />} />
+        <Route path="/welcome" element={<AuthLoading />} />
       </Routes>
     </BrowserRouter>
   );

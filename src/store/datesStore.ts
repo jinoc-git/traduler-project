@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
 interface datesStoreType {
-  dates: string[] | null;
+  dates: string[];
   setDates: (data: string[]) => void;
   resetDates: () => void;
 }
 
 export const datesStore = create<datesStoreType>((set) => ({
-  dates: null,
+  dates: [],
   setDates: (data: string[]) => {
     set(() => ({
       dates: data,
@@ -15,7 +15,7 @@ export const datesStore = create<datesStoreType>((set) => ({
   },
   resetDates: () => {
     set(() => ({
-      dates: null,
+      dates: [],
     }));
   },
 }));

@@ -11,17 +11,18 @@ interface InputType {
 }
 
 interface PropsType {
-  setPins: React.Dispatch<React.SetStateAction<PinContentsType[]>>;
+  setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
   setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  currentPage: number;
 }
 
-const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
+const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   // 수정하기 눌렀을 때 해당 pin에 대한 정보를 store에서 불러옴
-  const { pin, resetPin } = updatePinStore();
+  const { pin, idx, resetPin } = updatePinStore();
 
   const [position, setPosition] = useState({
-    La: 37.566826004661,
-    Ma: 126.978652258309,
+    La: 0,
+    Ma: 0,
   });
   const [markers, setMarkers] = useState<any[]>([]);
   const mapRef = useRef<any>(null);
@@ -41,10 +42,6 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
       placeName: pin != null ? pin.placeName : '',
     },
   });
-
-  useEffect(() => {
-    getMap(' ');
-  }, []);
 
   const getMap = (data: string) => {
     if (mapRef.current === null) {
@@ -70,6 +67,13 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
       setMarkers((state) => [...state, marker]);
       setPosition({ La: pin.lng as number, Ma: pin.lat as number });
       getAddress(pin.lat as number, pin.lng as number);
+      window.kakao.maps.event.addListener(marker, 'dragend', function () {
+        setPosition({
+          La: marker.getPosition().Ma,
+          Ma: marker.getPosition().La,
+        });
+      });
+      marker.setDraggable(true);
     }
 
     function placesSearchCB(data: string | any[], status: any) {
@@ -129,9 +133,48 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
       placeName: data.placeName as string,
     };
 
-    setPins((state) => [...state, newContents]);
+    // 수정하기 시
+    if (pin !== null) {
+      setPins((state) => {
+        console.log('장소수정', newContents);
+        return state.map((item, i) => {
+          if (i === currentPage) {
+            console.log('장소수정', currentPage);
+            item[idx] = newContents;
+            return [...item];
+          }
+          return item;
+        });
+      });
+    }
+    // 장소추가 시
+    else {
+      setPins((state) => {
+        console.log('장소추가', newContents);
+        return state.map((item, i) => {
+          if (i === currentPage) {
+            console.log('장소추가', currentPage);
+            return [...item, newContents];
+          }
+          return item;
+        });
+      });
+    }
+
     setIsOpenModal(false);
+    resetPin();
   };
+
+  const disabledSubmit = () => {
+    if (position.La === 0 || position.Ma === 0) {
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    getMap(' ');
+  }, []);
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
@@ -189,8 +232,8 @@ const AddMapModal = ({ setPins, setIsOpenModal }: PropsType) => {
           <p>{errorsPlaceName?.placeName?.message}</p>
           <button
             type="submit"
-            disabled={isSubmittingPlaceName}
-            className="bg-slate-400"
+            disabled={isSubmittingPlaceName || disabledSubmit()}
+            className="bg-slate-400 disabled:bg-black"
           >
             저장
           </button>

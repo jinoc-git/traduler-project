@@ -30,10 +30,6 @@ const MapModal = ({ openModal }: { openModal: () => void }) => {
     },
   });
 
-  useEffect(() => {
-    getMap(' ', mapRef);
-  }, []);
-
   const getMap = (data: string, mapRef: any) => {
     if (mapRef.current === null) {
       const mapContainer = document.getElementById('mapModal');
@@ -99,6 +95,10 @@ const MapModal = ({ openModal }: { openModal: () => void }) => {
       void queryClient.invalidateQueries({ queryKey: ['pins'] });
     },
   });
+
+  useEffect(() => {
+    getMap(' ', mapRef);
+  }, []);
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">

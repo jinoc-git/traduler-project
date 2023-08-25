@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { signOutForSB } from '@api/supabaseAuth';
 import { userStore } from '@store/userStore';
 
 const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const authObserver = userStore((state) => state.authObserver);
   const resetUser = userStore((state) => state.resetUser);
@@ -14,6 +15,7 @@ const Header = () => {
   const onClickSignOutHandler = async () => {
     await signOutForSB();
     resetUser();
+    navigate('/');
   };
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const Header = () => {
   }, [user]);
 
   return (
-    <header>
+    <header className="flex justify-between">
       <h1
         onClick={() => {
           navigate('/');
@@ -31,24 +33,22 @@ const Header = () => {
       </h1>
       {user !== null ? (
         <button onClick={onClickSignOutHandler}>로그아웃</button>
+      ) : pathname === '/signin' ? (
+        <button
+          onClick={() => {
+            navigate('/signup');
+          }}
+        >
+          회원가입
+        </button>
       ) : (
-        <div>
-          <button
-            onClick={() => {
-              navigate('/signin');
-            }}
-          >
-            로그인
-          </button>{' '}
-          &nbsp;
-          <button
-            onClick={() => {
-              navigate('/signup');
-            }}
-          >
-            회원가입
-          </button>
-        </div>
+        <button
+          onClick={() => {
+            navigate('/signin');
+          }}
+        >
+          로그인
+        </button>
       )}
     </header>
   );

@@ -1,9 +1,9 @@
-const useSignUpFormValidator = () => {
+const useFormValidator = () => {
   const nicknameValidator = {
     required: true,
     pattern: {
-      value: /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{2,10}$/,
-      message: '닉네임은 2~10자. 특문 제외',
+      value: /^[가-힣|a-z|A-Z|0-9|]{2,6}$/,
+      message: '닉네임은 2~6자, 특문 제외',
     },
   };
 
@@ -26,4 +26,4 @@ const useSignUpFormValidator = () => {
   return { nicknameValidator, emailValidator, passwordValidator };
 };
 
-export default useSignUpFormValidator;
+export default useFormValidator;

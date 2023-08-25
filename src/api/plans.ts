@@ -54,7 +54,7 @@ export const getPlan = async (planId: string) => {
   return data;
 };
 
-const getPlans = async (): Promise<PlanType[] | null> => {
+export const getPlans = async (): Promise<PlanType[] | null> => {
   const { data, error } = await supabase.from('plans').select();
 
   if (error !== null) {
@@ -68,5 +68,3 @@ const getPlans = async (): Promise<PlanType[] | null> => {
 
   return null;
 };
-
-export default getPlans;

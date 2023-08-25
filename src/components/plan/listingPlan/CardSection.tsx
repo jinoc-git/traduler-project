@@ -1,6 +1,6 @@
 import React from 'react';
 
-import getPlans from '@api/plans';
+import { getPlans } from '@api/plans';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
 
@@ -12,7 +12,7 @@ const CardSection = () => {
     getPlans,
   );
 
-  console.log('MainCardsData', data);
+  // console.log('MainCardsData', data);
 
   if (isLoading) {
     return <div>로딩중 ...</div>;

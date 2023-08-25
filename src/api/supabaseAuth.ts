@@ -118,7 +118,7 @@ export const deleteUserProfileImage = async (userId: string) => {
   }
 
   if (data !== null) {
-    return data.user
+    return data.user;
   }
 };
 

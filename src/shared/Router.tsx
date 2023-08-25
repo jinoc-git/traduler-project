@@ -4,6 +4,7 @@ import Header from '@components/common/header/Header';
 // import SideBar from '@components/common/sideBar/SideBar';
 import AddPlan from '@components/plan/addPlan/AddPlan';
 import Ending from '@pages/Ending';
+import AddPhoto from '@pages/AddPhoto';
 import Main from '@pages/Main';
 import Plan from '@pages/Plan';
 import SignIn from '@pages/SignIn';
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path="/plan/:id" element={<Plan />} />
         <Route path="/addPlan" element={<AddPlan />} />
         <Route path="/ending" element={<Ending />} />
+        <Route path="/addPhoto" element={<AddPhoto />} />
       </Routes>
     </BrowserRouter>
   );

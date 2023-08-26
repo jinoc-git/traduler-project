@@ -8,7 +8,7 @@ import { userStore } from '@store/userStore';
 const Header = () => {
   const navigate = useNavigate();
   const { pathname, hash } = useLocation();
-  console.log(hash)
+  console.log(hash);
 
   const authObserver = userStore((state) => state.authObserver);
   const resetUser = userStore((state) => state.resetUser);
@@ -37,7 +37,9 @@ const Header = () => {
     >
       <div className=" flex items-center ">
         <div
-          className={`cursor-pointer  bg-gray-200 ${isMenuOpen ? '' : 'block'}`}
+          className={`cursor-pointer  bg-gray-200 ${
+            isMenuOpen ? 'mt-0' : 'mt-0'
+          }`}
           onClick={toggleMenu} // Toggle the menu when clicking the icon
         >
           ☰

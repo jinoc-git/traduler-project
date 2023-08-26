@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { getPlans } from '@api/plans';
 import { useSidebarStore } from '@store/sidebarStore';
@@ -7,6 +7,9 @@ import { type PlanType } from 'types/supabase';
 
 const SideBar: React.FC = () => {
   const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
+  const [startPlansOpen, setStartPlansOpen] = useState(false);
+  const [endPlansOpen, setEndPlansOpen] = useState(false);
+  const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
   // const toggleMenu = useSidebarStore((state) => state.toggleMenu);
   // const { isMenuOpen } = useSidebarStore();
   // const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
@@ -55,49 +58,73 @@ const SideBar: React.FC = () => {
               <div>여행 중</div>
             </div>
             <div>
-              <div>즐겨찾기 한 목록</div>
-              <div>장소 이름(기간)</div>
-              <div>장소 이름(기간)</div>
-              <div>장소 이름(기간)</div>
+              <div
+                onClick={() => {
+                  setFavoritePlansOpen(!favoritePlansOpen);
+                }}
+              >
+                즐겨찾기 한 목록 🔽
+              </div>
+              {favoritePlansOpen && (
+                <>
+                  <div>장소 이름(기간)</div>
+                  <div>장소 이름(기간)</div>
+                  <div>장소 이름(기간)</div>
+                </>
+              )}
             </div>
 
             <div>
-              <div>예정된 여행</div>
-              {startPlans
-                ?.slice()
-                .sort(
-                  (a, b) =>
-                    new Date(a.dates[0]).getTime() -
-                    new Date(b.dates[0]).getTime(),
-                )
-                .map((plan) => {
-                  return (
-                    <div key={plan.id}>
-                      <div>{plan.title}</div>
-                      {/* <div>{plan?.dates.join(',')}</div> */}
-                      <div>
+              <div
+                onClick={() => {
+                  setStartPlansOpen(!startPlansOpen);
+                }}
+              >
+                예정된 여행 🔽
+              </div>
+              {startPlansOpen &&
+                startPlans
+                  ?.slice()
+                  .sort(
+                    (a, b) =>
+                      new Date(a.dates[0]).getTime() -
+                      new Date(b.dates[0]).getTime(),
+                  )
+                  .map((plan) => {
+                    return (
+                      <div key={plan.id}>
+                        <div>{plan.title}</div>
+                        {/* <div>{plan?.dates.join(',')}</div> */}
+                        <div>
+                          {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                        </div>
+                      </div>
+                    );
+                  })}
+
+              <div
+                onClick={() => {
+                  setEndPlansOpen(!endPlansOpen);
+                }}
+              >
+                다녀온 여행 🔽
+              </div>
+              {endPlansOpen &&
+                endPlans
+                  ?.slice()
+                  .sort(
+                    (a, b) =>
+                      new Date(a.dates[0]).getTime() -
+                      new Date(b.dates[0]).getTime(),
+                  )
+                  .map((plan) => {
+                    return (
+                      <div key={plan.id}>
+                        <div>{plan.title}</div>
                         {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
                       </div>
-                    </div>
-                  );
-                })}
-
-              <div>다녀온 여행</div>
-              {endPlans
-                ?.slice()
-                .sort(
-                  (a, b) =>
-                    new Date(a.dates[0]).getTime() -
-                    new Date(b.dates[0]).getTime(),
-                )
-                .map((plan) => {
-                  return (
-                    <div key={plan.id}>
-                      <div>{plan.title}</div>
-                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                    </div>
-                  );
-                })}
+                    );
+                  })}
             </div>
           </div>
         )}

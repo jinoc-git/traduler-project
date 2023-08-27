@@ -57,7 +57,7 @@ const AddPlan = () => {
   //   return number.toLocaleString();
   // };
 
-  const eachPath = async (dateOrderNumber: number) => {
+  const calPath = async (dateOrderNumber: number) => {
     const convertParameters = pins[dateOrderNumber].map(({ lng, lat }) => {
       if (lat !== undefined && lng !== undefined) {
         return `${lng},${lat}`;
@@ -119,7 +119,7 @@ const AddPlan = () => {
       <p>링크 공유하기</p>
       <p
         onClick={() => {
-          void eachPath(0);
+          void calPath(0);
         }}
       >
         친구 초대하기

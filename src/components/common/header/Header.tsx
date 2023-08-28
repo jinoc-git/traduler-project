@@ -32,22 +32,20 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between fixed w-screen p-3 ml-1 ${
+      className={`flex justify-between fixed w-screen pr-3 ${
         isMenuOpen ? '' : 'bg-opacity-70'
       }`}
     >
-      <div className=" flex items-center ">
+      <div className=" flex items-center">
         <div
-          className={`cursor-pointer  bg-gray-200 ${
+          className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray-200 ${
             isMenuOpen ? 'mt-0' : 'mt-0'
           }`}
-          onClick={toggleMenu} // Toggle the menu when clicking the icon
+          onClick={toggleMenu}
         >
           <img src={ic_menu_1x} alt="Menu Icon" />
         </div>
-        {/* <div className="cursor-pointer" onClick={toggleMenu}>
-        ☰
-      </div> */}
+
         <h1
           onClick={() => {
             navigate('/main');

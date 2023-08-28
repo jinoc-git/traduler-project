@@ -8,15 +8,14 @@ import { userStore } from '@store/userStore';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { pathname, hash } = useLocation();
-  console.log(hash);
+  const { pathname } = useLocation();
 
   const authObserver = userStore((state) => state.authObserver);
   const resetUser = userStore((state) => state.resetUser);
   const user = userStore((state) => state.user);
 
-  const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
-  const toggleMenu = useSidebarStore((state) => state.toggleMenu);
+  const { isMenuOpen, toggleMenu, isVisibleSideBar, setVisibilityIcon } =
+    useSidebarStore((state) => state);
 
   const onClickSignOutHandler = async () => {
     await signOutForSB();
@@ -28,6 +27,11 @@ const Header = () => {
 
   useEffect(() => {
     authObserver();
+    if (user === null) {
+      setVisibilityIcon(false);
+    } else {
+      setVisibilityIcon(true);
+    }
   }, [user]);
 
   return (
@@ -37,19 +41,22 @@ const Header = () => {
       }`}
     >
       <div className=" flex items-center">
-        <div
-          className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray-200 ${
-            isMenuOpen ? 'mt-0' : 'mt-0'
-          }`}
-          onClick={toggleMenu}
-        >
-          <img src={ic_menu_1x} alt="Menu Icon" />
-        </div>
+        {isVisibleSideBar && (
+          <div
+            className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray-200 ${
+              isMenuOpen ? 'mt-0' : 'mt-0'
+            }`}
+            onClick={toggleMenu}
+          >
+            <img src={ic_menu_1x} alt="Menu Icon" />
+          </div>
+        )}
 
         <h1
           onClick={() => {
             navigate('/main');
           }}
+          className=" cursor-pointer"
         >
           LOGO
         </h1>

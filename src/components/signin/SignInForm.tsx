@@ -42,6 +42,7 @@ const SignInForm = () => {
 
     reset();
     console.log('로그인 성공');
+    navigate('/main');
   };
 
   const goToSignUp = () => {

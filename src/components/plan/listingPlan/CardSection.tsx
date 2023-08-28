@@ -22,12 +22,12 @@ const CardSection = () => {
   }
 
   return (
-    <div>
+    <section className="main-layout">
       <div></div>
       <div>
         <Card data={data} />
       </div>
-    </div>
+    </section>
   );
 };
 

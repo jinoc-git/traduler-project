@@ -16,7 +16,7 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <section>
       <div className="flex items-center gap-[40px] mt=[150px] main-layout">
         <img
           src={
@@ -35,7 +35,7 @@ const Profile = () => {
         </p>
       </div>
       {isEditModalOpen && <EditProfileModal handler={setIsEditModalOpen} />}
-    </>
+    </section>
   );
 };
 

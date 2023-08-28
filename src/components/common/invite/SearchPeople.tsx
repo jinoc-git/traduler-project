@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { findusers } from '@api/users';
+import { inviteUserStore } from '@store/inviteUserStore';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
 
@@ -20,13 +22,32 @@ const SearchPeople = () => {
   const searchUser: SubmitHandler<InputType> = async (data) => {
     const res = await findusers(data.userInfo);
     if (res.nickname != null && res.email != null) {
-      setPeople([...res.nickname, ...res.email]);
+      const searchedPeople: UserType[] = [];
+      searchedPeople.push(...res.nickname);
+      searchedPeople.push(
+        ...res.email.filter(
+          (user, idx) => searchedPeople[idx]?.id !== user?.id,
+        ),
+      );
+      setPeople(searchedPeople);
     }
   };
   const debouncedSearchUser = _.debounce(searchUser, 300);
 
+  const { invitedUser, inviteUser } = inviteUserStore();
+  const handleInvite = (user: UserType) => {
+    const conf = window.confirm('해당 여행에 초대하시겠습니까?');
+    if (conf) {
+      inviteUser(user);
+    }
+  };
+
+  useEffect(() => {
+    console.log(people);
+  }, [people]);
+
   return (
-    <div className="absolute w-[300px] h-[200px] bg-white border rounded-lg flex flex-col z-10 ">
+    <div className="w-[300px] h-[200px] bg-white border rounded-lg flex flex-col z-10 ">
       <label>친구찾기</label>
       <div className="flex flex-col">
         <input
@@ -49,25 +70,37 @@ const SearchPeople = () => {
       </div>
       {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
       <div className="overflow-scroll">
-        {people.map((person: UserType, idx) => {
-          return (
-            <div key={idx} className="flex items-center gap-3 mb-3">
-              <div>
-                {typeof person.avatar_url === 'string' ? (
-                  <img
-                    className="object-cover border-2 rounded-full w-9 h-9"
-                    src={person.avatar_url}
-                    alt={`Avatar for ${person.nickname}`}
-                  />
-                ) : (
-                  <div className="border-2 rounded-full w-9 h-9 bg-slate-500" />
-                )}
+        {people
+          .filter(
+            (person) =>
+              invitedUser.filter((user) => user.id === person.id).length === 0,
+          )
+          .map((person: UserType, idx) => {
+            return (
+              <div key={idx} className="flex items-center gap-3 mb-3">
+                <div>
+                  {typeof person.avatar_url === 'string' ? (
+                    <img
+                      className="object-cover border-2 rounded-full w-9 h-9"
+                      src={person.avatar_url}
+                      alt={`Avatar for ${person.nickname}`}
+                    />
+                  ) : (
+                    <div className="border-2 rounded-full w-9 h-9 bg-slate-500" />
+                  )}
+                </div>
+                <p>{person.nickname}</p>
+                <p>{person.email}</p>
+                <button
+                  onClick={() => {
+                    handleInvite(person);
+                  }}
+                >
+                  초대
+                </button>
               </div>
-              <p>{person.nickname}</p>
-              <p>{person.email}</p>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </div>
   );

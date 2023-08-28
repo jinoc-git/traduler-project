@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
+import _ from 'lodash';
 
 interface InputType {
   address?: string;
@@ -18,23 +20,18 @@ interface PropsType {
 }
 
 const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
-  // 수정하기 눌렀을 때 해당 pin에 대한 정보를 store에서 불러옴
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
-    La: 0,
-    Ma: 0,
+    lat: pin !== null ? (pin.lat as number) : 0,
+    lng: pin !== null ? (pin.lng as number) : 0,
   });
-  const [markers, setMarkers] = useState<any[]>([]);
-  const mapRef = useRef<any>(null);
   const {
     register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
+    watch,
+    formState: { errors },
   } = useForm<InputType>();
   const {
     register: registerPlaceName,
-    watch: watchPlaceName,
     handleSubmit: handleSubmitPlaceName,
     formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
   } = useForm<InputType>({
@@ -44,93 +41,17 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
     },
   });
 
-  const getMap = (data: string) => {
-    if (mapRef.current === null) {
-      const mapContainer = document.getElementById('mapModal');
-      const mapOption = {
-        center: new window.kakao.maps.LatLng(
-          pin != null ? pin.lat : 37.566826004661,
-          pin != null ? pin.lng : 126.978652258309,
-        ),
-        level: 3,
-      };
-      const map = new window.kakao.maps.Map(mapContainer, mapOption);
-      mapRef.current = map;
-    }
-    const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch(data, placesSearchCB);
-
-    if (pin != null) {
-      const marker = new window.kakao.maps.Marker({
-        map: mapRef.current,
-        position: new window.kakao.maps.LatLng(pin.lat, pin.lng),
-      });
-      setMarkers((state) => [...state, marker]);
-      setPosition({ La: pin.lng as number, Ma: pin.lat as number });
-      getAddress(pin.lat as number, pin.lng as number);
-      window.kakao.maps.event.addListener(marker, 'dragend', function () {
-        setPosition({
-          La: marker.getPosition().Ma,
-          Ma: marker.getPosition().La,
-        });
-      });
-      marker.setDraggable(true);
-    }
-
-    function placesSearchCB(data: string | any[], status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const bounds = new window.kakao.maps.LatLngBounds();
-        displayMarker(data[0]);
-        bounds.extend(new window.kakao.maps.LatLng(data[0].y, data[0].x));
-        mapRef.current.setBounds(bounds);
-      }
-    }
-
-    function displayMarker(place: { y: any; x: any }) {
-      for (const marker of markers) {
-        marker.setMap(null);
-      }
-      const marker = new window.kakao.maps.Marker({
-        map: mapRef.current,
-        position: new window.kakao.maps.LatLng(place.y, place.x),
-      });
-      setMarkers((state) => [...state, marker]);
-      setPosition({ La: place.y, Ma: place.x });
-      window.kakao.maps.event.addListener(marker, 'dragend', function () {
-        setPosition({
-          La: marker.getPosition().Ma,
-          Ma: marker.getPosition().La,
-        });
-      });
-      marker.setDraggable(true);
-    }
-
-    function getAddress(lat: number, lng: number) {
-      const geocoder = new window.kakao.maps.services.Geocoder();
-
-      const coord = new window.kakao.maps.LatLng(lat, lng);
-      const callback = function (
-        result: Array<{ address: { address_name: any } }>,
-        status: any,
-      ) {
-        if (status === window.kakao.maps.services.Status.OK) {
-          setValue('address', result[0].address.address_name);
-        }
-      };
-      geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
-    }
-  };
-
   const onSubmit: SubmitHandler<InputType> = (data) => {
-    if (data.address !== undefined) {
-      getMap(data.address);
+    if (data.address != null) {
+      searchMap(data.address);
     }
   };
+  const debouncedSearchMap = _.debounce(onSubmit, 300);
 
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newContents: PinContentsType = {
-      lat: position.La,
-      lng: position.Ma,
+      lat: position.lat,
+      lng: position.lng,
       placeName: data.placeName as string,
       cost: data.cost as number,
     };
@@ -167,109 +88,126 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   };
 
   const disabledSubmit = () => {
-    if (position.La === 0 || position.Ma === 0) {
+    if (position.lat === 0 || position.lng === 0) {
       return true;
     }
     return false;
   };
 
-  useEffect(() => {
-    getMap(' ');
-  }, []);
+  const searchMap = (address: string) => {
+    if (address === '') return;
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(address, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const bounds = new kakao.maps.LatLngBounds();
+        bounds.extend(new kakao.maps.LatLng(+data[0].y, +data[0].x));
+        setPosition({ lat: +data[0].y, lng: +data[0].x });
+        map.setBounds(bounds);
+      }
+    });
+  };
+
+  const [map, setMap] = useState<any>();
 
   return (
-    <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
-      <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
-        <div className="w-[50vw]">
-          <div id="mapModal" style={{ width: '50vw', height: '500px' }}>
-            지도지도
-          </div>
+    <div className="fixed top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
+      <div className="flex flex-col p-10 justify-center bg-white w-[500px] h-[575px] rounded-lg px-[40px] py-[36px] gap-3">
+        <div className="text-[20px] font-bold">방문할 장소</div>
+        <div className="text-[16px] font-normal mb-[12px]">
+          방문할 장소와 관련된 정보를 저장하세요.
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="address">주소</label>
-          <input
-            id="address"
-            type="text"
-            placeholder="주소를 검색하세요"
-            {...register('address', {
-              required: '주소를 입력하고 검색해주세요.',
-              minLength: {
-                value: 2,
-                message: '주소는 2글자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errors?.address?.message}</p>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-slate-400"
-          >
-            검색
-          </button>
-        </form>
         <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
-          <label htmlFor="placeName">장소 이름</label>
-          <input
-            id="placeName"
-            type="text"
-            placeholder="장소 이름을 입력하세요"
-            {...registerPlaceName('placeName', {
-              required: '장소 이름은 필수 입력값입니다.',
-              minLength: {
-                value: 2,
-                message: '장소 이름은 2자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errorsPlaceName?.placeName?.message}</p>
-          <label htmlFor="placeName">지출 비용</label>
-          <input
-            id="cost"
-            type="number"
-            placeholder="지출 비용을 입력해주세요."
-            {...registerPlaceName('cost', {
-              valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
-            })}
-          />
-          <button
-            type="submit"
-            disabled={isSubmittingPlaceName || disabledSubmit()}
-            className="bg-slate-400 disabled:bg-black"
+          <div className="flex flex-col">
+            <label htmlFor="placeName">장소 이름</label>
+            <input
+              id="placeName"
+              type="text"
+              placeholder="장소 이름을 입력하세요"
+              {...registerPlaceName('placeName', {
+                required: '장소 이름은 필수 입력값입니다.',
+                minLength: {
+                  value: 2,
+                  message: '장소 이름은 2자 이상이어야 합니다.',
+                },
+                pattern: {
+                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              className="border border-#4f4f4f rounded-lg p-3"
+            />
+            <p>{errorsPlaceName?.placeName?.message}</p>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="address">주소</label>
+            <input
+              id="address"
+              type="text"
+              placeholder="주소를 검색하세요"
+              {...register('address', {
+                required: '주소를 입력하고 검색해주세요.',
+                minLength: {
+                  value: 2,
+                  message: '주소는 2글자 이상이어야 합니다.',
+                },
+                pattern: {
+                  value: /^[가-힣|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              onChange={(e) => debouncedSearchMap({ address: e.target.value })}
+              className="border border-#4f4f4f rounded-lg p-3"
+            />
+            <p>{errors?.address?.message}</p>
+            <label htmlFor="placeName">지출 비용</label>
+            <input
+              id="cost"
+              type="number"
+              placeholder="지출 비용을 입력해주세요."
+              {...registerPlaceName('cost', {
+                valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
+              })}
+            />
+          </div>
+          <Map
+            center={{
+              lat: pin != null ? (pin.lat as number) : 37.566826004661,
+              lng: pin !== null ? (pin.lng as number) : 126.978652258309,
+            }}
+            className="w-[420px] h-[160px] rounded-lg"
+            level={3}
+            onCreate={setMap}
           >
-            저장
-          </button>
+            <MapMarker
+              position={position}
+              draggable={true}
+              onDragEnd={(marker) => {
+                setPosition({
+                  lat: marker.getPosition().getLat(),
+                  lng: marker.getPosition().getLng(),
+                });
+              }}
+            ></MapMarker>
+          </Map>
+          <div className="flex justify-between w-[420px]">
+            <button
+              className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
+              onClick={() => {
+                setIsOpenModal(false);
+                resetPin();
+              }}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmittingPlaceName || disabledSubmit()}
+              className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
+            >
+              새 장소 추가
+            </button>
+          </div>
         </form>
-        <div>
-          위도, 경도
-          <br />
-          {position.La}, {position.Ma}
-          <br />
-          장소이름
-          <br />
-          {watchPlaceName('placeName')}
-          <br />
-          지출 비용
-          <br />
-          {watchPlaceName('cost')}
-        </div>
-        <button
-          className="bg-slate-400"
-          onClick={() => {
-            setIsOpenModal(false);
-            resetPin();
-          }}
-        >
-          닫기
-        </button>
       </div>
     </div>
   );

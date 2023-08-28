@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import _ from 'lodash';
 
 interface InputType {
   address?: string;
@@ -28,13 +29,11 @@ const MapModal = ({
   });
   const {
     register,
-    handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<InputType>();
   const {
     register: registerPlaceName,
-    watch: watchPlaceName,
+    watch,
     handleSubmit: handleSubmitPlaceName,
     formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
   } = useForm<InputType>({
@@ -47,7 +46,12 @@ const MapModal = ({
   const planId: string = id as string;
 
   // 장소 검색 버튼
-  const onSubmit: SubmitHandler<InputType> = (data) => {};
+  const onSubmit: SubmitHandler<InputType> = (data) => {
+    if (data.address != null) {
+      searchMap(data.address);
+    }
+  };
+  const debouncedSearchMap = _.debounce(onSubmit, 300);
 
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
@@ -98,23 +102,32 @@ const MapModal = ({
     },
   });
 
-  const [map, setMap] = useState<any>();
-  useEffect(() => {
-    if (map === undefined) return;
+  const searchMap = (address: string) => {
+    if (address === '') return;
     const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(address, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const bounds = new kakao.maps.LatLngBounds();
+        bounds.extend(new kakao.maps.LatLng(+data[0].y, +data[0].x));
+        setPosition({ lat: +data[0].y, lng: +data[0].x });
+        map.setBounds(bounds);
+      }
+    });
+  };
 
-    ps.keywordSearch(
-      watch('address') === '' ? ' ' : (watch('address') as string),
-      (data, status, _pagination) => {
-        if (status === kakao.maps.services.Status.OK) {
-          const bounds = new kakao.maps.LatLngBounds();
-          bounds.extend(new kakao.maps.LatLng(+data[0].y, +data[0].x));
-          setPosition({ lat: +data[0].y, lng: +data[0].x });
-          map.setBounds(bounds);
-        }
-      },
-    );
-  }, [map, watch('address')]);
+  const [map, setMap] = useState<any>();
+
+  const disabledSubmit = () => {
+    if (
+      position.lat === 0 ||
+      position.lng === 0 ||
+      isSubmittingPlaceName ||
+      watch('placeName') === ''
+    ) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
@@ -144,33 +157,28 @@ const MapModal = ({
             }}
           ></MapMarker>
         </Map>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="address">주소</label>
-          <input
-            id="address"
-            type="text"
-            placeholder="주소를 검색하세요"
-            {...register('address', {
-              required: '주소를 입력하고 검색해주세요.',
-              minLength: {
-                value: 2,
-                message: '주소는 2글자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errors?.address?.message}</p>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-slate-400"
-          >
-            검색
-          </button>
-        </form>
+        <label htmlFor="address">주소</label>
+        <input
+          id="address"
+          type="text"
+          placeholder="주소를 검색하세요"
+          {...register('address', {
+            required: '주소를 입력하고 검색해주세요.',
+            minLength: {
+              value: 2,
+              message: '주소는 2글자 이상이어야 합니다.',
+            },
+            pattern: {
+              value: /^[가-힣|0-9|\s-]*$/,
+              message: '모음, 자음 안됨',
+            },
+          })}
+          onChange={(e) => debouncedSearchMap({ address: e.target.value })}
+        />
+        <p>{errors?.address?.message}</p>
+        <button type="submit" disabled={isSubmitting} className="bg-slate-400">
+          검색
+        </button>
         <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
           <label htmlFor="placeName">장소 이름</label>
           <input
@@ -198,7 +206,7 @@ const MapModal = ({
           />
           <button
             type="submit"
-            disabled={isSubmittingPlaceName}
+            disabled={disabledSubmit()}
             className="bg-slate-400"
           >
             저장
@@ -211,7 +219,7 @@ const MapModal = ({
           <br />
           장소이름
           <br />
-          {watchPlaceName('placeName')}
+          {watch('placeName')}
         </div>
         <button
           className="bg-slate-400"

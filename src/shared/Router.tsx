@@ -2,8 +2,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@components/common/header/Header';
 // import SideBar from '@components/common/sideBar/SideBar';
-import AddPlan from '@components/plan/addPlan/AddPlan';
 import AddPhoto from '@pages/AddPhoto';
+import AddPlan from '@pages/AddPlan';
 import AuthLoading from '@pages/AuthLoading';
 import Ending from '@pages/Ending';
 import Main from '@pages/Main';

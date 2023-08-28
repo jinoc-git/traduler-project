@@ -61,50 +61,53 @@ const AddPlanContents = ({
 
   return (
     <>
-      <div className="w-full h-[500px]">
-        <Map
-          center={{
-            lat:
-              pins.length !== 0 && pins[currentPage].length !== 0
-                ? (pins[currentPage][0].lat as number)
-                : 37.566826004661,
-            lng:
-              pins.length !== 0 && pins[currentPage].length !== 0
-                ? (pins[currentPage][0].lng as number)
-                : 126.978652258309,
-          }}
-          style={{ width: '100vw', height: '500px' }}
-          level={3}
-        >
-          {pins[currentPage]?.map((pin, idx) => {
-            return (
-              <MapMarker
-                key={idx}
-                position={{
-                  lat: pin?.lat as number,
-                  lng: pin?.lng as number,
-                }}
-              ></MapMarker>
-            );
-          })}
-          {pins.length !== 0 && pins[currentPage].length !== 0 && (
-            <Polyline
-              path={pins[currentPage].map((pin) => {
-                return {
-                  lat: pin.lat as number,
-                  lng: pin.lng as number,
-                };
-              })}
-              strokeWeight={5} // 선의 두께 입니다
-              strokeColor={'#FFAE00'} // 선의 색깔입니다
-              strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-              strokeStyle={'solid'} // 선의 스타일입니다
-            />
-          )}
-        </Map>
-      </div>
-      <div>
-        <div>
+      <div className="flex flex-col justify-center gap-5">
+        <div className="flex justify-center">
+          <Map
+            center={{
+              lat:
+                pins.length !== 0 && pins[currentPage].length !== 0
+                  ? (pins[currentPage][0].lat as number)
+                  : 37.566826004661,
+              lng:
+                pins.length !== 0 && pins[currentPage].length !== 0
+                  ? (pins[currentPage][0].lng as number)
+                  : 126.978652258309,
+            }}
+            style={{ width: '95%', height: '400px', borderRadius: '8px' }}
+            level={3}
+          >
+            {pins[currentPage]?.map((pin, idx) => {
+              return (
+                <MapMarker
+                  key={idx}
+                  position={{
+                    lat: pin?.lat as number,
+                    lng: pin?.lng as number,
+                  }}
+                ></MapMarker>
+              );
+            })}
+            {pins.length !== 0 && pins[currentPage].length !== 0 && (
+              <Polyline
+                path={pins[currentPage].map((pin) => {
+                  return {
+                    lat: pin.lat as number,
+                    lng: pin.lng as number,
+                  };
+                })}
+                strokeWeight={5} // 선의 두께 입니다
+                strokeColor={'#FFAE00'} // 선의 색깔입니다
+                strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+                strokeStyle={'solid'} // 선의 스타일입니다
+              />
+            )}
+          </Map>
+        </div>
+        <div className="flex flex-col justify-center">
+          <div className="w-[95%] mt-[17px]  mx-auto font-bold text-[18px]">
+            방문할 장소
+          </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (
               <div key={idx}>
@@ -133,16 +136,16 @@ const AddPlanContents = ({
               </div>
             );
           })}
+          {dates.length !== 0 && (
+            <button
+              type="button"
+              onClick={openModal}
+              className="w-[95%] h-[100px] border border-dashed mt-[17px] rounded-lg mx-auto font-bold text-[18px]"
+            >
+              장소 추가하기
+            </button>
+          )}
         </div>
-        {dates.length !== 0 && (
-          <button
-            type="button"
-            onClick={openModal}
-            className="p-5 bg-slate-500"
-          >
-            장소 추가하기
-          </button>
-        )}
       </div>
       {isOpenModal && (
         <AddMapModal

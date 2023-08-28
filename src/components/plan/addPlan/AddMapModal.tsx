@@ -106,14 +106,71 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   }, [map, watch('address')]);
 
   return (
-    <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
-      <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
+    <div className="fixed top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
+      <div className="flex flex-col p-10 justify-center bg-white w-[500px] h-[575px] rounded-lg px-[40px] py-[36px] gap-3">
+        <div className="text-[20px] font-bold">방문할 장소</div>
+        <div className="text-[16px] font-normal mb-[12px]">
+          방문할 장소와 관련된 정보를 저장하세요.
+        </div>
+        <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
+          <div className="flex flex-col">
+            <label htmlFor="placeName">장소 이름</label>
+            <input
+              id="placeName"
+              type="text"
+              placeholder="장소 이름을 입력하세요"
+              {...registerPlaceName('placeName', {
+                required: '장소 이름은 필수 입력값입니다.',
+                minLength: {
+                  value: 2,
+                  message: '장소 이름은 2자 이상이어야 합니다.',
+                },
+                pattern: {
+                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              className="border border-#4f4f4f rounded-lg p-3"
+            />
+            <p>{errorsPlaceName?.placeName?.message}</p>
+          </div>
+        </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col">
+            <label htmlFor="address">주소</label>
+            <input
+              id="address"
+              type="text"
+              placeholder="주소를 검색하세요"
+              {...register('address', {
+                required: '주소를 입력하고 검색해주세요.',
+                minLength: {
+                  value: 2,
+                  message: '주소는 2글자 이상이어야 합니다.',
+                },
+                pattern: {
+                  value: /^[가-힣|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              className="border border-#4f4f4f rounded-lg p-3"
+            />
+            <p>{errors?.address?.message}</p>
+          </div>
+          {/* <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-slate-400"
+          >
+            검색
+          </button> */}
+        </form>
         <Map
           center={{
             lat: pin != null ? (pin.lat as number) : 37.566826004661,
             lng: pin !== null ? (pin.lng as number) : 126.978652258309,
           }}
-          className="w-[50vw] h-[500px]"
+          className="w-[420px] h-[160px] rounded-lg"
           level={3}
           onCreate={setMap}
         >
@@ -128,61 +185,25 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             }}
           ></MapMarker>
         </Map>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="address">주소</label>
-          <input
-            id="address"
-            type="text"
-            placeholder="주소를 검색하세요"
-            {...register('address', {
-              required: '주소를 입력하고 검색해주세요.',
-              minLength: {
-                value: 2,
-                message: '주소는 2글자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errors?.address?.message}</p>
+        <div className="flex justify-between w-[420px]">
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-slate-400"
+            className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
+            onClick={() => {
+              setIsOpenModal(false);
+              resetPin();
+            }}
           >
-            검색
+            취소
           </button>
-        </form>
-        <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
-          <label htmlFor="placeName">장소 이름</label>
-          <input
-            id="placeName"
-            type="text"
-            placeholder="장소 이름을 입력하세요"
-            {...registerPlaceName('placeName', {
-              required: '장소 이름은 필수 입력값입니다.',
-              minLength: {
-                value: 2,
-                message: '장소 이름은 2자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errorsPlaceName?.placeName?.message}</p>
           <button
             type="submit"
             disabled={isSubmittingPlaceName || disabledSubmit()}
-            className="bg-slate-400 disabled:bg-black"
+            className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
           >
-            저장
+            새 장소 추가
           </button>
-        </form>
-        <div>
+        </div>
+        {/* <div>
           위도, 경도
           <br />
           {position.lat}, {position.lng}
@@ -190,16 +211,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
           장소이름
           <br />
           {watchPlaceName('placeName')}
-        </div>
-        <button
-          className="bg-slate-400"
-          onClick={() => {
-            setIsOpenModal(false);
-            resetPin();
-          }}
-        >
-          닫기
-        </button>
+        </div> */}
       </div>
     </div>
   );

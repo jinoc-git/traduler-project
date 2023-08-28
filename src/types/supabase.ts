@@ -183,6 +183,28 @@ export interface Database {
           },
         ];
       };
+      plan_mates: {
+        Row: {
+          id: string;
+          users_id: string[];
+        };
+        Insert: {
+          id: string;
+          users_id: string[];
+        };
+        Update: {
+          id?: string;
+          users_id?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'plan_mates_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'plans';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -203,3 +225,5 @@ export type PinType = Database['public']['Tables']['pins']['Update'];
 export type PinInsertType = Database['public']['Tables']['pins']['Insert'];
 export type UserType = Database['public']['Tables']['users']['Row'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];
+export type PlanMatesType =
+  Database['public']['Tables']['plan_mates']['Insert'];

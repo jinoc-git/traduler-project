@@ -9,6 +9,7 @@ import Nav from '@components/common/nav/Nav';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
 import PostPlan from '@components/plan/PostPlan';
 import { datesStore } from '@store/datesStore';
+import { inviteUserStore } from '@store/inviteUserStore';
 import { userStore } from '@store/userStore';
 
 interface InputType {
@@ -29,6 +30,7 @@ const AddPlan = () => {
   } = useForm<InputType>();
 
   const [totalCost, setTotalCost] = useState('');
+  const { invitedUser, resetInvitedUser } = inviteUserStore();
 
   const submitPlan = async () => {
     if (userId !== null) {
@@ -38,9 +40,11 @@ const AddPlan = () => {
         parseInt(totalCost, 10),
         pins,
         dates,
+        invitedUser,
       );
-      navigate('/');
+      navigate('/main');
       resetDates();
+      resetInvitedUser();
     }
   };
 

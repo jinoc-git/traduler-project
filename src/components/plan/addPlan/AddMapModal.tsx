@@ -135,68 +135,69 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             />
             <p>{errorsPlaceName?.placeName?.message}</p>
           </div>
+          <div className="flex flex-col">
+            <label htmlFor="address">주소</label>
+            <input
+              id="address"
+              type="text"
+              placeholder="주소를 검색하세요"
+              {...register('address', {
+                required: '주소를 입력하고 검색해주세요.',
+                minLength: {
+                  value: 2,
+                  message: '주소는 2글자 이상이어야 합니다.',
+                },
+                pattern: {
+                  value: /^[가-힣|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              onChange={(e) => debouncedSearchMap({ address: e.target.value })}
+              className="border border-#4f4f4f rounded-lg p-3"
+            />
+            <p>{errors?.address?.message}</p>
+          </div>
+          {watch('address')}
+          <Map
+            center={{
+              lat: pin != null ? (pin.lat as number) : 37.566826004661,
+              lng: pin !== null ? (pin.lng as number) : 126.978652258309,
+            }}
+            className="w-[420px] h-[160px] rounded-lg"
+            level={3}
+            onCreate={setMap}
+          >
+            <MapMarker
+              position={position}
+              draggable={true}
+              onDragEnd={(marker) => {
+                setPosition({
+                  lat: marker.getPosition().getLat(),
+                  lng: marker.getPosition().getLng(),
+                });
+              }}
+            ></MapMarker>
+          </Map>
+          <div className="flex justify-between w-[420px]">
+            <button
+              className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
+              onClick={() => {
+                setIsOpenModal(false);
+                resetPin();
+              }}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmittingPlaceName || disabledSubmit()}
+              className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
+            >
+              새 장소 추가
+            </button>
+          </div>
         </form>
-        <div className="flex flex-col">
-          <label htmlFor="address">주소</label>
-          <input
-            id="address"
-            type="text"
-            placeholder="주소를 검색하세요"
-            {...register('address', {
-              required: '주소를 입력하고 검색해주세요.',
-              minLength: {
-                value: 2,
-                message: '주소는 2글자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-            onChange={(e) => debouncedSearchMap({ address: e.target.value })}
-            className="border border-#4f4f4f rounded-lg p-3"
-          />
-          <p>{errors?.address?.message}</p>
-        </div>
-        {watch('address')}
-        <Map
-          center={{
-            lat: pin != null ? (pin.lat as number) : 37.566826004661,
-            lng: pin !== null ? (pin.lng as number) : 126.978652258309,
-          }}
-          className="w-[420px] h-[160px] rounded-lg"
-          level={3}
-          onCreate={setMap}
-        >
-          <MapMarker
-            position={position}
-            draggable={true}
-            onDragEnd={(marker) => {
-              setPosition({
-                lat: marker.getPosition().getLat(),
-                lng: marker.getPosition().getLng(),
-              });
-            }}
-          ></MapMarker>
-        </Map>
-        <div className="flex justify-between w-[420px]">
-          <button
-            className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
-            onClick={() => {
-              setIsOpenModal(false);
-              resetPin();
-            }}
-          >
-            취소
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmittingPlaceName || disabledSubmit()}
-            className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
-          >
-            새 장소 추가
-          </button>
-        </div>
+
         {/* <div>
           위도, 경도
           <br />

@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
+import {
+  Map,
+  MapMarker,
+  MapTypeControl,
+  Polyline,
+  ZoomControl,
+} from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
 import { datesStore } from '@store/datesStore';
@@ -102,6 +108,8 @@ const AddPlanContents = ({
                 strokeStyle={'solid'} // 선의 스타일입니다
               />
             )}
+            <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+            <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
           </Map>
         </div>
         <div className="flex flex-col justify-center">

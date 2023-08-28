@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
-import { defaultImage } from '@assets/index';
+import { ic_profile_3x } from '@assets/icons/3x';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
@@ -40,7 +40,8 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const preview = watch('avatar');
   const nickname = watch('nickname');
-  const blockSubmitBtn = isRemoveAvatar
+
+  const shouldBlockSubmitBtn = isRemoveAvatar
     ? false
     : (preview?.length === 0 && nickname === '') ||
       (nickname !== '' && isDuplicate);
@@ -78,7 +79,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     // 프로필 사진 변경
     if (data.avatar[0]) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
-
+      console.log(res);
       if (res) {
         const { id, email, nickname, profileImg } = res;
         setUser({
@@ -166,9 +167,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         </button>
         <label htmlFor="avatar">
           <img
-            src={previewImg !== '' ? previewImg : defaultImage}
+            src={previewImg !== '' ? previewImg : ic_profile_3x}
             alt="프로필이미지"
-            className="w-[85px] h-[85px] rounded-full ring ring-black object-cover cursor-pointer"
+            className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer"
           />
         </label>
         <input
@@ -207,7 +208,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             사진 제거
           </button>
           <button
-            disabled={blockSubmitBtn}
+            disabled={shouldBlockSubmitBtn}
             type="submit"
             className="bg-slate-400"
           >

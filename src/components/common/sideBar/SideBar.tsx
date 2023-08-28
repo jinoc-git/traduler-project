@@ -8,13 +8,13 @@ import {
   ic_planned_time_1x,
   ic_previous_time_1x,
 } from '@assets/icons/1x';
-import { useSidebarStore } from '@store/sidebarStore';
+import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
 
 const SideBar: React.FC = () => {
-  const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
-  const isVisibleSideBar = useSidebarStore((state) => state.isVisibleSideBar);
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
@@ -48,8 +48,8 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed mt-[50px] h-[100vh] w-[250px] bg-gray-200 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
-        isMenuOpen ? 'w-[250px] ' : 'w-[50px]'
+      className={`fixed mt-[60px] h-[100vh] w-[250px] bg-gray-200 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
+        isSideBarOpen ? 'w-[250px] ' : 'w-[50px]'
       }`}
       style={{ zIndex: 10 }}
     >
@@ -71,7 +71,7 @@ const SideBar: React.FC = () => {
             <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
           </div>
           <ul>
-            {isMenuOpen && (
+            {isSideBarOpen && (
               <li className="pl-[65px]">
                 <p className="text-sm"> 장소 이름(기간)</p>
                 <p className="text-sm">장소 이름(기간)</p>
@@ -94,7 +94,7 @@ const SideBar: React.FC = () => {
             <span className="w-[121px]">예정된 여행 </span>
             <img
               src={
-                isMenuOpen && startPlansOpen
+                isSideBarOpen && startPlansOpen
                   ? ic_chevron_up_1x
                   : ic_chevron_down_1x
               }
@@ -103,7 +103,7 @@ const SideBar: React.FC = () => {
             />
           </div>
           <ul>
-            {isMenuOpen &&
+            {isSideBarOpen &&
               startPlansOpen &&
               startPlans.map((plan) => {
                 return (
@@ -130,7 +130,7 @@ const SideBar: React.FC = () => {
             <span className="w-[121px]">다녀온 여행 </span>
             <img
               src={
-                isMenuOpen && endPlansOpen
+                isSideBarOpen && endPlansOpen
                   ? ic_chevron_up_1x
                   : ic_chevron_down_1x
               }
@@ -139,7 +139,7 @@ const SideBar: React.FC = () => {
             />
           </div>
           <ul>
-            {isMenuOpen &&
+            {isSideBarOpen &&
               endPlansOpen &&
               endPlans.map((plan) => {
                 return (

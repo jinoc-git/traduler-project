@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router';
 import Profile from '@components/main/profile/Profile';
 // import Pay from '@components/pay/pay';
 import CardSection from '@components/plan/listingPlan/CardSection';
-import { useSidebarStore } from '@store/sidebarStore';
+import { sideBarStore } from '@store/sideBarStore';
 
 const Main = () => {
-  const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
-  const isVisibleSideBar = useSidebarStore((state) => state.isVisibleSideBar);
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
 
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const Main = () => {
     <main
       className={`transition-all duration-300 ease-in-out  ${
         isVisibleSideBar
-          ? isMenuOpen
+          ? isSideBarOpen
             ? 'w-[calc(100vw-250px)] ml-[250px]'
             : 'w-[calc(100vw-50px)] ml-[50px]'
           : 'w-[calc(100vw)] ml-0'

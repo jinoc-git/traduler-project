@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { signOutForSB } from '@api/supabaseAuth';
+import { ic_menu_1x } from '@assets/icons/1x';
 import { useSidebarStore } from '@store/sidebarStore';
 import { userStore } from '@store/userStore';
 
@@ -42,7 +43,7 @@ const Header = () => {
           }`}
           onClick={toggleMenu} // Toggle the menu when clicking the icon
         >
-          ☰
+          <img src={ic_menu_1x} alt="Menu Icon" />
         </div>
         {/* <div className="cursor-pointer" onClick={toggleMenu}>
         ☰

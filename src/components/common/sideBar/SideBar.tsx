@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
 import { getPlans } from '@api/plans';
+import {
+  ic_chevron_down_1x,
+  ic_favorite_default_1x,
+  ic_planned_time_1x,
+  ic_previous_time_1x,
+} from '@assets/icons/1x';
 import { useSidebarStore } from '@store/sidebarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
@@ -59,11 +65,14 @@ const SideBar: React.FC = () => {
             </div>
             <div>
               <div
+                className="flex items-center cursor-pointer"
                 onClick={() => {
                   setFavoritePlansOpen(!favoritePlansOpen);
                 }}
               >
-                즐겨찾기 한 목록 🔽
+                <img src={ic_favorite_default_1x} className="mr-[35px]" />{' '}
+                즐겨찾기 한 목록{' '}
+                <img src={ic_chevron_down_1x} alt="다운버튼" className="ml-2" />
               </div>
               {favoritePlansOpen && (
                 <>
@@ -76,11 +85,14 @@ const SideBar: React.FC = () => {
 
             <div>
               <div
+                className="flex items-center cursor-pointer"
                 onClick={() => {
                   setStartPlansOpen(!startPlansOpen);
                 }}
               >
-                예정된 여행 🔽
+                <img src={ic_planned_time_1x} className="mr-[35px]" /> 예정된
+                여행{' '}
+                <img src={ic_chevron_down_1x} alt="다운버튼" className="ml-2" />
               </div>
               {startPlansOpen &&
                 startPlans
@@ -103,11 +115,14 @@ const SideBar: React.FC = () => {
                   })}
 
               <div
+                className="flex items-center cursor-pointer"
                 onClick={() => {
                   setEndPlansOpen(!endPlansOpen);
                 }}
               >
-                다녀온 여행 🔽
+                <img src={ic_previous_time_1x} className=" mr-[35px]" /> 다녀온
+                여행{' '}
+                <img src={ic_chevron_down_1x} alt="다운버튼" className="ml-2" />
               </div>
               {endPlansOpen &&
                 endPlans

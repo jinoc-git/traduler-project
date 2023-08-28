@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@components/common/header/Header';
-// import SideBar from '@components/common/sideBar/SideBar';
+import SideBar from '@components/common/sideBar/SideBar';
 import AddPlan from '@components/plan/addPlan/AddPlan';
 import AddPhoto from '@pages/AddPhoto';
 import AuthLoading from '@pages/AuthLoading';
@@ -16,7 +16,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Header />
-      {/* <SideBar /> */}
+      <SideBar />
       <Routes>
         <Route path="/main" element={<Main />} />
         <Route path="/signin" element={<SignIn />} />

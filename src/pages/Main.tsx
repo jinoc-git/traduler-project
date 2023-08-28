@@ -14,7 +14,7 @@ const Main = () => {
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out  ${
+      className={`transition-all duration-300 ease-in-out pt-[50px]  ${
         isVisibleSideBar
           ? isSideBarOpen
             ? 'w-[calc(100vw-250px)] ml-[250px]'

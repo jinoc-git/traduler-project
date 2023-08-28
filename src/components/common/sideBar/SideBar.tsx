@@ -48,7 +48,7 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed mt-[60px] h-[100vh] w-[250px] bg-gray-200 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
+      className={`fixed mt-[50px] h-[100vh] w-[250px] bg-gray-200 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
         isSideBarOpen ? 'w-[250px] ' : 'w-[50px]'
       }`}
       style={{ zIndex: 10 }}

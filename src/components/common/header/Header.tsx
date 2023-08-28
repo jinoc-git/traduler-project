@@ -11,8 +11,11 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { value: isMenuOpen, toggleValue: toggleIsMenuOpen } =
-    useBooleanState(false);
+  const {
+    value: isMenuOpen,
+    toggleValue: toggleIsMenuOpen,
+    setNeedValue: setIsMenuOpen,
+  } = useBooleanState(false);
 
   const authObserver = userStore((state) => state.authObserver);
   const resetUser = userStore((state) => state.resetUser);
@@ -24,8 +27,8 @@ const Header = () => {
   const onClickSignOutHandler = async () => {
     await signOutForSB();
     resetUser();
-    navigate('/');
-    // 추가사항
+    navigate('/main');
+    setIsMenuOpen(false);
     toggleMenu();
   };
 
@@ -40,14 +43,14 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between fixed w-screen pr-3 ${
+      className={`flex justify-between fixed w-screen h-[50px] pr-3 ${
         isSideBarOpen ? '' : 'bg-opacity-70'
       }`}
     >
       <div className=" flex items-center">
         {isVisibleSideBar && (
           <div
-            className={`cursor-pointer w-[50px] h-[60px] flex items-center justify-center mr-[10px] bg-gray-200 ${
+            className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray-200 ${
               isSideBarOpen ? 'mt-0' : 'mt-0'
             }`}
             onClick={toggleMenu}
@@ -66,17 +69,31 @@ const Header = () => {
         </h1>
       </div>
       {user !== null ? (
-        <div>
+        <div className="relative">
           <button
-            onClick={onClickSignOutHandler}
-            className="flex justify-center items-center w-[70px] h-[60px]"
+            onBlur={toggleIsMenuOpen}
+            onClick={toggleIsMenuOpen}
+            className="flex justify-center items-center w-[70px] h-[50px] mr-4"
           >
             <img
               src={user.profileImg !== null ? user.profileImg : ic_profile_1x}
               alt="프로필 이미지"
+              className=" w-[37px] h-[37px] object-cover rounded-full border"
             />
           </button>
-          {/* <button onClick={onClickSignOutHandler}>로그아웃</button> */}
+          {isMenuOpen && (
+            <ul className=" absolute -bottom-[35px] w-[70px] bg-white rounded-md">
+              <li
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
+                onClick={onClickSignOutHandler}
+                className=" p-1 text-sm text-center cursor-pointer"
+              >
+                로그아웃
+              </li>
+            </ul>
+          )}
         </div>
       ) : pathname === '/signin' ? (
         <button

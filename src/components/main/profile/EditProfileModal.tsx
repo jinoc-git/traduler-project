@@ -41,10 +41,13 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const preview = watch('avatar');
   const nickname = watch('nickname');
 
+  const isAvatarChanged = preview?.length !== 0;
+  const isNicknameChanged = nickname !== '';
+  
   const shouldBlockSubmitBtn = isRemoveAvatar
     ? false
-    : (preview?.length === 0 && nickname === '') ||
-      (nickname !== '' && isDuplicate);
+    : (!isAvatarChanged && !isNicknameChanged) ||
+      (isNicknameChanged && isDuplicate);
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);

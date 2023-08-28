@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
@@ -113,7 +114,7 @@ const AddPlanContents = ({
           </Map>
         </div>
         <div className="flex flex-col justify-center">
-          <div className="w-[95%] mt-[17px]  mx-auto font-bold text-[18px]">
+          <div className="w-[95%] mt-[17px] mx-auto font-bold text-[18px]">
             방문할 장소
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {

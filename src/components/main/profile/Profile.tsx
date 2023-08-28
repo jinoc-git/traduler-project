@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { ic_profile_3x } from '@assets/icons/3x';
+import { ic_user_default_3x } from '@assets/icons/3x';
 import { userStore } from '@store/userStore';
 
 import EditProfileModal from './EditProfileModal';
@@ -22,10 +22,10 @@ const Profile = () => {
           src={
             user !== null && typeof profileImg === 'string'
               ? profileImg
-              : ic_profile_3x
+              : ic_user_default_3x
           }
           onClick={onClickOpenModalHandler}
-          className="w-[85px] h-[85px] rounded-full object-cover border cursor-pointer bg-white"
+          className="w-[85px] h-[85px] rounded-full object-cover border-[5px] border-[#e4e4e4] cursor-pointer bg-white"
         />
         <p className="text-white text-base">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>

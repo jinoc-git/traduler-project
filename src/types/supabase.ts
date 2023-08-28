@@ -17,8 +17,8 @@ export interface Database {
           user_id: string;
         };
         Insert: {
-          created_at: string;
-          id: string;
+          created_at?: string;
+          id?: string;
           plan_id: string;
           user_id: string;
         };
@@ -153,21 +153,21 @@ export interface Database {
       };
       users: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string | null;
           created_at: string;
           email: string;
           id: string;
           nickname: string;
         };
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string | null;
           created_at?: string;
           email: string;
           id: string;
           nickname: string;
         };
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string | null;
           created_at?: string;
           email?: string;
           id?: string;
@@ -202,3 +202,4 @@ export interface Database {
 export type PinType = Database['public']['Tables']['pins']['Update'];
 export type UserType = Database['public']['Tables']['users']['Row'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];
+export type BookMarkType = Database['public']['Tables']['plans']['Insert'];

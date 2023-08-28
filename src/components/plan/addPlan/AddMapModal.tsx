@@ -8,6 +8,7 @@ import { updatePinStore } from '@store/updatePinStore';
 interface InputType {
   address?: string;
   placeName?: string;
+  cost?: number;
 }
 
 interface PropsType {
@@ -19,7 +20,6 @@ interface PropsType {
 const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   // 수정하기 눌렀을 때 해당 pin에 대한 정보를 store에서 불러옴
   const { pin, idx, resetPin } = updatePinStore();
-
   const [position, setPosition] = useState({
     La: 0,
     Ma: 0,
@@ -40,6 +40,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   } = useForm<InputType>({
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
+      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
 
@@ -131,6 +132,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       lat: position.La,
       lng: position.Ma,
       placeName: data.placeName as string,
+      cost: data.cost as number,
     };
 
     // 수정하기 시
@@ -229,6 +231,15 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             })}
           />
           <p>{errorsPlaceName?.placeName?.message}</p>
+          <label htmlFor="placeName">지출 비용</label>
+          <input
+            id="cost"
+            type="number"
+            placeholder="지출 비용을 입력해주세요."
+            {...registerPlaceName('cost', {
+              valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
+            })}
+          />
           <button
             type="submit"
             disabled={isSubmittingPlaceName || disabledSubmit()}
@@ -245,6 +256,10 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
           장소이름
           <br />
           {watchPlaceName('placeName')}
+          <br />
+          지출 비용
+          <br />
+          {watchPlaceName('cost')}
         </div>
         <button
           className="bg-slate-400"

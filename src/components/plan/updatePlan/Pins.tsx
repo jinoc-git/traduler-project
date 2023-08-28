@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { getPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-import MapModal from './MapModal';
 
 interface PropsType {
   currentPage: number;
@@ -23,6 +23,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
+    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPin(planId, currentPage),
   );
 
@@ -51,16 +52,62 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     },
   });
 
+  // 핀 거리 계산하기
+
+  const [distanceData, setDistanceData] = useState<string[]>([]);
+
+  const calPath = async () => {
+    const convertParameters = pinArr.map(({ lng, lat }) => {
+      if (lat !== undefined && lng !== undefined) {
+        return `${lng},${lat}`;
+      }
+      return undefined;
+    });
+
+    const newData: string[] = [];
+
+    for (let i = 0; i < convertParameters.length; i += 1) {
+      if (i === convertParameters.length - 1) {
+        break;
+      }
+
+      try {
+        const data = await getPath({
+          origin: convertParameters[i] as string,
+          destination: convertParameters[i + 1] as string,
+        });
+
+        const distanceInKm = data / 1000;
+        newData.push(distanceInKm.toFixed(1));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    setDistanceData(newData);
+  };
+
   useEffect(() => {
     if (pin !== undefined) {
       setPinArr(pin?.[0].contents as []);
     }
   }, [pin]);
 
+  useEffect(() => {
+    void calPath();
+  }, []);
+
+  useEffect(() => {
+    if (pinArr.length > 1) {
+      void calPath();
+    }
+  }, [pinArr]);
+
   return (
     <>
       <div>
         {pinArr.map((pin, idx: number) => {
+          const betweenDistanceData = distanceData[idx] ?? '';
+
           return (
             <div key={idx}>
               <p>{idx + 1}</p>
@@ -85,6 +132,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
               >
                 삭제
               </button>
+              {idx < pinArr.length - 1 && (
+                <div>
+                  <p>{betweenDistanceData}km</p>
+                </div>
+              )}
             </div>
           );
         })}

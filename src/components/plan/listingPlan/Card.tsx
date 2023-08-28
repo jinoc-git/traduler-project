@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type PlanType } from 'types/supabase';
@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
       : plan.plan_state === 'end',
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data != null) {
       setPlanningCount(
         data.filter((plan) => plan.plan_state === 'planning').length,
@@ -80,13 +80,13 @@ const Card: React.FC<CardProps> = ({ data }) => {
           const koreanEndDay = daysInKorean[endDayOfWeek];
 
           return (
-            <div
-              key={plan.id}
-              onClick={() => {
-                navigate(`/plan/${plan.id}`);
-              }}
-            >
-              <div className="flex mb-4 border-2 w-[1000px] h-[200px]">
+            <div key={plan.id}>
+              <div
+                className="flex mb-4 border-2 w-[800px] h-[200px]"
+                onClick={() => {
+                  navigate(`/plan/${plan.id}`);
+                }}
+              >
                 <div className="w-1/5 h-12">
                   {plan.plan_state === 'planning'
                     ? '예정된 여행'

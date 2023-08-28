@@ -25,7 +25,7 @@ const Profile = () => {
               : ic_profile_3x
           }
           onClick={onClickOpenModalHandler}
-          className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer bg-white"
+          className="w-[85px] h-[85px] rounded-full object-cover border cursor-pointer bg-white"
         />
         <p className="text-white text-base">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>

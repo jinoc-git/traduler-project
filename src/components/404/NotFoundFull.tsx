@@ -1,7 +1,7 @@
 import React from 'react';
 
 const NotFoundFull = () => {
-  const goBack = () => (window.location.href = '/');
+  const goBack = () => (window.location.href = '/main');
   setTimeout(goBack, 4000);
   return (
     <aside>

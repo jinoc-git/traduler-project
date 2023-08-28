@@ -3,10 +3,9 @@ import { useParams } from 'react-router-dom';
 
 import { getPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-import MapModal from './MapModal';
 
 interface PropsType {
   currentPage: number;

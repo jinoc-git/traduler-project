@@ -25,7 +25,7 @@ const AddPlanContents = ({
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
-  const { dates } = datesStore();
+  const { oldDates, dates } = datesStore();
 
   // pin 수정 버튼
   const { updateClick } = updatePinStore();
@@ -47,36 +47,16 @@ const AddPlanContents = ({
   };
 
   useEffect(() => {
-    // pins에 내용이 없을 떄
-    if (pins.length === 0) {
-      setCurrentPage(() => 0);
-      setPins(() => {
-        const newPins = [];
-        for (let i = 0; i < dates.length; i++) {
-          newPins.push([]);
-        }
-        return newPins;
-      });
-    }
-    // pins에 내용이 있을 때
-    else {
-      // eslint-disable-next-line no-useless-return
-      if (pins.length === dates.length) return;
-      else {
-        setCurrentPage(() => 0);
-        setPins((state) => {
-          const newPins: PinContentsType[][] = [];
-          for (let i = 0; i < dates.length; i++) {
-            if (state[i] !== undefined) {
-              newPins.push(state[i]);
-            } else {
-              newPins.push([]);
-            }
-          }
-          return newPins;
-        });
+    setCurrentPage(() => 0);
+    const newPins: PinContentsType[][] = [];
+    dates.forEach((date) => {
+      if (!oldDates.includes(date)) {
+        newPins.push([]);
+      } else {
+        newPins.push(pins[oldDates.indexOf(date)]);
       }
-    }
+    });
+    setPins(() => newPins);
   }, [dates]);
 
   return (

@@ -173,6 +173,21 @@ export const checkUserNickname = async (nickname: string) => {
   }
 };
 
+export const checkUserEmail = async (email: string) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('email')
+    .eq('email', email);
+
+  console.log(error);
+  if (data !== null && data.length === 0) {
+    return true;
+  }
+  if (data !== null && data.length > 0) {
+    return false;
+  }
+};
+
 export const updateUserNickname = async (nickname: string, userId: string) => {
   const { data } = await supabase.auth.updateUser({
     data: { nickname },

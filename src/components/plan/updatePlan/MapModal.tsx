@@ -12,6 +12,7 @@ import _ from 'lodash';
 interface InputType {
   address?: string;
   placeName?: string;
+  cost?: number;
 }
 
 const MapModal = ({
@@ -38,6 +39,7 @@ const MapModal = ({
   } = useForm<InputType>({
     defaultValues: {
       placeName: pin !== null ? (pin.placeName as string) : '',
+      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
   const { id } = useParams();
@@ -57,6 +59,7 @@ const MapModal = ({
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
+      cost: data.cost as number,
     };
 
     // 수정하기 시
@@ -195,6 +198,12 @@ const MapModal = ({
             })}
           />
           <p>{errorsPlaceName?.placeName?.message}</p>
+          <label htmlFor="placeName">지출 비용</label>
+          <input
+            id="cost"
+            type="number"
+            placeholder="지출 비용을 입력해주세요."
+          />
           <button
             type="submit"
             disabled={disabledSubmit()}

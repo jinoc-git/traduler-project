@@ -56,11 +56,6 @@ const AddPlan = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // 세 자릿 수마다 쉼표 추가
-  // const formatCommas = (number: number) => {
-  //   return number.toLocaleString();
-  // };
-
   useEffect(() => {
     resetDates();
   }, []);
@@ -98,7 +93,7 @@ const AddPlan = () => {
           <div className="text-[16px] font-semibold mr-[50px]">전체 예산</div>
           <input
             className="text-[14px] font-medium border rounded-lg p-1"
-            type="text"
+            type="number"
             value={totalCost}
             placeholder="예산을 입력하세요."
             onChange={(event) => {

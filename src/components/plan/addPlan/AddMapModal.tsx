@@ -10,6 +10,7 @@ import _ from 'lodash';
 interface InputType {
   address?: string;
   placeName?: string;
+  cost?: number;
 }
 
 interface PropsType {
@@ -36,6 +37,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   } = useForm<InputType>({
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
+      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
 
@@ -51,6 +53,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
+      cost: data.cost as number,
     };
 
     // 수정하기 시
@@ -156,8 +159,16 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
               className="border border-#4f4f4f rounded-lg p-3"
             />
             <p>{errors?.address?.message}</p>
+            <label htmlFor="placeName">지출 비용</label>
+            <input
+              id="cost"
+              type="number"
+              placeholder="지출 비용을 입력해주세요."
+              {...registerPlaceName('cost', {
+                valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
+              })}
+            />
           </div>
-          {watch('address')}
           <Map
             center={{
               lat: pin != null ? (pin.lat as number) : 37.566826004661,
@@ -197,16 +208,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             </button>
           </div>
         </form>
-
-        {/* <div>
-          위도, 경도
-          <br />
-          {position.lat}, {position.lng}
-          <br />
-          장소이름
-          <br />
-          {watchPlaceName('placeName')}
-        </div> */}
       </div>
     </div>
   );

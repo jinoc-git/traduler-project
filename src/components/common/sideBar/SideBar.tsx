@@ -55,7 +55,7 @@ const SideBar: React.FC = () => {
     >
       <div className="flex flex-col gap-[20px]">
         <div>
-          <div>여행 중</div>
+          <div>여행중</div>
         </div>
         <div>
           <div

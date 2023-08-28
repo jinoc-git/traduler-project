@@ -78,7 +78,8 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           destination: convertParameters[i + 1] as string,
         });
 
-        newData.push(JSON.stringify(data));
+        const distanceInKm = data / 1000; // Convert meters to kilometers
+        newData.push(distanceInKm.toFixed(1));
       } catch (err) {
         console.log(err);
       }
@@ -92,24 +93,37 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
+  // calPath를 바로 반영하며, 데이터를 불러오는 것
+  useEffect(() => {
+    void calPath();
+
+    // After calPath completes, update distanceData
+    const interval = setInterval(() => {
+      if (distanceData.length === pinArr.length - 1) {
+        clearInterval(interval);
+        setDistanceData([...distanceData]);
+      }
+    }, 100); // Check every 100 milliseconds
+
+    return () => {
+      clearInterval(interval); // Clean up the interval if component unmounts
+    };
+  }, []); // Run once after initial render
+
   return (
     <>
       <div>
         {pinArr.map((pin, idx: number) => {
+          const betweenDistanceData = distanceData[idx] ?? '';
+
           return (
             <div key={idx}>
               <p>{idx + 1}</p>
-              <div>
-                {distanceData.map((data, idx) => (
-                  <p key={idx}>{data}</p>
-                ))}
-              </div>
               <p>
                 {pin !== null &&
                   typeof pin === 'object' &&
                   'placeName' in pin && <span>{pin.placeName as string}</span>}
               </p>
-
               <button
                 className="m-4 bg-slate-400"
                 onClick={() => {
@@ -126,18 +140,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
               >
                 삭제
               </button>
+              {idx < pinArr.length - 1 && (
+                <div>
+                  <p>{betweenDistanceData}Km</p>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
-      <p
-        onClick={() => {
-          void calPath();
-        }}
-      >
-        거리 불러오기
-      </p>
-
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>

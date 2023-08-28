@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { getPath } from '@api/path';
 import { type PinContentsType } from '@api/pins';
 import { addPlan } from '@api/plans';
 import PostPlan from '@components/plan/PostPlan';
@@ -52,33 +51,6 @@ const AddPlan = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // 핀 거리 계산하기
-  const calPath = async (dateOrder: number) => {
-    const convertParameters = pins[dateOrder].map(({ lng, lat }) => {
-      if (lat !== undefined && lng !== undefined) {
-        return `${lng},${lat}`;
-      }
-      return undefined;
-    });
-
-    for (let i = 0; i < convertParameters.length; i += 1) {
-      if (i === convertParameters.length - 1) {
-        break;
-      }
-
-      await getPath({
-        origin: convertParameters[i] as string,
-        destination: convertParameters[i + 1] as string,
-      })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
   return (
     <>
       <input
@@ -113,13 +85,7 @@ const AddPlan = () => {
         </button>
       </form>
       <p>링크 공유하기</p>
-      <p
-        onClick={() => {
-          void calPath(0);
-        }}
-      >
-        친구 초대하기
-      </p>
+      <p>친구 초대하기</p>
       <PostPlan />
       <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
         {dates.length !== 0 ? (

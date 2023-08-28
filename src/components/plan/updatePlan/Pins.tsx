@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { getPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -52,6 +53,39 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     },
   });
 
+  // 핀 거리 계산하기
+
+  const [distanceData, setDistanceData] = useState<string[]>([]);
+
+  const calPath = async () => {
+    const convertParameters = pinArr.map(({ lng, lat }) => {
+      if (lat !== undefined && lng !== undefined) {
+        return `${lng},${lat}`;
+      }
+      return undefined;
+    });
+
+    const newData: string[] = [];
+
+    for (let i = 0; i < convertParameters.length; i += 1) {
+      if (i === convertParameters.length - 1) {
+        break;
+      }
+
+      try {
+        const data = await getPath({
+          origin: convertParameters[i] as string,
+          destination: convertParameters[i + 1] as string,
+        });
+
+        newData.push(JSON.stringify(data));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    setDistanceData(newData);
+  };
+
   useEffect(() => {
     if (pin !== undefined) {
       setPinArr(pin?.[0].contents as []);
@@ -65,11 +99,17 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           return (
             <div key={idx}>
               <p>{idx + 1}</p>
+              <div>
+                {distanceData.map((data, idx) => (
+                  <p key={idx}>{data}</p>
+                ))}
+              </div>
               <p>
                 {pin !== null &&
                   typeof pin === 'object' &&
                   'placeName' in pin && <span>{pin.placeName as string}</span>}
               </p>
+
               <button
                 className="m-4 bg-slate-400"
                 onClick={() => {
@@ -90,6 +130,14 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           );
         })}
       </div>
+      <p
+        onClick={() => {
+          void calPath();
+        }}
+      >
+        거리 불러오기
+      </p>
+
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>

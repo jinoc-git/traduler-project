@@ -7,6 +7,7 @@ export interface PinContentsType {
   lng?: number;
   placeName?: string;
   cost?: number;
+  distance?: number | undefined;
 }
 
 export interface AddPinType {

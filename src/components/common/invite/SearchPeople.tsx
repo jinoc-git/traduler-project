@@ -12,7 +12,6 @@ interface InputType {
 const SearchPeople = () => {
   const {
     register,
-    handleSubmit,
     formState: { errors },
   } = useForm<InputType>();
   const [people, setPeople] = useState<UserType[]>([]);
@@ -28,28 +27,26 @@ const SearchPeople = () => {
 
   return (
     <div className="absolute w-[300px] h-[200px] bg-white border rounded-lg flex flex-col z-10 ">
-      <form onSubmit={handleSubmit(debouncedSearchUser)}>
-        <label>친구찾기</label>
-        <div className="flex flex-col">
-          <input
-            placeholder="이메일이나 닉네임을 입력하세요."
-            {...register('userInfo', {
-              required: '필수 입력값입니다.',
-              minLength: {
-                value: 2,
-                message: '2글자 이상 입력하세요.',
-              },
-              pattern: {
-                value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-            onChange={(e) => debouncedSearchUser({ userInfo: e.target.value })}
-            className="w-[250px] border rounded-lg outline-none"
-          />
-          <p>{errors?.userInfo?.message}</p>
-        </div>
-      </form>
+      <label>친구찾기</label>
+      <div className="flex flex-col">
+        <input
+          placeholder="이메일이나 닉네임을 입력하세요."
+          {...register('userInfo', {
+            required: '필수 입력값입니다.',
+            minLength: {
+              value: 2,
+              message: '2글자 이상 입력하세요.',
+            },
+            pattern: {
+              value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+              message: '모음, 자음 안됨',
+            },
+          })}
+          onChange={(e) => debouncedSearchUser({ userInfo: e.target.value })}
+          className="w-[250px] border rounded-lg outline-none"
+        />
+        <p>{errors?.userInfo?.message}</p>
+      </div>
       {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
       <div className="overflow-scroll">
         {people.map((person: UserType, idx) => {

@@ -52,13 +52,9 @@ const AddPlan = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // 세 자릿 수마다 쉼표 추가
-  // const formatCommas = (number: number) => {
-  //   return number.toLocaleString();
-  // };
-
-  const calPath = async (dateOrderNumber: number) => {
-    const convertParameters = pins[dateOrderNumber].map(({ lng, lat }) => {
+  // 핀 거리 계산하기
+  const calPath = async (dateOrder: number) => {
+    const convertParameters = pins[dateOrder].map(({ lng, lat }) => {
       if (lat !== undefined && lng !== undefined) {
         return `${lng},${lat}`;
       }

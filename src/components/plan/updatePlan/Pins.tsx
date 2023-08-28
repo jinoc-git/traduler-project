@@ -78,7 +78,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           destination: convertParameters[i + 1] as string,
         });
 
-        const distanceInKm = data / 1000; // Convert meters to kilometers
+        const distanceInKm = data / 1000;
         newData.push(distanceInKm.toFixed(1));
       } catch (err) {
         console.log(err);
@@ -93,22 +93,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
-  // calPath를 바로 반영하며, 데이터를 불러오는 것
   useEffect(() => {
     void calPath();
+  }, []);
 
-    // After calPath completes, update distanceData
-    const interval = setInterval(() => {
-      if (distanceData.length === pinArr.length - 1) {
-        clearInterval(interval);
-        setDistanceData([...distanceData]);
-      }
-    }, 100); // Check every 100 milliseconds
-
-    return () => {
-      clearInterval(interval); // Clean up the interval if component unmounts
-    };
-  }, []); // Run once after initial render
+  useEffect(() => {
+    if (pinArr.length > 1) {
+      void calPath();
+    }
+  }, [pinArr]);
 
   return (
     <>
@@ -142,7 +135,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
               </button>
               {idx < pinArr.length - 1 && (
                 <div>
-                  <p>{betweenDistanceData}Km</p>
+                  <p>{betweenDistanceData}km</p>
                 </div>
               )}
             </div>

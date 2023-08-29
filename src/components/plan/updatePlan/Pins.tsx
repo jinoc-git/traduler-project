@@ -115,6 +115,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                   typeof pin === 'object' &&
                   'placeName' in pin && <span>{pin.placeName as string}</span>}
               </p>
+              <p>
+                {pin !== null && typeof pin === 'object' && 'cost' in pin && (
+                  <span>￦{pin.cost}</span>
+                )}
+              </p>
               <button
                 className="m-4 bg-slate-400"
                 onClick={() => {

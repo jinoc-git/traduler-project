@@ -91,14 +91,14 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   }, [startDate, endDate]);
 
   return (
-    <div className="h-[300px]">
+    <>
       <Calendar
         startDate={startDate}
         endDate={endDate}
         StartDateChangeHandler={StartDateChangeHandler}
         EndDateChangeHandler={EndDateChangeHandler}
       />
-    </div>
+    </>
   );
 };
 

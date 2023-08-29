@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { findusers } from '@api/users';
+import { findUsers } from '@api/planMates';
 import { inviteUserStore } from '@store/inviteUserStore';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
@@ -20,7 +20,7 @@ const SearchPeople = () => {
 
   // users 테이블에서 닉네임이나 이메일이 includes되는 것들을 가져와서 검색결과로 보여주기
   const searchUser: SubmitHandler<InputType> = async (data) => {
-    const res = await findusers(data.userInfo);
+    const res = await findUsers(data.userInfo);
     if (res.nickname != null && res.email != null) {
       const searchedPeople: UserType[] = [];
       searchedPeople.push(...res.nickname);
@@ -42,12 +42,8 @@ const SearchPeople = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(people);
-  }, [people]);
-
   return (
-    <div className="w-[300px] h-[200px] bg-white border rounded-lg flex flex-col z-10 ">
+    <div className="absolute w-[500px] h-[250px] bg-white border rounded-lg flex flex-col z-20 right-[335px]">
       <label>친구찾기</label>
       <div className="flex flex-col">
         <input

@@ -22,7 +22,7 @@ const Calendar: React.FC<CalendarProps> = ({
   // const today = new Date();
 
   return (
-    <>
+    <div className="relative z-10 flex items-center gap-3">
       <label>여행 시작날짜</label>
       &nbsp;
       <DatePicker
@@ -37,11 +37,9 @@ const Calendar: React.FC<CalendarProps> = ({
         startDate={startDate}
         endDate={endDate}
         locale="ko"
-        className="react-datepicker"
+        className="outline-none cursor-pointer react-datepicker"
       />
-      &nbsp;
       <label>여행 마지막날짜</label>
-      &nbsp;
       <DatePicker
         dateFormat="yyyy년 MM월 dd일"
         shouldCloseOnSelect
@@ -53,9 +51,9 @@ const Calendar: React.FC<CalendarProps> = ({
         endDate={endDate}
         minDate={startDate}
         locale="ko"
-        className="react-datepicker"
+        className="outline-none cursor-pointer react-datepicker"
       />
-    </>
+    </div>
   );
 };
 

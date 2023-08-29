@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
-import { ic_profile_3x } from '@assets/icons/3x';
+import { defaultImageGray } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
@@ -43,7 +43,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const isAvatarChanged = preview?.length !== 0;
   const isNicknameChanged = nickname !== '';
-  
+
   const shouldBlockSubmitBtn = isRemoveAvatar
     ? false
     : (!isAvatarChanged && !isNicknameChanged) ||
@@ -170,7 +170,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         </button>
         <label htmlFor="avatar">
           <img
-            src={previewImg !== '' ? previewImg : ic_profile_3x}
+            src={previewImg !== '' ? previewImg : defaultImageGray}
             alt="프로필이미지"
             className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer"
           />

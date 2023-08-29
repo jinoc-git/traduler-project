@@ -33,6 +33,7 @@ const Calendar: React.FC<CalendarProps> = ({
         onChange={(date) => {
           StartDateChangeHandler(date);
         }}
+        maxDate={endDate}
         selectsStart
         startDate={startDate}
         endDate={endDate}

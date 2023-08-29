@@ -65,6 +65,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
             new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
         )
         .map((plan) => {
+          console.log(plan)
           const [startYear, startMonth, startDay] = plan.dates[0].split('-');
           const [endYear, endMonth, endDay] =
             plan.dates[plan.dates.length - 1].split('-');

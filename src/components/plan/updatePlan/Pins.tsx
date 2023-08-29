@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getPath } from '@api/path';
+import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import IconPin from '@assets/icons/IconPin';
+import IconSixDots from '@assets/icons/IconSixDots';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface PropsType {
@@ -59,36 +62,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   const [distanceData, setDistanceData] = useState<string[]>([]);
 
-  const calPath = async () => {
-    const convertParameters = pinArr.map(({ lng, lat }) => {
-      if (lat !== undefined && lng !== undefined) {
-        return `${lng},${lat}`;
-      }
-      return undefined;
-    });
-
-    const newData: string[] = [];
-
-    for (let i = 0; i < convertParameters.length; i += 1) {
-      if (i === convertParameters.length - 1) {
-        break;
-      }
-
-      try {
-        const data = await getPath({
-          origin: convertParameters[i] as string,
-          destination: convertParameters[i + 1] as string,
-        });
-
-        const distanceInKm = data / 1000;
-        newData.push(distanceInKm.toFixed(1));
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    setDistanceData(newData);
-  };
-
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
       setPinArr(pin?.[0].contents as []);
@@ -96,50 +69,69 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   }, [pin]);
 
   useEffect(() => {
+    const getCalcPathData = async (data: PinContentsType[]) => {
+      const pathData = await calcPath(data);
+      setDistanceData(pathData);
+    };
     if (pinArr.length > 1) {
-      void calPath();
+      void getCalcPathData(pinArr);
     }
   }, [pinArr]);
 
   return (
     <>
+      <div className="flex gap-3">
+        <IconPin />
+        <h3>방문할 장소</h3>
+      </div>
       <ul>
-        {pinArr.map((pin, idx: number) => {
+        {pinArr.map((pin, idx) => {
           const betweenDistanceData = distanceData[idx] ?? '';
           return (
-            <li key={idx}>
-              <p>{idx + 1}</p>
-              <p>
-                {pin !== null &&
-                  typeof pin === 'object' &&
-                  'placeName' in pin && <span>{pin.placeName as string}</span>}
-              </p>
-              <p>
-                {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-                  <span>￦{pin.cost}</span>
+            <li key={uuid()} className=" flex h-[100px]">
+              <div>
+                <p>{idx + 1}</p>
+                {idx < pinArr.length - 1 && (
+                  <div>
+                    <p>{betweenDistanceData}km</p>
+                  </div>
                 )}
-              </p>
-              <button
-                className="m-4 bg-slate-400"
-                onClick={() => {
-                  handleUpdate(idx);
-                }}
-              >
-                수정
-              </button>
-              <button
-                className="m-4 bg-slate-400"
-                onClick={() => {
-                  handleDelete(idx);
-                }}
-              >
-                삭제
-              </button>
-              {idx < pinArr.length - 1 && (
+              </div>
+              <div className="flex">
+                <IconSixDots fill="orange" />
                 <div>
-                  <p>{betweenDistanceData}km</p>
+                  <p>
+                    {pin !== null &&
+                      typeof pin === 'object' &&
+                      'placeName' in pin && (
+                        <span>{pin.placeName as string}</span>
+                      )}
+                  </p>
+                  <p>
+                    {pin !== null &&
+                      typeof pin === 'object' &&
+                      'cost' in pin && <span>￦{pin.cost}</span>}
+                  </p>
                 </div>
-              )}
+              </div>
+              <div>
+                <button
+                  className="m-4 bg-slate-400"
+                  onClick={() => {
+                    handleUpdate(idx);
+                  }}
+                >
+                  수정
+                </button>
+                <button
+                  className="m-4 bg-slate-400"
+                  onClick={() => {
+                    handleDelete(idx);
+                  }}
+                >
+                  삭제
+                </button>
+              </div>
             </li>
           );
         })}

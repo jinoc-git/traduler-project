@@ -51,5 +51,5 @@ export const calcPath = async (pinArr: PinContentsType[]) => {
     }
   }
 
-  return newData
+  return newData;
 };

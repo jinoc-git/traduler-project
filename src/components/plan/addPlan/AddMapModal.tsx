@@ -27,7 +27,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   });
   const {
     register,
-    watch,
     formState: { errors },
   } = useForm<InputType>();
   const {

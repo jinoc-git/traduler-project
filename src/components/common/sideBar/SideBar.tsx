@@ -8,12 +8,13 @@ import {
   ic_planned_time_1x,
   ic_previous_time_1x,
 } from '@assets/icons/1x';
-import { useSidebarStore } from '@store/sidebarStore';
+import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type PlanType } from 'types/supabase';
 
 const SideBar: React.FC = () => {
-  const isMenuOpen = useSidebarStore((state) => state.isMenuOpen);
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
@@ -45,103 +46,115 @@ const SideBar: React.FC = () => {
     (plan) => plan.plan_state === 'planning',
   );
 
-  return (
+  return isVisibleSideBar ? (
     <aside
-      className={`fixed mt-[50px] h-[100vh] w-[250px] bg-gray-200 transition-all overflow-hidden duration-300 ease-in-out border-r-10 ${
-        isMenuOpen ? 'w-[250px] ' : 'w-[50px]'
+      className={`fixed mt-[50px] h-[100vh] w-[250px] bg-gray-200 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
+        isSideBarOpen ? 'w-[250px] ' : 'w-[50px]'
       }`}
       style={{ zIndex: 10 }}
     >
       <div className="flex flex-col gap-[20px]">
         <div>
-          <div>여행 중</div>
+          <div>여행중</div>
         </div>
         <div>
           <div
-            className="flex w-[250px] items-center cursor-pointer"
+            className="flex w-[250px] justify-between items-center cursor-pointer"
             onClick={() => {
               setFavoritePlansOpen(!favoritePlansOpen);
             }}
           >
-            <img src={ic_favorite_default_1x} />{' '}
-            <span className="ml-[35px]">즐겨찾기 한 목록 </span>
-            <img src={ic_chevron_down_1x} alt="다운버튼" className="ml-2" />
+            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
+              <img src={ic_favorite_default_1x} />{' '}
+            </button>
+            <span className="w-[121px]">즐겨찾기 한 목록 </span>
+            <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
           </div>
-          {isMenuOpen && (
-            <div className="pl-[65px]">
-              <p className="text-sm"> 장소 이름(기간)</p>
-              <p className="text-sm">장소 이름(기간)</p>
-              <p className="text-sm">장소 이름(기간)</p>
-            </div>
-          )}
+          <ul>
+            {isSideBarOpen && (
+              <li className="pl-[65px]">
+                <p className="text-sm"> 장소 이름(기간)</p>
+                <p className="text-sm">장소 이름(기간)</p>
+                <p className="text-sm">장소 이름(기간)</p>
+              </li>
+            )}
+          </ul>
         </div>
 
         <div>
           <div
-            className="flex w-[250px] items-center cursor-pointer"
+            className="flex w-[250px] justify-between items-center cursor-pointer"
             onClick={() => {
               setStartPlansOpen(!startPlansOpen);
             }}
           >
-            <img src={ic_planned_time_1x} />
-            <span className="ml-[35px]">예정된 여행 </span>
+            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
+              <img src={ic_planned_time_1x} />
+            </button>
+            <span className="w-[121px]">예정된 여행 </span>
             <img
               src={
-                isMenuOpen && startPlansOpen
+                isSideBarOpen && startPlansOpen
                   ? ic_chevron_up_1x
                   : ic_chevron_down_1x
               }
               alt="다운버튼"
-              className="ml-2"
+              className="mr-5"
             />
           </div>
-          {isMenuOpen &&
-            startPlansOpen &&
-            startPlans.map((plan) => {
-              return (
-                <div className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
-                  <p className="text-sm">{plan.title}</p>
-                  <span className="text-sm">
-                    {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                  </span>
-                </div>
-              );
-            })}
+          <ul>
+            {isSideBarOpen &&
+              startPlansOpen &&
+              startPlans.map((plan) => {
+                return (
+                  <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
+                    <p className="text-sm">{plan.title}</p>
+                    <span className="text-sm">
+                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                    </span>
+                  </li>
+                );
+              })}
+          </ul>
         </div>
         <div>
           <div
-            className="flex w-[250px] items-center cursor-pointer"
+            className="flex w-[250px] justify-between items-center cursor-pointer"
             onClick={() => {
               setEndPlansOpen(!endPlansOpen);
             }}
           >
-            <img src={ic_previous_time_1x} />
-            <span className="ml-[35px]">다녀온 여행 </span>
+            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
+              <img src={ic_previous_time_1x} />
+            </button>
+            <span className="w-[121px]">다녀온 여행 </span>
             <img
               src={
-                isMenuOpen && endPlansOpen
+                isSideBarOpen && endPlansOpen
                   ? ic_chevron_up_1x
                   : ic_chevron_down_1x
               }
               alt="다운버튼"
-              className="ml-2"
+              className="mr-5"
             />
           </div>
-          {isMenuOpen &&
-            endPlansOpen &&
-            endPlans.map((plan) => {
-              return (
-                <div className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
-                  <p className="text-sm">{plan.title}</p>
-                  <span className="text-sm">
-                    {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                  </span>
-                </div>
-              );
-            })}
+          <ul>
+            {isSideBarOpen &&
+              endPlansOpen &&
+              endPlans.map((plan) => {
+                return (
+                  <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
+                    <p className="text-sm">{plan.title}</p>
+                    <span className="text-sm">
+                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                    </span>
+                  </li>
+                );
+              })}
+          </ul>
         </div>
       </div>
     </aside>
-  );
+  ) : null;
 };
 export default SideBar;

@@ -1,6 +1,7 @@
 import { supabase } from './supabaseAuth';
 
-export const findusers = async (input: string) => {
+// 친구 검색
+export const findUsers = async (input: string) => {
   const { data: nickname, error } = await supabase
     .from('users')
     .select()
@@ -14,11 +15,18 @@ export const findusers = async (input: string) => {
     console.log('에러발생');
   }
 
-  // const res = [];
-  // if (nickname != null && email != null) {
-  //   res.push(nickname[0]?.nickname);
-  //   res.push(email[0]?.email);
-  // }
-
   return { nickname, email };
+};
+
+// 초대한 목록 가져오기
+export const getMates = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('plan_mates')
+    .select('users_id')
+    .eq('id', planId);
+  if (error != null) {
+    console.log(error);
+  }
+  console.log('api', data);
+  return data;
 };

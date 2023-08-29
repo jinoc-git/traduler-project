@@ -34,17 +34,16 @@ const UpdatePlan = () => {
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: plan, isLoading } = useQuery(
     ['plan'],
-    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPlan(planId),
   );
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
-    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPin(planId, currentPage),
   );
 
   useEffect(() => {
-    if (pin !== undefined) {
+    if (pin != null && pin.length !== 0) {
+      console.log(pin);
       console.log(pin?.[0].contents);
       setPinArr(pin?.[0].contents as []);
     }
@@ -91,7 +90,7 @@ const UpdatePlan = () => {
                 ? (pinArr[0].lng as number)
                 : 126.978652258309,
           }}
-          style={{ width: '100vw', height: '500px' }}
+          style={{ width: '95%', height: '400px', borderRadius: '8px' }}
           level={3}
         >
           {pinArr?.map((pin, idx) => {

@@ -87,7 +87,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   };
 
   useEffect(() => {
-    if (pin !== undefined) {
+    if (pin != null && pin.length !== 0) {
       setPinArr(pin?.[0].contents as []);
     }
   }, [pin]);
@@ -107,7 +107,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       <div>
         {pinArr.map((pin, idx: number) => {
           const betweenDistanceData = distanceData[idx] ?? '';
-
           return (
             <div key={idx}>
               <p>{idx + 1}</p>

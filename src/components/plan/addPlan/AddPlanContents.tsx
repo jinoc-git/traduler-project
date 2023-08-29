@@ -10,10 +10,9 @@ import {
 } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
+import AddMapModal from '@components/plan/addPlan/AddMapModal';
 import { datesStore } from '@store/datesStore';
 import { updatePinStore } from '@store/updatePinStore';
-
-import AddMapModal from './AddMapModal';
 
 interface PropsType {
   currentPage: number;

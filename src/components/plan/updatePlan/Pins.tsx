@@ -17,28 +17,19 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+
   const { id } = useParams();
   const planId: string = id as string;
   // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
+
+  const queryClient = useQueryClient();
+
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
-    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPin(planId, currentPage),
   );
 
-  const { updateClick } = updatePinStore();
-  const handleUpdate = (idx: number) => {
-    const updatePin = pinArr[idx];
-    updateClick(updatePin, idx);
-    openModal();
-  };
-  const handleDelete = (idx: number) => {
-    const deletedPin = pinArr.filter((pin, i) => i !== idx);
-    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
-  };
-
-  const queryClient = useQueryClient();
   const deletemutation = useMutation({
     mutationFn: async ([date, planId, deletedPin]: [
       string,
@@ -51,6 +42,18 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       void queryClient.invalidateQueries({ queryKey: ['pin'] });
     },
   });
+
+  const { updateClick } = updatePinStore();
+
+  const handleUpdate = (idx: number) => {
+    const updatePin = pinArr[idx];
+    updateClick(updatePin, idx);
+    openModal();
+  };
+  const handleDelete = (idx: number) => {
+    const deletedPin = pinArr.filter((pin, i) => i !== idx);
+    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
+  };
 
   // 핀 거리 계산하기
 
@@ -93,10 +96,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   }, [pin]);
 
   useEffect(() => {
-    void calPath();
-  }, []);
-
-  useEffect(() => {
     if (pinArr.length > 1) {
       void calPath();
     }
@@ -104,11 +103,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   return (
     <>
-      <div>
+      <ul>
         {pinArr.map((pin, idx: number) => {
           const betweenDistanceData = distanceData[idx] ?? '';
           return (
-            <div key={idx}>
+            <li key={idx}>
               <p>{idx + 1}</p>
               <p>
                 {pin !== null &&
@@ -136,10 +135,10 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                   <p>{betweenDistanceData}km</p>
                 </div>
               )}
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>

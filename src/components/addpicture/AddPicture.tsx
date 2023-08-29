@@ -64,8 +64,6 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
         </div>
       ) : null}
       {imgSrcList?.map((el, i) => {
-        console.log('12312313', el);
-
         return (
           <div
             key={i}

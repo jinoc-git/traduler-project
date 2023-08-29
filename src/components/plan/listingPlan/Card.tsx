@@ -79,7 +79,6 @@ const Card: React.FC<CardProps> = ({ data }) => {
           const koreanStartDay = daysInKorean[startDayOfWeek];
           const koreanEndDay = daysInKorean[endDayOfWeek];
 
-          console.log('나나나나나나나나', plan);
           const isFavorite = plan.book_mark.find(
             (pId: { plan_id: string }) => pId.plan_id === plan.id,
           );

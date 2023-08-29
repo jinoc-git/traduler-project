@@ -23,7 +23,6 @@ const CardSection = () => {
   if (data === undefined) {
     return <div>로딩중 ...</div>;
   }
-  console.log('나 데이터', data);
   return (
     <section className="main-layout">
       <div></div>

@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router';
 import Profile from '@components/main/profile/Profile';
 // import Pay from '@components/pay/pay';
 import CardSection from '@components/plan/listingPlan/CardSection';
-<<<<<<< HEAD
-import { useSidebarStore } from '@store/sidebarStore';
-=======
 import { sideBarStore } from '@store/sideBarStore';
->>>>>>> d102d688c2d623aa27aeb85dc23a92e267f926f9
 
 const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);

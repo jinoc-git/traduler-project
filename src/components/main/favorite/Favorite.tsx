@@ -15,9 +15,9 @@ const Favorite: React.FC<FavoriteProps> = ({ isFavorite }) => {
   ) => {
     e.stopPropagation();
     if (isFavorite) {
-      console.log('ㅋㅋㅋㅋㅋ');
+      console.log('planId');
     } else {
-      console.log('ㅎㅎㅎㅎㅎ');
+      console.log('NplanId');
     }
     setStatus((prev) => !prev);
   };

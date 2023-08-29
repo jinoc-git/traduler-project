@@ -225,9 +225,6 @@ export type PinType = Database['public']['Tables']['pins']['Update'];
 export type PinInsertType = Database['public']['Tables']['pins']['Insert'];
 export type UserType = Database['public']['Tables']['users']['Row'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];
-<<<<<<< HEAD
 export type BookMarkType = Database['public']['Tables']['plans']['Insert'];
-=======
 export type PlanMatesType =
   Database['public']['Tables']['plan_mates']['Insert'];
->>>>>>> d102d688c2d623aa27aeb85dc23a92e267f926f9

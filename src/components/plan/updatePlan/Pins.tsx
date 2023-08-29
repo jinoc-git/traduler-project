@@ -10,6 +10,8 @@ import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import DropDown from './DropDown';
+
 interface PropsType {
   currentPage: number;
   dates: string[];
@@ -84,12 +86,12 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         <IconPin />
         <h3>방문할 장소</h3>
       </div>
-      <ul>
+      <ul className=" flex flex-col gap-4">
         {pinArr.map((pin, idx) => {
           const betweenDistanceData = distanceData[idx] ?? '';
           return (
-            <li key={uuid()} className=" flex h-[100px]">
-              <div>
+            <li key={uuid()} className=" flex gap-[10px] h-[100px]">
+              <div className="w-[65px]">
                 <p>{idx + 1}</p>
                 {idx < pinArr.length - 1 && (
                   <div>
@@ -97,9 +99,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                   </div>
                 )}
               </div>
-              <div className="flex">
-                <IconSixDots fill="orange" />
-                <div>
+              <div className="flex w-full border">
+                <button className=" flex justify-center items-center w-[50px] m-3">
+                  <IconSixDots fill="orange" />
+                </button>
+                <div className="flex flex-col justify-center gap-2 w-full">
                   <p>
                     {pin !== null &&
                       typeof pin === 'object' &&
@@ -113,24 +117,34 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                       'cost' in pin && <span>￦{pin.cost}</span>}
                   </p>
                 </div>
-              </div>
-              <div>
-                <button
-                  className="m-4 bg-slate-400"
-                  onClick={() => {
-                    handleUpdate(idx);
-                  }}
-                >
-                  수정
-                </button>
-                <button
-                  className="m-4 bg-slate-400"
-                  onClick={() => {
-                    handleDelete(idx);
-                  }}
-                >
-                  삭제
-                </button>
+                <div className="flex items-center">
+                  <DropDown>
+                    <ul className="absolute bg-white rounded-md">
+                      <li
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                        }}
+                        onClick={() => {
+                          handleUpdate(idx);
+                        }}
+                        className=" flex justify-center items-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
+                      >
+                        수정
+                      </li>
+                      <li
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                        }}
+                        onClick={() => {
+                          handleDelete(idx);
+                        }}
+                        className=" flex justify-center items-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
+                      >
+                        삭제
+                      </li>
+                    </ul>
+                  </DropDown>
+                </div>
               </div>
             </li>
           );

@@ -9,8 +9,8 @@ const IconSixDots = ({ w, h, fill }: IconType) => {
     <svg
       width={w || '25'}
       height={h || '29'}
-      viewBox="0 0 25 29"
-      fill='none'
+      viewBox={`0 0 ${w || '25'} ${h || '29'}`}
+      fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

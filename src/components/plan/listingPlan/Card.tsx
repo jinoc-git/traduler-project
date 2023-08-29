@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { formatPlanDates } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
 interface CardProps {
@@ -65,19 +66,22 @@ const Card: React.FC<CardProps> = ({ data }) => {
             new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
         )
         .map((plan) => {
-          const [startYear, startMonth, startDay] = plan.dates[0].split('-');
-          const [endYear, endMonth, endDay] =
-            plan.dates[plan.dates.length - 1].split('-');
-          const startDate = new Date(plan.dates[0]);
-          const endDate = new Date(plan.dates[plan.dates.length - 1]);
+          const { startDate, endDate } = formatPlanDates([plan])[0];
+          // console.log('plan=>', plan);
+          // console.log('formatPlanDates([plan])=>', formatPlanDates([plan]));
+          // const [startYear, startMonth, startDay] = plan.dates[0].split('-');
+          // const [endYear, endMonth, endDay] =
+          //   plan.dates[plan.dates.length - 1].split('-');
+          // const startDate = new Date(plan.dates[0]);
+          // const endDate = new Date(plan.dates[plan.dates.length - 1]);
 
-          // getDay 함수를 사용하여 요일을 추출합니다 (일요일: 0, 토요일: 6)
-          const startDayOfWeek = startDate.getDay();
-          const endDayOfWeek = endDate.getDay();
-          // 요일을 한글로 변환합니다
-          const daysInKorean = ['일', '월', '화', '수', '목', '금', '토'];
-          const koreanStartDay = daysInKorean[startDayOfWeek];
-          const koreanEndDay = daysInKorean[endDayOfWeek];
+          // // getDay 함수를 사용하여 요일을 추출합니다 (일요일: 0, 토요일: 6)
+          // const startDayOfWeek = startDate.getDay();
+          // const endDayOfWeek = endDate.getDay();
+          // // 요일을 한글로 변환합니다
+          // const daysInKorean = ['일', '월', '화', '수', '목', '금', '토'];
+          // const koreanStartDay = daysInKorean[startDayOfWeek];
+          // const koreanEndDay = daysInKorean[endDayOfWeek];
 
           return (
             <div key={plan.id}>
@@ -96,9 +100,11 @@ const Card: React.FC<CardProps> = ({ data }) => {
                 <div className="w-3/5 h-12">
                   <div>{plan.title}</div>
                   <div>
-                    {startYear}년{startMonth}월{startDay}일 ({koreanStartDay}) ~{' '}
-                    {endYear}년 {endMonth}월{endDay}일 ({koreanEndDay})
-                    {plan.dates.length - 1}박 {plan.dates.length}일
+                    {/* {startYear}년{startMonth}월{startDay}일 ({koreanStartDay}) ~{' '}
+                    {endYear}년 {endMonth}월{endDay}일 ({koreanEndDay}) */}
+                    {startDate}~{endDate} {plan.dates.length - 1}박{' '}
+                    {plan.dates.length}일
+                    {/* {plan.dates.length - 1}박 {plan.dates.length}일 */}
                   </div>
                   <div>멤버</div>
                 </div>

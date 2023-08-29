@@ -1,6 +1,6 @@
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { createClient } from '@supabase/supabase-js';
-import { type Database } from 'types/supabase';
+import { type UserType, type Database } from 'types/supabase';
 
 const supabase = createClient<Database>(
   'https://rkdykaeilrlrtrowawoe.supabase.co',
@@ -44,13 +44,7 @@ export const signUpWithSB = async (
   }
 };
 
-export interface InsertUserType {
-  id: string;
-  email: string;
-  nickname: string;
-}
-
-export const insertUser = async (user: InsertUserType) => {
+export const insertUser = async (user: UserType) => {
   const { id, email, nickname } = user;
   const { error } = await supabase.from('users').insert({
     id,

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Invite from '@components/common/invite/Invite';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 import { sideBarStore } from '@store/sideBarStore';
@@ -16,7 +17,7 @@ const Plan = () => {
       }`}
     >
       <PostPlan />
-      <div>친구 초대하기</div>
+      <Invite />
       <UpdatePlan />
     </main>
   );

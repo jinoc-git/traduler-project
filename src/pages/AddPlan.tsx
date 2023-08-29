@@ -10,13 +10,16 @@ import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
 import PostPlan from '@components/plan/PostPlan';
 import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
+import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
+import { type UserType } from 'types/supabase';
 
 interface InputType {
   title?: string;
 }
 
 const AddPlan = () => {
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const user = userStore((state) => state.user);
   const userId = user?.id;
   const { dates, resetDates } = datesStore();
@@ -30,7 +33,7 @@ const AddPlan = () => {
   } = useForm<InputType>();
 
   const [totalCost, setTotalCost] = useState('');
-  const { invitedUser, resetInvitedUser } = inviteUserStore();
+  const { invitedUser, inviteUser, resetInvitedUser } = inviteUserStore();
 
   const submitPlan = async () => {
     if (userId !== null) {
@@ -58,20 +61,30 @@ const AddPlan = () => {
 
   useEffect(() => {
     resetDates();
+    resetInvitedUser();
   }, []);
 
+  useEffect(() => {
+    inviteUser(user as UserType);
+  }, [user]);
+
   return (
-    <main>
+    <main
+      className={`transition-all duration-300  ease-in-out p-32 ${
+        isSideBarOpen
+          ? 'w-[calc(100vw-250px)] ml-[250px]'
+          : 'w-[calc(100vw-50px)] ml-[50px]'
+      }`}
+    >
       <Nav />
-      <form onSubmit={handleSubmit(submitPlan)}>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="p-3 bg-slate-500"
-        >
-          저장하기
-        </button>
-      </form>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="p-3 bg-slate-500"
+        onClick={handleSubmit(submitPlan)}
+      >
+        저장하기
+      </button>
       <div className="px-[210px] py-[100px]">
         <input
           id="title"

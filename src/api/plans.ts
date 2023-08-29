@@ -1,5 +1,10 @@
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-import { type Json, type PlanType } from 'types/supabase';
+import {
+  type PlanMatesType,
+  type Json,
+  type PlanType,
+  type UserType,
+} from 'types/supabase';
 
 import { type PinContentsType } from './pins';
 import { supabase } from './supabaseAuth';
@@ -10,6 +15,7 @@ export const addPlan = async (
   totalCost: number,
   pins: PinContentsType[][],
   dates: string[],
+  invitedUser: UserType[],
 ) => {
   const planId = uuid();
 
@@ -23,8 +29,10 @@ export const addPlan = async (
     plan_state: 'planning',
   };
 
+  // plan data 추가
   const { data, error } = await supabase.from('plans').insert(plan);
 
+  // 날짜별 pins data 추가
   for (let i = 0; i < dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,
@@ -36,24 +44,35 @@ export const addPlan = async (
     }
   }
 
-  if (error != null) {
-    console.log(error);
-  }
+  // plan_mates data 추가
+  const newplanMates: PlanMatesType = {
+    id: planId,
+    users_id: invitedUser.map((user) => user.id),
+  };
+  const { error: planMatesError } = await supabase
+    .from('plan_mates')
+    .insert(newplanMates);
 
+  if (error != null || planMatesError != null) {
+    console.log(error);
+    console.log(planMatesError);
+  }
   if (data !== null) {
     return { data };
   }
 };
 
 export const getPlan = async (planId: string) => {
-  const { data, error } = await supabase
-    .from('plans')
-    .select()
-    .eq('id', planId);
-  if (error != null) {
-    console.log('에러 발생', error);
+  if (planId !== undefined) {
+    const { data, error } = await supabase
+      .from('plans')
+      .select()
+      .eq('id', planId);
+    if (error != null) {
+      console.log('에러 발생', error);
+    }
+    return data;
   }
-  return data;
 };
 
 interface Book_mark {
@@ -103,4 +122,15 @@ export const getTotalCost = async (userId: string): Promise<number | null> => {
   }
 
   return null;
+};
+
+export const updateDatePlan = async (planId: string, dates: string[]) => {
+  const { error } = await supabase
+    .from('plans')
+    .update({ dates })
+    .eq('id', planId);
+
+  if (error !== null) {
+    console.log(error);
+  }
 };

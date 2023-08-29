@@ -25,12 +25,12 @@ const CardSection = () => {
   }
   console.log('나 데이터', data);
   return (
-    <div>
+    <section className="main-layout">
       <div></div>
       <div>
         <Card data={data} />
       </div>
-    </div>
+    </section>
   );
 };
 

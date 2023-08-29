@@ -44,6 +44,25 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
 
   return (
     <div className="flex w-full overflow-auto scrollbar-hide">
+      {limit !== imgSrcList?.length ? (
+        <div>
+          <input
+            accept=".jpg, .jpeg, .png"
+            ref={fileRef}
+            onChange={onFileChange}
+            type="file"
+            className="hidden"
+          />
+          <div
+            onClick={() => {
+              fileRef?.current?.click();
+            }}
+            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 flex items-center justify-center font-jua text-gray-300"
+          >
+            +
+          </div>
+        </div>
+      ) : null}
       {imgSrcList?.map((el, i) => {
         console.log('12312313', el);
 
@@ -68,25 +87,6 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
           </div>
         );
       })}
-      {limit !== imgSrcList?.length ? (
-        <div>
-          <input
-            accept=".jpg, .jpeg, .png"
-            ref={fileRef}
-            onChange={onFileChange}
-            type="file"
-            className="hidden"
-          />
-          <div
-            onClick={() => {
-              fileRef?.current?.click();
-            }}
-            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 flex items-center justify-center font-jua text-gray-300"
-          >
-            +
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 };

@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
+import {
+  Map,
+  MapMarker,
+  MapTypeControl,
+  Polyline,
+  ZoomControl,
+} from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
@@ -46,7 +52,9 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
+      // plan을 불러왔을때
       setDates(plan[0].dates);
+      setCurrentPage(0);
     }
   }, [plan]);
 
@@ -107,6 +115,8 @@ const UpdatePlan = () => {
             strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
             strokeStyle={'solid'} // 선의 스타일입니다
           />
+          <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+          <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
         </Map>
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />

@@ -20,7 +20,7 @@ const CardSection = () => {
   if (isError) {
     return <div>로딩중 ...</div>;
   }
-  if (data == null) {
+  if (data === undefined) {
     return <div>로딩중 ...</div>;
   }
   console.log('나 데이터', data);

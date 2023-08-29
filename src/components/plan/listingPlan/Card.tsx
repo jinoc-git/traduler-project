@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { type GetPlans } from '@api/plans';
 import Favorite from '@components/main/favorite/Favorite';
-import { type PlanType } from 'types/supabase';
 
 interface CardProps {
-  data: PlanType[] | null;
+  data: GetPlans[];
 }
 
 const Card: React.FC<CardProps> = ({ data }) => {

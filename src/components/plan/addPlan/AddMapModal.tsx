@@ -158,7 +158,9 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
               className="border border-#4f4f4f rounded-lg p-3"
             />
             <p>{errors?.address?.message}</p>
-            <label htmlFor="placeName">지출 비용</label>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="cost">지출 비용</label>
             <input
               id="cost"
               type="number"
@@ -166,6 +168,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
               {...registerPlaceName('cost', {
                 valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
               })}
+              className="border border-#4f4f4f rounded-lg p-3"
             />
           </div>
           <Map

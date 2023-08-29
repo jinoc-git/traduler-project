@@ -198,11 +198,15 @@ const MapModal = ({
             })}
           />
           <p>{errorsPlaceName?.placeName?.message}</p>
-          <label htmlFor="placeName">지출 비용</label>
+          <label htmlFor="cost">지출 비용</label>
           <input
             id="cost"
             type="number"
             placeholder="지출 비용을 입력해주세요."
+            {...registerPlaceName('cost', {
+              valueAsNumber: true,
+            })}
+            className="border border-#4f4f4f rounded-lg p-3"
           />
           <button
             type="submit"

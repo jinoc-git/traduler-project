@@ -4,13 +4,12 @@ import { useParams } from 'react-router-dom';
 import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
-import IconSixDots from '@assets/icons/IconSixDots';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import DropDown from './DropDown';
+import Pin from './Pin';
 
 interface PropsType {
   currentPage: number;
@@ -82,71 +81,24 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   return (
     <>
-      <div className="flex gap-3">
+      <div className="flex gap-3 mb-5">
         <IconPin />
         <h3>방문할 장소</h3>
       </div>
       <ul className=" flex flex-col gap-4">
         {pinArr.map((pin, idx) => {
           const betweenDistanceData = distanceData[idx] ?? '';
+          const pinArrLength = pinArr.length;
           return (
-            <li key={uuid()} className=" flex gap-[10px] h-[100px]">
-              <div className="w-[65px]">
-                <p>{idx + 1}</p>
-                {idx < pinArr.length - 1 && (
-                  <div>
-                    <p>{betweenDistanceData}km</p>
-                  </div>
-                )}
-              </div>
-              <div className="flex w-full border">
-                <button className=" flex justify-center items-center w-[50px] m-3">
-                  <IconSixDots fill="orange" />
-                </button>
-                <div className="flex flex-col justify-center gap-2 w-full">
-                  <p>
-                    {pin !== null &&
-                      typeof pin === 'object' &&
-                      'placeName' in pin && (
-                        <span>{pin.placeName as string}</span>
-                      )}
-                  </p>
-                  <p>
-                    {pin !== null &&
-                      typeof pin === 'object' &&
-                      'cost' in pin && <span>￦{pin.cost}</span>}
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <DropDown>
-                    <ul className="absolute bg-white rounded-md">
-                      <li
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                        }}
-                        onClick={() => {
-                          handleUpdate(idx);
-                        }}
-                        className=" flex justify-center items-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
-                      >
-                        수정
-                      </li>
-                      <li
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                        }}
-                        onClick={() => {
-                          handleDelete(idx);
-                        }}
-                        className=" flex justify-center items-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
-                      >
-                        삭제
-                      </li>
-                    </ul>
-                  </DropDown>
-                </div>
-              </div>
-            </li>
+            <Pin
+              key={uuid()}
+              pin={pin}
+              idx={idx}
+              betweenDistanceData={betweenDistanceData}
+              pinArrLength={pinArrLength}
+              handleUpdate={handleUpdate}
+              handleDelete={handleDelete}
+            />
           );
         })}
       </ul>

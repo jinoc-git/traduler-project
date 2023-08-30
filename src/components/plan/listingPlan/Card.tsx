@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { type GetPlans } from '@api/plans';
-import Favorite from '@components/main/favorite/Favorite';
 import { formatPlanDates } from '@utils/changeFormatDay';
+import { type PlanType } from 'types/supabase';
 
 interface CardProps {
   data: GetPlans[];
-  // matesData: PlanType[];
+  matesData: PlanType[];
   // matesData: PlanMatesType[];
 }
 
@@ -15,12 +15,7 @@ interface CardProps {
 //   data: PlanMatesType | null;
 // }
 
-const Card: React.FC<CardProps> = ({ data }) => {
-  useEffect(() => {
-    console.log('Card컴포넌트 내의 useEffect');
-  }, []);
-  // console.log('Card에 matesData=>', matesData);
-
+const Card: React.FC<CardProps> = ({ data, matesData }) => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
     'planning',
@@ -31,20 +26,20 @@ const Card: React.FC<CardProps> = ({ data }) => {
   // 요일 표시하기 위해
 
   // 클릭할때마다 변경
-  const filterData = data?.filter((plan) =>
+  const filterData = matesData?.filter((plan) =>
     selectedPlan === 'planning'
       ? plan.plan_state === 'planning'
       : plan.plan_state === 'end',
   );
 
   useEffect(() => {
-    if (data != null) {
+    if (matesData != null) {
       setPlanningCount(
-        data.filter((plan) => plan.plan_state === 'planning').length,
+        matesData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(data.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(matesData.filter((plan) => plan.plan_state === 'end').length);
     }
-  }, [data]);
+  }, [matesData]);
 
   // useEffect(() => {
   //   console.log('matesDataCard=>', matesData);
@@ -85,9 +80,9 @@ const Card: React.FC<CardProps> = ({ data }) => {
         .map((plan) => {
           const { startDate, endDate } = formatPlanDates(plan);
 
-          const isFavorite = plan.book_mark.find(
-            (bookMark) => bookMark.plan_id === plan.id,
-          );
+          // const isFavorite = plan.book_mark.find(
+          //   (bookMark) => bookMark.plan_id === plan.id,
+          // );
 
           return (
             <div key={plan.id}>
@@ -114,7 +109,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
                 </div>
 
                 <div className="w-1/5 h-12">
-                  <Favorite isFavorite={Boolean(isFavorite)} planId={plan.id} />
+                  {/* <Favorite isFavorite={Boolean(isFavorite)} planId={plan.id} /> */}
                   <div>
                     {plan.plan_state === 'end'
                       ? null

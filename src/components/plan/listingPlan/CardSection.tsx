@@ -45,7 +45,7 @@ const CardSection = () => {
     <section className="main-layout">
       <div></div>
       <div>
-        <Card data={data} />
+        <Card data={data} matesData={matesData} />
       </div>
     </section>
   );

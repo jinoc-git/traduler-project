@@ -38,7 +38,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
       setEndCount(data.filter((plan) => plan.plan_state === 'end').length);
     }
   }, [data]);
-  console.log('11111111', data);
+  // console.log('11111111', data);
   return (
     <div>
       <div className="flex flex-row">

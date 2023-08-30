@@ -32,7 +32,7 @@ const AddPlan = () => {
     formState: { errors, isSubmitting },
   } = useForm<InputType>();
 
-  const [totalCost, setTotalCost] = useState('');
+  const [totalCost, setTotalCost] = useState<number>(0);
   const { invitedUser, inviteUser, syncInviteduser, resetInvitedUser } =
     inviteUserStore();
 
@@ -41,14 +41,20 @@ const AddPlan = () => {
       await addPlan(
         userId as string,
         watch('title') as string,
-        parseInt(totalCost, 10),
+        parseInt(totalCost.toString(), 10),
         pins,
         dates,
         invitedUser,
       );
+      alert('저장되었습니다.');
       navigate('/main');
     }
   };
+  const buttonDisabled =
+    isSubmitting ||
+    totalCost === undefined ||
+    watch('title')?.length === 0 ||
+    dates.length === 0;
 
   const [currentPage, setCurrentPage] = useState(0);
   const handleNextPage = () => {
@@ -80,21 +86,21 @@ const AddPlan = () => {
 
   return (
     <main
-      className={`transition-all duration-300  ease-in-out p-32 ${
+      className={`transition-all duration-300  ease-in-out py-[60px] ${
         isSideBarOpen
           ? 'w-[calc(100vw-250px)] ml-[250px]'
           : 'w-[calc(100vw-50px)] ml-[50px]'
       }`}
     >
-      <Nav />
-      <button
+      <Nav onClick={handleSubmit(submitPlan)} buttonDisabled={buttonDisabled} />
+      {/* <button
         type="submit"
         disabled={isSubmitting}
         className="p-3 bg-slate-500"
         onClick={handleSubmit(submitPlan)}
       >
         저장하기
-      </button>
+      </button> */}
       <div className="px-[210px] py-[100px]">
         <input
           id="title"
@@ -107,7 +113,7 @@ const AddPlan = () => {
               message: '제목은 2글자 이상이어야 합니다.',
             },
           })}
-          className="border-b-2 w-full border-#AdAdAd outline-none text-[24px] font-bold"
+          className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
         />
         <p>{errors?.title?.message}</p>
         <Invite />
@@ -120,7 +126,7 @@ const AddPlan = () => {
             value={totalCost}
             placeholder="예산을 입력하세요."
             onChange={(event) => {
-              setTotalCost(event.target.value);
+              setTotalCost(+event.target.value);
             }}
           />
         </div>

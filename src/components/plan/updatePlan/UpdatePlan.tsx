@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Map,
   MapMarker,
@@ -32,10 +32,11 @@ const UpdatePlan = () => {
     setCurrentPage(currentPage - 1);
   };
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
-  const { data: plan, isLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId),
-  );
+  const {
+    data: plan,
+    isLoading,
+    isError,
+  } = useQuery(['plan', planId], async () => await getPlan(planId));
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
     async () => await getPin(planId, currentPage),
@@ -55,13 +56,52 @@ const UpdatePlan = () => {
     }
   }, [plan]);
 
+  const mapRef = useRef<any>();
+  const [style, setStyle] = useState({
+    width: '95vw',
+    height: '400px',
+    borderRadius: '8px',
+  });
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map !== undefined) {
+      const timer = setTimeout(() => {
+        map.relayout();
+      }, 300);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [style]);
+
+  useEffect(() => {
+    const windowResize = () => {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    };
+    window.addEventListener(`resize`, windowResize);
+
+    return () => {
+      window.removeEventListener(`resize`, windowResize);
+    };
+  }, []);
+
   if (isLoading) {
     return <div className="w-full h-[500px] bg-slate-300">로딩중...</div>;
   }
 
+  if (isError) {
+    return <div className="w-full h-[500px] bg-slate-300">오류 발생...</div>;
+  }
+
   return (
-    <section>
-      <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
+    <>
+      <div className="flex justify-center gap-5 mb-10 text-[14px] font-semibold">
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 0}
@@ -78,46 +118,51 @@ const UpdatePlan = () => {
           ➡️
         </button>
       </div>
-      <div className="w-full h-[500px]">
-        <Map
-          center={{
-            lat:
-              pinArr.length !== 0 ? (pinArr[0].lat as number) : 37.566826004661,
-            lng:
-              pinArr.length !== 0
-                ? (pinArr[0].lng as number)
-                : 126.978652258309,
-          }}
-          style={{ width: '95%', height: '400px', borderRadius: '8px' }}
-          level={3}
-        >
-          {pinArr?.map((pin, idx) => {
-            return (
-              <div key={idx}>
-                <MapMarker
-                  position={{
-                    lat: pin?.lat as number,
-                    lng: pin?.lng as number,
-                  }}
-                ></MapMarker>
-              </div>
-            );
-          })}
-          <Polyline
-            path={pinArr.map((pin) => {
-              return { lat: pin.lat as number, lng: pin.lng as number };
+      <div className="flex flex-col justify-center gap-5">
+        <div className="flex justify-center">
+          <Map
+            center={{
+              lat:
+                pinArr.length !== 0
+                  ? (pinArr[0].lat as number)
+                  : 37.566826004661,
+              lng:
+                pinArr.length !== 0
+                  ? (pinArr[0].lng as number)
+                  : 126.978652258309,
+            }}
+            level={3}
+            ref={mapRef}
+            style={style}
+          >
+            {pinArr?.map((pin, idx) => {
+              return (
+                <div key={idx}>
+                  <MapMarker
+                    position={{
+                      lat: pin?.lat as number,
+                      lng: pin?.lng as number,
+                    }}
+                  ></MapMarker>
+                </div>
+              );
             })}
-            strokeWeight={5} // 선의 두께 입니다
-            strokeColor={'#FFAE00'} // 선의 색깔입니다
-            strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle={'solid'} // 선의 스타일입니다
-          />
-          <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-          <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
-        </Map>
+            <Polyline
+              path={pinArr.map((pin) => {
+                return { lat: pin.lat as number, lng: pin.lng as number };
+              })}
+              strokeWeight={5} // 선의 두께 입니다
+              strokeColor={'#FFAE00'} // 선의 색깔입니다
+              strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+              strokeStyle={'solid'} // 선의 스타일입니다
+            />
+            <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+            <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
+          </Map>
+        </div>
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />
-    </section>
+    </>
   );
 };
 

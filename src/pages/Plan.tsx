@@ -29,9 +29,15 @@ const Plan = () => {
       }`}
     >
       <Nav />
-      <PostPlan />
-      <Invite />
-      <UpdatePlan />
+      <div className="px-[210px] py-[100px]">
+        <div>여행제목</div>
+        <Invite />
+        <PostPlan />
+        <div className="flex items-center">
+          <div className="text-[16px] font-semibold mr-[50px]">예산</div>
+        </div>
+        <UpdatePlan />
+      </div>
     </main>
   );
 };

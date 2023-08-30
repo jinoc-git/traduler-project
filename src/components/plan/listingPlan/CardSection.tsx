@@ -11,6 +11,11 @@ const CardSection = () => {
     ['plans'],
     getPlans,
   );
+  // 멤버가지고오는거일듯..
+  // const { data, isLoading, isError } = useQuery<PlanMatesType | null>(
+  //   ['plan_mates'],
+  //   getPlanMatesById,
+  // );
 
   // console.log('MainCardsData', data);
 

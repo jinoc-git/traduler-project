@@ -8,6 +8,10 @@ interface CardProps {
   data: PlanType[] | null;
 }
 
+// interface CardProps {
+//   data: PlanMatesType | null;
+// }
+
 const Card: React.FC<CardProps> = ({ data }) => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(

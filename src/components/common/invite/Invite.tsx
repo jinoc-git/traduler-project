@@ -18,13 +18,8 @@ const Invite = () => {
     setIsOpen(false);
   };
 
-  const {
-    oldInvitedUser,
-    invitedUser,
-    inviteUser,
-    resetInvitedUser,
-    syncInviteduser,
-  } = inviteUserStore();
+  const { oldInvitedUser, inviteUser, resetInvitedUser, syncInviteduser } =
+    inviteUserStore();
 
   const { id: planId } = useParams();
   const { data } = useQuery(['planMates'], async () => {
@@ -34,25 +29,20 @@ const Invite = () => {
     } else return null;
   });
 
-  const [isOldInvitedUser, setIsOldinvitedUser] = useState(false);
-  // const isOldInvitedUser =
-  //   oldInvitedUser.length !== 0 && oldInvitedUser !== null;
+  const isOldInvitedUser =
+    oldInvitedUser.length !== 0 && oldInvitedUser !== null;
   const maxDisplayCount = 4;
 
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
   useEffect(() => {
-    resetInvitedUser();
     if (data != null) {
+      resetInvitedUser();
       data.forEach((user) => {
         inviteUser(user);
       });
     }
     syncInviteduser();
   }, [data]);
-
-  useEffect(() => {
-    setIsOldinvitedUser(oldInvitedUser.length !== 0 && oldInvitedUser !== null);
-  }, [invitedUser]);
 
   return (
     <>

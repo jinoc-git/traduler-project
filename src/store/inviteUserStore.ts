@@ -21,6 +21,7 @@ export const inviteUserStore = create<InviteUserStoreType>((set) => ({
   },
   resetInvitedUser: () => {
     set(() => ({
+      oldInvitedUser: [],
       invitedUser: [],
     }));
   },

@@ -10,7 +10,7 @@ const CardSection = () => {
     ['plans'],
     // async () => await getPlans(userId),
     // 유저아이디 가져오기 목데이터
-    async () => await getPlans('10d4b5c3-12d6-486b-862b-6f63c0c9f4fc'),
+    async () => await getPlans('2f9f32f2-e021-4b55-bf78-3318d0b16d95'),
   );
   // console.log('MainCardsData', data);
 

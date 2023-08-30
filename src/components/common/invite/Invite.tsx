@@ -34,7 +34,9 @@ const Invite = () => {
     } else return null;
   });
 
-  const isOldInvitedUser = oldInvitedUser.length !== 0;
+  const [isOldInvitedUser, setIsOldinvitedUser] = useState(false);
+  // const isOldInvitedUser =
+  //   oldInvitedUser.length !== 0 && oldInvitedUser !== null;
   const maxDisplayCount = 4;
 
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
@@ -49,8 +51,7 @@ const Invite = () => {
   }, [data]);
 
   useEffect(() => {
-    console.log('예전', oldInvitedUser);
-    console.log('신규', invitedUser);
+    setIsOldinvitedUser(oldInvitedUser.length !== 0 && oldInvitedUser !== null);
   }, [invitedUser]);
 
   return (
@@ -62,28 +63,22 @@ const Invite = () => {
             oldInvitedUser.length > 0 && (
               <div className="flex mr-3">
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => {
-                  if (user.avatar_url != null) {
-                    return (
-                      <img
-                        key={idx}
-                        src={user.avatar_url}
-                        className="w-6 h-6 rounded-full ml-[-10px] object-cover"
-                      />
-                    );
-                  } else {
-                    return (
-                      <img
-                        key={idx}
-                        src={defaultImageGray}
-                        className="w-6 h-6 rounded-full ml-[-10px]"
-                      />
-                    );
-                  }
+                  return (
+                    <img
+                      key={idx}
+                      src={
+                        user.avatar_url != null
+                          ? user.avatar_url
+                          : defaultImageGray
+                      }
+                      className="object-cover w-6 h-6 rounded-full"
+                    />
+                  );
                 })}
               </div>
             )
           ) : (
-            <>로딩중...</>
+            <div className="w-6 h-6 mr-5 rounded-full bg-gray_light_3" />
           )}
           {isOldInvitedUser ? (
             oldInvitedUser.length > maxDisplayCount ? (

@@ -54,7 +54,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     }
   };
 
-  // 유저 초대
+  // 유저 초대 react-query
   const queryClient = useQueryClient();
   const inviteMutation = useMutation({
     mutationFn: async ([usersId, planId]: [string[], string]) => {
@@ -127,8 +127,10 @@ const SearchPeople = ({ closeModal }: PropsType) => {
             />
             <p>{errors?.userInfo?.message}</p>
           </div>
-          <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3 p-3">
-            {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
+          <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3">
+            {people?.length === 0 && (
+              <div className="text-center">검색 결과가 없습니다.</div>
+            )}
             {people
               .filter(
                 (person) =>
@@ -150,7 +152,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
         </>
       )}
       {!isFind && (
-        <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3 p-3">
+        <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3">
           {invitedUser.length !== 0 &&
             invitedUser.map((person, idx) => {
               return (

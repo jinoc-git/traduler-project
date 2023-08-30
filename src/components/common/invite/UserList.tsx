@@ -12,10 +12,10 @@ interface PropsType {
 
 const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
   return (
-    <div key={idx} className="flex items-center justify-center gap-3 mb-3">
+    <div key={idx} className="flex items-center justify-center gap-3 my-2">
       {typeof person.avatar_url === 'string' ? (
         <img
-          className="object-cover border-2 rounded-full w-9 h-9"
+          className="object-cover rounded-full w-9 h-9"
           src={person.avatar_url}
           alt={`Avatar for ${person.nickname}`}
         />

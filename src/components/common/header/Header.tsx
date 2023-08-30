@@ -50,7 +50,7 @@ const Header = () => {
       <div className=" flex items-center">
         {isVisibleSideBar && (
           <div
-            className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray-200 ${
+            className={`cursor-pointer w-[50px] h-[50px] flex items-center justify-center mr-[10px] bg-gray_light_2 ${
               isSideBarOpen ? 'mt-0' : 'mt-0'
             }`}
             onClick={toggleMenu}

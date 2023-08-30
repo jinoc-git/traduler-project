@@ -1,8 +1,9 @@
 import React from 'react';
-import { useDrag } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
+import _ from 'lodash';
 
 import DropDown from './DropDown';
 
@@ -14,6 +15,12 @@ interface PinProps {
   pinArrLength: number;
   handleUpdate: (idx: number) => void;
   handleDelete: (idx: number) => void;
+  movePlns: (beforeIdx: number, afterIdx: number) => void;
+}
+
+interface ItemType {
+  id: string;
+  idx: number;
 }
 
 const Pin = (props: PinProps) => {
@@ -25,29 +32,55 @@ const Pin = (props: PinProps) => {
     pinArrLength,
     handleUpdate,
     handleDelete,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    movePlns,
   } = props;
 
+  const throttleHoverItem = _.throttle((item, index, movePlns) => {
+    if (item.idx === index) {
+      return null;
+    }
+    console.log(item.idx, index);
+    movePlns(item.idx, index);
+  }, 1000);
+
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const [{ isDragging }, dragRef, previewRef] = useDrag(
-    () => ({
-      type: 'pin',
-      item: { id, idx },
-      collect: (moniter) => ({
-        isDragging: moniter.isDragging(),
-      }),
-      end: (item, moniter) => {
-        const { idx: originIndex } = item;
-        const didDrop = moniter.didDrop();
-        if (!didDrop) {
-          console.log(originIndex);
-        }
-      },
+  const [, drop] = useDrop<ItemType>(() => ({
+    accept: 'pin',
+    collect: (monitor) => ({
+      handlerId: monitor.getHandlerId(),
     }),
-    [id, idx],
-  );
+    hover: (item, moniter) => {
+      throttleHoverItem(item, idx, movePlns);
+
+      item.idx = idx;
+    },
+  }));
+
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const [{ isDragging }, dragRef, previewRef] = useDrag(() => ({
+    type: 'pin',
+    item: { id, idx },
+    collect: (moniter) => ({
+      isDragging: !!moniter.isDragging(),
+    }),
+    end: (item, moniter) => {
+      const { idx: afterIndex } = item;
+      const didDrop = moniter.didDrop();
+      console.log(afterIndex, didDrop);
+      // if (!didDrop) {
+      //   movePlns(idx, afterIndex);
+      // }
+    },
+  }));
 
   return (
-    <li className=" flex gap-[10px] h-[100px]">
+    <li
+      ref={(node) => drop(previewRef(node))}
+      className={`flex gap-[10px] h-[100px] transition-all ${
+        isDragging ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
       <div className="w-[65px]">
         <p>{idx + 1}</p>
         {idx < pinArrLength - 1 && (
@@ -57,7 +90,10 @@ const Pin = (props: PinProps) => {
         )}
       </div>
       <div className="flex w-full border">
-        <button className=" flex justify-center items-center w-[50px] m-3">
+        <button
+          ref={dragRef}
+          className=" flex justify-center items-center w-[50px] m-3"
+        >
           <IconSixDots fill="orange" />
         </button>
         <div className="flex flex-col justify-center gap-2 w-full">

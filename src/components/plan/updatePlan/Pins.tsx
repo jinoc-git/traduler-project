@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
@@ -66,13 +66,14 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   // drang drop
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const movePlns = useCallback(
-    (beforeIdx: number, afterIdx: number) => {
-      // const dragPin = pinArr[dragIdx];
-      // setPinArr()
-    },
-    [pinArr],
-  );
+  const movePlns = (beforeIdx: number, afterIdx: number) => {
+    if (beforeIdx === afterIdx) return;
+    const newPinArr = [...pinArr];
+    const item = newPinArr.splice(beforeIdx, 1);
+    newPinArr.splice(afterIdx, 0, ...item);
+    console.log(pinArr, newPinArr)
+    setPinArr(newPinArr);
+  };
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
@@ -137,6 +138,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                 pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
+                movePlns={movePlns}
               />
             );
           })}

@@ -4,7 +4,7 @@ import TotalPay from '@components/pay/TotalPay';
 
 const Ending = () => {
   return (
-    <div>
+    <div style={{ marginLeft: '500px' }}>
       Ending
       <TotalPay />
     </div>

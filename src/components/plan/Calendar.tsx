@@ -30,7 +30,6 @@ const Calendar: React.FC<CalendarProps> = ({
         shouldCloseOnSelect
         showIcon
         selected={startDate}
-        maxDate={endDate}
         onChange={(date) => {
           StartDateChangeHandler(date);
         }}

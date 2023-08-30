@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
 
 import { calcPath } from '@api/path';
@@ -18,6 +20,8 @@ interface PropsType {
 
 const Pins = ({ currentPage, dates }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [distanceData, setDistanceData] = useState<string[]>([]);
+
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
@@ -59,9 +63,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     deletemutation.mutate([dates[currentPage], planId, deletedPin]);
   };
 
-  // 핀 거리 계산하기
-
-  const [distanceData, setDistanceData] = useState<string[]>([]);
+  // drang drop
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const movePlns = useCallback(
+    (beforeIdx: number, afterIdx: number) => {
+      // const dragPin = pinArr[dragIdx];
+      // setPinArr()
+    },
+    [pinArr],
+  );
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
@@ -85,23 +95,27 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         <IconPin />
         <h3>방문할 장소</h3>
       </div>
-      <ul className=" flex flex-col gap-4">
-        {pinArr.map((pin, idx) => {
-          const betweenDistanceData = distanceData[idx] ?? '';
-          const pinArrLength = pinArr.length;
-          return (
-            <Pin
-              key={uuid()}
-              pin={pin}
-              idx={idx}
-              betweenDistanceData={betweenDistanceData}
-              pinArrLength={pinArrLength}
-              handleUpdate={handleUpdate}
-              handleDelete={handleDelete}
-            />
-          );
-        })}
-      </ul>
+      <DndProvider backend={HTML5Backend}>
+        <ul className=" flex flex-col gap-4">
+          {pinArr.map((pin, idx) => {
+            const betweenDistanceData = distanceData[idx] ?? '';
+            const pinArrLength = pinArr.length;
+            const key = uuid()
+            return (
+              <Pin
+                key={key}
+                id={key}
+                pin={pin}
+                idx={idx}
+                betweenDistanceData={betweenDistanceData}
+                pinArrLength={pinArrLength}
+                handleUpdate={handleUpdate}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+        </ul>
+      </DndProvider>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDrag } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
@@ -6,6 +7,7 @@ import IconSixDots from '@assets/icons/IconSixDots';
 import DropDown from './DropDown';
 
 interface PinProps {
+  id: string;
   pin: PinContentsType;
   idx: number;
   betweenDistanceData: string;
@@ -16,6 +18,7 @@ interface PinProps {
 
 const Pin = (props: PinProps) => {
   const {
+    id,
     pin,
     idx,
     betweenDistanceData,
@@ -23,6 +26,25 @@ const Pin = (props: PinProps) => {
     handleUpdate,
     handleDelete,
   } = props;
+
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const [{ isDragging }, dragRef, previewRef] = useDrag(
+    () => ({
+      type: 'pin',
+      item: { id, idx },
+      collect: (moniter) => ({
+        isDragging: moniter.isDragging(),
+      }),
+      end: (item, moniter) => {
+        const { idx: originIndex } = item;
+        const didDrop = moniter.didDrop();
+        if (!didDrop) {
+          console.log(originIndex);
+        }
+      },
+    }),
+    [id, idx],
+  );
 
   return (
     <li className=" flex gap-[10px] h-[100px]">

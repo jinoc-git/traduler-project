@@ -107,9 +107,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         datesCost.push(cost);
       });
 
-      console.log('result: ', datesCost);
-      console.log('distanceData: ', distanceData);
-
       void insertPlanEnding({
         id: planId,
         distance: distanceData.map(Number),

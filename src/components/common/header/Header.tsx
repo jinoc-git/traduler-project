@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { signOutForSB } from '@api/supabaseAuth';
-import { ic_menu_1x, ic_profile_1x } from '@assets/icons/1x';
+import { ic_menu_1x } from '@assets/icons/1x';
+import { ic_profile_3x } from '@assets/icons/3x';
+import { signOutDropDown } from '@assets/index';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -43,7 +45,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between fixed w-screen h-[50px] pr-3 ${
+      className={`flex justify-between fixed w-screen h-[50px] pr-3 bg-blue_light_3 ${
         isSideBarOpen ? '' : 'bg-opacity-70'
       }`}
     >
@@ -73,26 +75,24 @@ const Header = () => {
           <button
             onBlur={toggleIsMenuOpen}
             onClick={toggleIsMenuOpen}
-            className="flex justify-center items-center w-[70px] h-[50px] mr-4"
+            className="flex justify-center items-center w-[70px] h-[50px]"
           >
             <img
-              src={user.profileImg !== null ? user.profileImg : ic_profile_1x}
+              src={user.profileImg !== null ? user.profileImg : ic_profile_3x}
               alt="프로필 이미지"
               className=" w-[37px] h-[37px] object-cover rounded-full border"
             />
           </button>
           {isMenuOpen && (
-            <ul className=" absolute -bottom-[35px] w-[70px] bg-white rounded-md">
-              <li
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-                onClick={onClickSignOutHandler}
-                className=" p-1 text-sm text-center cursor-pointer"
-              >
-                로그아웃
-              </li>
-            </ul>
+            <div
+              onMouseDown={(e) => {
+                e.preventDefault();
+              }}
+              onClick={onClickSignOutHandler}
+              className=" absolute -bottom-[55px] right-[10px] w-[100px] rounded-md cursor-pointer"
+            >
+              <img src={signOutDropDown} alt="로그아웃" />
+            </div>
           )}
         </div>
       ) : pathname === '/signin' ? (

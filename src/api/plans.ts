@@ -134,3 +134,27 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
     console.log(error);
   }
 };
+
+export const addBookMark = async (
+  newBookMarkId: string,
+  planId: string,
+  userId: string,
+) => {
+  const { error } = await supabase.from('book_mark').insert({
+    id: newBookMarkId,
+    plan_id: planId,
+    user_id: userId,
+  });
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
+  }
+};
+
+export const deleteBookMark = async (id: string, planId: string) => {
+  const { error } = await supabase.from('book_mark').delete().eq('id', planId);
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
+  }
+};

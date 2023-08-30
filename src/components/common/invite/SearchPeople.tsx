@@ -15,7 +15,11 @@ interface InputType {
   userInfo: string;
 }
 
-const SearchPeople = () => {
+interface PropsType {
+  closeModal: () => void;
+}
+
+const SearchPeople = ({ closeModal }: PropsType) => {
   const {
     register,
     formState: { errors },
@@ -40,7 +44,8 @@ const SearchPeople = () => {
   };
   const debouncedSearchUser = _.debounce(searchUser, 300);
 
-  const { invitedUser, inviteUser, setUser } = inviteUserStore();
+  const { invitedUser, inviteUser, setUser, syncInviteduser } =
+    inviteUserStore();
   const usersId = invitedUser.map((item) => item.id);
   const handleInvite = async (user: UserType) => {
     const conf = window.confirm('해당 여행에 초대하시겠습니까?');
@@ -60,12 +65,16 @@ const SearchPeople = () => {
     },
   });
 
+  // 저장 버튼 눌렀을 때 실행
   const inviteData = () => {
     const Ids = invitedUser.map((item) => item.id);
     if (Ids !== undefined && planId !== undefined) {
       inviteMutation.mutate([usersId, planId]);
     }
+    setUser(invitedUser);
     alert('저장되었습니다');
+    closeModal();
+    syncInviteduser();
   };
 
   // 초대한 유저 삭제
@@ -118,7 +127,7 @@ const SearchPeople = () => {
             />
             <p>{errors?.userInfo?.message}</p>
           </div>
-          <div className="overflow-scroll">
+          <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3 p-3">
             {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
             {people
               .filter(
@@ -141,7 +150,7 @@ const SearchPeople = () => {
         </>
       )}
       {!isFind && (
-        <div className="flex flex-col overflow-scroll">
+        <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3 p-3">
           {invitedUser.length !== 0 &&
             invitedUser.map((person, idx) => {
               return (
@@ -152,8 +161,7 @@ const SearchPeople = () => {
             })}
         </div>
       )}
-
-      <button onClick={inviteData} className="absolute bottom-0 mx-auto">
+      <button onClick={inviteData} className="bottom-0 mx-auto">
         저장
       </button>
     </div>

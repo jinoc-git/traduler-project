@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
+import { defaultImageGray } from '@assets/index';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { useQuery } from '@tanstack/react-query';
 
@@ -17,7 +18,13 @@ const Invite = () => {
     setIsOpen(false);
   };
 
-  const { invitedUser, inviteUser, resetInvitedUser } = inviteUserStore();
+  const {
+    oldInvitedUser,
+    invitedUser,
+    inviteUser,
+    resetInvitedUser,
+    syncInviteduser,
+  } = inviteUserStore();
 
   const { id: planId } = useParams();
   const { data } = useQuery(['planMates'], async () => {
@@ -26,11 +33,8 @@ const Invite = () => {
       return res;
     } else return null;
   });
-  // if (data != null && data.length !== 0) {
-  //   console.log('planMates data :', data);
-  // }
 
-  const isInvitedUser = invitedUser.length !== 0;
+  const isOldInvitedUser = oldInvitedUser.length !== 0;
   const maxDisplayCount = 4;
 
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
@@ -41,17 +45,23 @@ const Invite = () => {
         inviteUser(user);
       });
     }
+    syncInviteduser();
   }, [data]);
+
+  useEffect(() => {
+    console.log('예전', oldInvitedUser);
+    console.log('신규', invitedUser);
+  }, [invitedUser]);
 
   return (
     <>
       <div className="flex items-center justify-between h-16 py-3">
         <label className="text-[16px] font-semibold">동행</label>
         <div className="text-[13px] font-semibold flex">
-          {isInvitedUser ? (
-            invitedUser.length > 0 && (
+          {isOldInvitedUser ? (
+            oldInvitedUser.length > 0 && (
               <div className="flex mr-3">
-                {invitedUser.slice(0, maxDisplayCount).map((user, idx) => {
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => {
                   if (user.avatar_url != null) {
                     return (
                       <img
@@ -62,9 +72,10 @@ const Invite = () => {
                     );
                   } else {
                     return (
-                      <div
+                      <img
                         key={idx}
-                        className="w-6 h-6 rounded-full bg-slate-500 ml-[-10px]"
+                        src={defaultImageGray}
+                        className="w-6 h-6 rounded-full ml-[-10px]"
                       />
                     );
                   }
@@ -74,18 +85,18 @@ const Invite = () => {
           ) : (
             <>로딩중...</>
           )}
-          {isInvitedUser ? (
-            invitedUser.length > maxDisplayCount ? (
+          {isOldInvitedUser ? (
+            oldInvitedUser.length > maxDisplayCount ? (
               <>
-                {invitedUser.slice(0, maxDisplayCount).map((user, idx) => (
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => (
                   <div key={idx} className="mr-[2px]">
                     {user.nickname}
                   </div>
                 ))}
-                외 {invitedUser.length - maxDisplayCount}명
+                외 {oldInvitedUser.length - maxDisplayCount}명
               </>
             ) : (
-              invitedUser.map((user, idx) => (
+              oldInvitedUser.map((user, idx) => (
                 <div key={idx} className="mr-[2px]">
                   {user.nickname}
                 </div>
@@ -105,7 +116,7 @@ const Invite = () => {
       {isOpen && (
         <>
           <div className="relative bg-black/20" onClick={closeModal} />
-          <SearchPeople />
+          <SearchPeople closeModal={closeModal} />
         </>
       )}
     </>

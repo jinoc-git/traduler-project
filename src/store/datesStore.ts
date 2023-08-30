@@ -18,6 +18,7 @@ export const datesStore = create<datesStoreType>((set) => ({
   },
   resetDates: () => {
     set(() => ({
+      oldDates: [],
       dates: [],
     }));
   },

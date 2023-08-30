@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@egjs/react-flicking": "^4.11.0",
     "@supabase/supabase-js": "^2.32.0",
     "@tanstack/react-query": "^4.32.6",

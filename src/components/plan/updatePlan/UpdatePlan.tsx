@@ -62,7 +62,7 @@ const UpdatePlan = () => {
   }
 
   return (
-    <div>
+    <section>
       <div className="flex justify-center gap-5 mb-10 text-2xl font-bold">
         <button
           onClick={handlePreviousPage}
@@ -119,7 +119,7 @@ const UpdatePlan = () => {
         </Map>
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />
-    </div>
+    </section>
   );
 };
 

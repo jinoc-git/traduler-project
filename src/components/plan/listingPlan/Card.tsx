@@ -82,6 +82,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
               <div
                 className="flex mb-4 border-2 w-[800px] h-[200px]"
                 onClick={() => {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   navigate(`/plan/${plan.id}`);
                 }}
               >

@@ -1,13 +1,18 @@
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
 
 import { getCost, insertPlanEnding } from '@api/datesPay';
-import { getPath } from '@api/path';
+import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import Pin from './Pin';
 
 interface PropsType {
   currentPage: number;
@@ -16,31 +21,24 @@ interface PropsType {
 
 const Pins = ({ currentPage, dates }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [distanceData, setDistanceData] = useState<string[]>([]);
+
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+
   const { id } = useParams();
   const planId: string = id as string;
   // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
+
+  const queryClient = useQueryClient();
+
   const { data: pin } = useQuery(
     ['pin', planId, currentPage],
-    // eslint-disable-next-line @typescript-eslint/return-await
     async () => await getPin(planId, currentPage),
   );
 
-  const { updateClick } = updatePinStore();
-  const handleUpdate = (idx: number) => {
-    const updatePin = pinArr[idx];
-    updateClick(updatePin, idx);
-    openModal();
-  };
-  const handleDelete = (idx: number) => {
-    const deletedPin = pinArr.filter((pin, i) => i !== idx);
-    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
-  };
-
-  const queryClient = useQueryClient();
   const deletemutation = useMutation({
     mutationFn: async ([date, planId, deletedPin]: [
       string,
@@ -54,39 +52,27 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     },
   });
 
-  // 핀 거리 계산하기
+  const { updateClick } = updatePinStore();
 
-  const [distanceData, setDistanceData] = useState<string[]>([]);
-
-  const calPath = async () => {
-    const convertParameters = pinArr.map(({ lng, lat }) => {
-      if (lat !== undefined && lng !== undefined) {
-        return `${lng},${lat}`;
-      }
-      return undefined;
-    });
-
-    const newData: string[] = [];
-
-    for (let i = 0; i < convertParameters.length; i += 1) {
-      if (i === convertParameters.length - 1) {
-        break;
-      }
-
-      try {
-        const data = await getPath({
-          origin: convertParameters[i] as string,
-          destination: convertParameters[i + 1] as string,
-        });
-
-        const distanceInKm = data / 1000;
-        newData.push(distanceInKm.toFixed(1));
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    setDistanceData(newData);
+  const handleUpdate = (idx: number) => {
+    const updatePin = pinArr[idx];
+    updateClick(updatePin, idx);
+    openModal();
   };
+  const handleDelete = (idx: number) => {
+    const deletedPin = pinArr.filter((pin, i) => i !== idx);
+    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
+  };
+
+  // drang drop
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const movePlns = useCallback(
+    (beforeIdx: number, afterIdx: number) => {
+      // const dragPin = pinArr[dragIdx];
+      // setPinArr()
+    },
+    [pinArr],
+  );
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
@@ -95,12 +81,12 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   }, [pin]);
 
   useEffect(() => {
-    void calPath();
-  }, []);
-
-  useEffect(() => {
+    const getCalcPathData = async (data: PinContentsType[]) => {
+      const pathData = await calcPath(data);
+      setDistanceData(pathData);
+    };
     if (pinArr.length > 1) {
-      void calPath();
+      void getCalcPathData(pinArr);
     }
   }, [pinArr]);
 
@@ -134,47 +120,31 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   return (
     <>
-      <div>
-        {pinArr.map((pin, idx: number) => {
-          const betweenDistanceData = distanceData[idx] ?? '';
-          return (
-            <div key={idx}>
-              <p>{idx + 1}</p>
-              <p>
-                {pin !== null &&
-                  typeof pin === 'object' &&
-                  'placeName' in pin && <span>{pin.placeName as string}</span>}
-              </p>
-              <p>
-                {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-                  <span>￦{pin.cost}</span>
-                )}
-              </p>
-              <button
-                className="m-4 bg-slate-400"
-                onClick={() => {
-                  handleUpdate(idx);
-                }}
-              >
-                수정
-              </button>
-              <button
-                className="m-4 bg-slate-400"
-                onClick={() => {
-                  handleDelete(idx);
-                }}
-              >
-                삭제
-              </button>
-              {idx < pinArr.length - 1 && (
-                <div>
-                  <p>{betweenDistanceData}km</p>
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <div className="flex gap-3 mb-5">
+        <IconPin />
+        <h3>방문할 장소</h3>
       </div>
+      <DndProvider backend={HTML5Backend}>
+        <ul className=" flex flex-col gap-4">
+          {pinArr.map((pin, idx) => {
+            const betweenDistanceData = distanceData[idx] ?? '';
+            const pinArrLength = pinArr.length;
+            const key = uuid();
+            return (
+              <Pin
+                key={key}
+                id={key}
+                pin={pin}
+                idx={idx}
+                betweenDistanceData={betweenDistanceData}
+                pinArrLength={pinArrLength}
+                handleUpdate={handleUpdate}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+        </ul>
+      </DndProvider>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>

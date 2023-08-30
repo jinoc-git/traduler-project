@@ -7,6 +7,8 @@ import { formatPlanDates } from '@utils/changeFormatDay';
 
 interface CardProps {
   data: GetPlans[];
+  // matesData: PlanType[];
+  // matesData: PlanMatesType[];
 }
 
 // interface CardProps {
@@ -14,6 +16,11 @@ interface CardProps {
 // }
 
 const Card: React.FC<CardProps> = ({ data }) => {
+  useEffect(() => {
+    console.log('Card컴포넌트 내의 useEffect');
+  }, []);
+  // console.log('Card에 matesData=>', matesData);
+
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
     'planning',
@@ -38,7 +45,12 @@ const Card: React.FC<CardProps> = ({ data }) => {
       setEndCount(data.filter((plan) => plan.plan_state === 'end').length);
     }
   }, [data]);
-  console.log('11111111', data);
+
+  // useEffect(() => {
+  //   console.log('matesDataCard=>', matesData);
+  // }, [matesData]);
+
+  // console.log('11111111', data);
   return (
     <div>
       <div className="flex flex-row">

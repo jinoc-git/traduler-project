@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import {
   type PlanMatesType,
@@ -135,31 +136,17 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
-// 작성자가 작성한글만가져온거
-// export const getPlansByUserId = async (
-//   userId: string,
-// ): Promise<PlanType[] | null> => {
-//   const { data, error } = await supabase
-//     .from('plans')
-//     .select()
-//     .eq('users_id', userId);
+// 여기부터
 
-//   if (error !== null) {
-//     console.log(error);
-//     throw new Error('오류발생');
-//   }
-//   if (data !== null) {
-//     const plans: PlanType[] = data as PlanType[];
-//     return plans;
-//   }
-//   return null;
-// };
-
-export const getPlansWithMates = async (userId: string) => {
+export const getPlansByUserIds = async (userIds: string[]) => {
+  // console.log('usersId=>', userIds);
+  // 중복된 아이디값이들어와서 분류
+  // const uniqueUserIds = [...new Set(userIds)];
   const { data, error } = await supabase
     .from('plans')
-    .select('*, plan_mates(*)')
-    .eq('users_id', userId);
+    .select()
+    // .in는 특정 열의 값이 지정된 배열의 값과 일치하는 행을 필터링
+    .in('users_id', userIds);
 
   if (error != null) {
     console.log('에러 발생', error);
@@ -169,6 +156,36 @@ export const getPlansWithMates = async (userId: string) => {
   return data;
 };
 
+export const getPlansWithMates = async (userId: string) => {
+  const { data: matesData, error: matesError } = await supabase
+    .from('plan_mates')
+    .select('users_id')
+    // 배열의 비교는 contains 연산자를 사용
+    .contains('users_id', [userId]);
+
+  console.log(matesData);
+  console.log(matesError);
+  // console.log('matesData1=>', matesData);
+  // console.log('user.id=>', user.id);
+
+  if (matesError != null) {
+    console.log('에러 발생', matesError);
+    return null;
+  }
+  // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
+  const userIds = matesData?.flatMap((mate) => mate.users_id);
+
+  if (!userIds?.length) {
+    return null;
+  }
+
+  const plansData = await getPlansByUserIds(userIds);
+  console.log(plansData);
+
+  return plansData;
+};
+
+// 여기까지
 export const addBookMark = async (
   newBookMarkId: string,
   planId: string,

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Invite from '@components/common/invite/Invite';
+import Nav from '@components/common/nav/Nav';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 import { sideBarStore } from '@store/sideBarStore';
@@ -16,6 +17,7 @@ const Plan = () => {
           : 'w-[calc(100vw-50px)] ml-[50px]'
       }`}
     >
+      <Nav />
       <PostPlan />
       <Invite />
       <UpdatePlan />

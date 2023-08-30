@@ -5,6 +5,7 @@ interface InviteUserStoreType {
   invitedUser: UserType[];
   inviteUser: (data: UserType) => void;
   resetInvitedUser: () => void;
+  setUser: (data: UserType[]) => void;
 }
 
 export const inviteUserStore = create<InviteUserStoreType>((set) => ({
@@ -19,4 +20,13 @@ export const inviteUserStore = create<InviteUserStoreType>((set) => ({
       invitedUser: [],
     }));
   },
+  setUser: (data: UserType[]) => {
+    set(() => ({
+      invitedUser: [...data],
+    }));
+  },
 }));
+
+export const sub = inviteUserStore.subscribe((state) => {
+  return state.invitedUser;
+});

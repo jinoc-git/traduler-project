@@ -36,6 +36,7 @@ const Calendar: React.FC<CalendarProps> = ({
         selectsStart
         startDate={startDate}
         endDate={endDate}
+        maxDate={endDate}
         locale="ko"
         className="outline-none cursor-pointer react-datepicker"
       />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
 
 import { getPlans } from '@api/plans';

@@ -21,9 +21,7 @@ const AuthLoading = () => {
             .from('users')
             .select('id')
             .eq('id', id);
-          console.log('밖', check);
           if (check !== null && check.length === 0) {
-            console.log('안');
             const user = {
               id,
               email: email as string,

@@ -3,6 +3,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
 
+import { getCost, insertPlanEnding } from '@api/datesPay';
 import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
@@ -89,6 +90,34 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pinArr]);
 
+  // 08-30
+  const calcCostAndInsertPlansEnding = async () => {
+    const response = await getCost(planId);
+
+    if (response !== null && response !== undefined) {
+      const datesCost: number[] = [];
+
+      response.forEach((value) => {
+        let cost = 0;
+
+        value.contents.forEach((content) => {
+          cost += content.cost;
+        });
+
+        datesCost.push(cost);
+      });
+
+      console.log('result: ', datesCost);
+      console.log('distanceData: ', distanceData);
+
+      void insertPlanEnding({
+        id: planId,
+        distance: distanceData.map(Number),
+        dates_cost: datesCost,
+      });
+    }
+  };
+
   return (
     <>
       <div className="flex gap-3 mb-5">
@@ -100,7 +129,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           {pinArr.map((pin, idx) => {
             const betweenDistanceData = distanceData[idx] ?? '';
             const pinArrLength = pinArr.length;
-            const key = uuid()
+            const key = uuid();
             return (
               <Pin
                 key={key}
@@ -118,6 +147,12 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       </DndProvider>
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
+      </button>
+      <button
+        className="p-5 bg-slate-500"
+        onClick={calcCostAndInsertPlansEnding}
+      >
+        여행 완료
       </button>
       {isOpenModal && (
         <MapModal openModal={openModal} date={dates[currentPage]} />

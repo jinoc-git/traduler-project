@@ -7,8 +7,18 @@ interface Parameters {
   destination: string;
 }
 
+interface Route {
+  summary: {
+    distance: number;
+  };
+}
+
+interface Routes {
+  routes: Route[];
+}
+
 export const getPath = async (params: Parameters) => {
-  const { data } = await axios.get(
+  const { data } = await axios.get<Routes>(
     'https://apis-navi.kakaomobility.com/v1/directions',
     {
       headers: {

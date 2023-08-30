@@ -75,19 +75,34 @@ export const getPlan = async (planId: string) => {
   }
 };
 
-export const getPlans = async (): Promise<PlanType[] | null> => {
-  const { data, error } = await supabase.from('plans').select();
+interface Book_mark {
+  plan_id: string;
+  user_id: string;
+}
+
+export interface GetPlans extends PlanType {
+  book_mark: Book_mark[];
+}
+
+export const getPlans = async (userId: string | undefined) => {
+  if (userId === undefined) {
+    return;
+  }
+  const { data: plans, error } = await supabase
+    .from('plans')
+    .select(`*, book_mark(* )`)
+    .match({
+      'book_mark.user_id': userId,
+    });
 
   if (error !== null) {
     console.log(error);
     throw new Error('오류발생');
   }
-  if (data !== null) {
-    const plans: PlanType[] = data as PlanType[];
+  if (plans !== null) {
+    console.log(plans);
     return plans;
   }
-
-  return null;
 };
 
 export const getTotalCost = async (userId: string): Promise<number | null> => {
@@ -117,5 +132,63 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
 
   if (error !== null) {
     console.log(error);
+  }
+};
+
+// 작성자가 작성한글만가져온거
+// export const getPlansByUserId = async (
+//   userId: string,
+// ): Promise<PlanType[] | null> => {
+//   const { data, error } = await supabase
+//     .from('plans')
+//     .select()
+//     .eq('users_id', userId);
+
+//   if (error !== null) {
+//     console.log(error);
+//     throw new Error('오류발생');
+//   }
+//   if (data !== null) {
+//     const plans: PlanType[] = data as PlanType[];
+//     return plans;
+//   }
+//   return null;
+// };
+
+export const getPlansWithMates = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('plans')
+    .select('*, plan_mates(*)')
+    .eq('users_id', userId);
+
+  if (error != null) {
+    console.log('에러 발생', error);
+    return null;
+  }
+
+  return data;
+};
+
+export const addBookMark = async (
+  newBookMarkId: string,
+  planId: string,
+  userId: string,
+) => {
+  const { error } = await supabase.from('book_mark').insert({
+    id: newBookMarkId,
+    plan_id: planId,
+    user_id: userId,
+  });
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
+  }
+};
+
+export const deleteBookMark = async (id: string, planId: string) => {
+  const { error } = await supabase.from('book_mark').delete().eq('id', planId);
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
   }
 };

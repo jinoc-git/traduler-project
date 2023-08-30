@@ -10,7 +10,6 @@ import {
 } from '@assets/icons/1x';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
-import { type PlanType } from 'types/supabase';
 
 const SideBar: React.FC = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
@@ -18,14 +17,14 @@ const SideBar: React.FC = () => {
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
-
+  const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
   // supabase데이터 뿌려주기
-  const { data, isLoading, isError } = useQuery<PlanType[] | null>(
+  const { data, isLoading, isError } = useQuery(
     ['plans'],
-    getPlans,
+    async () => await getPlans(userId),
   );
 
-  if (data === null) {
+  if (data === undefined) {
     return <div>로딩중 ...</div>;
   }
 

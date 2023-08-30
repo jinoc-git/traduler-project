@@ -33,7 +33,7 @@ const UpdatePlan = () => {
   };
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const { data: plan, isLoading } = useQuery(
-    ['plan'],
+    ['plan', planId],
     async () => await getPlan(planId),
   );
   const { data: pin } = useQuery(
@@ -43,8 +43,6 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
-      console.log(pin);
-      console.log(pin?.[0].contents);
       setPinArr(pin?.[0].contents as []);
     }
   }, [pin]);

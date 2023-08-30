@@ -26,7 +26,7 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   const planId: string = id as string;
   if (state !== 'addPlan') {
     const { data: plan } = useQuery(
-      ['plan'],
+      ['plan', planId],
       async () => await getPlan(planId),
     );
     dataDates = plan?.[0].dates as string[];

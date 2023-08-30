@@ -35,7 +35,7 @@ export const getCost = async (planId: string) => {
 
 interface Options {
   id: string;
-  distance: number[];
+  // distance: number[];
   dates_cost: number[];
 }
 

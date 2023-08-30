@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
+import { getCost, insertPlanEnding } from '@api/datesPay';
 import { addPicture } from '@api/picture';
 import AddPicture from 'components/addpicture/AddPicture';
 
@@ -19,6 +21,38 @@ const AddPhoto = () => {
 
     setUploadedFiles([]);
   };
+
+  const { id } = useParams();
+  const planId: string = id as string;
+
+  // 08-30
+  const calcCostAndInsertPlansEnding = async () => {
+    const response = await getCost(planId);
+
+    if (response !== null && response !== undefined) {
+      const datesCost: number[] = [];
+
+      response.forEach((value) => {
+        let cost = 0;
+
+        value.contents.forEach((content) => {
+          cost += content.cost;
+        });
+
+        datesCost.push(cost);
+      });
+
+      console.log('result: ', datesCost);
+
+      void insertPlanEnding({
+        id: planId,
+        dates_cost: datesCost,
+      });
+    }
+  };
+  useEffect(() => {
+    void calcCostAndInsertPlansEnding();
+  }, []);
 
   useEffect(() => {
     console.log(uploadedFiles);

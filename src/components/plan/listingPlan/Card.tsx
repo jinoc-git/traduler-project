@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { type PlanType } from 'types/supabase';
+import { type GetPlans } from '@api/plans';
+import Favorite from '@components/main/favorite/Favorite';
 
 interface CardProps {
-  data: PlanType[] | null;
+  data: GetPlans[];
 }
 
 const Card: React.FC<CardProps> = ({ data }) => {
@@ -32,7 +33,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
       setEndCount(data.filter((plan) => plan.plan_state === 'end').length);
     }
   }, [data]);
-
+  console.log('11111111', data);
   return (
     <div>
       <div className="flex flex-row">
@@ -79,6 +80,10 @@ const Card: React.FC<CardProps> = ({ data }) => {
           const koreanStartDay = daysInKorean[startDayOfWeek];
           const koreanEndDay = daysInKorean[endDayOfWeek];
 
+          const isFavorite = plan.book_mark.find(
+            (bookMark) => bookMark.plan_id === plan.id,
+          );
+
           return (
             <div key={plan.id}>
               <div
@@ -104,7 +109,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
                 </div>
 
                 <div className="w-1/5 h-12">
-                  <div>즐겨찾기아이콘</div>
+                  <Favorite isFavorite={Boolean(isFavorite)} planId={plan.id} />
                   <div>
                     {plan.plan_state === 'end'
                       ? null

@@ -15,7 +15,7 @@ interface CardProps {
 //   data: PlanMatesType | null;
 // }
 
-const Card: React.FC<CardProps> = ({ data, matesData }) => {
+const Card: React.FC<CardProps> = ({ matesData }) => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
     'planning',

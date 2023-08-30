@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { getPlans } from '@api/plans';
+import { getPlansWithMates } from '@api/plans';
 import {
   ic_chevron_down_1x,
   ic_chevron_up_1x,
@@ -19,23 +19,24 @@ const SideBar: React.FC = () => {
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
   const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
   // supabase데이터 뿌려주기
-  const { data, isLoading, isError } = useQuery(
-    ['plans'],
-    async () => await getPlans(userId),
-  );
+  const {
+    data: matesData,
+    isLoading: matesLoading,
+    isError: matesError,
+  } = useQuery(['plan_mates'], async () => await getPlansWithMates(userId));
 
-  if (data === undefined) {
+  if (matesData === null) {
     return <div>로딩중 ...</div>;
   }
 
-  if (isLoading) {
+  if (matesLoading) {
     return <div>로딩중 ..</div>;
   }
-  if (isError) {
+  if (matesError) {
     return <div>오류</div>;
   }
 
-  const sortedData = data.sort(
+  const sortedData = matesData.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 

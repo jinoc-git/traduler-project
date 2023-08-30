@@ -4,15 +4,20 @@ import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
+import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { sideBarStore } from '@store/sideBarStore';
 
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const { resetInvitedUser } = inviteUserStore();
+  const { resetDates } = datesStore();
 
   useEffect(() => {
     resetInvitedUser();
+    return () => {
+      resetDates();
+    };
   }, []);
 
   return (

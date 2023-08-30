@@ -101,7 +101,6 @@ export const getPlans = async (userId: string | undefined) => {
     throw new Error('오류발생');
   }
   if (plans !== null) {
-    console.log(plans);
     return plans;
   }
 };

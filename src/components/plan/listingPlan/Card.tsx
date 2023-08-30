@@ -33,6 +33,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
       setEndCount(data.filter((plan) => plan.plan_state === 'end').length);
     }
   }, [data]);
+  console.log('11111111', data);
   return (
     <div>
       <div className="flex flex-row">
@@ -80,7 +81,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
           const koreanEndDay = daysInKorean[endDayOfWeek];
 
           const isFavorite = plan.book_mark.find(
-            (pId: { plan_id: string }) => pId.plan_id === plan.id,
+            (bookMark) => bookMark.plan_id === plan.id,
           );
 
           return (
@@ -108,7 +109,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
                 </div>
 
                 <div className="w-1/5 h-12">
-                  <Favorite isFavorite={Boolean(isFavorite)} />
+                  <Favorite isFavorite={Boolean(isFavorite)} planId={plan.id} />
                   <div>
                     {plan.plan_state === 'end'
                       ? null

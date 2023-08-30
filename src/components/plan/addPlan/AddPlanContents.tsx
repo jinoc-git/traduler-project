@@ -82,20 +82,20 @@ const AddPlanContents = ({
   // }, [style]);
 
   // useEffect(() => {
-  const windowResize = () => {
-    console.log('resize');
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    console.log(width);
-    console.log(height);
-    // setStyle({
-    //   width : width.toString(),
-    //   height : height.toString(),
-    //   borderRadius: '8px',
-    // });
-  };
+  // const windowResize = () => {
+  //   console.log('resize');
+  //   const width = window.innerWidth;
+  //   const height = window.innerHeight;
+  //   console.log(width);
+  //   console.log(height);
+  // setStyle({
+  //   width : width.toString(),
+  //   height : height.toString(),
+  //   borderRadius: '8px',
+  // });
+  // };
 
-  window.addEventListener(`resize`, windowResize);
+  // window.addEventListener(`resize`, windowResize);
 
   //   return () => {
   //     window.removeEventListener(`resize`, windowResize);

@@ -11,11 +11,11 @@ import { sideBarStore } from '@store/sideBarStore';
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const { resetInvitedUser } = inviteUserStore();
-  const { resetDates } = datesStore();
+  const resetDates = datesStore((state) => state.resetDates);
 
   useEffect(() => {
-    resetInvitedUser();
     return () => {
+      resetInvitedUser();
       resetDates();
     };
   }, []);

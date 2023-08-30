@@ -22,7 +22,7 @@ const Invite = () => {
     inviteUserStore();
 
   const { id: planId } = useParams();
-  const { data } = useQuery(['planMates'], async () => {
+  const { data } = useQuery(['planMates', planId], async () => {
     if (planId !== undefined) {
       const res = await getMates(planId);
       return res;
@@ -35,18 +35,18 @@ const Invite = () => {
 
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
   useEffect(() => {
-    if (data != null) {
+    if (data !== undefined && data !== null) {
       resetInvitedUser();
       data.forEach((user) => {
         inviteUser(user);
       });
+      syncInviteduser();
     }
-    syncInviteduser();
   }, [data]);
 
   return (
     <>
-      <div className="flex items-center justify-between h-16 py-3">
+      <div className="flex items-center h-16 py-3">
         <label className="text-[16px] font-semibold">동행</label>
         <div className="text-[13px] font-semibold flex">
           {isOldInvitedUser ? (

@@ -33,7 +33,7 @@ const AddPlan = () => {
   } = useForm<InputType>();
 
   const [totalCost, setTotalCost] = useState('');
-  const { invitedUser, inviteUser, resetInvitedUser, syncInviteduser } =
+  const { invitedUser, inviteUser, syncInviteduser, resetInvitedUser } =
     inviteUserStore();
 
   const submitPlan = async () => {
@@ -60,7 +60,9 @@ const AddPlan = () => {
 
   useEffect(() => {
     resetDates();
-    resetInvitedUser();
+    return () => {
+      resetInvitedUser();
+    };
   }, []);
 
   useEffect(() => {

@@ -12,6 +12,12 @@ const CardSection = () => {
     // 유저아이디 가져오기 목데이터
     async () => await getPlans('2f9f32f2-e021-4b55-bf78-3318d0b16d95'),
   );
+  // 멤버가지고오는거일듯..
+  // const { data, isLoading, isError } = useQuery<PlanMatesType | null>(
+  //   ['plan_mates'],
+  //   getPlanMatesById,
+  // );
+
   // console.log('MainCardsData', data);
 
   if (isLoading) {

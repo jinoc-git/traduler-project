@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getMates } from '@api/planMates';
 import { defaultImageGray } from '@assets/index';
 import { inviteUserStore } from '@store/inviteUserStore';
+import { modifyStateStore } from '@store/modifyStateStore';
 import { useQuery } from '@tanstack/react-query';
 
 import SearchPeople from './SearchPeople';
@@ -20,6 +21,7 @@ const Invite = () => {
 
   const { oldInvitedUser, inviteUser, resetInvitedUser, syncInviteduser } =
     inviteUserStore();
+  const modifyState = modifyStateStore((state) => state.modifyState);
 
   const { id: planId } = useParams();
   const { data } = useQuery(['planMates', planId], async () => {
@@ -46,7 +48,7 @@ const Invite = () => {
 
   return (
     <>
-      <div className="flex items-center h-16 py-3">
+      <div className="flex items-center">
         <label className="text-[16px] font-semibold">동행</label>
         <div className="text-[13px] font-semibold flex">
           {isOldInvitedUser ? (
@@ -91,12 +93,14 @@ const Invite = () => {
             <>로딩중...</>
           )}
         </div>
-        <button
-          className="border border-[#484848] rounded-lg text-[12px] p-2"
-          onClick={switchModal}
-        >
-          추가
-        </button>
+        {modifyState === 'modify' && (
+          <button
+            className="border border-[#484848] rounded-lg text-[12px] p-2"
+            onClick={switchModal}
+          >
+            추가
+          </button>
+        )}
       </div>
       {isOpen && (
         <>

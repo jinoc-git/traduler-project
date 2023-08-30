@@ -92,15 +92,11 @@ const AddPlan = () => {
           : 'w-[calc(100vw-50px)] ml-[50px]'
       }`}
     >
-      <Nav onClick={handleSubmit(submitPlan)} buttonDisabled={buttonDisabled} />
-      {/* <button
-        type="submit"
-        disabled={isSubmitting}
-        className="p-3 bg-slate-500"
+      <Nav
+        page={'addPlan'}
         onClick={handleSubmit(submitPlan)}
-      >
-        저장하기
-      </button> */}
+        buttonDisabled={buttonDisabled}
+      />
       <div className="px-[210px] py-[100px]">
         <input
           id="title"

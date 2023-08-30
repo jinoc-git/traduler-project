@@ -1,11 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
-import { findUsers } from '@api/planMates';
+import { findUsers, updateMates } from '@api/planMates';
 import { inviteUserStore } from '@store/inviteUserStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
+
+import UserList from './UserList';
 
 interface InputType {
   userInfo: string;
@@ -17,8 +21,10 @@ const SearchPeople = () => {
     formState: { errors },
   } = useForm<InputType>();
   const [people, setPeople] = useState<UserType[]>([]);
+  const [isFind, setIsFind] = useState<boolean>(true);
+  const { id: planId } = useParams();
 
-  // users 테이블에서 닉네임이나 이메일이 includes되는 것들을 가져와서 검색결과로 보여주기
+  // 유저 검색
   const searchUser: SubmitHandler<InputType> = async (data) => {
     const res = await findUsers(data.userInfo);
     if (res.nickname != null && res.email != null) {
@@ -34,70 +40,122 @@ const SearchPeople = () => {
   };
   const debouncedSearchUser = _.debounce(searchUser, 300);
 
-  const { invitedUser, inviteUser } = inviteUserStore();
-  const handleInvite = (user: UserType) => {
+  const { invitedUser, inviteUser, setUser } = inviteUserStore();
+  const usersId = invitedUser.map((item) => item.id);
+  const handleInvite = async (user: UserType) => {
     const conf = window.confirm('해당 여행에 초대하시겠습니까?');
     if (conf) {
       inviteUser(user);
     }
   };
 
+  // 유저 초대
+  const queryClient = useQueryClient();
+  const inviteMutation = useMutation({
+    mutationFn: async ([usersId, planId]: [string[], string]) => {
+      await updateMates(usersId, planId);
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['planMates'] });
+    },
+  });
+
+  const inviteData = () => {
+    const Ids = invitedUser.map((item) => item.id);
+    if (Ids !== undefined && planId !== undefined) {
+      inviteMutation.mutate([usersId, planId]);
+    }
+    alert('저장되었습니다');
+  };
+
+  // 초대한 유저 삭제
+  const deleteUser = (idx: number) => {
+    console.log(invitedUser[idx]);
+    const deletedUser = invitedUser.filter((_, index) => index !== idx);
+    setUser(deletedUser);
+  };
+
   return (
-    <div className="absolute w-[500px] h-[250px] bg-white border rounded-lg flex flex-col z-20 right-[335px]">
-      <label>친구찾기</label>
-      <div className="flex flex-col">
-        <input
-          placeholder="이메일이나 닉네임을 입력하세요."
-          {...register('userInfo', {
-            required: '필수 입력값입니다.',
-            minLength: {
-              value: 2,
-              message: '2글자 이상 입력하세요.',
-            },
-            pattern: {
-              value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-              message: '모음, 자음 안됨',
-            },
-          })}
-          onChange={(e) => debouncedSearchUser({ userInfo: e.target.value })}
-          className="w-[250px] border rounded-lg outline-none"
-        />
-        <p>{errors?.userInfo?.message}</p>
+    <div className="absolute w-[500px] h-[250px] bg-white border rounded-lg flex flex-col z-20 right-[335px] items-center">
+      <div className="flex justify-around">
+        <div
+          onClick={() => {
+            setIsFind(true);
+          }}
+          className="m-2 cursor-pointer"
+        >
+          친구찾기
+        </div>
+        <div
+          onClick={() => {
+            setIsFind(false);
+          }}
+          className="m-2 cursor-pointer"
+        >
+          초대한 친구
+        </div>
       </div>
-      {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
-      <div className="overflow-scroll">
-        {people
-          .filter(
-            (person) =>
-              invitedUser.filter((user) => user.id === person.id).length === 0,
-          )
-          .map((person: UserType, idx) => {
-            return (
-              <div key={idx} className="flex items-center gap-3 mb-3">
-                <div>
-                  {typeof person.avatar_url === 'string' ? (
-                    <img
-                      className="object-cover border-2 rounded-full w-9 h-9"
-                      src={person.avatar_url}
-                      alt={`Avatar for ${person.nickname}`}
+      {isFind && (
+        <>
+          <div className="flex flex-col">
+            <input
+              placeholder="이메일이나 닉네임을 입력하세요."
+              {...register('userInfo', {
+                required: '필수 입력값입니다.',
+                minLength: {
+                  value: 2,
+                  message: '2글자 이상 입력하세요.',
+                },
+                pattern: {
+                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              onChange={(e) =>
+                debouncedSearchUser({ userInfo: e.target.value })
+              }
+              className="w-[250px] border rounded-lg outline-none"
+            />
+            <p>{errors?.userInfo?.message}</p>
+          </div>
+          <div className="overflow-scroll">
+            {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
+            {people
+              .filter(
+                (person) =>
+                  invitedUser.filter((user) => user.id === person.id).length ===
+                  0,
+              )
+              .map((person: UserType, idx) => {
+                return (
+                  <div key={idx}>
+                    <UserList
+                      person={person}
+                      idx={idx}
+                      handleInvite={handleInvite}
                     />
-                  ) : (
-                    <div className="border-2 rounded-full w-9 h-9 bg-slate-500" />
-                  )}
+                  </div>
+                );
+              })}
+          </div>
+        </>
+      )}
+      {!isFind && (
+        <div className="flex flex-col overflow-scroll">
+          {invitedUser.length !== 0 &&
+            invitedUser.map((person, idx) => {
+              return (
+                <div key={idx}>
+                  <UserList person={person} idx={idx} deleteUser={deleteUser} />
                 </div>
-                <p>{person.nickname}</p>
-                <p>{person.email}</p>
-                <button
-                  onClick={() => {
-                    handleInvite(person);
-                  }}
-                >
-                  초대
-                </button>
-              </div>
-            );
-          })}
-      </div>
+              );
+            })}
+        </div>
+      )}
+
+      <button onClick={inviteData} className="absolute bottom-0 mx-auto">
+        저장
+      </button>
     </div>
   );
 };

@@ -54,7 +54,7 @@ const SignInForm = () => {
   };
 
   return (
-    <main className="flex justify-center items-center w-screen h-screen">
+    <main className="flex-center w-screen h-screen">
       <form
         onSubmit={handleSubmit(onSubmitSignInHandler)}
         className="relative flex flex-col w-[450px] h-[410px] px-[50px] py-[37px] border gap-y-2.5 rounded-xl"

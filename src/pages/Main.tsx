@@ -35,7 +35,6 @@ const Main = () => {
         </button>
       </section>
       <CardSection />
-      {/* <Pay /> */}
     </main>
   );
 };

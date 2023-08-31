@@ -15,7 +15,7 @@ export const inviteUserStore = create<InviteUserStoreType>((set) => ({
   invitedUser: [],
   inviteUser: (data: UserType) => {
     set((state) => ({
-      oldInvitedUser: state.invitedUser,
+      // oldInvitedUser: state.invitedUser,
       invitedUser: [...state.invitedUser, data],
     }));
   },

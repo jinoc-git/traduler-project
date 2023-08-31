@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Favorite from '@components/main/favorite/Favorite';
+// import Favorite from '@components/main/favorite/Favorite';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { type PlanType, type BookMarkType } from 'types/supabase';
 
@@ -68,9 +68,9 @@ const Card: React.FC<CardProps> = ({ matesData, bookMarkData }) => {
         .map((plan) => {
           const { startDate, endDate } = formatPlanDates(plan);
 
-          const isFavorite = bookMarkData.find(
-            (bookMark) => bookMark.id === plan.id,
-          );
+          // const isFavorite = bookMarkData.find(
+          //   (bookMark) => bookMark.id === plan.id,
+          // );
 
           return (
             <div key={plan.id}>
@@ -97,11 +97,11 @@ const Card: React.FC<CardProps> = ({ matesData, bookMarkData }) => {
                 </div>
 
                 <div className="w-1/5 h-12">
-                  <Favorite
+                  {/* <Favorite
                     isFavorite={Boolean(isFavorite)}
                     planId={plan.id}
                     userId={plan.users_id}
-                  />
+                  /> */}
                   <div>
                     {plan.plan_state === 'end'
                       ? null

@@ -1,29 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// import Favorite from '@components/main/favorite/Favorite';
 import { formatPlanDates } from '@utils/changeFormatDay';
-import { type UserType, type PlanType } from 'types/supabase';
+import Favorite from 'components/main/favorite/Favorite';
+import {
+  type BookMarkType,
+  type UserType,
+  type PlanType,
+} from 'types/supabase';
 
 interface CardProps {
-  // matesData: PlanType[];
-  // bookMarkData: BookMarkType[];
+  bookMarkData: BookMarkType[];
   plansData: PlanType[] | undefined;
   usersDataList: UserType[][] | null;
 }
 const Card: React.FC<CardProps> = ({
-  // matesData,
   usersDataList,
   plansData,
-  // bookMarkData
+  bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
+  const [selectedPlan, setSelectedPlan] = useState<'planning' | 'end'>(
     'planning',
   );
 
-  const [planningCount, setPlanningCount] = React.useState<number>(0);
-  const [endCount, setEndCount] = React.useState<number>(0);
+  const [planningCount, setPlanningCount] = useState<number>(0);
+  const [endCount, setEndCount] = useState<number>(0);
 
   // 클릭할때마다 변경
   const filterData = plansData?.filter((plan) =>
@@ -75,10 +77,9 @@ const Card: React.FC<CardProps> = ({
         .map((plan) => {
           const { startDate, endDate } = formatPlanDates(plan);
 
-          // const isFavorite = bookMarkData.find(
-          //   (bookMark) => bookMark.id === plan.id,
-          // );
-
+          const isFavorite = bookMarkData.find(
+            (bookMark) => bookMark.plan_id === plan.id,
+          );
           return (
             <div key={plan.id}>
               <div
@@ -111,11 +112,13 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
                 <div className="w-1/5 h-12">
-                  {/* <Favorite
+                  <Favorite
                     isFavorite={Boolean(isFavorite)}
                     planId={plan.id}
-                    userId={plan.users_id}
-                  /> */}
+                    bookMarkId={
+                      isFavorite?.id !== undefined ? isFavorite.id : ''
+                    }
+                  />
                   <div>
                     {plan.plan_state === 'end'
                       ? null

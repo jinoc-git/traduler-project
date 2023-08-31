@@ -1,115 +1,130 @@
-// /* eslint-disable @typescript-eslint/no-invalid-void-type */
-// import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
+import React from 'react';
 
-// import { addBookMark } from '@api/bookMarks';
-// import favoriteDefault from '@assets/icons/1x/ic-favorite-default-1x.png';
-// import favoriteSolid from '@assets/icons/1x/ic-favorite-solid-1x.png';
-// import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addBookMark, deleteBookMark } from '@api/bookMarks';
+import favoriteDefault from '@assets/icons/1x/ic-favorite-default-1x.png';
+import favoriteSolid from '@assets/icons/1x/ic-favorite-solid-1x.png';
+import { userStore } from '@store/userStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import _ from 'lodash';
+import { type BookMarkType } from 'types/supabase';
 
-// interface FavoriteProps {
-//   planId: string;
-//   userId: string;
-//   isFavorite: boolean;
-// }
+interface FavoriteProps {
+  planId: string;
+  bookMarkId: string;
+  isFavorite: boolean;
+}
 
-// const Favorite: React.FC<FavoriteProps> = ({
-//   isFavorite,
-//   planId /*, userId */,
-// }) => {
-//   const [status, setStatus] = useState(isFavorite);
-//   const queryClient = useQueryClient();
-//   const userId = '02c05284-bfe4-41c9-b7aa-2709b2cf771b';
-//   const newBookMarkId = uuid();
+const Favorite: React.FC<FavoriteProps> = ({
+  isFavorite,
+  bookMarkId,
+  planId /*, userId */,
+}) => {
+  const user = userStore.getState().user;
+  const queryClient = useQueryClient();
+  const userId = user?.id;
 
-//   const addFavorite = () => {
-//     setStatus(true);
-//   };
+  const addMutation = useMutation<
+    void,
+    Error,
+    BookMarkType,
+    { previousData: BookMarkType[] | undefined }
+  >(addBookMark, {
+    onMutate: async (newBookMark: BookMarkType) => {
+      await queryClient.cancelQueries(['book_mark', userId]);
+      console.log('onMutate 호출', newBookMark);
+      const previousData = queryClient.getQueryData<BookMarkType[]>([
+        'book_mark',
+        userId,
+      ]);
 
-//   const addMutation = useMutation<
-//     void,
-//     Error,
-//     // 뮤테이트에 전달할 인자는 뭐지 ?
-//     { previousData: addFavorite[] | undefined }
-//   >(addFavorite, {
-//     onMutate: async (/* 뭐가 들어감?;; */) => {
-//       await queryClient.cancelQueries(['book_mark']);
-//       console.log('onMutate 호출');
-//       const previousData = queryClient.getQueryData<book_mark[]>(['book_mark']);
-//       setStatus(true);
+      if (previousData !== undefined) {
+        queryClient.setQueryData(
+          ['book_mark', userId],
+          [...previousData, newBookMark],
+        );
+      } else {
+        queryClient.setQueryData(['book_mark', userId], [newBookMark]);
+      }
 
-//       const newData = [...previousData, { id: newBookMarkId }];
+      return { previousData };
+    },
 
-//       queryClient.setQueryData(['book_mark'], newData);
+    onError: (err, newBookMark, context) => {
+      if (err instanceof Error) {
+        console.log(err);
+      }
+      queryClient.setQueryData(['book_mark'], context?.previousData);
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries(['book_mark', userId]);
+    },
+  });
 
-//       await addBookMark(newBookMarkId, userId, planId);
+  const deletemutaition = useMutation<
+    void,
+    Error,
+    string,
+    { previousData: BookMarkType[] | undefined }
+  >(deleteBookMark, {
+    onMutate: async (bookMarkId: string) => {
+      await queryClient.cancelQueries(['book_mark', userId]);
+      const previousData = queryClient.getQueryData<BookMarkType[]>([
+        'book_mark',
+        userId,
+      ]);
 
-//       return { previousData };
-//     },
+      if (previousData !== undefined) {
+        const newBookMarkList = previousData.filter(
+          (item) => item.id !== bookMarkId,
+        );
+        queryClient.setQueryData(['book_mark', userId], newBookMarkList);
+      }
 
-//     onError: (err, newFavorite, context) => {
-//       queryClient.setQueryData(['book_mark'], context?.previousData);
-//     },
-//     onSettled: () => {
-//       queryClient.invalidateQueries(['book_mark']);
-//     },
-//   });
+      return { previousData };
+    },
+    onError: (err, variables, context) => {
+      if (err instanceof Error) {
+        console.log(err);
+      }
+      queryClient.setQueryData(['book_mark', userId], context?.previousData);
+    },
+    onSettled: () => {
+      void queryClient.invalidateQueries(['book_mark', userId]);
+    },
+  });
 
-//   // const deletemutaition = useMutation<void, Error>(
-//   //   async () => {
-//   //     await deleteBookMark();
-//   //   },
-//   //   {
-//   //     onMutate: async () => {
-//   //       setStatus(false);
+  const throttleAddMutaion = _.throttle((newBookMark: BookMarkType) => {
+    addMutation.mutate(newBookMark);
+  }, 250);
 
-//   //       await queryClient.cancelQueries(['book_mark']);
-//   //       const previousData = queryClient.getQueriesData(['book_mark']);
-//   //       queryClient.setQueriesData(
-//   //         ['book_mark'],
-//   //         previousData.filter((item) => item.id !== planId),
-//   //       );
-//   //       return { previousData };
-//   //     },
-//   //     onError: (err, variables, context) => {
-//   //       queryClient.setQueriesData(queryKey, context?.previousData);
-//   //     },
-//   //     onSettled: () => {
-//   //       console.log('onSetteled');
-//   //       queryClient.invalidateQueries(['book_mark']);
-//   //     },
-//   //   },
-//   // );
+  const throttleDeleteMutaion = _.throttle((bookMarkId: string) => {
+    deletemutaition.mutate(bookMarkId);
+  }, 250);
 
-//   const favoriteHandler = (
-//     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-//   ) => {
-//     e.stopPropagation();
+  const favoriteHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.stopPropagation();
 
-//     // if (status) {
-//     //   await deletemutaition.mutateAsync();
+    if (isFavorite) {
+      throttleDeleteMutaion(bookMarkId);
+    } else {
+      if (userId !== undefined) {
+        throttleAddMutaion({ plan_id: planId, user_id: userId });
+      }
+    }
+  };
 
-//     //   console.log('deletemutation 동작');
-//     // } else {
-//     //   await addMutation.mutateAsync();
-//     //   console.log('addMutation 동작');
-//     // }
-//     setStatus((prev) => !prev);
-//   };
+  return (
+    <button onClick={favoriteHandler}>
+      <img
+        className="h-4 cursor-pointer w-"
+        src={isFavorite ? favoriteSolid : favoriteDefault}
+        alt="Favorite Icon"
+      />
+    </button>
+  );
+};
 
-//   // const handleSubmit = (e) => {
-//   //   e.preventDefault();
-//   //   addMutation.mutate({});
-//   // }
-//   return (
-//     <button onClick={favoriteHandler}>
-//       <img
-//         className="h-4 cursor-pointer w-"
-//         src={status ? favoriteSolid : favoriteDefault}
-//         alt="Favorite Icon"
-//       />
-//     </button>
-//   );
-// };
-
-// export default Favorite;
+export default Favorite;

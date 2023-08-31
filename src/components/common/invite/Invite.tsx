@@ -54,10 +54,10 @@ const Invite = () => {
           {isOldInvitedUser ? (
             oldInvitedUser.length > 0 && (
               <div className="flex mr-3">
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => {
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                   return (
                     <img
-                      key={idx}
+                      key={user.id}
                       src={
                         user.avatar_url != null
                           ? user.avatar_url
@@ -75,16 +75,16 @@ const Invite = () => {
           {isOldInvitedUser ? (
             oldInvitedUser.length > maxDisplayCount ? (
               <>
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => (
-                  <div key={idx} className="mr-[2px]">
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
+                  <div key={user.id} className="mr-[2px]">
                     {user.nickname}
                   </div>
                 ))}
                 외 {oldInvitedUser.length - maxDisplayCount}명
               </>
             ) : (
-              oldInvitedUser.map((user, idx) => (
-                <div key={idx} className="mr-[2px]">
+              oldInvitedUser.map((user) => (
+                <div key={user.id} className="mr-[2px]">
                   {user.nickname}
                 </div>
               ))

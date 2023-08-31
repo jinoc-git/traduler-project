@@ -90,7 +90,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
         {invitedUser.length !== 0 &&
           invitedUser.map((person, idx) => {
             return (
-              <div key={idx}>
+              <div key={person.email}>
                 <UserList person={person} idx={idx} deleteUser={deleteUser} />
               </div>
             );
@@ -127,7 +127,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           )
           .map((person: UserType, idx) => {
             return (
-              <div key={idx}>
+              <div key={person.id}>
                 <UserList
                   person={person}
                   idx={idx}

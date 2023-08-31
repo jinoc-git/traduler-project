@@ -99,7 +99,7 @@ const SignUpForm = () => {
   }, [emailValue]);
 
   return (
-    <main className="flex justify-center items-center w-screen h-screen">
+    <main className="flex-center w-screen h-screen">
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
         className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] border gap-y-2.5 rounded-xl"
@@ -232,7 +232,7 @@ const SignUpForm = () => {
           onClick={signInWithGoogle}
           className="h-[45px] border rounded-lg"
         >
-          <div className="flex justify-center items-center">
+          <div className="flex-center">
             <img
               src={ic_google_1x}
               alt="구글"

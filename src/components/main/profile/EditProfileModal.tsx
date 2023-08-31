@@ -135,7 +135,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   }, [preview]);
 
   return (
-    <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
+    <div className="absolute top-0 z-10 flex-center w-screen h-screen bg-black/70">
       <form
         className="relative flex flex-col p-10 items-center justify-between align-middle bg-white h-[400px]"
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}

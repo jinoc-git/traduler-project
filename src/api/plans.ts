@@ -207,10 +207,11 @@ export const updatePlan = async (
   }
 };
 
-export const changePlanState = async (planId: string) => {
+export const changePlanState = async (data: any) => {
+  const [planId, planState] = data;
   const { error } = await supabase
     .from('plans')
-    .update({ plan_state: 'end' })
+    .update({ plan_state: planState })
     .eq('id', planId);
   if (error !== null) {
     console.log(error);

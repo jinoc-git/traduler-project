@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { changePlanState, getPlan, updatePlan } from '@api/plans';
 import Comments from '@components/comments/Comments';
@@ -21,7 +21,7 @@ const Plan = () => {
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
   const planId: string = id as string;
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ['plan', planId],
     async () => await getPlan(planId),
   );
@@ -39,12 +39,14 @@ const Plan = () => {
     mutation.mutate([planId, title, cost]);
   };
 
+  const navigate = useNavigate();
   const handleChangePlanState = () => {
     const conf = window.confirm(
       `여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 정말 완료하시겠습니까?`,
     );
     if (conf) {
-      changeMutation.mutate(planId);
+      changeMutation.mutate([planId, 'end']);
+      navigate(`/addPhoto/${planId}`);
     }
   };
 
@@ -81,8 +83,15 @@ const Plan = () => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
       setCost(data?.[0].total_cost);
+      if (data[0].plan_state === 'end') {
+        navigate(`/addPhoto/${planId}`);
+      }
     }
   }, [data]);
+
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <main
@@ -119,6 +128,7 @@ const Plan = () => {
         <UpdatePlan />
         <div className="flex items-center justify-end gap-5">
           <p>여행 일정을 마치셨나요?</p>
+          {/* {data[0].plan_state === 'planning' } */}
           <button
             onClick={handleChangePlanState}
             className="p-3 border rounded-lg border-gray w-[130px]"

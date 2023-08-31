@@ -1,39 +1,42 @@
 import React from 'react';
 
-import { getPlans } from '@api/plans';
+import { getPlansWithMates } from '@api/plans';
+import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 import Card from './Card';
 
 const CardSection = () => {
-  const { data, isLoading, isError } = useQuery(
-    ['plans'],
-    // async () => await getPlans(userId),
-    // 유저아이디 가져오기 목데이터
-    async () => await getPlans('2f9f32f2-e021-4b55-bf78-3318d0b16d95'),
+  const user = userStore.getState().user;
+
+  const {
+    data: matesData,
+    isLoading: matesLoading,
+    isError: matesError,
+  } = useQuery(
+    ['plan_mates', user?.id],
+    async () => {
+      return await getPlansWithMates(user === null ? '' : user.id);
+    },
+    { enabled: user !== null },
   );
-  // 멤버가지고오는거일듯..
-  // const { data, isLoading, isError } = useQuery<PlanMatesType | null>(
-  //   ['plan_mates'],
-  //   getPlanMatesById,
-  // );
 
-  // console.log('MainCardsData', data);
+  if (matesLoading) {
+    return <div>로딩중 ...</div>;
+  }
+  if (matesError) {
+    return <div>에러 발생</div>;
+  }
 
-  if (isLoading) {
-    return <div>로딩중 ...</div>;
+  if (matesData == null) {
+    return <div>데이터 없음</div>;
   }
-  if (isError) {
-    return <div>로딩중 ...</div>;
-  }
-  if (data === undefined) {
-    return <div>로딩중 ...</div>;
-  }
+
   return (
     <section className="main-layout">
       <div></div>
       <div>
-        <Card data={data} />
+        <Card matesData={matesData} />
       </div>
     </section>
   );

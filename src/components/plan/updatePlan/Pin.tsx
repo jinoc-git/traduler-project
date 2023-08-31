@@ -43,7 +43,6 @@ const Pin = (props: PinProps) => {
 
   const dragBoxRef = useRef<HTMLLIElement>(null);
 
-  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
   const [{ handlerId }, drop] = useDrop<
     ItemType,
     void,
@@ -59,6 +58,7 @@ const Pin = (props: PinProps) => {
       const dragIndex = item.idx;
       const hoverIndex = idx;
 
+      // 호버가 되고 위치가 바뀌면 여기 if문에서 막히게 해서 movePins가 실행이 되지 않게 해야함
       if (dragIndex === hoverIndex) return;
       console.log('==>', dragIndex, hoverIndex);
 
@@ -73,12 +73,16 @@ const Pin = (props: PinProps) => {
 
       movePins(item.idx, hoverIndex);
       // throttleHoverItem(item, hoverIndex, movePins);
-      item.idx = hoverIndex;
+
+      // 키값 중복 x, 추후에 보완하기 => movePin 함수로 들어가고 setState함수가 실행이 됐을 때 ~ 리렌더링 할 때 이
+      // 사이 공백 시간에 인덱스를 같게 만들어 줌으로써 위의 if문에 막히고 movePins함수가 실행되지 않도록 해주는 역할임
+      // 하지만 여기서는 적용이 안됨.. 오류를 유발함. => 리렌더링이 되고 난 이후에 item.idx는 바뀐 인덱스 값이고 hoverIndex값은
+      // 바뀌고 난 이후 아이템의 인덱스기 때문에 다시 원래 인덱스로 돌아가게 된다..
+      // item.idx = hoverIndex;
     },
   }));
 
-  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const [{ isDragging }, dragRef, previewRef] = useDrag(() => ({
+  const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'pin',
     item: { id, idx },
     collect: (moniter) => ({
@@ -94,10 +98,6 @@ const Pin = (props: PinProps) => {
     },
   }));
 
-  // const applyRef = useCallback((node: HTMLLIElement | null) => {
-  //   dragBoxRef.current = node;
-  //   drop(previewRef(node))
-  // }, [])
   dragRef(drop(dragBoxRef));
   return (
     <li
@@ -118,7 +118,7 @@ const Pin = (props: PinProps) => {
       <div className="flex w-full border">
         <button
           // ref={dragRef}
-          className=" flex justify-center items-center w-[50px] m-3"
+          className="flex-center w-[50px] m-3"
         >
           <IconSixDots fill="orange" />
         </button>
@@ -144,7 +144,7 @@ const Pin = (props: PinProps) => {
                 onClick={() => {
                   handleUpdate(idx);
                 }}
-                className=" flex justify-center items-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
+                className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
               >
                 수정
               </li>
@@ -155,7 +155,7 @@ const Pin = (props: PinProps) => {
                 onClick={() => {
                   handleDelete(idx);
                 }}
-                className=" flex justify-center items-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
+                className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
               >
                 삭제
               </li>

@@ -42,7 +42,7 @@ export const calcPath = async (distance: PinContentsType[]) => {
   });
 
   const newData: string[] = [];
-
+  console.log(convertParameters)
   for (let i = 0; i < convertParameters.length; i += 1) {
     if (i === convertParameters.length - 1) {
       break;

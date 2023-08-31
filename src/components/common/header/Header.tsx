@@ -75,7 +75,7 @@ const Header = () => {
           <button
             onBlur={toggleIsMenuOpen}
             onClick={toggleIsMenuOpen}
-            className="flex justify-center items-center w-[70px] h-[50px]"
+            className="flex-center w-[70px] h-[50px]"
           >
             <img
               src={user.profileImg !== null ? user.profileImg : ic_profile_3x}

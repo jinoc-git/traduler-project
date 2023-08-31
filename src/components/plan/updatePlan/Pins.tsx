@@ -1,6 +1,6 @@
 /* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
@@ -29,7 +29,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   const { id } = useParams();
   const planId: string = id as string;
-  // const planId = 'b3bdfec0-4107-441c-b477-19d96e5b566e';
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
 
   const queryClient = useQueryClient();
@@ -65,8 +64,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   };
 
   // drang drop
-  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const movePins = (beforeIdx: number, afterIdx: number) => {
+  const movePins = useCallback((beforeIdx: number, afterIdx: number) => {
     if (beforeIdx === afterIdx) return;
     setPinArr((prev) => {
       const newPinArr = [...prev];
@@ -74,7 +72,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       newPinArr.splice(afterIdx, 0, ...item);
       return newPinArr;
     });
-  };
+  }, []);
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
@@ -82,45 +80,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
-  // useEffect(() => {
-  //   const getCalcPathData = async (data: PinContentsType[]) => {
-  //     const pathData = await calcPath(data);
-  //     setDistanceData(pathData);
-  //   };
-  //   if (pinArr.length > 1) {
-  //     void getCalcPathData(pinArr);
-  //   }
-  // }, [pinArr]);
-
-  // // 08-30
-  // const calcCostAndInsertPlansEnding = async () => {
-  //   const response = await getCost(planId);
-
-  //   if (response !== null && response !== undefined) {
-  //     const datesCost: number[] = [];
-
-  //     response.forEach((value) => {
-  //       let cost = 0;
-
-  //       value.contents.forEach((content) => {
-  //         cost += content.cost;
-  //       });
-
-  //       datesCost.push(cost);
-  //     });
-
-  //     void insertPlanEnding({
-  //       id: planId,
-  //       distance: distanceData.map(Number),
-  //       dates_cost: datesCost,
-  //     });
-  //   }
-  // };
-
-  // const handleAddphotoPage = () => {
-  //   console.log(distanceData);
-  //   Navigate(`/addPhoto/${planId}`, { state: {distanceData} });
-  // };
+  useEffect(() => {
+    const getCalcPathData = async (data: PinContentsType[]) => {
+      const pathData = await calcPath(data);
+      setDistanceData(pathData);
+    };
+    if (pinArr.length > 1) {
+      void getCalcPathData(pinArr);
+    }
+  }, [pinArr]);
 
   return (
     <>

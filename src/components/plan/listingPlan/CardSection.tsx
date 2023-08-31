@@ -45,11 +45,17 @@ const CardSection = () => {
     return <div>데이터 없음</div>;
   }
 
+  const { plansData, usersDataList } = matesData;
+
   return (
     <section className="main-layout">
       <div></div>
       <div>
-        <Card matesData={matesData} bookMarkData={bookMarkData} />
+        <Card
+          plansData={plansData}
+          usersDataList={usersDataList}
+          bookMarkData={bookMarkData}
+        />
       </div>
     </section>
   );

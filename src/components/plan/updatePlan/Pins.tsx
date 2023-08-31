@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,6 @@ import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Pin from './Pin';
@@ -66,13 +65,14 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   // drang drop
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const movePlns = useCallback(
-    (beforeIdx: number, afterIdx: number) => {
-      // const dragPin = pinArr[dragIdx];
-      // setPinArr()
-    },
-    [pinArr],
-  );
+  const movePlns = (beforeIdx: number, afterIdx: number) => {
+    if (beforeIdx === afterIdx) return;
+    const newPinArr = [...pinArr];
+    const item = newPinArr.splice(beforeIdx, 1);
+    newPinArr.splice(afterIdx, 0, ...item);
+    console.log(pinArr, newPinArr);
+    setPinArr(newPinArr);
+  };
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
@@ -90,6 +90,34 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pinArr]);
 
+  // const renderPin = useCallback(
+  //   (
+  //     pin: PinContentsType,
+  //     id: string,
+  //     index: number,
+  //     betweenDistanceData: string,
+  //     pinArrLength: number,
+  //     handleUpdate: (idx: number) => void,
+  //     handleDelete: (idx: number) => void,
+  //     movePlns: (beforeIdx: number, afterIdx: number) => void,
+  //   ) => {
+  //     return (
+  //       <Pin
+  //         key={id}
+  //         pin={pin}
+  //         id={id}
+  //         idx={index}
+  //         betweenDistanceData={betweenDistanceData}
+  //         pinArrLength={pinArrLength}
+  //         handleUpdate={handleUpdate}
+  //         handleDelete={handleDelete}
+  //         movePlns={movePlns}
+  //       />
+  //     );
+  //   },
+  //   [],
+  // );
+
   // 08-30
   const calcCostAndInsertPlansEnding = async () => {
     const response = await getCost(planId);
@@ -106,9 +134,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
         datesCost.push(cost);
       });
-
-      console.log('result: ', datesCost);
-      console.log('distanceData: ', distanceData);
 
       void insertPlanEnding({
         id: planId,
@@ -129,17 +154,17 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           {pinArr.map((pin, idx) => {
             const betweenDistanceData = distanceData[idx] ?? '';
             const pinArrLength = pinArr.length;
-            const key = uuid();
             return (
               <Pin
-                key={key}
-                id={key}
+                key={`${pin.lat as number}`}
                 pin={pin}
+                id={`${pin.lat as number}`}
                 idx={idx}
                 betweenDistanceData={betweenDistanceData}
                 pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
+                movePlns={movePlns}
               />
             );
           })}

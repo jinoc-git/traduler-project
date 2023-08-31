@@ -46,6 +46,7 @@ const Card: React.FC<CardProps> = ({ matesData }) => {
   // }, [matesData]);
 
   // console.log('11111111', data);
+
   return (
     <div>
       <div className="flex flex-row">

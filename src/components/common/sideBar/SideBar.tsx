@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
 
-import { getPlans } from '@api/plans';
+import { getPlansWithMates } from '@api/plans';
 import {
   ic_chevron_down_1x,
   ic_chevron_up_1x,
@@ -9,6 +10,7 @@ import {
   ic_previous_time_1x,
 } from '@assets/icons/1x';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
@@ -17,31 +19,41 @@ const SideBar: React.FC = () => {
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
-  const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
   // supabase데이터 뿌려주기
-  const { data, isLoading, isError } = useQuery(
-    ['plans'],
-    async () => await getPlans(userId),
+  const user = userStore.getState().user;
+  const {
+    data: matesData,
+    isLoading: matesLoading,
+    isError: matesError,
+  } = useQuery(
+    // 이런식으로 해야 이름표가달라져서 로그아웃 로그인 했을때 문제가안생긴다.
+    // 네트워크 요청이 작아진다.
+    ['plan_mates', user],
+    async () => {
+      // 파라미터가 매번 바뀌게 되면 쿼리키도 바뀔수있도록 해야된다.
+      return await getPlansWithMates(user === null ? '' : user.id);
+    },
+    { enabled: user !== null },
   );
 
-  if (data === undefined) {
+  if (matesData === null) {
     return <div>로딩중 ...</div>;
   }
 
-  if (isLoading) {
+  if (matesLoading) {
     return <div>로딩중 ..</div>;
   }
-  if (isError) {
+  if (matesError) {
     return <div>오류</div>;
   }
 
-  const sortedData = data.sort(
+  const sortedData = matesData.plansData?.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 
-  const endPlans = sortedData.filter((plan) => plan.plan_state === 'end');
+  const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
 
-  const startPlans = sortedData.filter(
+  const startPlans = sortedData?.filter(
     (plan) => plan.plan_state === 'planning',
   );
 
@@ -104,7 +116,7 @@ const SideBar: React.FC = () => {
           <ul>
             {isSideBarOpen &&
               startPlansOpen &&
-              startPlans.map((plan) => {
+              startPlans?.map((plan) => {
                 return (
                   <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
                     <p className="text-sm">{plan.title}</p>
@@ -140,7 +152,7 @@ const SideBar: React.FC = () => {
           <ul>
             {isSideBarOpen &&
               endPlansOpen &&
-              endPlans.map((plan) => {
+              endPlans?.map((plan) => {
                 return (
                   <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
                     <p className="text-sm">{plan.title}</p>

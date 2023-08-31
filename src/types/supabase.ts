@@ -53,8 +53,8 @@ export interface Database {
         };
         Insert: {
           content: string;
-          created_at: string;
-          id: string;
+          created_at?: string;
+          id?: string;
           plan_id: string;
           user_id: string;
         };
@@ -225,6 +225,7 @@ export type PinType = Database['public']['Tables']['pins']['Update'];
 export type PinInsertType = Database['public']['Tables']['pins']['Insert'];
 export type UserType = Database['public']['Tables']['users']['Insert'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];
-export type BookMarkType = Database['public']['Tables']['plans']['Insert'];
+export type BookMarkType = Database['public']['Tables']['book_mark']['Insert'];
 export type PlanMatesType =
   Database['public']['Tables']['plan_mates']['Insert'];
+export type CommentsType = Database['public']['Tables']['comments']['Insert'];

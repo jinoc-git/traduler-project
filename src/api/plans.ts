@@ -29,10 +29,8 @@ export const addPlan = async (
     plan_state: 'planning',
   };
 
-  // plan data 추가
   const { data, error } = await supabase.from('plans').insert(plan);
 
-  // 날짜별 pins data 추가
   for (let i = 0; i < dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,
@@ -44,7 +42,6 @@ export const addPlan = async (
     }
   }
 
-  // plan_mates data 추가
   const newplanMates: PlanMatesType = {
     id: planId,
     users_id: invitedUser.map((user) => user.id),
@@ -75,25 +72,14 @@ export const getPlan = async (planId: string) => {
   }
 };
 
-interface Book_mark {
-  plan_id: string;
-  user_id: string;
-}
-
-export interface GetPlans extends PlanType {
-  book_mark: Book_mark[];
-}
-
-export const getPlans = async (userId: string | undefined) => {
-  if (userId === undefined) {
+export const getPlans = async (planIds: string[]) => {
+  if (planIds.length === 0) {
     return;
   }
   const { data: plans, error } = await supabase
     .from('plans')
-    .select(`*, book_mark(* )`)
-    .match({
-      'book_mark.user_id': userId,
-    });
+    .select()
+    .in('id', planIds);
 
   if (error !== null) {
     console.log(error);
@@ -134,62 +120,71 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
-// 작성자가 작성한글만가져온거
-// export const getPlansByUserId = async (
-//   userId: string,
-// ): Promise<PlanType[] | null> => {
-//   const { data, error } = await supabase
-//     .from('plans')
-//     .select()
-//     .eq('users_id', userId);
+// users테이블과 plan_mates테이블 연결
 
-//   if (error !== null) {
-//     console.log(error);
-//     throw new Error('오류발생');
-//   }
-//   if (data !== null) {
-//     const plans: PlanType[] = data as PlanType[];
-//     return plans;
-//   }
-//   return null;
-// };
+export const getMatesByUserIds = async (matesUserId: string[]) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .in('id', matesUserId);
+  // console.log('MatesData=>', data);
+  if (error != null) {
+    console.log('에러발생', matesUserId);
+    throw new Error('getMatesByUserIds 에러발생');
+  }
+  return data;
+};
 
-export const getPlansWithMates = async (userId: string) => {
+// 여기부터
+export const getPlansByUserIds = async (userIds: string[]) => {
   const { data, error } = await supabase
     .from('plans')
-    .select('*, plan_mates(*)')
-    .eq('users_id', userId);
+    .select()
+    .in('users_id', userIds);
 
   if (error != null) {
     console.log('에러 발생', error);
-    return null;
+    throw new Error('getPlansByUserIds 에러발생');
   }
 
   return data;
 };
 
-export const addBookMark = async (
-  newBookMarkId: string,
-  planId: string,
-  userId: string,
-) => {
-  const { error } = await supabase.from('book_mark').insert({
-    id: newBookMarkId,
-    plan_id: planId,
-    user_id: userId,
-  });
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
-  }
-};
+export const getPlansWithMates = async (userId: string) => {
+  const { data: matesData, error: matesError } = await supabase
+    .from('plan_mates')
+    .select()
+    // 배열의 비교는 contains 연산자를 사용
+    .contains('users_id', [userId]);
 
-export const deleteBookMark = async (id: string, planId: string) => {
-  const { error } = await supabase.from('book_mark').delete().eq('id', planId);
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
+  if (matesError != null) {
+    console.log('에러 발생', matesError);
+    throw new Error('getPlansWithMates 에러 1발생');
   }
+
+  // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
+  const userIds = matesData.map((data) => data.users_id);
+  const planIds = matesData.map((data) => data.id).flat();
+
+  if (userIds.length === 0) {
+    throw new Error('getPlansWithMates 에러 2발생');
+  }
+
+  const plansData = await getPlans(planIds);
+  const usersDataList = [];
+  for (const plan of userIds) {
+    const users = await getMatesByUserIds(plan);
+    usersDataList.push(users);
+  }
+
+  console.log('plansData=>', plansData);
+  console.log('userData=>', usersDataList);
+
+  return {
+    plansData,
+    // 배열로 가져오던걸 객체로 바꾸기위해서
+    usersDataList,
+  };
 };
 
 export const updatePlan = async (
@@ -204,5 +199,17 @@ export const updatePlan = async (
   if (error !== null) {
     console.log(error);
     throw new Error('오류발생');
+  }
+};
+
+export const changePlanState = async (data: any) => {
+  const [planId, planState] = data;
+  const { error } = await supabase
+    .from('plans')
+    .update({ plan_state: planState })
+    .eq('id', planId);
+  if (error !== null) {
+    console.log(error);
+    throw new Error('planState 변경 오류발생');
   }
 };

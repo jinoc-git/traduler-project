@@ -80,15 +80,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
-  useEffect(() => {
-    const getCalcPathData = async (data: PinContentsType[]) => {
-      const pathData = await calcPath(data);
-      setDistanceData(pathData);
-    };
-    if (pinArr.length > 1) {
-      void getCalcPathData(pinArr);
-    }
-  }, [pinArr]);
+  // useEffect(() => {
+  //   const getCalcPathData = async (data: PinContentsType[]) => {
+  //     const pathData = await calcPath(data);
+  //     setDistanceData(pathData);
+  //   };
+  //   if (pinArr.length > 1) {
+  //     void getCalcPathData(pinArr);
+  //   }
+  // }, [pinArr]);
 
   return (
     <>

@@ -25,10 +25,6 @@ interface ItemType {
   idx: number;
 }
 
-// const throttleHoverItem = _.throttle((item, hoverIndex, movePins) => {
-//   movePins(item.idx, hoverIndex);
-// }, 100);
-
 const Pin = (props: PinProps) => {
   const {
     id,

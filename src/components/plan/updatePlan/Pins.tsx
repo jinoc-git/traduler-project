@@ -154,7 +154,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         <h3>방문할 장소</h3>
       </div>
       <DndProvider backend={HTML5Backend}>
-        <ul className=" flex flex-col gap-4">
+        <ul className="flex flex-col gap-4 ">
           {pinArr.map((pin, idx) => {
             const betweenDistanceData = distanceData[idx] ?? '';
             const pinArrLength = pinArr.length;
@@ -177,7 +177,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>
-      <button className="p-5 bg-slate-500">여행 완료</button>
       {isOpenModal && (
         <MapModal openModal={openModal} date={dates[currentPage]} />
       )}

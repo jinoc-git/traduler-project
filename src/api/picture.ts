@@ -20,17 +20,5 @@ export const addPicture = async (fileList: File[], planId: string) => {
     }
   }
 
-  const { data, error } = await supabase
-    .from('plans')
-    .update({ pictures: pathList })
-    .eq('id', planId)
-    .select();
-
-  if (data !== null) {
-    console.log('Pictures added to plan:', data);
-  }
-
-  if (error != null) {
-    console.error('Error updating pictures:', error);
-  }
+  return pathList;
 };

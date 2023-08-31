@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-imports */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -64,13 +66,14 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   // drang drop
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const movePlns = (beforeIdx: number, afterIdx: number) => {
+  const movePins = (beforeIdx: number, afterIdx: number) => {
     if (beforeIdx === afterIdx) return;
-    const newPinArr = [...pinArr];
-    const item = newPinArr.splice(beforeIdx, 1);
-    newPinArr.splice(afterIdx, 0, ...item);
-    console.log(pinArr, newPinArr);
-    setPinArr(newPinArr);
+    setPinArr((prev) => {
+      const newPinArr = [...prev];
+      const item = newPinArr.splice(beforeIdx, 1);
+      newPinArr.splice(afterIdx, 0, ...item);
+      return newPinArr;
+    });
   };
 
   useEffect(() => {
@@ -79,43 +82,15 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
-  useEffect(() => {
-    const getCalcPathData = async (data: PinContentsType[]) => {
-      const pathData = await calcPath(data);
-      setDistanceData(pathData);
-    };
-    if (pinArr.length > 1) {
-      void getCalcPathData(pinArr);
-    }
-  }, [pinArr]);
-
-  // const renderPin = useCallback(
-  //   (
-  //     pin: PinContentsType,
-  //     id: string,
-  //     index: number,
-  //     betweenDistanceData: string,
-  //     pinArrLength: number,
-  //     handleUpdate: (idx: number) => void,
-  //     handleDelete: (idx: number) => void,
-  //     movePlns: (beforeIdx: number, afterIdx: number) => void,
-  //   ) => {
-  //     return (
-  //       <Pin
-  //         key={id}
-  //         pin={pin}
-  //         id={id}
-  //         idx={index}
-  //         betweenDistanceData={betweenDistanceData}
-  //         pinArrLength={pinArrLength}
-  //         handleUpdate={handleUpdate}
-  //         handleDelete={handleDelete}
-  //         movePlns={movePlns}
-  //       />
-  //     );
-  //   },
-  //   [],
-  // );
+  // useEffect(() => {
+  //   const getCalcPathData = async (data: PinContentsType[]) => {
+  //     const pathData = await calcPath(data);
+  //     setDistanceData(pathData);
+  //   };
+  //   if (pinArr.length > 1) {
+  //     void getCalcPathData(pinArr);
+  //   }
+  // }, [pinArr]);
 
   // // 08-30
   // const calcCostAndInsertPlansEnding = async () => {
@@ -168,7 +143,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                 pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
-                movePlns={movePlns}
+                movePins={movePins}
               />
             );
           })}

@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
 import React, { useRef } from 'react';
 import { type XYCoord, useDrag, useDrop } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
-import _ from 'lodash';
+import { type Identifier } from 'dnd-core';
+// import _ from 'lodash';
 
 import DropDown from './DropDown';
 
@@ -15,13 +17,17 @@ interface PinProps {
   pinArrLength: number;
   handleUpdate: (idx: number) => void;
   handleDelete: (idx: number) => void;
-  movePlns: (beforeIdx: number, afterIdx: number) => void;
+  movePins: (beforeIdx: number, afterIdx: number) => void;
 }
 
 interface ItemType {
   id: string;
   idx: number;
 }
+
+// const throttleHoverItem = _.throttle((item, hoverIndex, movePins) => {
+//   movePins(item.idx, hoverIndex);
+// }, 100);
 
 const Pin = (props: PinProps) => {
   const {
@@ -32,24 +38,17 @@ const Pin = (props: PinProps) => {
     pinArrLength,
     handleUpdate,
     handleDelete,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    movePlns,
+    movePins,
   } = props;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dragBoxRef = useRef<HTMLLIElement>(null);
 
-  const throttleHoverItem = _.throttle((item, index, movePlns) => {
-    if (item.idx === index) {
-      return null;
-    }
-
-    movePlns(item.idx, index);
-    item.idx = idx;
-  }, 1000);
-
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const [, drop] = useDrop<ItemType>(() => ({
+  const [{ handlerId }, drop] = useDrop<
+    ItemType,
+    void,
+    { handlerId: Identifier | null }
+  >(() => ({
     accept: 'pin',
     collect: (monitor) => ({
       handlerId: monitor.getHandlerId(),
@@ -60,6 +59,9 @@ const Pin = (props: PinProps) => {
       const dragIndex = item.idx;
       const hoverIndex = idx;
 
+      if (dragIndex === hoverIndex) return;
+      console.log('==>', dragIndex, hoverIndex);
+
       const hoverBoundingRect = dragBoxRef.current.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
@@ -69,7 +71,9 @@ const Pin = (props: PinProps) => {
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
-      throttleHoverItem(item, idx, movePlns);
+      movePins(item.idx, hoverIndex);
+      // throttleHoverItem(item, hoverIndex, movePins);
+      item.idx = hoverIndex;
     },
   }));
 
@@ -82,8 +86,8 @@ const Pin = (props: PinProps) => {
     }),
     end: (item, moniter) => {
       const { idx: afterIndex } = item;
-      const didDrop = moniter.didDrop();
-      console.log(afterIndex, didDrop);
+      // const didDrop = moniter.didDrop();
+      console.log('drop', afterIndex, idx);
       // if (!didDrop) {
       //   movePlns(idx, afterIndex);
       // }
@@ -98,6 +102,7 @@ const Pin = (props: PinProps) => {
   return (
     <li
       ref={dragBoxRef}
+      data-handler-id={handlerId}
       className={`flex gap-[10px] h-[100px] transition-all ${
         isDragging ? 'opacity-0' : 'opacity-100'
       }`}

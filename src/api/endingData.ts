@@ -60,10 +60,13 @@ export const getCoordinate = async (planId: string) => {
         Object.values(dates[0]).map((date) => date),
       )
       .eq('plan_id', planId);
+
     if (error !== null) {
       console.log(error);
     }
-    return data;
+    const result = data?.map((item) => item.contents);
+    console.log(result);
+    return result;
   }
   if (plansError !== null) {
     console.log(plansError);

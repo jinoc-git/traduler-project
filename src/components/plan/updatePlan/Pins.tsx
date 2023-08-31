@@ -143,8 +143,8 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   // };
 
   // const handleAddphotoPage = () => {
-  //   console.log(distanceData);
-  //   Navigate(`/addPhoto/${planId}`, { state: {distanceData} });
+  //   console.log(pinArr);
+  //   Navigate(`/addPhoto/${planId}`, { state: pinArr });
   // };
 
   return (

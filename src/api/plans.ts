@@ -29,10 +29,8 @@ export const addPlan = async (
     plan_state: 'planning',
   };
 
-  // plan data 추가
   const { data, error } = await supabase.from('plans').insert(plan);
 
-  // 날짜별 pins data 추가
   for (let i = 0; i < dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
       plan_id: planId,
@@ -44,7 +42,6 @@ export const addPlan = async (
     }
   }
 
-  // plan_mates data 추가
   const newplanMates: PlanMatesType = {
     id: planId,
     users_id: invitedUser.map((user) => user.id),
@@ -125,14 +122,14 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
 
 // users테이블과 plan_mates테이블 연결
 
-export const getMatesByUserIds = async (MatesUserId: string[]) => {
+export const getMatesByUserIds = async (matesUserId: string[]) => {
   const { data, error } = await supabase
     .from('users')
     .select()
-    .in('id', MatesUserId);
+    .in('id', matesUserId);
   // console.log('MatesData=>', data);
   if (error != null) {
-    console.log('에러발생', MatesUserId);
+    console.log('에러발생', matesUserId);
     throw new Error('getMatesByUserIds 에러발생');
   }
   return data;
@@ -140,11 +137,9 @@ export const getMatesByUserIds = async (MatesUserId: string[]) => {
 
 // 여기부터
 export const getPlansByUserIds = async (userIds: string[]) => {
-  // 중복된 아이디값이들어와서 분류
   const { data, error } = await supabase
     .from('plans')
     .select()
-    // .in는 특정 열의 값이 지정된 배열의 값과 일치하는 행을 필터링
     .in('users_id', userIds);
 
   if (error != null) {
@@ -166,6 +161,7 @@ export const getPlansWithMates = async (userId: string) => {
     console.log('에러 발생', matesError);
     throw new Error('getPlansWithMates 에러 1발생');
   }
+
   // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
   const userIds = matesData.map((data) => data.users_id);
   const planIds = matesData.map((data) => data.id).flat();
@@ -189,31 +185,6 @@ export const getPlansWithMates = async (userId: string) => {
     // 배열로 가져오던걸 객체로 바꾸기위해서
     usersDataList,
   };
-};
-
-// 여기까지
-export const addBookMark = async (
-  newBookMarkId: string,
-  planId: string,
-  userId: string,
-) => {
-  const { error } = await supabase.from('book_mark').insert({
-    id: newBookMarkId,
-    plan_id: planId,
-    user_id: userId,
-  });
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
-  }
-};
-
-export const deleteBookMark = async (id: string, planId: string) => {
-  const { error } = await supabase.from('book_mark').delete().eq('id', planId);
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
-  }
 };
 
 export const updatePlan = async (

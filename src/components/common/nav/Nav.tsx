@@ -17,6 +17,9 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
     } else if (page === 'addPlan') {
       setModify();
     }
+    return () => {
+      setReadOnly();
+    };
   }, []);
 
   return (

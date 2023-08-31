@@ -7,7 +7,7 @@ interface ModifyStateStoreType {
 }
 
 export const modifyStateStore = create<ModifyStateStoreType>((set) => ({
-  modifyState: '',
+  modifyState: 'readOnly',
   setModify: () => {
     set(() => ({
       modifyState: 'modify',

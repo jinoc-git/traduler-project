@@ -85,7 +85,7 @@ const Plan = () => {
             setTitle(e.target.value);
           }}
           readOnly={modifyState === 'readOnly'}
-          className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black read-only:cursor-default"
+          className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
         />
         <Invite />
         <PostPlan />

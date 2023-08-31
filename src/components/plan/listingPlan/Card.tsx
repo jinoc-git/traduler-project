@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { formatPlanDates } from '@utils/changeFormatDay';
@@ -20,12 +20,12 @@ const Card: React.FC<CardProps> = ({
   bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
+  const [selectedPlan, setSelectedPlan] = useState<'planning' | 'end'>(
     'planning',
   );
 
-  const [planningCount, setPlanningCount] = React.useState<number>(0);
-  const [endCount, setEndCount] = React.useState<number>(0);
+  const [planningCount, setPlanningCount] = useState<number>(0);
+  const [endCount, setEndCount] = useState<number>(0);
 
   // 클릭할때마다 변경
   const filterData = plansData?.filter((plan) =>

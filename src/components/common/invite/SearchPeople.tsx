@@ -84,7 +84,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   };
 
   return (
-    <div className="absolute w-[500px] h-[500px] bg-white border rounded-lg flex flex-col z-20 right-[335px] items-center">
+    <div className="mx-auto justify-center w-[500px] h-[500px] bg-white border rounded-lg flex flex-col items-center">
       <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3">
         <div>초대한 목록</div>
         {invitedUser.length !== 0 &&

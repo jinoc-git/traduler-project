@@ -36,14 +36,50 @@
 
 body {
   margin: 0;
-  font-family: 'Pretendard-Light', 'Pretendard-Regular', 'Pretendard-SemiBold', 'Pretendard-Bold';
+  font-family: 'Pretendard-Light', 'Pretendard-Regular', 'Pretendard-SemiBold',
+    'Pretendard-Bold';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  letter-spacing: -0.02rem ;
+  letter-spacing: -0.02rem;
 }
 
 .main-layout {
   width: 800px;
   margin: 0 auto;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-border {
+  border: 1px solid var(--grey-dark, #d1d1d1);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.sidebar-open {
+  width: calc(100vw-250px);
+  margin-left: 250px;
+}
+
+.sidebar-close {
+  width: calc(100vw-50px);
+  margin-left: 50px;
+}
+
+.sidebar-none {
+  width: 100vw;
+  margin-left: 0;
+}
+
+h2 {
+  font-size: 0px;
+}
+
+h3 {
+  font-size: 24px;
 }

@@ -208,3 +208,18 @@ export const deleteBookMark = async (id: string, planId: string) => {
     throw new Error('오류발생');
   }
 };
+
+export const updatePlan = async (
+  planId: string,
+  newTitle: string,
+  newCost: number,
+) => {
+  const { error } = await supabase
+    .from('plans')
+    .update({ title: newTitle, total_cost: newCost })
+    .eq('id', planId);
+  if (error !== null) {
+    console.log(error);
+    throw new Error('오류발생');
+  }
+};

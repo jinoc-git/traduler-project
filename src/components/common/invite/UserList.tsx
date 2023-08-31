@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { defaultImageGray } from '@assets/index';
 import { type UserType } from 'types/supabase';
 
 interface PropsType {
@@ -11,18 +12,20 @@ interface PropsType {
 
 const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
   return (
-    <div key={idx} className="flex items-center gap-3 mb-3">
-      <div>
-        {typeof person.avatar_url === 'string' ? (
-          <img
-            className="object-cover border-2 rounded-full w-9 h-9"
-            src={person.avatar_url}
-            alt={`Avatar for ${person.nickname}`}
-          />
-        ) : (
-          <div className="border-2 rounded-full w-9 h-9 bg-slate-500" />
-        )}
-      </div>
+    <div key={idx} className="flex items-center justify-center gap-3 my-2">
+      {typeof person.avatar_url === 'string' ? (
+        <img
+          className="object-cover rounded-full w-9 h-9"
+          src={person.avatar_url}
+          alt={`Avatar for ${person.nickname}`}
+        />
+      ) : (
+        <img
+          key={idx}
+          src={defaultImageGray}
+          className="object-cover rounded-full w-9 h-9"
+        />
+      )}
       <p>{person.nickname}</p>
       <p>{person.email}</p>
       <button

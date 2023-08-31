@@ -15,13 +15,16 @@ interface InputType {
   userInfo: string;
 }
 
-const SearchPeople = () => {
+interface PropsType {
+  closeModal: () => void;
+}
+
+const SearchPeople = ({ closeModal }: PropsType) => {
   const {
     register,
     formState: { errors },
   } = useForm<InputType>();
   const [people, setPeople] = useState<UserType[]>([]);
-  const [isFind, setIsFind] = useState<boolean>(true);
   const { id: planId } = useParams();
 
   // 유저 검색
@@ -40,7 +43,8 @@ const SearchPeople = () => {
   };
   const debouncedSearchUser = _.debounce(searchUser, 300);
 
-  const { invitedUser, inviteUser, setUser } = inviteUserStore();
+  const { invitedUser, inviteUser, setUser, syncInviteduser } =
+    inviteUserStore();
   const usersId = invitedUser.map((item) => item.id);
   const handleInvite = async (user: UserType) => {
     const conf = window.confirm('해당 여행에 초대하시겠습니까?');
@@ -49,7 +53,7 @@ const SearchPeople = () => {
     }
   };
 
-  // 유저 초대
+  // 유저 초대 react-query
   const queryClient = useQueryClient();
   const inviteMutation = useMutation({
     mutationFn: async ([usersId, planId]: [string[], string]) => {
@@ -60,12 +64,16 @@ const SearchPeople = () => {
     },
   });
 
+  // 저장 버튼 눌렀을 때 실행
   const inviteData = () => {
     const Ids = invitedUser.map((item) => item.id);
     if (Ids !== undefined && planId !== undefined) {
       inviteMutation.mutate([usersId, planId]);
     }
+    setUser(invitedUser);
     alert('저장되었습니다');
+    closeModal();
+    syncInviteduser();
   };
 
   // 초대한 유저 삭제
@@ -76,84 +84,60 @@ const SearchPeople = () => {
   };
 
   return (
-    <div className="absolute w-[500px] h-[250px] bg-white border rounded-lg flex flex-col z-20 right-[335px] items-center">
-      <div className="flex justify-around">
-        <div
-          onClick={() => {
-            setIsFind(true);
-          }}
-          className="m-2 cursor-pointer"
-        >
-          친구찾기
-        </div>
-        <div
-          onClick={() => {
-            setIsFind(false);
-          }}
-          className="m-2 cursor-pointer"
-        >
-          초대한 친구
-        </div>
+    <div className="absolute w-[500px] h-[500px] bg-white border rounded-lg flex flex-col z-20 right-[335px] items-center">
+      <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3">
+        <div>초대한 목록</div>
+        {invitedUser.length !== 0 &&
+          invitedUser.map((person, idx) => {
+            return (
+              <div key={idx}>
+                <UserList person={person} idx={idx} deleteUser={deleteUser} />
+              </div>
+            );
+          })}
       </div>
-      {isFind && (
-        <>
-          <div className="flex flex-col">
-            <input
-              placeholder="이메일이나 닉네임을 입력하세요."
-              {...register('userInfo', {
-                required: '필수 입력값입니다.',
-                minLength: {
-                  value: 2,
-                  message: '2글자 이상 입력하세요.',
-                },
-                pattern: {
-                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                  message: '모음, 자음 안됨',
-                },
-              })}
-              onChange={(e) =>
-                debouncedSearchUser({ userInfo: e.target.value })
-              }
-              className="w-[250px] border rounded-lg outline-none"
-            />
-            <p>{errors?.userInfo?.message}</p>
-          </div>
-          <div className="overflow-scroll">
-            {people?.length === 0 && <div>검색 결과가 없습니다.</div>}
-            {people
-              .filter(
-                (person) =>
-                  invitedUser.filter((user) => user.id === person.id).length ===
-                  0,
-              )
-              .map((person: UserType, idx) => {
-                return (
-                  <div key={idx}>
-                    <UserList
-                      person={person}
-                      idx={idx}
-                      handleInvite={handleInvite}
-                    />
-                  </div>
-                );
-              })}
-          </div>
-        </>
-      )}
-      {!isFind && (
-        <div className="flex flex-col overflow-scroll">
-          {invitedUser.length !== 0 &&
-            invitedUser.map((person, idx) => {
-              return (
-                <div key={idx}>
-                  <UserList person={person} idx={idx} deleteUser={deleteUser} />
-                </div>
-              );
-            })}
-        </div>
-      )}
-
-      <button onClick={inviteData} className="absolute bottom-0 mx-auto">
+      <div className="flex flex-col">
+        <div>검색 하기</div>
+        <input
+          placeholder="이메일이나 닉네임을 입력하세요."
+          {...register('userInfo', {
+            required: '필수 입력값입니다.',
+            minLength: {
+              value: 2,
+              message: '2글자 이상 입력하세요.',
+            },
+            pattern: {
+              value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+              message: '모음, 자음 안됨',
+            },
+          })}
+          onChange={(e) => debouncedSearchUser({ userInfo: e.target.value })}
+          className="w-[250px] border rounded-lg outline-none"
+        />
+        <p>{errors?.userInfo?.message}</p>
+      </div>
+      <div className="overflow-scroll w-[450px] h-[250px] bg-gray_light_3 rounded-lg mt-3">
+        {people?.length === 0 && (
+          <div className="text-center">검색 결과가 없습니다.</div>
+        )}
+        {people
+          .filter(
+            (person) =>
+              invitedUser.filter((user) => user.id === person.id).length === 0,
+          )
+          .map((person: UserType, idx) => {
+            return (
+              <div key={idx}>
+                <UserList
+                  person={person}
+                  idx={idx}
+                  handleInvite={handleInvite}
+                />
+              </div>
+            );
+          })}
+      </div>
+      <button onClick={inviteData} className="bottom-0 mx-auto">
         저장
       </button>
     </div>

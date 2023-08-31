@@ -1,6 +1,7 @@
 import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 
+import { modifyStateStore } from '@store/modifyStateStore';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -19,7 +20,7 @@ const Calendar: React.FC<CalendarProps> = ({
   StartDateChangeHandler,
   EndDateChangeHandler,
 }) => {
-  // const today = new Date();
+  const modifyState = modifyStateStore((state) => state.modifyState);
 
   return (
     <div className="relative z-10 flex items-center gap-3">
@@ -38,7 +39,8 @@ const Calendar: React.FC<CalendarProps> = ({
         startDate={startDate}
         endDate={endDate}
         locale="ko"
-        className="outline-none cursor-pointer react-datepicker"
+        className="outline-none cursor-pointer react-datepicker read-only:cursor-default"
+        readOnly={modifyState === 'readOnly'}
       />
       <label>여행 마지막날짜</label>
       <DatePicker
@@ -52,7 +54,8 @@ const Calendar: React.FC<CalendarProps> = ({
         endDate={endDate}
         minDate={startDate}
         locale="ko"
-        className="outline-none cursor-pointer react-datepicker"
+        className="outline-none cursor-pointer react-datepicker read-only:cursor-default"
+        readOnly={modifyState === 'readOnly'}
       />
     </div>
   );

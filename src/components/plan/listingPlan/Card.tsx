@@ -1,49 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Favorite from '@components/main/favorite/Favorite';
 import { formatPlanDates } from '@utils/changeFormatDay';
+import { type PlanType, type BookMarkType } from 'types/supabase';
 
 interface CardProps {
-  plansData: Array<{
-    created_at: string;
-    dates: string[];
-    id: string;
-    isDeleted: boolean;
-    pictures: string[];
-    plan_state: 'planning' | 'end' | 'traveling';
-    title: string;
-    total_cost: number;
-    users_id: string;
-  }>;
-  bookMarkData: Array<{
-    plan_id: string;
-    user_id: string;
-  }>;
+  matesData: PlanType[];
+  bookMarkData: BookMarkType[];
 }
-const Card: React.FC<CardProps> = ({ plansData, bookMarkData }) => {
+const Card: React.FC<CardProps> = ({ matesData, bookMarkData }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<'planning' | 'end'>(
+  const [selectedPlan, setSelectedPlan] = React.useState<'planning' | 'end'>(
     'planning',
   );
 
-  const [planningCount, setPlanningCount] = useState<number>(0);
-  const [endCount, setEndCount] = useState<number>(0);
+  const [planningCount, setPlanningCount] = React.useState<number>(0);
+  const [endCount, setEndCount] = React.useState<number>(0);
 
-  const filterData = plansData?.filter((plan) =>
+  // 클릭할때마다 변경
+  const filterData = matesData?.filter((plan) =>
     selectedPlan === 'planning'
       ? plan.plan_state === 'planning'
       : plan.plan_state === 'end',
   );
 
   useEffect(() => {
-    if (plansData != null) {
+    if (matesData != null) {
       setPlanningCount(
-        plansData.filter((plan) => plan.plan_state === 'planning').length,
+        matesData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(matesData.filter((plan) => plan.plan_state === 'end').length);
     }
-  }, [plansData]);
+  }, [matesData]);
+
   return (
     <div>
       <div className="flex flex-row">
@@ -79,7 +69,7 @@ const Card: React.FC<CardProps> = ({ plansData, bookMarkData }) => {
           const { startDate, endDate } = formatPlanDates(plan);
 
           const isFavorite = bookMarkData.find(
-            (bookMark) => bookMark.plan_id === plan.id,
+            (bookMark) => bookMark.id === plan.id,
           );
 
           return (

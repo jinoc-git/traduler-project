@@ -1,8 +1,9 @@
-import React from 'react';
-import { useDrag } from 'react-dnd';
+import React, { useRef } from 'react';
+import { type XYCoord, useDrag, useDrop } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
+import _ from 'lodash';
 
 import DropDown from './DropDown';
 
@@ -14,6 +15,12 @@ interface PinProps {
   pinArrLength: number;
   handleUpdate: (idx: number) => void;
   handleDelete: (idx: number) => void;
+  movePlns: (beforeIdx: number, afterIdx: number) => void;
+}
+
+interface ItemType {
+  id: string;
+  idx: number;
 }
 
 const Pin = (props: PinProps) => {
@@ -25,29 +32,76 @@ const Pin = (props: PinProps) => {
     pinArrLength,
     handleUpdate,
     handleDelete,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    movePlns,
   } = props;
 
-  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
-  const [{ isDragging }, dragRef, previewRef] = useDrag(
-    () => ({
-      type: 'pin',
-      item: { id, idx },
-      collect: (moniter) => ({
-        isDragging: moniter.isDragging(),
-      }),
-      end: (item, moniter) => {
-        const { idx: originIndex } = item;
-        const didDrop = moniter.didDrop();
-        if (!didDrop) {
-          console.log(originIndex);
-        }
-      },
-    }),
-    [id, idx],
-  );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const dragBoxRef = useRef<HTMLLIElement>(null);
 
+  const throttleHoverItem = _.throttle((item, index, movePlns) => {
+    if (item.idx === index) {
+      return null;
+    }
+
+    movePlns(item.idx, index);
+    item.idx = idx;
+  }, 1000);
+
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const [, drop] = useDrop<ItemType>(() => ({
+    accept: 'pin',
+    collect: (monitor) => ({
+      handlerId: monitor.getHandlerId(),
+    }),
+    hover: (item, moniter) => {
+      if (dragBoxRef.current === null) return;
+
+      const dragIndex = item.idx;
+      const hoverIndex = idx;
+
+      const hoverBoundingRect = dragBoxRef.current.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = moniter.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+
+      throttleHoverItem(item, idx, movePlns);
+    },
+  }));
+
+  // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  const [{ isDragging }, dragRef, previewRef] = useDrag(() => ({
+    type: 'pin',
+    item: { id, idx },
+    collect: (moniter) => ({
+      isDragging: !!moniter.isDragging(),
+    }),
+    end: (item, moniter) => {
+      const { idx: afterIndex } = item;
+      const didDrop = moniter.didDrop();
+      console.log(afterIndex, didDrop);
+      // if (!didDrop) {
+      //   movePlns(idx, afterIndex);
+      // }
+    },
+  }));
+
+  // const applyRef = useCallback((node: HTMLLIElement | null) => {
+  //   dragBoxRef.current = node;
+  //   drop(previewRef(node))
+  // }, [])
+  dragRef(drop(dragBoxRef));
   return (
-    <li className=" flex gap-[10px] h-[100px]">
+    <li
+      ref={dragBoxRef}
+      className={`flex gap-[10px] h-[100px] transition-all ${
+        isDragging ? 'opacity-0' : 'opacity-100'
+      }`}
+    >
       <div className="w-[65px]">
         <p>{idx + 1}</p>
         {idx < pinArrLength - 1 && (
@@ -57,7 +111,10 @@ const Pin = (props: PinProps) => {
         )}
       </div>
       <div className="flex w-full border">
-        <button className=" flex justify-center items-center w-[50px] m-3">
+        <button
+          // ref={dragRef}
+          className=" flex justify-center items-center w-[50px] m-3"
+        >
           <IconSixDots fill="orange" />
         </button>
         <div className="flex flex-col justify-center gap-2 w-full">

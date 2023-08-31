@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Map,
   MapMarker,
@@ -65,6 +65,41 @@ const AddPlanContents = ({
     setPins(() => newPins);
   }, [dates]);
 
+  const mapRef = useRef<any>();
+  const [style, setStyle] = useState({
+    width: '95vw',
+    height: '400px',
+    borderRadius: '8px',
+  });
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map !== undefined) {
+      const timer = setTimeout(() => {
+        map.relayout();
+      }, 300);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [style]);
+
+  useEffect(() => {
+    const windowResize = () => {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    };
+    window.addEventListener(`resize`, windowResize);
+
+    return () => {
+      window.removeEventListener(`resize`, windowResize);
+    };
+  }, []);
+
   return (
     <>
       <div className="flex flex-col justify-center gap-5">
@@ -80,8 +115,9 @@ const AddPlanContents = ({
                   ? (pins[currentPage][0].lng as number)
                   : 126.978652258309,
             }}
-            style={{ width: '95%', height: '400px', borderRadius: '8px' }}
             level={3}
+            ref={mapRef}
+            style={style}
           >
             {pins[currentPage]?.map((pin, idx) => {
               return (

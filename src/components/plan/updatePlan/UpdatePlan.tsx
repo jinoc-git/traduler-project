@@ -135,9 +135,9 @@ const UpdatePlan = () => {
             ref={mapRef}
             style={style}
           >
-            {pinArr?.map((pin, idx) => {
+            {pinArr?.map((pin) => {
               return (
-                <div key={idx}>
+                <div key={pin.lng}>
                   <MapMarker
                     position={{
                       lat: pin?.lat as number,

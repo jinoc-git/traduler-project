@@ -12,7 +12,7 @@ interface PropsType {
 
 const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
   return (
-    <div key={idx} className="flex items-center justify-center gap-3 my-2">
+    <div className="flex items-center justify-center gap-3 my-2">
       {typeof person.avatar_url === 'string' ? (
         <img
           className="object-cover rounded-full w-9 h-9"
@@ -21,7 +21,6 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
         />
       ) : (
         <img
-          key={idx}
           src={defaultImageGray}
           className="object-cover rounded-full w-9 h-9"
         />

@@ -16,6 +16,7 @@ import { type UserType } from 'types/supabase';
 
 interface InputType {
   title?: string;
+  totalCost?: number;
 }
 
 const AddPlan = () => {
@@ -30,14 +31,14 @@ const AddPlan = () => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>();
+  } = useForm<InputType>({ mode: 'onChange', defaultValues: { totalCost: 0 } });
 
-  const [totalCost, setTotalCost] = useState<number>(0);
   const { invitedUser, inviteUser, syncInviteduser, resetInvitedUser } =
     inviteUserStore();
 
   const submitPlan = async () => {
     if (userId !== null) {
+      const totalCost = watch('totalCost') as number;
       await addPlan(
         userId as string,
         watch('title') as string,
@@ -52,7 +53,7 @@ const AddPlan = () => {
   };
   const buttonDisabled =
     isSubmitting ||
-    totalCost === undefined ||
+    watch('totalCost') === undefined ||
     watch('title')?.length === 0 ||
     dates.length === 0;
 
@@ -111,20 +112,23 @@ const AddPlan = () => {
           })}
           className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
         />
-        <p>{errors?.title?.message}</p>
+        <p className="h-[20px] pt-1.5 text-sm">{errors?.title?.message}</p>
         <Invite />
         <PostPlan state={'addPlan'} />
         <div className="flex items-center">
           <div className="text-[16px] font-semibold mr-[50px]">전체 예산</div>
           <input
-            className="text-[14px] font-medium border rounded-lg p-1"
+            id="totalCost"
             type="number"
-            value={totalCost}
             placeholder="예산을 입력하세요."
-            onChange={(event) => {
-              setTotalCost(+event.target.value);
-            }}
+            {...register('totalCost', {
+              required: '예산은 필수입니다.',
+            })}
+            className="text-[14px] font-medium border rounded-lg p-1"
           />
+          <p className="h-[20px] pt-1.5 text-sm">
+            {errors?.totalCost?.message}
+          </p>
         </div>
         <div className="flex justify-center gap-5 mb-10 text-[14px] font-semibold">
           {dates.length !== 0 ? (

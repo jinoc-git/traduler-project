@@ -104,7 +104,7 @@
 //   return (
 //     <button onClick={favoriteHandler}>
 //       <img
-//         className="cursor-pointer w- h-4"
+//         className="h-4 cursor-pointer w-"
 //         src={status ? favoriteSolid : favoriteDefault}
 //         alt="Favorite Icon"
 //       />

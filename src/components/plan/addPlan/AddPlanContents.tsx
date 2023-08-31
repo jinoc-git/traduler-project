@@ -119,10 +119,10 @@ const AddPlanContents = ({
             ref={mapRef}
             style={style}
           >
-            {pins[currentPage]?.map((pin, idx) => {
+            {pins[currentPage]?.map((pin) => {
               return (
                 <MapMarker
-                  key={idx}
+                  key={pin.lng}
                   position={{
                     lat: pin?.lat as number,
                     lng: pin?.lng as number,
@@ -154,7 +154,7 @@ const AddPlanContents = ({
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (
-              <div key={idx}>
+              <div key={pin.lat}>
                 <p>{idx + 1}</p>
                 <p>
                   {pin !== null &&

@@ -114,7 +114,6 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          pictures: string[];
           plan_state: 'planning' | 'traveling' | 'end';
           title: string;
           total_cost: number;
@@ -125,7 +124,6 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          pictures?: string[];
           plan_state: 'planning' | 'traveling' | 'end';
           title: string;
           total_cost: number;
@@ -136,7 +134,6 @@ export interface Database {
           dates?: string[];
           id?: string;
           isDeleted?: boolean;
-          pictures?: string[];
           plan_state?: 'planning' | 'traveling' | 'end';
           title?: string;
           total_cost?: number;
@@ -199,6 +196,34 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: 'plan_mates_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'plans';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      plans_ending: {
+        Row: {
+          dates_cost: number[] | null;
+          distance: Json[] | null;
+          id: string;
+          pictures: string[];
+        };
+        Insert: {
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id: string;
+          pictures?: string[];
+        };
+        Update: {
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id?: string;
+          pictures?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'plans_ending_id_fkey';
             columns: ['id'];
             referencedRelation: 'plans';
             referencedColumns: ['id'];

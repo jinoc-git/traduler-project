@@ -45,7 +45,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between fixed w-screen h-[50px] pr-3 bg-blue_light_3 ${
+      className={`flex justify-between fixed w-screen h-[50px] pr-3 bg-blue_light_3 z-30 ${
         isSideBarOpen ? '' : 'bg-opacity-70'
       }`}
     >

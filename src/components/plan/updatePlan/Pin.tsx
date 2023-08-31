@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
+import React, { useRef } from 'react';
+import { type XYCoord, useDrag, useDrop } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
@@ -36,12 +36,16 @@ const Pin = (props: PinProps) => {
     movePlns,
   } = props;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const dragBoxRef = useRef<HTMLLIElement>(null);
+
   const throttleHoverItem = _.throttle((item, index, movePlns) => {
     if (item.idx === index) {
       return null;
     }
-    console.log(item.idx, index);
+
     movePlns(item.idx, index);
+    item.idx = idx;
   }, 1000);
 
   // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
@@ -51,9 +55,21 @@ const Pin = (props: PinProps) => {
       handlerId: monitor.getHandlerId(),
     }),
     hover: (item, moniter) => {
-      throttleHoverItem(item, idx, movePlns);
+      if (dragBoxRef.current === null) return;
 
-      item.idx = idx;
+      const dragIndex = item.idx;
+      const hoverIndex = idx;
+
+      const hoverBoundingRect = dragBoxRef.current.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = moniter.getClientOffset();
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
+
+      throttleHoverItem(item, idx, movePlns);
     },
   }));
 
@@ -74,9 +90,14 @@ const Pin = (props: PinProps) => {
     },
   }));
 
+  // const applyRef = useCallback((node: HTMLLIElement | null) => {
+  //   dragBoxRef.current = node;
+  //   drop(previewRef(node))
+  // }, [])
+  dragRef(drop(dragBoxRef));
   return (
     <li
-      ref={(node) => drop(previewRef(node))}
+      ref={dragBoxRef}
       className={`flex gap-[10px] h-[100px] transition-all ${
         isDragging ? 'opacity-0' : 'opacity-100'
       }`}
@@ -91,7 +112,7 @@ const Pin = (props: PinProps) => {
       </div>
       <div className="flex w-full border">
         <button
-          ref={dragRef}
+          // ref={dragRef}
           className=" flex justify-center items-center w-[50px] m-3"
         >
           <IconSixDots fill="orange" />

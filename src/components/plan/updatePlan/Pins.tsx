@@ -9,7 +9,6 @@ import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Pin from './Pin';
@@ -71,7 +70,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     const newPinArr = [...pinArr];
     const item = newPinArr.splice(beforeIdx, 1);
     newPinArr.splice(afterIdx, 0, ...item);
-    console.log(pinArr, newPinArr)
+    console.log(pinArr, newPinArr);
     setPinArr(newPinArr);
   };
 
@@ -90,6 +89,34 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       void getCalcPathData(pinArr);
     }
   }, [pinArr]);
+
+  // const renderPin = useCallback(
+  //   (
+  //     pin: PinContentsType,
+  //     id: string,
+  //     index: number,
+  //     betweenDistanceData: string,
+  //     pinArrLength: number,
+  //     handleUpdate: (idx: number) => void,
+  //     handleDelete: (idx: number) => void,
+  //     movePlns: (beforeIdx: number, afterIdx: number) => void,
+  //   ) => {
+  //     return (
+  //       <Pin
+  //         key={id}
+  //         pin={pin}
+  //         id={id}
+  //         idx={index}
+  //         betweenDistanceData={betweenDistanceData}
+  //         pinArrLength={pinArrLength}
+  //         handleUpdate={handleUpdate}
+  //         handleDelete={handleDelete}
+  //         movePlns={movePlns}
+  //       />
+  //     );
+  //   },
+  //   [],
+  // );
 
   // 08-30
   const calcCostAndInsertPlansEnding = async () => {
@@ -127,12 +154,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           {pinArr.map((pin, idx) => {
             const betweenDistanceData = distanceData[idx] ?? '';
             const pinArrLength = pinArr.length;
-            const key = uuid();
             return (
               <Pin
-                key={key}
-                id={key}
+                key={`${pin.lat as number}`}
                 pin={pin}
+                id={`${pin.lat as number}`}
                 idx={idx}
                 betweenDistanceData={betweenDistanceData}
                 pinArrLength={pinArrLength}

@@ -75,25 +75,13 @@ export const getPlan = async (planId: string) => {
   }
 };
 
-interface Book_mark {
-  plan_id: string;
-  user_id: string;
-}
-
-export interface GetPlans extends PlanType {
-  book_mark: Book_mark[];
-}
-
 export const getPlans = async (userId: string | undefined) => {
   if (userId === undefined) {
     return;
   }
-  const { data: plans, error } = await supabase
-    .from('plans')
-    .select(`*, book_mark(* )`)
-    .match({
-      'book_mark.user_id': userId,
-    });
+  const { data: plans, error } = await supabase.from('plans').select().match({
+    id: userId,
+  });
 
   if (error !== null) {
     console.log(error);
@@ -167,28 +155,4 @@ export const getPlansWithMates = async (userId: string) => {
   }
 
   return data;
-};
-
-export const addBookMark = async (
-  newBookMarkId: string,
-  planId: string,
-  userId: string,
-) => {
-  const { error } = await supabase.from('book_mark').insert({
-    id: newBookMarkId,
-    plan_id: planId,
-    user_id: userId,
-  });
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
-  }
-};
-
-export const deleteBookMark = async (id: string, planId: string) => {
-  const { error } = await supabase.from('book_mark').delete().eq('id', planId);
-  if (error !== null) {
-    console.log(error);
-    throw new Error('오류발생');
-  }
 };

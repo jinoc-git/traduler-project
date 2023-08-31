@@ -24,7 +24,7 @@ const Router = () => {
         <Route path="/plan/:id" element={<Plan />} />
         <Route path="/addPlan" element={<AddPlan />} />
         <Route path="/ending/:id" element={<Ending />} />
-        <Route path="/addPhoto" element={<AddPhoto />} />
+        <Route path="/addPhoto/:id" element={<AddPhoto />} />
         <Route path="/welcome" element={<AuthLoading />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

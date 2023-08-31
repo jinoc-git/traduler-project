@@ -33,8 +33,8 @@ export const getPath = async (params: Parameters) => {
   return data.routes[0].summary.distance;
 };
 
-export const calcPath = async (pinArr: PinContentsType[]) => {
-  const convertParameters = pinArr.map(({ lng, lat }) => {
+export const calcPath = async (distance: PinContentsType[]) => {
+  const convertParameters = distance.map(({ lng, lat }) => {
     if (lat !== undefined && lng !== undefined) {
       return `${lng},${lat}`;
     }

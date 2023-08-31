@@ -136,11 +136,8 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
 };
 
 // 여기부터
-
 export const getPlansByUserIds = async (userIds: string[]) => {
-  // console.log('usersId=>', userIds);
   // 중복된 아이디값이들어와서 분류
-  // const uniqueUserIds = [...new Set(userIds)];
   const { data, error } = await supabase
     .from('plans')
     .select()
@@ -162,11 +159,6 @@ export const getPlansWithMates = async (userId: string) => {
     // 배열의 비교는 contains 연산자를 사용
     .contains('users_id', [userId]);
 
-  console.log(matesData);
-  console.log(matesError);
-  // console.log('matesData1=>', matesData);
-  // console.log('user.id=>', user.id);
-
   if (matesError != null) {
     console.log('에러 발생', matesError);
     return null;
@@ -179,7 +171,6 @@ export const getPlansWithMates = async (userId: string) => {
   }
 
   const plansData = await getPlansByUserIds(userIds);
-  console.log(plansData);
 
   return plansData;
 };

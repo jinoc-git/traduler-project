@@ -9,6 +9,7 @@ import {
   ic_previous_time_1x,
 } from '@assets/icons/1x';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
@@ -17,13 +18,23 @@ const SideBar: React.FC = () => {
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
-  const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
+  // const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
   // supabase데이터 뿌려주기
+  const user = userStore.getState().user;
   const {
     data: matesData,
     isLoading: matesLoading,
     isError: matesError,
-  } = useQuery(['plan_mates'], async () => await getPlansWithMates(userId));
+  } = useQuery(
+    // 이런식으로 해야 이름표가달라져서 로그아웃 로그인 했을때 문제가안생긴다.
+    // 네트워크 요청이 작아진다.
+    ['plan_mates', user],
+    async () => {
+      // 파라미터가 매번 바뀌게 되면 쿼리키도 바뀔수있도록 해야된다.
+      return await getPlansWithMates(user === null ? '' : user.id);
+    },
+    { enabled: user !== null },
+  );
 
   if (matesData === null) {
     return <div>로딩중 ...</div>;

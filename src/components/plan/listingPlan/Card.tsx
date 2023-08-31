@@ -1,19 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { type GetPlans } from '@api/plans';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
 interface CardProps {
-  data: GetPlans[];
   matesData: PlanType[];
-  // matesData: PlanMatesType[];
 }
-
-// interface CardProps {
-//   data: PlanMatesType | null;
-// }
 
 const Card: React.FC<CardProps> = ({ matesData }) => {
   const navigate = useNavigate();
@@ -23,7 +16,6 @@ const Card: React.FC<CardProps> = ({ matesData }) => {
 
   const [planningCount, setPlanningCount] = React.useState<number>(0);
   const [endCount, setEndCount] = React.useState<number>(0);
-  // 요일 표시하기 위해
 
   // 클릭할때마다 변경
   const filterData = matesData?.filter((plan) =>
@@ -40,12 +32,6 @@ const Card: React.FC<CardProps> = ({ matesData }) => {
       setEndCount(matesData.filter((plan) => plan.plan_state === 'end').length);
     }
   }, [matesData]);
-
-  // useEffect(() => {
-  //   console.log('matesDataCard=>', matesData);
-  // }, [matesData]);
-
-  // console.log('11111111', data);
 
   return (
     <div>

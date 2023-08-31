@@ -19,7 +19,6 @@ const SideBar: React.FC = () => {
   const [startPlansOpen, setStartPlansOpen] = useState(false);
   const [endPlansOpen, setEndPlansOpen] = useState(false);
   const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
-  // const userId = '10d4b5c3-12d6-486b-862b-6f63c0c9f4fc';
   // supabase데이터 뿌려주기
   const user = userStore.getState().user;
   const {
@@ -48,13 +47,13 @@ const SideBar: React.FC = () => {
     return <div>오류</div>;
   }
 
-  const sortedData = matesData.sort(
+  const sortedData = matesData.plansData?.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 
-  const endPlans = sortedData.filter((plan) => plan.plan_state === 'end');
+  const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
 
-  const startPlans = sortedData.filter(
+  const startPlans = sortedData?.filter(
     (plan) => plan.plan_state === 'planning',
   );
 
@@ -117,7 +116,7 @@ const SideBar: React.FC = () => {
           <ul>
             {isSideBarOpen &&
               startPlansOpen &&
-              startPlans.map((plan) => {
+              startPlans?.map((plan) => {
                 return (
                   <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
                     <p className="text-sm">{plan.title}</p>
@@ -153,7 +152,7 @@ const SideBar: React.FC = () => {
           <ul>
             {isSideBarOpen &&
               endPlansOpen &&
-              endPlans.map((plan) => {
+              endPlans?.map((plan) => {
                 return (
                   <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
                     <p className="text-sm">{plan.title}</p>

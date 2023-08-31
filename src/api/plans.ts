@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import {
   type PlanMatesType,
@@ -76,13 +75,14 @@ export const getPlan = async (planId: string) => {
   }
 };
 
-export const getPlans = async (userId: string | undefined) => {
-  if (userId === undefined) {
+export const getPlans = async (planIds: string[]) => {
+  if (planIds.length === 0) {
     return;
   }
-  const { data: plans, error } = await supabase.from('plans').select().match({
-    id: userId,
-  });
+  const { data: plans, error } = await supabase
+    .from('plans')
+    .select()
+    .in('id', planIds);
 
   if (error !== null) {
     console.log(error);
@@ -123,6 +123,21 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
+// users테이블과 plan_mates테이블 연결
+
+export const getMatesByUserIds = async (MatesUserId: string[]) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .in('id', MatesUserId);
+  // console.log('MatesData=>', data);
+  if (error != null) {
+    console.log('에러발생', MatesUserId);
+    throw new Error('getMatesByUserIds 에러발생');
+  }
+  return data;
+};
+
 // 여기부터
 export const getPlansByUserIds = async (userIds: string[]) => {
   // 중복된 아이디값이들어와서 분류
@@ -134,7 +149,7 @@ export const getPlansByUserIds = async (userIds: string[]) => {
 
   if (error != null) {
     console.log('에러 발생', error);
-    return null;
+    throw new Error('getPlansByUserIds 에러발생');
   }
 
   return data;
@@ -143,24 +158,37 @@ export const getPlansByUserIds = async (userIds: string[]) => {
 export const getPlansWithMates = async (userId: string) => {
   const { data: matesData, error: matesError } = await supabase
     .from('plan_mates')
-    .select('users_id')
+    .select()
     // 배열의 비교는 contains 연산자를 사용
     .contains('users_id', [userId]);
 
   if (matesError != null) {
     console.log('에러 발생', matesError);
-    return null;
+    throw new Error('getPlansWithMates 에러 1발생');
   }
   // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
-  const userIds = matesData?.flatMap((mate) => mate.users_id);
+  const userIds = matesData.map((data) => data.users_id);
+  const planIds = matesData.map((data) => data.id).flat();
 
-  if (!userIds?.length) {
-    return null;
+  if (userIds.length === 0) {
+    throw new Error('getPlansWithMates 에러 2발생');
   }
 
-  const plansData = await getPlansByUserIds(userIds);
+  const plansData = await getPlans(planIds);
+  const usersDataList = [];
+  for (const plan of userIds) {
+    const users = await getMatesByUserIds(plan);
+    usersDataList.push(users);
+  }
 
-  return plansData;
+  console.log('plansData=>', plansData);
+  console.log('userData=>', usersDataList);
+
+  return {
+    plansData,
+    // 배열로 가져오던걸 객체로 바꾸기위해서
+    usersDataList,
+  };
 };
 
 // 여기까지

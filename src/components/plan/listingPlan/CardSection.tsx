@@ -21,6 +21,8 @@ const CardSection = () => {
     { enabled: user !== null },
   );
 
+  console.log('matesData=>', matesData);
+
   // const {
   //   data: bookMarkData,
   //   isLoading: bookMarkLoading,
@@ -50,12 +52,15 @@ const CardSection = () => {
     return <div>데이터 없음</div>;
   }
 
+  const { plansData, usersDataList } = matesData;
+
   return (
     <section className="main-layout">
       <div></div>
       <div>
         <Card
-          matesData={matesData}
+          plansData={plansData}
+          usersDataList={usersDataList}
           // bookMarkData={bookMarkData}
         />
       </div>

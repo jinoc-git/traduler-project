@@ -213,3 +213,7 @@ export const changePlanState = async (data: any) => {
     throw new Error('planState 변경 오류발생');
   }
 };
+
+// export const getPlanEnding = async()=>{
+//   const {data, error} = await supabase.from('')
+// }

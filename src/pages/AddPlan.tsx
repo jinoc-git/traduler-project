@@ -32,7 +32,6 @@ const AddPlan = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({ mode: 'onChange', defaultValues: { totalCost: 0 } });
-
   const { invitedUser, inviteUser, syncInviteduser, resetInvitedUser } =
     inviteUserStore();
 

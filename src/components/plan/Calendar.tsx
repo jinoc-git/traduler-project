@@ -39,8 +39,9 @@ const Calendar: React.FC<CalendarProps> = ({
         startDate={startDate}
         endDate={endDate}
         locale="ko"
-        className="outline-none cursor-pointer react-datepicker read-only:cursor-default"
+        className="text-sm outline-none cursor-pointer react-datepicker read-only:cursor-default w-[150px] h-[30px]"
         readOnly={modifyState === 'readOnly'}
+        placeholderText="YYYY / MM / DD"
       />
       <label>여행 마지막날짜</label>
       <DatePicker
@@ -54,8 +55,9 @@ const Calendar: React.FC<CalendarProps> = ({
         endDate={endDate}
         minDate={startDate}
         locale="ko"
-        className="outline-none cursor-pointer react-datepicker read-only:cursor-default"
+        className="text-sm outline-none cursor-pointer react-datepicker read-only:cursor-default w-[150px] h-[30px]"
         readOnly={modifyState === 'readOnly'}
+        placeholderText="YYYY / MM / DD"
       />
     </div>
   );

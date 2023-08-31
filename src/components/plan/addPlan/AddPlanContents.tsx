@@ -72,35 +72,33 @@ const AddPlanContents = ({
     borderRadius: '8px',
   });
 
-  // useEffect(() => {
-  //   const map = mapRef.current;
-  //   if (map) {
-  //     setTimeout(() => {
-  //       map.relayout();
-  //     }, 3000);
-  //   }
-  // }, [style]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map !== undefined) {
+      const timer = setTimeout(() => {
+        map.relayout();
+      }, 300);
 
-  // useEffect(() => {
-  const windowResize = () => {
-    console.log('resize');
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    console.log(width);
-    console.log(height);
-    // setStyle({
-    //   width : width.toString(),
-    //   height : height.toString(),
-    //   borderRadius: '8px',
-    // });
-  };
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [style]);
 
-  window.addEventListener(`resize`, windowResize);
+  useEffect(() => {
+    const windowResize = () => {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    };
+    window.addEventListener(`resize`, windowResize);
 
-  //   return () => {
-  //     window.removeEventListener(`resize`, windowResize);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener(`resize`, windowResize);
+    };
+  }, []);
 
   return (
     <>
@@ -117,9 +115,9 @@ const AddPlanContents = ({
                   ? (pins[currentPage][0].lng as number)
                   : 126.978652258309,
             }}
-            style={style}
             level={3}
             ref={mapRef}
+            style={style}
           >
             {pins[currentPage]?.map((pin, idx) => {
               return (

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getPlan, updatePlan } from '@api/plans';
+import Comments from '@components/comments/Comments';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import PostPlan from '@components/plan/PostPlan';
@@ -18,6 +19,7 @@ const Plan = () => {
   const { resetInvitedUser } = inviteUserStore();
   const resetDates = datesStore((state) => state.resetDates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
+  const [planState, setPlanState] = useState<string>('');
   const { id } = useParams();
   const planId: string = id as string;
   const { data } = useQuery(
@@ -66,6 +68,7 @@ const Plan = () => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
       setCost(data?.[0].total_cost);
+      setPlanState(data?.[0].plan_state);
     }
   }, [data]);
 
@@ -102,6 +105,11 @@ const Plan = () => {
           />
         </div>
         <UpdatePlan />
+        {/* {planState !== 'end' ?  
+        <button
+        :
+         } */}
+        <Comments />
       </div>
     </main>
   );

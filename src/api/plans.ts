@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import {
   type PlanMatesType,
@@ -75,25 +76,13 @@ export const getPlan = async (planId: string) => {
   }
 };
 
-interface Book_mark {
-  plan_id: string;
-  user_id: string;
-}
-
-export interface GetPlans extends PlanType {
-  book_mark: Book_mark[];
-}
-
 export const getPlans = async (userId: string | undefined) => {
   if (userId === undefined) {
     return;
   }
-  const { data: plans, error } = await supabase
-    .from('plans')
-    .select(`*, book_mark(* )`)
-    .match({
-      'book_mark.user_id': userId,
-    });
+  const { data: plans, error } = await supabase.from('plans').select().match({
+    id: userId,
+  });
 
   if (error !== null) {
     console.log(error);
@@ -134,31 +123,14 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
-// 작성자가 작성한글만가져온거
-// export const getPlansByUserId = async (
-//   userId: string,
-// ): Promise<PlanType[] | null> => {
-//   const { data, error } = await supabase
-//     .from('plans')
-//     .select()
-//     .eq('users_id', userId);
-
-//   if (error !== null) {
-//     console.log(error);
-//     throw new Error('오류발생');
-//   }
-//   if (data !== null) {
-//     const plans: PlanType[] = data as PlanType[];
-//     return plans;
-//   }
-//   return null;
-// };
-
-export const getPlansWithMates = async (userId: string) => {
+// 여기부터
+export const getPlansByUserIds = async (userIds: string[]) => {
+  // 중복된 아이디값이들어와서 분류
   const { data, error } = await supabase
     .from('plans')
-    .select('*, plan_mates(*)')
-    .eq('users_id', userId);
+    .select()
+    // .in는 특정 열의 값이 지정된 배열의 값과 일치하는 행을 필터링
+    .in('users_id', userIds);
 
   if (error != null) {
     console.log('에러 발생', error);
@@ -168,6 +140,30 @@ export const getPlansWithMates = async (userId: string) => {
   return data;
 };
 
+export const getPlansWithMates = async (userId: string) => {
+  const { data: matesData, error: matesError } = await supabase
+    .from('plan_mates')
+    .select('users_id')
+    // 배열의 비교는 contains 연산자를 사용
+    .contains('users_id', [userId]);
+
+  if (matesError != null) {
+    console.log('에러 발생', matesError);
+    return null;
+  }
+  // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
+  const userIds = matesData?.flatMap((mate) => mate.users_id);
+
+  if (!userIds?.length) {
+    return null;
+  }
+
+  const plansData = await getPlansByUserIds(userIds);
+
+  return plansData;
+};
+
+// 여기까지
 export const addBookMark = async (
   newBookMarkId: string,
   planId: string,

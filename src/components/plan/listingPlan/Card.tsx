@@ -3,14 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 // import Favorite from '@components/main/favorite/Favorite';
 import { formatPlanDates } from '@utils/changeFormatDay';
-import { type PlanType } from 'types/supabase';
+import { type UserType, type PlanType } from 'types/supabase';
 
 interface CardProps {
-  matesData: PlanType[];
+  // matesData: PlanType[];
   // bookMarkData: BookMarkType[];
+  plansData: PlanType[] | undefined;
+  usersDataList: UserType[][] | null;
 }
 const Card: React.FC<CardProps> = ({
-  matesData,
+  // matesData,
+  usersDataList,
+  plansData,
   // bookMarkData
 }) => {
   const navigate = useNavigate();
@@ -22,20 +26,20 @@ const Card: React.FC<CardProps> = ({
   const [endCount, setEndCount] = React.useState<number>(0);
 
   // 클릭할때마다 변경
-  const filterData = matesData?.filter((plan) =>
+  const filterData = plansData?.filter((plan) =>
     selectedPlan === 'planning'
       ? plan.plan_state === 'planning'
       : plan.plan_state === 'end',
   );
 
   useEffect(() => {
-    if (matesData != null) {
+    if (plansData != null) {
       setPlanningCount(
-        matesData.filter((plan) => plan.plan_state === 'planning').length,
+        plansData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(matesData.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
     }
-  }, [matesData]);
+  }, [plansData]);
 
   return (
     <div>
@@ -96,7 +100,14 @@ const Card: React.FC<CardProps> = ({
                     {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                     {plan.dates.length}일
                   </div>
-                  <div>멤버</div>
+                  <div className="flex ">
+                    {/* <img
+                      src={userData?.avatar_url ?? ''}
+                      alt="UserAvatar"
+                      className="w-[20px] h-[20px] rounded-full"
+                    /> */}
+                    {/* <p>{userData?.nickname}</p> */}
+                  </div>
                 </div>
 
                 <div className="w-1/5 h-12">

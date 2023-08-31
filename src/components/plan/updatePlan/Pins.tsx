@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { getCost, insertPlanEnding } from '@api/datesPay';?
 import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
@@ -74,6 +73,13 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     [pinArr],
   );
 
+  const navigate = useNavigate();
+
+  const handleAddphotoPage = () => {
+    console.log(distanceData);
+    navigate(`/addPhoto/${planId}`, { state: distanceData });
+  };
+
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
       setPinArr(pin?.[0].contents as []);
@@ -128,6 +134,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         <ul className=" flex flex-col gap-4">
           {pinArr.map((pin, idx) => {
             const betweenDistanceData = distanceData[idx] ?? '';
+            console.log('betweenDistanceData:', betweenDistanceData);
             const pinArrLength = pinArr.length;
             const key = uuid();
             return (
@@ -148,10 +155,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       <button onClick={openModal} className="p-5 bg-slate-500">
         장소 추가하기
       </button>
-      <button
-        className="p-5 bg-slate-500"
-        // onClick={calcCostAndInsertPlansEnding}
-      >
+      <button className="p-5 bg-slate-500" onClick={handleAddphotoPage}>
         여행 완료
       </button>
       {isOpenModal && (

@@ -33,7 +33,8 @@ const AddPlan = () => {
   } = useForm<InputType>();
 
   const [totalCost, setTotalCost] = useState('');
-  const { invitedUser, inviteUser, resetInvitedUser } = inviteUserStore();
+  const { invitedUser, inviteUser, resetInvitedUser, syncInviteduser } =
+    inviteUserStore();
 
   const submitPlan = async () => {
     if (userId !== null) {
@@ -46,8 +47,6 @@ const AddPlan = () => {
         invitedUser,
       );
       navigate('/main');
-      resetDates();
-      resetInvitedUser();
     }
   };
 
@@ -65,7 +64,16 @@ const AddPlan = () => {
   }, []);
 
   useEffect(() => {
-    inviteUser(user as UserType);
+    if (user !== null) {
+      const curUser: UserType = {
+        avatar_url: user?.profileImg,
+        email: user?.email,
+        id: user?.id,
+        nickname: user?.nickname,
+      };
+      inviteUser(curUser);
+      syncInviteduser();
+    }
   }, [user]);
 
   return (

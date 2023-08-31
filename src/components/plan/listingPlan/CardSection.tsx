@@ -1,39 +1,48 @@
 import React from 'react';
 
+import { getBookMark } from '@api/bookMarks';
 import { getPlans } from '@api/plans';
 import { useQuery } from '@tanstack/react-query';
 
 import Card from './Card';
 
 const CardSection = () => {
-  const { data, isLoading, isError } = useQuery(
+  const {
+    data: plansData,
+    isLoading: plansLoading,
+    isError: plansError,
+  } = useQuery(
     ['plans'],
     // async () => await getPlans(userId),
     // 유저아이디 가져오기 목데이터
-    async () => await getPlans('2f9f32f2-e021-4b55-bf78-3318d0b16d95'),
+    async () => await getPlans('02c05284-bfe4-41c9-b7aa-2709b2cf771b'),
   );
-  // 멤버가지고오는거일듯..
-  // const { data, isLoading, isError } = useQuery<PlanMatesType | null>(
-  //   ['plan_mates'],
-  //   getPlanMatesById,
-  // );
 
-  // console.log('MainCardsData', data);
+  const {
+    data: bookMarkData,
+    isLoading: bookMarkLoading,
+    isError: bookMarkError,
+  } = useQuery(
+    ['book_mark'],
+    async () => await getBookMark('02c05284-bfe4-41c9-b7aa-2709b2cf771b'),
+  );
 
-  if (isLoading) {
+  console.log('bookMarkData', bookMarkData);
+
+  if (plansLoading || bookMarkLoading) {
     return <div>로딩중 ...</div>;
   }
-  if (isError) {
+  if (plansError || bookMarkError) {
     return <div>로딩중 ...</div>;
   }
-  if (data === undefined) {
+  if (plansData === undefined || bookMarkData === undefined) {
     return <div>로딩중 ...</div>;
   }
   return (
     <section className="main-layout">
       <div></div>
       <div>
-        <Card data={data} />
+        <Card plansData={plansData} bookMarkData={bookMarkData} />
       </div>
     </section>
   );

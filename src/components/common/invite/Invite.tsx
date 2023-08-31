@@ -1,5 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
@@ -35,6 +35,15 @@ const Invite = () => {
     oldInvitedUser.length !== 0 && oldInvitedUser !== null;
   const maxDisplayCount = 4;
 
+  const modalRef = useRef<HTMLDivElement>(null);
+  const modalOutSideClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    if (modalRef.current === e.target) {
+      closeModal();
+    }
+  };
+
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
   useEffect(() => {
     if (data !== undefined && data !== null) {
@@ -54,10 +63,10 @@ const Invite = () => {
           {isOldInvitedUser ? (
             oldInvitedUser.length > 0 && (
               <div className="flex mr-3">
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => {
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                   return (
                     <img
-                      key={idx}
+                      key={user.id}
                       src={
                         user.avatar_url != null
                           ? user.avatar_url
@@ -75,16 +84,16 @@ const Invite = () => {
           {isOldInvitedUser ? (
             oldInvitedUser.length > maxDisplayCount ? (
               <>
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user, idx) => (
-                  <div key={idx} className="mr-[2px]">
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
+                  <div key={user.id} className="mr-[2px]">
                     {user.nickname}
                   </div>
                 ))}
                 외 {oldInvitedUser.length - maxDisplayCount}명
               </>
             ) : (
-              oldInvitedUser.map((user, idx) => (
-                <div key={idx} className="mr-[2px]">
+              oldInvitedUser.map((user) => (
+                <div key={user.id} className="mr-[2px]">
                   {user.nickname}
                 </div>
               ))
@@ -103,10 +112,15 @@ const Invite = () => {
         )}
       </div>
       {isOpen && (
-        <>
-          <div className="relative bg-black/20" onClick={closeModal} />
+        <div
+          ref={modalRef}
+          className="absolute inset-0 z-40 w-full h-full bg-black/20"
+          onClick={(e) => {
+            modalOutSideClick(e);
+          }}
+        >
           <SearchPeople closeModal={closeModal} />
-        </>
+        </div>
       )}
     </>
   );

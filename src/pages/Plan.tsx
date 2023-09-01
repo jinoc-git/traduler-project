@@ -8,7 +8,6 @@ import {
   getPlanEnding,
   updatePlan,
 } from '@api/plans';
-import Comments from '@components/comments/Comments';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import PostPlan from '@components/plan/PostPlan';
@@ -183,7 +182,6 @@ const Plan = () => {
                 </>
               )}
             </div>
-            <Comments />
           </div>
         </main>
       )}

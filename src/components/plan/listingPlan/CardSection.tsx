@@ -47,6 +47,9 @@ const CardSection = () => {
 
   const { plansData, usersDataList } = matesData;
 
+  console.log('usersDataList=>', usersDataList);
+  console.log('plansData=>', plansData);
+
   return (
     <section className="main-layout">
       <div></div>

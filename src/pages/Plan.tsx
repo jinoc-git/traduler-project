@@ -110,8 +110,8 @@ const Plan = () => {
         <main
           className={`transition-all duration-300  ease-in-out py-[60px] ${
             isSideBarOpen
-              ? 'w-[calc(100vw-250px)] ml-[250px]'
-              : 'w-[calc(100vw-50px)] ml-[50px]'
+              ? 'w-[calc(100vw-270px)] ml-[270px]'
+              : 'w-[calc(100vw-88px)] ml-[88px]'
           }`}
         >
           <Nav page={'plan'} onClick={handleSubmitButton} />

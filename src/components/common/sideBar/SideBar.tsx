@@ -11,6 +11,8 @@ import {
   ic_planned_time_1x,
   ic_previous_time_1x,
 } from '@assets/icons/1x';
+import IconAdd from '@assets/icons/IconAdd';
+import IconSignOut from '@assets/icons/IconSignOut';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -72,120 +74,140 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed mt-[50px] h-[100vh] w-[250px] bg-gray_light_2 transition-all duration-300 ease-in-out overflow-hidden border-r-10 ${
-        isSideBarOpen ? 'w-[250px] ' : 'w-[50px]'
+      className={`fixed mt-[50px] h-[100vh] w-[270px] bg-white transition-all duration-300 ease-in-out overflow-hidden border-r-10 px-[24px] ${
+        isSideBarOpen ? 'w-[270px] ' : 'w-[88px]'
       }`}
       style={{ zIndex: 10 }}
     >
       <div className="flex flex-col gap-[20px]">
-        <div>
-          <div>여행중</div>
+        <div className="h-[223px]">
+          <div className=" text-sm">여행중</div>
         </div>
-        <div>
-          <div
-            className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={toggleFavoritePlansOpen}
-          >
-            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
-              <img src={ic_favorite_default_1x} />{' '}
-            </button>
-            <span className="w-[121px]">즐겨찾기 한 목록 </span>
-            <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
+        <div className="flex flex-col gap-2 min-h-[362px]">
+          <p className="text-sm">TRIPS</p>
+          <div>
+            <div
+              className="flex w-[222px] justify-between items-center cursor-pointer"
+              onClick={toggleFavoritePlansOpen}
+            >
+              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
+                <img src={ic_favorite_default_1x} />
+              </button>
+              <div className="flex items-center">
+                <span className="w-[110px] text-sm">즐겨찾기 한 목록 </span>
+                <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
+              </div>
+            </div>
+            <ul>
+              {isSideBarOpen && favoritePlansOpen && (
+                // 여기에 즐겨찾기 리스트 map
+                <li className="pl-[65px]">
+                  <p className="text-xs"> 장소 이름(기간)</p>
+                  <p className="text-xs">장소 이름(기간)</p>
+                  <p className="text-xs">장소 이름(기간)</p>
+                </li>
+              )}
+            </ul>
           </div>
-          <ul>
-            {isSideBarOpen && favoritePlansOpen && (
-              // 여기에 즐겨찾기 리스트 map
-              <li className="pl-[65px]">
-                <p className="text-sm"> 장소 이름(기간)</p>
-                <p className="text-sm">장소 이름(기간)</p>
-                <p className="text-sm">장소 이름(기간)</p>
-              </li>
-            )}
-          </ul>
-        </div>
 
-        <div>
-          <div
-            className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={toggleStartPlansOpen}
-          >
-            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
-              <img src={ic_planned_time_1x} />
-            </button>
-            <span className="w-[121px]">예정된 여행 </span>
-            <img
-              src={
-                isSideBarOpen && startPlansOpen
-                  ? ic_chevron_up_1x
-                  : ic_chevron_down_1x
-              }
-              alt="다운버튼"
-              className="mr-5"
-            />
+          <div>
+            <div
+              className="flex w-[222px] justify-between items-center cursor-pointer"
+              onClick={toggleStartPlansOpen}
+            >
+              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
+                <img src={ic_planned_time_1x} />
+              </button>
+              <div className="flex items-center">
+                <span className="w-[110px] text-sm">예정된 여행 </span>
+                <img
+                  src={
+                    isSideBarOpen && startPlansOpen
+                      ? ic_chevron_up_1x
+                      : ic_chevron_down_1x
+                  }
+                  alt="다운버튼"
+                  className="mr-5"
+                />
+              </div>
+            </div>
+            <ul>
+              {isSideBarOpen &&
+                startPlansOpen &&
+                startPlans?.map((plan) => {
+                  return (
+                    <li className="w-[270px] pl-[65px] my-[5px] " key={plan.id}>
+                      <p className="text-xs">{plan.title}</p>
+                      <span className="text-xs">
+                        {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                      </span>
+                    </li>
+                  );
+                })}
+            </ul>
           </div>
-          <ul>
-            {isSideBarOpen &&
-              startPlansOpen &&
-              startPlans?.map((plan) => {
-                return (
-                  <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
-                    <p className="text-sm">{plan.title}</p>
-                    <span className="text-sm">
-                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                    </span>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-        <div>
-          <div
-            className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={toggleEndPlansOpen}
-          >
-            <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
-              <img src={ic_previous_time_1x} />
-            </button>
-            <span className="w-[121px]">다녀온 여행 </span>
-            <img
-              src={
-                isSideBarOpen && endPlansOpen
-                  ? ic_chevron_up_1x
-                  : ic_chevron_down_1x
-              }
-              alt="다운버튼"
-              className="mr-5"
-            />
+          <div>
+            <div
+              className="flex w-[222px] justify-between items-center cursor-pointer"
+              onClick={toggleEndPlansOpen}
+            >
+              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
+                <img src={ic_previous_time_1x} />
+              </button>
+              <div className="flex items-center">
+                <span className="w-[110px] text-sm">다녀온 여행 </span>
+                <img
+                  src={
+                    isSideBarOpen && endPlansOpen
+                      ? ic_chevron_up_1x
+                      : ic_chevron_down_1x
+                  }
+                  alt="다운버튼"
+                  className="mr-5"
+                />
+              </div>
+            </div>
+            <ul>
+              {isSideBarOpen &&
+                endPlansOpen &&
+                endPlans?.map((plan) => {
+                  return (
+                    <li className="w-[270px] pl-[65px] my-[5px] " key={plan.id}>
+                      <p className="text-xs">{plan.title}</p>
+                      <span className="text-xs">
+                        {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                      </span>
+                    </li>
+                  );
+                })}
+            </ul>
           </div>
-          <ul>
-            {isSideBarOpen &&
-              endPlansOpen &&
-              endPlans?.map((plan) => {
-                return (
-                  <li className="w-[250px] pl-[65px] my-[5px] " key={plan.id}>
-                    <p className="text-sm">{plan.title}</p>
-                    <span className="text-sm">
-                      {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                    </span>
-                  </li>
-                );
-              })}
-          </ul>
         </div>
       </div>
 
-      <div>
-        <div>
-          <button>
-            <img src="" alt="" />
+      <div className='flex flex-col gap-2'>
+        <div
+          className={`flex items-center gap-4 rounded-[8px] transition-colors duration-300 ease-in-out ${
+            isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white w-[40px]'
+          }`}
+        >
+          <button className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy">
+            <IconAdd fill="#FFF" />
           </button>
-          <p>새 여행 계획 만들기</p>
+          {isSideBarOpen && (
+            <span className=" text-white">새 여행 계획 만들기</span>
+          )}
         </div>
-        <div>
-          <button onClick={onClickSignOutHandler}>
-            <img src="" alt="" />
+        <div
+          onClick={onClickSignOutHandler}
+          className={`flex items-center gap-4  w-[222px] rounded-[8px] cursor-pointer ${
+            isSideBarOpen ? 'w-[222px]' : 'w-[40px]'
+          }`}
+        >
+          <button className="flex-center w-[40px] h-[40px]">
+            <IconSignOut fill="#162F70" />
           </button>
-          <p>로그아웃</p>
+          {isSideBarOpen && <span className=" text-navy">로그아웃</span>}
         </div>
       </div>
     </aside>

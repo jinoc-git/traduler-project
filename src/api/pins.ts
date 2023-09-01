@@ -3,6 +3,7 @@ import { type Json, type PinInsertType } from 'types/supabase';
 import { supabase } from './supabaseAuth';
 
 export interface PinContentsType {
+  id?: string;
   lat?: number;
   lng?: number;
   placeName?: string;

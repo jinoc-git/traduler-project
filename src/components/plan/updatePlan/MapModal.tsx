@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 
@@ -56,6 +57,7 @@ const MapModal = ({
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newContents: PinContentsType = {
+      id: uuid(),
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
@@ -130,7 +132,7 @@ const MapModal = ({
   };
 
   return (
-    <div className="absolute top-0 z-10 flex-center w-screen h-screen bg-black/70">
+    <div className="absolute top-0 z-10 w-screen h-screen flex-center bg-black/70">
       <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
         <Map // 지도를 표시할 Container
           center={{

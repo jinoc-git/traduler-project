@@ -214,6 +214,11 @@ export const changePlanState = async (data: any) => {
   }
 };
 
-// export const getPlanEnding = async()=>{
-//   const {data, error} = await supabase.from('')
-// }
+export const getPlanEnding = async( planId:string )=>{
+  const {data, error} = await supabase.from('plans_ending').select().eq('id', planId)
+  if (error !== null) {
+    console.log(error);
+    throw new Error('plans_ending 불러오기 오류발생');
+  }
+  return data
+}

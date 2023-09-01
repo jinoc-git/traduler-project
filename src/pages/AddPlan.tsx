@@ -65,8 +65,8 @@ const AddPlan = () => {
   };
 
   useEffect(() => {
-    resetDates();
     return () => {
+      resetDates();
       resetInvitedUser();
     };
   }, []);

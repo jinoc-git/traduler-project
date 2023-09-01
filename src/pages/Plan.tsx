@@ -2,7 +2,12 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
-import { changePlanState, getPlan, updatePlan } from '@api/plans';
+import {
+  changePlanState,
+  getPlan,
+  getPlanEnding,
+  updatePlan,
+} from '@api/plans';
 import Comments from '@components/comments/Comments';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
@@ -24,6 +29,10 @@ const Plan = () => {
   const { data, isLoading } = useQuery(
     ['plan', planId],
     async () => await getPlan(planId),
+  );
+  const { data: planEnding } = useQuery(
+    ['planEnding', planId],
+    async () => await getPlanEnding(planId),
   );
 
   const [title, setTitle] = useState<string>('');
@@ -87,11 +96,12 @@ const Plan = () => {
       setCost(data?.[0].total_cost);
       setPlanState(data[0].plan_state);
     }
+    console.log(planEnding);
     return () => {
       resetInvitedUser();
       resetDates();
     };
-  }, [data]);
+  }, [data, planEnding]);
 
   if (isLoading) {
     return (
@@ -104,8 +114,11 @@ const Plan = () => {
   return (
     <>
       {planState === 'end' ? (
-        // plans_ending 없을 때
-        <Navigate to={`/addPhoto/${planId}`} />
+        planEnding === undefined || planEnding.length === 0 ? (
+          <Navigate to={`/addPhoto/${planId}`} />
+        ) : (
+          <Navigate to={`/ending/${planId}`} />
+        )
       ) : (
         <main
           className={`transition-all duration-300  ease-in-out py-[60px] ${

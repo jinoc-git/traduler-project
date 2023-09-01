@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -30,10 +30,11 @@ const Plan = () => {
     ['plan', planId],
     async () => await getPlan(planId),
   );
-  const { data: planEnding } = useQuery(
-    ['planEnding', planId],
-    async () => await getPlanEnding(planId),
-  );
+  const {
+    data: planEnding,
+    isLoading: isPlanEndingLoading,
+    refetch,
+  } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
 
   const [title, setTitle] = useState<string>('');
   const [cost, setCost] = useState<number>(0);
@@ -91,19 +92,23 @@ const Plan = () => {
   });
 
   useLayoutEffect(() => {
+    void refetch();
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
       setCost(data?.[0].total_cost);
       setPlanState(data[0].plan_state);
     }
-    console.log(planEnding);
     return () => {
       resetInvitedUser();
       resetDates();
     };
-  }, [data, planEnding]);
+  }, [data]);
 
-  if (isLoading) {
+  useEffect(() => {
+    console.log('여기', planEnding);
+  }, [planEnding]);
+
+  if (isLoading || isPlanEndingLoading) {
     return (
       <div className="felx-center text-[400px] text-center font-extrabold">
         로딩중...

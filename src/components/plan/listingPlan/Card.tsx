@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ic_delete_default_1x } from '@assets/icons/1x';
 import { ic_profile_3x } from '@assets/icons/3x';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
@@ -125,7 +126,13 @@ const Card: React.FC<CardProps> = ({
                   </div>
 
                   <div className="w-3/5 h-12">
-                    <div>{plan.title}</div>
+                    <div className="flex">
+                      <img
+                        src={ic_delete_default_1x}
+                        className="w-[20px] h-[20px] cursor-pointer"
+                      />
+                      {plan.title}
+                    </div>
                     <div>
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                       {plan.dates.length}일

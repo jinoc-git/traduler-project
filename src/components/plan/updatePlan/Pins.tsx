@@ -48,7 +48,9 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       await deletePin(date, planId, deletedPin);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['pin'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['pin', planId, currentPage],
+      });
     },
   });
 
@@ -122,7 +124,11 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         장소 추가하기
       </button>
       {isOpenModal && (
-        <MapModal openModal={openModal} date={dates[currentPage]} />
+        <MapModal
+          openModal={openModal}
+          date={dates[currentPage]}
+          currentPage={currentPage}
+        />
       )}
     </>
   );

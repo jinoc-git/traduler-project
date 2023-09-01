@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ic_profile_3x } from '@assets/icons/3x';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import Favorite from 'components/main/favorite/Favorite';
 import {
@@ -9,10 +13,12 @@ import {
   type PlanType,
 } from 'types/supabase';
 
+type UsersDataList = Record<string, UserType[]>;
+
 interface CardProps {
   bookMarkData: BookMarkType[];
   plansData: PlanType[] | undefined;
-  usersDataList: UserType[][] | null;
+  usersDataList: UsersDataList[];
 }
 const Card: React.FC<CardProps> = ({
   usersDataList,
@@ -24,15 +30,25 @@ const Card: React.FC<CardProps> = ({
     'planning',
   );
 
+  // console.log('usersDataList=>', usersDataList);
+
+  // const user = userStore.getState().user;
+
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
 
   // 클릭할때마다 변경
   const filterData = plansData?.filter((plan) =>
     selectedPlan === 'planning'
-      ? plan.plan_state === 'planning'
+      ? plan.plan_state === 'planning' || 'traveling'
       : plan.plan_state === 'end',
   );
+
+  // 계획에 참여한 모든 사용자
+
+  // const participants = usersDataList
+  //   ?.flat()
+  //   .filter((participant) => participant.plan_id === plan.id);
 
   useEffect(() => {
     if (plansData != null) {
@@ -80,12 +96,22 @@ const Card: React.FC<CardProps> = ({
           const isFavorite = bookMarkData.find(
             (bookMark) => bookMark.plan_id === plan.id,
           );
+
+          // usersDataList에서 객체의 key값이 plan의 id인것을 find함
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const participants = usersDataList.find((users) => users[plan.id])!; // {planid: user[]}
+          const participantsAvatarList = participants[plan.id].map(
+            (user) => user.avatar_url,
+          );
+          const participantsNicknameList = participants[plan.id].map(
+            (user) => user.nickname,
+          );
+
           return (
             <div key={plan.id}>
               <div
                 className="flex mb-4 border-2 w-[800px] h-[200px]"
                 onClick={() => {
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                   navigate(`/plan/${plan.id}`);
                 }}
               >
@@ -101,13 +127,28 @@ const Card: React.FC<CardProps> = ({
                     {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                     {plan.dates.length}일
                   </div>
-                  <div className="flex ">
-                    {/* <img
-                      src={userData?.avatar_url ?? ''}
-                      alt="UserAvatar"
-                      className="w-[20px] h-[20px] rounded-full"
-                    /> */}
-                    {/* <p>{userData?.nickname}</p> */}
+                  <div className="flex gap-3">
+                    <div className="flex">
+                      {participantsAvatarList.map((avatar, i) => {
+                        let gap = '';
+                        if (i > 0) {
+                          gap = '-translate-x-1/2';
+                        }
+
+                        return (
+                          <img
+                            key={uuid()}
+                            src={avatar ?? ic_profile_3x}
+                            alt="유저아바타"
+                            className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
+                          />
+                        );
+                      })}
+                    </div>
+                    <div>
+                      {/* 유저 닉네임 */}
+                      {participantsNicknameList.map((name) => `${name} `)}
+                    </div>
                   </div>
                 </div>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   calcAllPath,
@@ -18,6 +18,7 @@ const AddPhoto = () => {
   const { id } = useParams();
   const planId: string = id as string;
   const [distancePin, setDistancePin] = useState<PinContentsType[][]>([]);
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery(
     [planId],
@@ -41,6 +42,8 @@ const AddPhoto = () => {
         dates_cost: datesCostList,
         pictures,
       });
+
+      navigate(`/ending/${planId}`);
     }
   };
 

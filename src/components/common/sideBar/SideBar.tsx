@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { getPlansWithMates } from '@api/plans';
+import { signOutForSB } from '@api/supabaseAuth';
 import {
   ic_chevron_down_1x,
   ic_chevron_up_1x,
@@ -9,28 +11,39 @@ import {
   ic_planned_time_1x,
   ic_previous_time_1x,
 } from '@assets/icons/1x';
+import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
-  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
-  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
-  const [startPlansOpen, setStartPlansOpen] = useState(false);
-  const [endPlansOpen, setEndPlansOpen] = useState(false);
-  const [favoritePlansOpen, setFavoritePlansOpen] = useState(false);
+  const navigate = useNavigate();
+  const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
+  const { resetUser, user } = userStore();
+
+  const { value: favoritePlansOpen, toggleValue: toggleFavoritePlansOpen } =
+    useBooleanState(false);
+  const { value: startPlansOpen, toggleValue: toggleStartPlansOpen } =
+    useBooleanState(false);
+  const { value: endPlansOpen, toggleValue: toggleEndPlansOpen } =
+    useBooleanState(false);
+
+  const onClickSignOutHandler = async () => {
+    await signOutForSB();
+    resetUser();
+    navigate('/main');
+    toggleMenu();
+  };
+
   // supabase데이터 뿌려주기
-  const user = userStore.getState().user;
+
   const {
     data: matesData,
     isLoading: matesLoading,
     isError: matesError,
   } = useQuery(
-    // 이런식으로 해야 이름표가달라져서 로그아웃 로그인 했을때 문제가안생긴다.
-    // 네트워크 요청이 작아진다.
     ['plan_mates', user],
     async () => {
-      // 파라미터가 매번 바뀌게 되면 쿼리키도 바뀔수있도록 해야된다.
       return await getPlansWithMates(user === null ? '' : user.id);
     },
     { enabled: user !== null },
@@ -71,9 +84,7 @@ const SideBar: React.FC = () => {
         <div>
           <div
             className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={() => {
-              setFavoritePlansOpen(!favoritePlansOpen);
-            }}
+            onClick={toggleFavoritePlansOpen}
           >
             <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
               <img src={ic_favorite_default_1x} />{' '}
@@ -82,7 +93,8 @@ const SideBar: React.FC = () => {
             <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
           </div>
           <ul>
-            {isSideBarOpen && (
+            {isSideBarOpen && favoritePlansOpen && (
+              // 여기에 즐겨찾기 리스트 map
               <li className="pl-[65px]">
                 <p className="text-sm"> 장소 이름(기간)</p>
                 <p className="text-sm">장소 이름(기간)</p>
@@ -95,9 +107,7 @@ const SideBar: React.FC = () => {
         <div>
           <div
             className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={() => {
-              setStartPlansOpen(!startPlansOpen);
-            }}
+            onClick={toggleStartPlansOpen}
           >
             <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
               <img src={ic_planned_time_1x} />
@@ -131,9 +141,7 @@ const SideBar: React.FC = () => {
         <div>
           <div
             className="flex w-[250px] justify-between items-center cursor-pointer"
-            onClick={() => {
-              setEndPlansOpen(!endPlansOpen);
-            }}
+            onClick={toggleEndPlansOpen}
           >
             <button className="flex justify-center items-center w-[50px] h-[50px] transition-all duration-300 ease-in-out">
               <img src={ic_previous_time_1x} />
@@ -163,6 +171,21 @@ const SideBar: React.FC = () => {
                 );
               })}
           </ul>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <button>
+            <img src="" alt="" />
+          </button>
+          <p>새 여행 계획 만들기</p>
+        </div>
+        <div>
+          <button onClick={onClickSignOutHandler}>
+            <img src="" alt="" />
+          </button>
+          <p>로그아웃</p>
         </div>
       </div>
     </aside>

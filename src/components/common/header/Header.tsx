@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { signOutForSB } from '@api/supabaseAuth';
 import { ic_menu_1x } from '@assets/icons/1x';
 import { ic_profile_3x } from '@assets/icons/3x';
 import { sideBarStore } from '@store/sideBarStore';
@@ -18,13 +17,6 @@ const Header = () => {
 
   const { isSideBarOpen, toggleMenu, isVisibleSideBar, setVisibilityIcon } =
     sideBarStore((state) => state);
-
-  const onClickSignOutHandler = async () => {
-    await signOutForSB();
-    resetUser();
-    navigate('/main');
-    toggleMenu();
-  };
 
   useEffect(() => {
     authObserver();

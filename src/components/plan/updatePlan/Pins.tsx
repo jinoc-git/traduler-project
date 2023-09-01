@@ -10,6 +10,7 @@ import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Pin from './Pin';

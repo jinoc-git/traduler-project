@@ -55,8 +55,8 @@ const Pin = (props: PinProps) => {
       const hoverIndex = idx;
 
       // 호버가 되고 위치가 바뀌면 여기 if문에서 막히게 해서 movePins가 실행이 되지 않게 해야함
-      if (dragIndex === hoverIndex) return;
       console.log('==>', dragIndex, hoverIndex);
+      if (dragIndex === hoverIndex) return;
 
       const hoverBoundingRect = dragBoxRef.current.getBoundingClientRect();
       const hoverMiddleY =
@@ -70,15 +70,15 @@ const Pin = (props: PinProps) => {
       movePins(item.idx, hoverIndex);
       // throttleHoverItem(item, hoverIndex, movePins);
 
-      // 키값 중복 x, 추후에 보완하기 => movePin 함수로 들어가고 setState함수가 실행이 됐을 때 ~ 리렌더링 할 때 이
+      // 키값 중복 x, 보완하기 => movePin 함수로 들어가고 setState함수가 실행이 됐을 때 ~ 리렌더링 할 때 이
       // 사이 공백 시간에 인덱스를 같게 만들어 줌으로써 위의 if문에 막히고 movePins함수가 실행되지 않도록 해주는 역할임
       // 하지만 여기서는 적용이 안됨.. 오류를 유발함. => 리렌더링이 되고 난 이후에 item.idx는 바뀐 인덱스 값이고 hoverIndex값은
-      // 바뀌고 난 이후 아이템의 인덱스기 때문에 다시 원래 인덱스로 돌아가게 된다..
-      // item.idx = hoverIndex;
+      // 바뀌고 난 이후 아이템의 인덱스기 때문에 다시 원래 인덱스로 돌아가게 된다.
+      // item.idx = hoverIndex; 미리 바꿔줌
     },
   }));
 
-  const [{ isDragging }, dragRef] = useDrag(() => ({
+  const [{ isDragging }, dragRef, previewRef] = useDrag(() => ({
     type: 'pin',
     item: { id, idx },
     collect: (moniter) => ({
@@ -94,7 +94,7 @@ const Pin = (props: PinProps) => {
     },
   }));
 
-  dragRef(drop(dragBoxRef));
+  drop(previewRef(dragBoxRef));
   return (
     <li
       ref={dragBoxRef}
@@ -113,7 +113,7 @@ const Pin = (props: PinProps) => {
       </div>
       <div className="flex w-full border">
         <button
-          // ref={dragRef}
+          ref={dragRef}
           className="flex-center w-[50px] m-3"
         >
           <IconSixDots fill="orange" />

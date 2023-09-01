@@ -165,8 +165,15 @@ export const getPlansWithMates = async (userId: string) => {
   const userIds = matesData.map((data) => data.users_id);
   const planIds = matesData.map((data) => data.id).flat();
 
+  // if (userIds.length === 0) {
+  //   throw new Error('getPlansWithMates 에러 2발생');
+  // }
+  // 윗부분떄문에 오류가나서 수정함
   if (userIds.length === 0) {
-    throw new Error('getPlansWithMates 에러 2발생');
+    return {
+      plansData: [],
+      usersDataList: [],
+    };
   }
 
   const plansData = await getPlans(planIds);

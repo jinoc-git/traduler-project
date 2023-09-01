@@ -5,6 +5,7 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import _ from 'lodash';
 
 interface InputType {
@@ -49,6 +50,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
 
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newContents: PinContentsType = {
+      id: uuid(),
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,

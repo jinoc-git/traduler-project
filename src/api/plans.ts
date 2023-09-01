@@ -102,7 +102,6 @@ export const getTotalCost = async (userId: string): Promise<number | null> => {
   }
   if (data !== null && data.length > 0) {
     const totalCost = data[0].total_cost;
-    console.log('api통신', data);
     return totalCost;
   }
 
@@ -177,9 +176,6 @@ export const getPlansWithMates = async (userId: string) => {
     usersDataList.push(users);
   }
 
-  console.log('plansData=>', plansData);
-  console.log('userData=>', usersDataList);
-
   return {
     plansData,
     // 배열로 가져오던걸 객체로 바꾸기위해서
@@ -214,11 +210,14 @@ export const changePlanState = async (data: any) => {
   }
 };
 
-export const getPlanEnding = async( planId:string )=>{
-  const {data, error} = await supabase.from('plans_ending').select().eq('id', planId)
+export const getPlanEnding = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('plans_ending')
+    .select()
+    .eq('id', planId);
   if (error !== null) {
     console.log(error);
     throw new Error('plans_ending 불러오기 오류발생');
   }
-  return data
-}
+  return data;
+};

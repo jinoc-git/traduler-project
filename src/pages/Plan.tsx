@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -30,6 +30,8 @@ const Plan = () => {
     ['plan', planId],
     async () => await getPlan(planId),
   );
+
+  const [planEndingState, setPlanEndingState] = useState<any>();
   const {
     data: planEnding,
     isLoading: isPlanEndingLoading,
@@ -97,16 +99,12 @@ const Plan = () => {
       setTitle(data?.[0].title);
       setCost(data?.[0].total_cost);
       setPlanState(data[0].plan_state);
+      setPlanEndingState(planEnding);
     }
     return () => {
-      resetInvitedUser();
       resetDates();
     };
-  }, [data]);
-
-  useEffect(() => {
-    console.log('여기', planEnding);
-  }, [planEnding]);
+  }, [data, planEnding]);
 
   if (isLoading || isPlanEndingLoading) {
     return (
@@ -119,7 +117,7 @@ const Plan = () => {
   return (
     <>
       {planState === 'end' ? (
-        planEnding === undefined || planEnding.length === 0 ? (
+        planEndingState === undefined || planEndingState.length === 0 ? (
           <Navigate to={`/addPhoto/${planId}`} />
         ) : (
           <Navigate to={`/ending/${planId}`} />

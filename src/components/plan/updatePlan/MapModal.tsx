@@ -19,9 +19,11 @@ interface InputType {
 const MapModal = ({
   openModal,
   date,
+  currentPage,
 }: {
   openModal: () => void;
   date: string;
+  currentPage: number;
 }) => {
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
@@ -63,7 +65,7 @@ const MapModal = ({
       placeName: data.placeName as string,
       cost: data.cost as number,
     };
-
+    console.log(newContents);
     // 수정하기 시
     if (pin !== null) {
       updateMutation.mutate([idx, date, planId, newContents]);
@@ -100,7 +102,9 @@ const MapModal = ({
       await updatePin(idx, date, planId, newContents);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['pin'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['pin', planId, currentPage],
+      });
     },
   });
 

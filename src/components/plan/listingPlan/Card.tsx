@@ -40,7 +40,7 @@ const Card: React.FC<CardProps> = ({
   // 클릭할때마다 변경
   const filterData = plansData?.filter((plan) =>
     selectedPlan === 'planning'
-      ? plan.plan_state === 'planning'
+      ? plan.plan_state === 'planning' || 'traveling'
       : plan.plan_state === 'end',
   );
 

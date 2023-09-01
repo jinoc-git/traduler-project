@@ -44,6 +44,12 @@ const Invite = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      resetInvitedUser();
+    };
+  }, []);
+
   // plan_mates에서 불러온 데이터가 있을 때 store에 invtedUser 업데이트
   useEffect(() => {
     if (data !== undefined && data !== null) {

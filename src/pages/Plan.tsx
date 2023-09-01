@@ -2,8 +2,12 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
-import { changePlanState, getPlan, updatePlan } from '@api/plans';
-import Comments from '@components/comments/Comments';
+import {
+  changePlanState,
+  getPlan,
+  getPlanEnding,
+  updatePlan,
+} from '@api/plans';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import PostPlan from '@components/plan/PostPlan';
@@ -25,6 +29,13 @@ const Plan = () => {
     ['plan', planId],
     async () => await getPlan(planId),
   );
+
+  const [planEndingState, setPlanEndingState] = useState<any>();
+  const {
+    data: planEnding,
+    isLoading: isPlanEndingLoading,
+    refetch,
+  } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
 
   const [title, setTitle] = useState<string>('');
   const [cost, setCost] = useState<number>(0);
@@ -82,18 +93,19 @@ const Plan = () => {
   });
 
   useLayoutEffect(() => {
+    void refetch();
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
       setCost(data?.[0].total_cost);
       setPlanState(data[0].plan_state);
+      setPlanEndingState(planEnding);
     }
     return () => {
-      resetInvitedUser();
       resetDates();
     };
-  }, [data]);
+  }, [data, planEnding]);
 
-  if (isLoading) {
+  if (isLoading || isPlanEndingLoading) {
     return (
       <div className="felx-center text-[400px] text-center font-extrabold">
         로딩중...
@@ -104,8 +116,11 @@ const Plan = () => {
   return (
     <>
       {planState === 'end' ? (
-        // plans_ending 없을 때
-        <Navigate to={`/addPhoto/${planId}`} />
+        planEndingState === undefined || planEndingState.length === 0 ? (
+          <Navigate to={`/addPhoto/${planId}`} />
+        ) : (
+          <Navigate to={`/ending/${planId}`} />
+        )
       ) : (
         <main
           className={`transition-all duration-300  ease-in-out py-[60px] ${
@@ -167,7 +182,6 @@ const Plan = () => {
                 </>
               )}
             </div>
-            <Comments />
           </div>
         </main>
       )}

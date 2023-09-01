@@ -28,7 +28,7 @@ const SideBar: React.FC = () => {
   } = useQuery(
     // 이런식으로 해야 이름표가달라져서 로그아웃 로그인 했을때 문제가안생긴다.
     // 네트워크 요청이 작아진다.
-    ['plan_mates', user],
+    ['plan_mates', user?.id],
     async () => {
       // 파라미터가 매번 바뀌게 되면 쿼리키도 바뀔수있도록 해야된다.
       return await getPlansWithMates(user === null ? '' : user.id);

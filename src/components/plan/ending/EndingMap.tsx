@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
@@ -33,29 +34,31 @@ const EndingMap = () => {
 
   return (
     <div className="w-[720px] flex-center">
-      <Map
-        center={{
-          lat: pins?.[0].lat !== undefined ? pins[0].lat : 37.566826004661,
-          lng: pins?.[0].lng !== undefined ? pins[0].lng : 126.978652258309,
-        }}
-        level={4}
-        className="w-[95vw] h-[400px] rounded-lg"
-      >
-        {pins?.map((pin, idx) => {
-          return (
-            <div key={idx}>
-              <MapMarker
-                position={{
-                  lat: pin?.lat as number,
-                  lng: pin?.lng as number,
-                }}
-              ></MapMarker>
-            </div>
-          );
-        })}
-        <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-        <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
-      </Map>
+      {pins?.length !== 0 && (
+        <Map
+          center={{
+            lat: pins?.[0].lat !== undefined ? pins[0].lat : 37.566826004661,
+            lng: pins?.[0].lng !== undefined ? pins[0].lng : 126.978652258309,
+          }}
+          level={4}
+          className="w-[95vw] h-[400px] rounded-lg"
+        >
+          {pins?.map((pin, idx) => {
+            return (
+              <div key={idx}>
+                <MapMarker
+                  position={{
+                    lat: pin?.lat as number,
+                    lng: pin?.lng as number,
+                  }}
+                ></MapMarker>
+              </div>
+            );
+          })}
+          <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
+          <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
+        </Map>
+      )}
     </div>
   );
 };

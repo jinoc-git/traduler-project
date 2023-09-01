@@ -171,9 +171,11 @@ export const getPlansWithMates = async (userId: string) => {
 
   const plansData = await getPlans(planIds);
   const usersDataList = [];
-  for (const plan of userIds) {
-    const users = await getMatesByUserIds(plan);
-    usersDataList.push(users);
+  for (let i = 0; i < userIds.length; i++) {
+    const users = await getMatesByUserIds(userIds[i]);
+
+    const userList = { [planIds[i]]: users };
+    usersDataList.push(userList);
   }
 
   return {

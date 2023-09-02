@@ -36,20 +36,20 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
 
   const hoverColor = {
     bookMark: 'hover:bg-red_light_1',
-    start: 'hover:bg-orange_light_1',
-    end: 'hover:bg-yellow_light_1',
+    start: 'hover:bg-yellow_light_1',
+    end: 'hover:bg-orange_light_1',
   };
 
   const focusColor = {
     bookMark: 'focus:bg-red_light_1',
-    start: 'focus:bg-orange_light_1',
-    end: 'focus:bg-yellow_light_1',
+    start: 'focus:bg-yellow_light_1',
+    end: 'focus:bg-orange_light_1 ',
   };
 
   const activeColor = {
     bookMark: 'bg-red_light_1',
-    start: 'bg-orange_light_1',
-    end: 'bg-yellow_light_1',
+    start: 'bg-yellow_light_1',
+    end: 'bg-orange_light_1',
   };
 
   return (

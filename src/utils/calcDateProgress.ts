@@ -11,7 +11,7 @@ const calcDateProgress = (start: string, end: string) => {
   const progress = (todayTime / travelTime) * 100;
   const result = progress.toFixed();
 
-  return `${result} %`;
+  return `${result}%`;
 };
 
 export default calcDateProgress;

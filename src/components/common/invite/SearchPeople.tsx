@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { findUsers, updateMates } from '@api/planMates';
 import { inviteUserStore } from '@store/inviteUserStore';
@@ -71,7 +72,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
       inviteMutation.mutate([usersId, planId]);
     }
     setUser(invitedUser);
-    alert('저장되었습니다');
+    toast.success('저장되었습니다.');
     closeModal();
     syncInviteduser();
   };

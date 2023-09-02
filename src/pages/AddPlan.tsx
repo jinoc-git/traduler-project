@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { type PinContentsType } from '@api/pins';
 import { addPlan } from '@api/plans';
@@ -45,7 +46,7 @@ const AddPlan = () => {
         dates,
         invitedUser,
       );
-      alert('저장되었습니다.');
+      toast.success('저장되었습니다.');
       navigate('/main');
     }
   };

@@ -32,8 +32,7 @@ const AddPlan = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({ mode: 'onChange', defaultValues: { totalCost: 0 } });
-  const { invitedUser, inviteUser, syncInviteduser, resetInvitedUser } =
-    inviteUserStore();
+  const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
 
   const submitPlan = async () => {
     if (userId !== null) {
@@ -65,9 +64,8 @@ const AddPlan = () => {
   };
 
   useEffect(() => {
-    resetDates();
     return () => {
-      resetInvitedUser();
+      resetDates();
     };
   }, []);
 
@@ -79,6 +77,7 @@ const AddPlan = () => {
         id: user?.id,
         nickname: user?.nickname,
       };
+      console.log('초대햇다');
       inviteUser(curUser);
       syncInviteduser();
     }
@@ -88,7 +87,7 @@ const AddPlan = () => {
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
         isSideBarOpen
-          ? 'w-[calc(100vw-250px)] ml-[250px]'
+          ? 'w-[calc(100vw-270px)] ml-[270px]'
           : 'w-[calc(100vw-50px)] ml-[50px]'
       }`}
     >

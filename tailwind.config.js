@@ -3,6 +3,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     fontSize: {
+      xs: '12px',
       sm: '14px',
       normal: '16px',
       lg: '18px',

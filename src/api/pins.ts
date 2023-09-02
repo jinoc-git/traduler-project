@@ -3,6 +3,7 @@ import { type Json, type PinInsertType } from 'types/supabase';
 import { supabase } from './supabaseAuth';
 
 export interface PinContentsType {
+  id?: string;
   lat?: number;
   lng?: number;
   placeName?: string;
@@ -129,4 +130,16 @@ export const newDatePin = async (newPin: PinInsertType) => {
   if (error !== null) {
     console.log(error);
   }
+};
+
+export const getAllPins = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .select('contents')
+    .eq('plan_id', planId);
+  if (error !== null) {
+    console.log(error);
+    throw new Error('핀 가져오기 에러발생');
+  }
+  return data;
 };

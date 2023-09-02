@@ -62,13 +62,13 @@ body {
 }
 
 .sidebar-open {
-  width: calc(100vw-250px);
-  margin-left: 250px;
+  width: calc(100vw-270px);
+  margin-left: 270px;
 }
 
 .sidebar-close {
-  width: calc(100vw-50px);
-  margin-left: 50px;
+  width: calc(100vw-88px);
+  margin-left: 88px;
 }
 
 .sidebar-none {

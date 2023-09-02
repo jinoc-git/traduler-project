@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 
@@ -18,9 +19,11 @@ interface InputType {
 const MapModal = ({
   openModal,
   date,
+  currentPage,
 }: {
   openModal: () => void;
   date: string;
+  currentPage: number;
 }) => {
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
@@ -56,12 +59,13 @@ const MapModal = ({
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newContents: PinContentsType = {
+      id: uuid(),
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
       cost: data.cost as number,
     };
-
+    console.log(newContents);
     // 수정하기 시
     if (pin !== null) {
       updateMutation.mutate([idx, date, planId, newContents]);
@@ -98,7 +102,9 @@ const MapModal = ({
       await updatePin(idx, date, planId, newContents);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['pin'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['pin', planId, currentPage],
+      });
     },
   });
 
@@ -130,7 +136,7 @@ const MapModal = ({
   };
 
   return (
-    <div className="absolute top-0 z-10 flex-center w-screen h-screen bg-black/70">
+    <div className="absolute top-0 z-10 w-screen h-screen flex-center bg-black/70">
       <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
         <Map // 지도를 표시할 Container
           center={{

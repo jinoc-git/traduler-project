@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { getTotalCost } from '@api/plans';
 import { userStore } from '@store/userStore';
+import { calcDutchPay } from '@utils/calcDutchPay';
 
 const TotalPay = () => {
   const [totalCost, setTotalCost] = useState<number | null>(null);
   const user = userStore((state) => state.user);
   const userId = user?.id;
+  const { id: planId } = useParams();
+
+  const getRemainingBudget = async () => {
+    if (planId !== undefined && userId !== undefined) {
+      const remainingBudget = await calcDutchPay(planId, userId);
+
+      console.log('remainingBudget: ', remainingBudget);
+    }
+  };
+
+  void getRemainingBudget();
 
   useEffect(() => {
     if (userId !== undefined) {

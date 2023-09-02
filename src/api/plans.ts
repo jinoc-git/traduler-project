@@ -72,6 +72,29 @@ export const getPlan = async (planId: string) => {
   }
 };
 
+// 삭제함수
+export const deletePlan = async (planId: string) => {
+  console.log('planId=>', planId);
+  try {
+    const { error } = await supabase
+      .from('plans')
+      .update({ isDeleted: true })
+      .eq('id', planId);
+
+    if (error != null) {
+      console.error('계획 삭제 오류', error);
+      throw new Error('계획 삭제 중 오류가 발생했습니다.');
+    }
+
+    // if (data === null || data.length === 0) {
+    //   throw new Error('해당 계획을 찾을 수 없습니다.');
+    // }
+  } catch (error) {
+    console.error('계획 삭제 오류', error);
+    throw error;
+  }
+};
+
 export const getPlans = async (planIds: string[]) => {
   if (planIds.length === 0) {
     return;

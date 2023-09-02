@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { deletePlan } from '@api/plans';
 import { ic_delete_default_1x } from '@assets/icons/1x';
 import { ic_profile_3x } from '@assets/icons/3x';
 import { defaultMainPlan } from '@assets/index';
@@ -38,12 +39,42 @@ const Card: React.FC<CardProps> = ({
 
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
+  const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
 
-  const filterData = plansData?.filter((plan) =>
-    selectedPlan === 'planning'
-      ? plan.plan_state === 'planning' || 'traveling'
-      : plan.plan_state === 'end',
-  );
+  const filterData = plansData
+    ?.filter((plan) =>
+      selectedPlan === 'planning'
+        ? plan.plan_state === 'planning' || 'traveling'
+        : plan.plan_state === 'end',
+    )
+    .filter((plan) => !plan.isDeleted);
+
+  // 삭제된 계획
+
+  // const deletePlanMutation = useMutation(async (planId: string) => {
+  //   await deletePlan(planId);
+  // });
+
+  const handleDeletePlan = async (planId: string) => {
+    try {
+      const shouldDelete = window.confirm('정말로 삭제하시겠습니까?');
+
+      if (shouldDelete) {
+        await deletePlan(planId);
+
+        setDeletedPlans([...deletedPlans, planId]);
+        navigate('/main');
+      } else {
+        navigate('/main');
+      }
+    } catch (error) {
+      console.log('계획 삭제 오류', error);
+      alert('계획 삭제 중 오류가 발생했습니다.');
+    }
+  };
+
+  // const { user } = supabase.auth.session();
+  // console.log('user=>', user);
 
   useEffect(() => {
     if (plansData != null) {
@@ -130,6 +161,10 @@ const Card: React.FC<CardProps> = ({
                       <img
                         src={ic_delete_default_1x}
                         className="w-[20px] h-[20px] cursor-pointer"
+                        onClick={async () => {
+                          await handleDeletePlan(plan.id);
+                          navigate('/main');
+                        }}
                       />
                       {plan.title}
                     </div>

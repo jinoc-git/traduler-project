@@ -40,6 +40,12 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
     end: 'hover:bg-yellow_light_1',
   };
 
+  const focusColor = {
+    bookMark: 'focus:bg-red_light_1',
+    start: 'focus:bg-orange_light_1',
+    end: 'focus:bg-yellow_light_1',
+  };
+
   const activeColor = {
     bookMark: 'bg-red_light_1',
     start: 'bg-orange_light_1',
@@ -52,10 +58,11 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
         className={`flex w-[222px] justify-between items-center cursor-pointer rounded-lg ${
           isSideBarOpen ? hoverColor[filter] : ''
         } ${isOpen ? activeColor[filter] : ''} `}
-        onClick={toggleFunc}
+        onClick={isSideBarOpen ? toggleFunc : () => {}}
       >
         <button
-          className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out ${hoverColor[filter]}`}
+          className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
+          ${focusColor[filter]} ${hoverColor[filter]} `}
         >
           <img src={iconList[filter]} />
         </button>
@@ -68,10 +75,13 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           />
         </div>
       </div>
-      <ul className='flex flex-col items-end'>
+      <ul className="flex flex-col items-end">
         {isOpen &&
           planList.map((plan) => (
-            <li className="w-[156px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] cursor-pointer " key={plan.id}>
+            <li
+              className="w-[156px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] cursor-pointer "
+              key={plan.id}
+            >
               <p className="text-xs">{plan.title}</p>
               <span className="text-xs">
                 {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}

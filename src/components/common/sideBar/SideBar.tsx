@@ -4,29 +4,37 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
-import { signOutForSB } from '@api/supabaseAuth';
 import { ic_menu_1x } from '@assets/icons/1x';
-import IconAdd from '@assets/icons/IconAdd';
-import IconSignOut from '@assets/icons/IconSignOut';
 import { logoColor } from '@assets/index';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
+import SideBarETC from './SideBarETC';
 import SideBarPlanList from './SideBarPlanList';
+import SideBarStatus from './SideBarStatus';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
   const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
-  const { resetUser, user } = userStore();
+  const user = userStore((state) => state.user);
 
-  const { value: favoritePlansOpen, toggleValue: toggleFavoritePlansOpen } =
-    useBooleanState(false);
-  const { value: startPlansOpen, toggleValue: toggleStartPlansOpen } =
-    useBooleanState(false);
-  const { value: endPlansOpen, toggleValue: toggleEndPlansOpen } =
-    useBooleanState(false);
+  const {
+    value: bookMarkPlansOpen,
+    toggleValue: toggleBookMarkPlansOpen,
+    setNeedValue: setBookMarkNeedValue,
+  } = useBooleanState(false);
+  const {
+    value: startPlansOpen,
+    toggleValue: toggleStartPlansOpen,
+    setNeedValue: setStartPlansNeedValue,
+  } = useBooleanState(false);
+  const {
+    value: endPlansOpen,
+    toggleValue: toggleEndPlansOpen,
+    setNeedValue: setEndPlansNeedValue,
+  } = useBooleanState(false);
 
   const { data: bookMarkPlanData } = useQuery(
     ['book_mark', 'plans', user?.id],
@@ -34,15 +42,15 @@ const SideBar: React.FC = () => {
     { enabled: user !== null },
   );
 
-  const onClickSignOutHandler = async () => {
-    await signOutForSB();
-    resetUser();
+  const onClickLogo = () => {
     navigate('/main');
-    toggleMenu();
   };
 
-  const onClickAddPlan = () => {
-    navigate('/addPlan');
+  const toggleSideBar = () => {
+    toggleMenu();
+    setBookMarkNeedValue(false);
+    setStartPlansNeedValue(false);
+    setEndPlansNeedValue(false);
   };
 
   // supabase데이터 뿌려주기
@@ -92,24 +100,30 @@ const SideBar: React.FC = () => {
           isSideBarOpen ? 'mt-0' : 'mt-0'
         }`}
       >
-        <button onClick={toggleMenu} className=" flex-center w-[40px] h-[40px]">
+        <button
+          onClick={toggleSideBar}
+          className=" flex-center w-[40px] h-[40px]"
+        >
           <img src={ic_menu_1x} alt="Menu Icon" />
         </button>
-        <img src={logoColor} alt="로고" className=" w-[134px]" />
+        <img
+          src={logoColor}
+          alt="로고"
+          onClick={onClickLogo}
+          className=" w-[134px] cursor-pointer"
+        />
       </div>
 
-      <div className="flex flex-col gap-[20px] border-t-2 border-slate-200">
-        <div className="h-[223px]">
-          <div className=" text-sm">여행중</div>
-        </div>
+      <div className="flex flex-col gap-[20px] ">
+        <SideBarStatus isOpen={isSideBarOpen} />
 
         <div className="flex flex-col gap-2 min-h-[362px]">
           <p className="text-sm">TRIPS</p>
           <SideBarPlanList
-            toggleFunc={toggleFavoritePlansOpen}
+            toggleFunc={toggleBookMarkPlansOpen}
             planList={bookMarkPlanData ?? []}
             filter="bookMark"
-            isOpen={isSideBarOpen && favoritePlansOpen}
+            isOpen={isSideBarOpen && bookMarkPlansOpen}
           />
           <SideBarPlanList
             toggleFunc={toggleStartPlansOpen}
@@ -126,32 +140,7 @@ const SideBar: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div
-          onClick={onClickAddPlan}
-          className={`flex items-center gap-4 w-[222px] rounded-[8px] cursor-pointer transition-colors duration-300 ease-in-out ${
-            isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white w-[40px]'
-          }`}
-        >
-          <button className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy">
-            <IconAdd fill="#FFF" />
-          </button>
-          {isSideBarOpen && (
-            <span className=" text-white">새 여행 계획 만들기</span>
-          )}
-        </div>
-        <div
-          onClick={onClickSignOutHandler}
-          className={`flex items-center gap-4  w-[222px] rounded-[8px] cursor-pointer ${
-            isSideBarOpen ? 'w-[222px]' : 'w-[40px]'
-          }`}
-        >
-          <button className="flex-center w-[40px] h-[40px]">
-            <IconSignOut fill="#162F70" />
-          </button>
-          {isSideBarOpen && <span className=" text-navy">로그아웃</span>}
-        </div>
-      </div>
+      <SideBarETC />
     </aside>
   ) : null;
 };

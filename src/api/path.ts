@@ -17,6 +17,7 @@ interface Routes {
   routes: Route[];
 }
 
+// 카카오 모빌리티 API를 사용
 export const getPath = async (params: Parameters) => {
   const { data } = await axios.get<Routes>(
     'https://apis-navi.kakaomobility.com/v1/directions',
@@ -33,6 +34,7 @@ export const getPath = async (params: Parameters) => {
   return data.routes[0].summary.distance;
 };
 
+// 카카오 모빌리티에서 원하는 좌표로 가공 후 거리로 변환
 export const calcPath = async (distance: PinContentsType[]) => {
   const convertParameters = distance.map(({ lng, lat }) => {
     if (lat !== undefined && lng !== undefined) {
@@ -42,7 +44,7 @@ export const calcPath = async (distance: PinContentsType[]) => {
   });
 
   const newData: string[] = [];
-  console.log(convertParameters)
+  console.log(convertParameters);
   for (let i = 0; i < convertParameters.length; i += 1) {
     if (i === convertParameters.length - 1) {
       break;
@@ -63,41 +65,3 @@ export const calcPath = async (distance: PinContentsType[]) => {
 
   return newData;
 };
-
-// export const calcAllPath = async (distance: PinContentsType[][]) => {
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   const convertParameters = [];
-//   for (const pinArr of distance) {
-//     const pinsOfDate = [];
-//     for (const data of pinArr) {
-//       const { lat, lng } = data;
-//       if (lat !== undefined && lng !== undefined) {
-//         pinsOfDate.push(`${lng},${lat}`);
-//       }
-//     }
-//     convertParameters.push(pinsOfDate);
-//   }
-
-//   const newData = [];
-
-//   for (const data of convertParameters) {
-//     const oneDay = [];
-//     for (let i = 0; i < data.length - 1; i++) {
-//       try {
-//         const result = await getPath({
-//           origin: data[i],
-//           destination: data[i + 1],
-//         });
-
-//         const distanceInKm = result / 1000;
-//         oneDay.push(+distanceInKm.toFixed(1));
-//       } catch (err) {
-//         console.log(err);
-//       }
-//     }
-//     newData.push(oneDay);
-//   }
-
-//   console.log('!!new data!!: ', newData);
-//   return newData;
-// };

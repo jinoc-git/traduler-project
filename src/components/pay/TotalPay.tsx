@@ -26,11 +26,13 @@ const TotalPay = () => {
 
   return (
     <div>
-      <p>전체 사용 경비</p>
+      <p>예산은 {totalCost}원 입니다.</p>
       <p>2023.08.21 300000원</p>
       <p>2023.08.22 120000원</p>
-      <p>총 420000원</p>
-      <p>예산 {totalCost}</p>
+      {/* <p>총 사용 경비는 {result >= 0 ? result : Math.abs(result)}원 입니다.</p> */}
+      <br />
+      <br />
+      <p>남았네요</p>
     </div>
   );
 };

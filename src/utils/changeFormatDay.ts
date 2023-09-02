@@ -21,3 +21,22 @@ export const formatPlanDates = (plan: PlanType) => {
 
   return { startDate, endDate };
 };
+
+export const removeYearOfDate = (date: string | undefined) => {
+  if (date === undefined) return '';
+
+  const dateArr = date.split('-');
+  let month = dateArr[1];
+  let day = dateArr[2];
+
+  if (month.length > 1) month = month[1];
+  if (day.length > 1) day = day[1];
+
+  return month + '/' + day;
+};
+
+export const changeDotFormatOfDate = (date: string | undefined) => {
+  if (date === undefined) return '';
+
+  return date.replaceAll('-', '.');
+};

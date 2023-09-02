@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 import React, { useEffect, useState } from 'react';
 
 import calcDateProgress from '@utils/calcDateProgress';
+import {
+  changeDotFormatOfDate,
+  removeYearOfDate,
+} from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
 interface SideBarStatusProps {
@@ -12,6 +17,9 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   const [progressPercent, setProgressPercent] = useState('');
   const { isOpen, activePlan } = props;
   const hasActivePlan = activePlan !== undefined;
+
+  const removedYearStartDay = removeYearOfDate(activePlan?.dates[0]);
+  const changedFormatStartDay = changeDotFormatOfDate(activePlan?.dates[0]);
 
   useEffect(() => {
     if (hasActivePlan) {
@@ -43,12 +51,15 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
           isOpen ? 'w-[197px] h-[125px]' : 'w-[40px] h-[125px]'
         }`}
       >
+        {!isOpen && hasActivePlan && (
+          <p className="text-sm">{removedYearStartDay}</p>
+        )}
         <p>{progressPercent}</p>
         {isOpen && hasActivePlan && (
           <p className="text-sm">{activePlan.title}</p>
         )}
         {isOpen && hasActivePlan && (
-          <p className="text-sm">{activePlan.dates[0]}</p>
+          <p className="text-sm">{changedFormatStartDay}</p>
         )}
       </div>
     </div>

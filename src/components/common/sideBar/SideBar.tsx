@@ -27,7 +27,7 @@ const SideBar: React.FC = () => {
     useBooleanState(false);
 
   const { data: bookMarkPlanData } = useQuery(
-    ['plans', user?.id],
+    ['book_mark', 'plans', user?.id],
     async () => await getPlansWithBookmarks(user === null ? '' : user.id),
     { enabled: user !== null },
   );

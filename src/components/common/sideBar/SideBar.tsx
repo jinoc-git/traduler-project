@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { signOutForSB } from '@api/supabaseAuth';
+import { ic_menu_1x } from '@assets/icons/1x';
 import IconAdd from '@assets/icons/IconAdd';
 import IconSignOut from '@assets/icons/IconSignOut';
+import { logoColor } from '@assets/index';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -75,11 +77,21 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed mt-[50px] h-[100vh] w-[270px] bg-white transition-all duration-300 ease-in-out overflow-hidden border-r-10 px-[24px] ${
+      className={`fixed h-[100vh] w-[270px] bg-white transition-all duration-300 ease-in-out overflow-hidden border-r-10 px-[24px] z-[31] ${
         isSideBarOpen ? 'w-[270px] ' : 'w-[88px]'
       }`}
-      style={{ zIndex: 10 }}
     >
+      <div
+        className={`cursor-pointer w-[222px] h-[70px] flex items-center gap-[34px] bg-white ${
+          isSideBarOpen ? 'mt-0' : 'mt-0'
+        }`}
+      >
+        <button onClick={toggleMenu} className=" flex-center w-[40px] h-[40px]">
+          <img src={ic_menu_1x} alt="Menu Icon" />
+        </button>
+        <img src={logoColor} alt="로고" className=" w-[134px]" />
+      </div>
+
       <div className="flex flex-col gap-[20px]">
         <div className="h-[223px]">
           <div className=" text-sm">여행중</div>

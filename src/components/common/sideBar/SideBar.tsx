@@ -81,7 +81,7 @@ const SideBar: React.FC = () => {
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 
-  // const activePlan = sortedData?.find((plan) => plan.plan_state === 'planning');
+  const activePlan = sortedData?.find((plan) => plan.plan_state === 'traveling');
 
   const startPlans = sortedData?.filter(
     (plan) => plan.plan_state === 'planning',
@@ -115,7 +115,7 @@ const SideBar: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-[20px] ">
-        <SideBarStatus isOpen={isSideBarOpen} />
+        <SideBarStatus isOpen={isSideBarOpen} activePlan={activePlan} />
 
         <div className="flex flex-col gap-2 min-h-[362px]">
           <p className="text-sm">TRIPS</p>

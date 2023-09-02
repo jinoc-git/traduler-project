@@ -69,7 +69,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
         <div className="flex items-center">
           <span className="w-[110px] text-sm">{listName[filter]}</span>
           <img
-            src={isOpen ? ic_chevron_up_1x : ic_chevron_down_1x}
+            src={isOpen ? ic_chevron_down_1x : ic_chevron_up_1x}
             alt="다운버튼"
             className="mr-5"
           />

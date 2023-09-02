@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<'planning' | 'end'>(
     'planning',
   );
-
+  // console.log('bookMarkData=>', bookMarkData);
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);

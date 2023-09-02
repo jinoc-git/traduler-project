@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getPlansWithMates } from '@api/plans';
+import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { signOutForSB } from '@api/supabaseAuth';
 import {
   ic_chevron_down_1x,
@@ -19,6 +19,8 @@ import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
+  // const queryClient = useQueryClient();
+
   const navigate = useNavigate();
   const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
   const { resetUser, user } = userStore();
@@ -29,6 +31,13 @@ const SideBar: React.FC = () => {
     useBooleanState(false);
   const { value: endPlansOpen, toggleValue: toggleEndPlansOpen } =
     useBooleanState(false);
+
+  const { data: bookMarkPlanData } = useQuery(
+    ['plans', user?.id],
+    async () => await getPlansWithBookmarks(user === null ? '' : user.id),
+    { enabled: user !== null },
+  );
+  console.log('bookMarkPlanData=>', bookMarkPlanData);
 
   const onClickSignOutHandler = async () => {
     await signOutForSB();
@@ -101,14 +110,18 @@ const SideBar: React.FC = () => {
               </div>
             </div>
             <ul>
-              {isSideBarOpen && favoritePlansOpen && (
-                // 여기에 즐겨찾기 리스트 map
-                <li className="pl-[65px]">
-                  <p className="text-xs"> 장소 이름(기간)</p>
-                  <p className="text-xs">장소 이름(기간)</p>
-                  <p className="text-xs">장소 이름(기간)</p>
-                </li>
-              )}
+              {isSideBarOpen &&
+                favoritePlansOpen &&
+                bookMarkPlanData?.map(
+                  (
+                    book, // plans 데이터를 사용하여 목록 렌더링
+                  ) => (
+                    <li className="pl-[65px]" key={book.id}>
+                      <p className="text-xs">{book.title}</p>
+                      <p className="text-xs">{book.dates[0]}</p>
+                    </li>
+                  ),
+                )}
             </ul>
           </div>
 
@@ -187,7 +200,7 @@ const SideBar: React.FC = () => {
         </div>
       </div>
 
-      <div className='flex flex-col gap-2'>
+      <div className="flex flex-col gap-2">
         <div
           className={`flex items-center gap-4 rounded-[8px] transition-colors duration-300 ease-in-out ${
             isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white w-[40px]'

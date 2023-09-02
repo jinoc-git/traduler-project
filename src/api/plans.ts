@@ -102,6 +102,7 @@ export const getPlans = async (planIds: string[]) => {
   const { data: plans, error } = await supabase
     .from('plans')
     .select()
+    .eq('isDeleted', false)
     .in('id', planIds);
 
   if (error !== null) {
@@ -142,6 +143,40 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
+// book_mark와 plans 테이블을 조인하여 plans 데이터를 가져오는 함수
+export const getPlansWithBookmarks = async (userId: string) => {
+  const { data: bookMarkData, error: bookMarkError } = await supabase
+    .from('book_mark')
+    .select('plan_id')
+    .eq('user_id', userId);
+
+  if (bookMarkError !== null) {
+    console.error('book_mark 데이터 불러오기 오류', bookMarkError);
+    throw new Error('book_mark 데이터 불러오기 오류');
+  }
+
+  if (bookMarkData === null || bookMarkData.length === 0) {
+    // book_mark 데이터가 없을 경우
+    return [];
+  }
+
+  const planIds = bookMarkData.map((item) => item.plan_id);
+  console.log('planIds=>', planIds);
+
+  const { data: bookMarkPlanData, error: plansError } = await supabase
+    .from('plans')
+    .select()
+    .eq('isDeleted', false)
+    .in('id', planIds);
+
+  if (plansError !== null) {
+    console.error('plans 데이터 불러오기 오류', plansError);
+    throw new Error('plans 데이터 불러오기 오류');
+  }
+
+  return bookMarkPlanData;
+};
+
 // users테이블과 plan_mates테이블 연결
 
 export const getMatesByUserIds = async (matesUserId: string[]) => {
@@ -162,6 +197,7 @@ export const getPlansByUserIds = async (userIds: string[]) => {
   const { data, error } = await supabase
     .from('plans')
     .select()
+    .eq('isDeleted', false)
     .in('users_id', userIds);
 
   if (error != null) {

@@ -107,15 +107,12 @@ const Pin = (props: PinProps) => {
         <p>{idx + 1}</p>
         {idx < pinArrLength - 1 && (
           <div>
-            <p>{betweenDistanceData}km</p>
+            <p>{betweenDistanceData}</p>
           </div>
         )}
       </div>
       <div className="flex w-full border">
-        <button
-          ref={dragRef}
-          className="flex-center w-[50px] m-3"
-        >
+        <button ref={dragRef} className="flex-center w-[50px] m-3">
           <IconSixDots fill="orange" />
         </button>
         <div className="flex flex-col justify-center gap-2 w-full">

@@ -1,22 +1,18 @@
+/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { signOutForSB } from '@api/supabaseAuth';
-import {
-  ic_chevron_down_1x,
-  ic_chevron_up_1x,
-  ic_favorite_default_1x,
-  ic_planned_time_1x,
-  ic_previous_time_1x,
-} from '@assets/icons/1x';
 import IconAdd from '@assets/icons/IconAdd';
 import IconSignOut from '@assets/icons/IconSignOut';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
+
+import SideBarPlanList from './SideBarPlanList';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -44,14 +40,11 @@ const SideBar: React.FC = () => {
   };
 
   // supabase데이터 뿌려주기
-
   const {
     data: matesData,
     isLoading: matesLoading,
     isError: matesError,
   } = useQuery(
-    // 이런식으로 해야 이름표가달라져서 로그아웃 로그인 했을때 문제가안생긴다.
-    // 네트워크 요청이 작아진다.
     ['plan_mates', user?.id],
     async () => {
       return await getPlansWithMates(user === null ? '' : user.id);
@@ -93,103 +86,24 @@ const SideBar: React.FC = () => {
         </div>
         <div className="flex flex-col gap-2 min-h-[362px]">
           <p className="text-sm">TRIPS</p>
-          <div>
-            <div
-              className="flex w-[222px] justify-between items-center cursor-pointer"
-              onClick={toggleFavoritePlansOpen}
-            >
-              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
-                <img src={ic_favorite_default_1x} />
-              </button>
-              <div className="flex items-center">
-                <span className="w-[110px] text-sm">즐겨찾기 한 목록 </span>
-                <img src={ic_chevron_down_1x} alt="다운버튼" className="mr-5" />
-              </div>
-            </div>
-            <ul>
-              {isSideBarOpen &&
-                favoritePlansOpen &&
-                bookMarkPlanData?.map((book) => (
-                  <li className="pl-[65px]" key={book.id}>
-                    <p className="text-xs">{book.title}</p>
-                    <p className="text-xs">{book.dates[0]}</p>
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          <div>
-            <div
-              className="flex w-[222px] justify-between items-center cursor-pointer"
-              onClick={toggleStartPlansOpen}
-            >
-              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
-                <img src={ic_planned_time_1x} />
-              </button>
-              <div className="flex items-center">
-                <span className="w-[110px] text-sm">예정된 여행 </span>
-                <img
-                  src={
-                    isSideBarOpen && startPlansOpen
-                      ? ic_chevron_up_1x
-                      : ic_chevron_down_1x
-                  }
-                  alt="다운버튼"
-                  className="mr-5"
-                />
-              </div>
-            </div>
-            <ul>
-              {isSideBarOpen &&
-                startPlansOpen &&
-                startPlans?.map((plan) => {
-                  return (
-                    <li className="w-[270px] pl-[65px] my-[5px] " key={plan.id}>
-                      <p className="text-xs">{plan.title}</p>
-                      <span className="text-xs">
-                        {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                      </span>
-                    </li>
-                  );
-                })}
-            </ul>
-          </div>
-          <div>
-            <div
-              className="flex w-[222px] justify-between items-center cursor-pointer"
-              onClick={toggleEndPlansOpen}
-            >
-              <button className="flex justify-center items-center w-[40px] h-[40px] transition-all duration-300 ease-in-out">
-                <img src={ic_previous_time_1x} />
-              </button>
-              <div className="flex items-center">
-                <span className="w-[110px] text-sm">다녀온 여행 </span>
-                <img
-                  src={
-                    isSideBarOpen && endPlansOpen
-                      ? ic_chevron_up_1x
-                      : ic_chevron_down_1x
-                  }
-                  alt="다운버튼"
-                  className="mr-5"
-                />
-              </div>
-            </div>
-            <ul>
-              {isSideBarOpen &&
-                endPlansOpen &&
-                endPlans?.map((plan) => {
-                  return (
-                    <li className="w-[270px] pl-[65px] my-[5px] " key={plan.id}>
-                      <p className="text-xs">{plan.title}</p>
-                      <span className="text-xs">
-                        {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-                      </span>
-                    </li>
-                  );
-                })}
-            </ul>
-          </div>
+          <SideBarPlanList
+            toggleFunc={toggleFavoritePlansOpen}
+            planList={bookMarkPlanData ?? []}
+            filter="bookMark"
+            isOpen={isSideBarOpen && favoritePlansOpen}
+          />
+          <SideBarPlanList
+            toggleFunc={toggleStartPlansOpen}
+            planList={startPlans ?? []}
+            filter="start"
+            isOpen={isSideBarOpen && startPlansOpen}
+          />
+          <SideBarPlanList
+            toggleFunc={toggleEndPlansOpen}
+            planList={endPlans ?? []}
+            filter="end"
+            isOpen={isSideBarOpen && endPlansOpen}
+          />
         </div>
       </div>
 

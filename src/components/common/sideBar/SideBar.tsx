@@ -41,6 +41,10 @@ const SideBar: React.FC = () => {
     toggleMenu();
   };
 
+  const onClickAddPlan = () => {
+    navigate('/addPlan');
+  };
+
   // supabase데이터 뿌려주기
   const {
     data: matesData,
@@ -77,7 +81,7 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed h-[100vh] w-[270px] bg-white transition-all duration-300 ease-in-out overflow-hidden border-r-10 px-[24px] z-[31] ${
+      className={`fixed h-[100vh] w-[270px] border-r border-slate-300 rounded-r-[12px] px-[24px] z-[31] bg-white transition-all duration-300 ease-in-out overflow-hidden  ${
         isSideBarOpen ? 'w-[270px] ' : 'w-[88px]'
       }`}
     >
@@ -121,7 +125,8 @@ const SideBar: React.FC = () => {
 
       <div className="flex flex-col gap-2">
         <div
-          className={`flex items-center gap-4 rounded-[8px] transition-colors duration-300 ease-in-out ${
+          onClick={onClickAddPlan}
+          className={`flex items-center gap-4 w-[222px] rounded-[8px] cursor-pointer transition-colors duration-300 ease-in-out ${
             isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white w-[40px]'
           }`}
         >

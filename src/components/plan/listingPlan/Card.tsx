@@ -148,22 +148,35 @@ const Card: React.FC<CardProps> = ({
                   }}
                 >
                   <div className="w-1/5 h-12">
-                    {plan.plan_state === 'planning'
-                      ? '예정된 여행'
-                      : '다녀온 여행'}
+                    <Favorite
+                      isFavorite={Boolean(isFavorite)}
+                      planId={plan.id}
+                      bookMarkId={
+                        isFavorite?.id !== undefined ? isFavorite.id : ''
+                      }
+                    />
+                    <div>
+                      {plan.plan_state === 'end'
+                        ? null
+                        : plan.dates[0] ===
+                          new Date().toISOString().split('T')[0]
+                        ? 'D-Day'
+                        : `D-${Math.ceil(
+                            (new Date(plan.dates[0]).getTime() -
+                              new Date().getTime()) /
+                              (1000 * 60 * 60 * 24),
+                          )}`}
+                    </div>
                   </div>
 
                   <div className="w-3/5 h-12">
                     <div className="flex">
-                      <img
-                        src={ic_delete_default_1x}
-                        className="w-[20px] h-[20px] cursor-pointer"
-                        onClick={async () => {
-                          await handleDeletePlan(plan.id);
-                          navigate('/main');
-                        }}
-                      />
                       {plan.title}
+                      {plan.plan_state === 'planning' ? (
+                        <p>예정된 여행</p>
+                      ) : (
+                        <p>다녀온 여행</p>
+                      )}
                     </div>
                     <div>
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
@@ -194,25 +207,14 @@ const Card: React.FC<CardProps> = ({
                   </div>
 
                   <div className="w-1/5 h-12">
-                    <Favorite
-                      isFavorite={Boolean(isFavorite)}
-                      planId={plan.id}
-                      bookMarkId={
-                        isFavorite?.id !== undefined ? isFavorite.id : ''
-                      }
+                    <img
+                      src={ic_delete_default_1x}
+                      className="w-[20px] h-[20px] cursor-pointer"
+                      onClick={async () => {
+                        await handleDeletePlan(plan.id);
+                        navigate('/main');
+                      }}
                     />
-                    <div>
-                      {plan.plan_state === 'end'
-                        ? null
-                        : plan.dates[0] ===
-                          new Date().toISOString().split('T')[0]
-                        ? 'D-Day'
-                        : `D-${Math.ceil(
-                            (new Date(plan.dates[0]).getTime() -
-                              new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
-                          )}`}
-                    </div>
                   </div>
                 </div>
               </div>

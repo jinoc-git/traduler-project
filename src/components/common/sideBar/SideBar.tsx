@@ -73,11 +73,13 @@ const SideBar: React.FC = () => {
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 
-  const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
+  // const activePlan = sortedData?.find((plan) => plan.plan_state === 'planning');
 
   const startPlans = sortedData?.filter(
     (plan) => plan.plan_state === 'planning',
   );
+
+  const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
 
   return isVisibleSideBar ? (
     <aside
@@ -86,7 +88,7 @@ const SideBar: React.FC = () => {
       }`}
     >
       <div
-        className={`cursor-pointer w-[222px] h-[70px] flex items-center gap-[34px] bg-white ${
+        className={` w-[222px] h-[70px] flex items-center gap-[34px] bg-white ${
           isSideBarOpen ? 'mt-0' : 'mt-0'
         }`}
       >
@@ -96,10 +98,11 @@ const SideBar: React.FC = () => {
         <img src={logoColor} alt="로고" className=" w-[134px]" />
       </div>
 
-      <div className="flex flex-col gap-[20px]">
+      <div className="flex flex-col gap-[20px] border-t-2 border-slate-200">
         <div className="h-[223px]">
           <div className=" text-sm">여행중</div>
         </div>
+
         <div className="flex flex-col gap-2 min-h-[362px]">
           <p className="text-sm">TRIPS</p>
           <SideBarPlanList

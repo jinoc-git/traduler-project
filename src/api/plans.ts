@@ -72,6 +72,29 @@ export const getPlan = async (planId: string) => {
   }
 };
 
+// 삭제함수
+export const deletePlan = async (planId: string) => {
+  console.log('planId=>', planId);
+  try {
+    const { error } = await supabase
+      .from('plans')
+      .update({ isDeleted: true })
+      .eq('id', planId);
+
+    if (error != null) {
+      console.error('계획 삭제 오류', error);
+      throw new Error('계획 삭제 중 오류가 발생했습니다.');
+    }
+
+    // if (data === null || data.length === 0) {
+    //   throw new Error('해당 계획을 찾을 수 없습니다.');
+    // }
+  } catch (error) {
+    console.error('계획 삭제 오류', error);
+    throw error;
+  }
+};
+
 export const getPlans = async (planIds: string[]) => {
   if (planIds.length === 0) {
     return;
@@ -79,6 +102,7 @@ export const getPlans = async (planIds: string[]) => {
   const { data: plans, error } = await supabase
     .from('plans')
     .select()
+    .eq('isDeleted', false)
     .in('id', planIds);
 
   if (error !== null) {
@@ -119,6 +143,39 @@ export const updateDatePlan = async (planId: string, dates: string[]) => {
   }
 };
 
+// book_mark와 plans 테이블을 조인하여 plans 데이터를 가져오는 함수
+export const getPlansWithBookmarks = async (userId: string) => {
+  const { data: bookMarkData, error: bookMarkError } = await supabase
+    .from('book_mark')
+    .select('plan_id')
+    .eq('user_id', userId);
+
+  if (bookMarkError !== null) {
+    console.error('book_mark 데이터 불러오기 오류', bookMarkError);
+    throw new Error('book_mark 데이터 불러오기 오류');
+  }
+
+  if (bookMarkData === null || bookMarkData.length === 0) {
+    // book_mark 데이터가 없을 경우
+    return [];
+  }
+
+  const planIds = bookMarkData.map((item) => item.plan_id);
+
+  const { data: bookMarkPlanData, error: plansError } = await supabase
+    .from('plans')
+    .select()
+    .eq('isDeleted', false)
+    .in('id', planIds);
+
+  if (plansError !== null) {
+    console.error('plans 데이터 불러오기 오류', plansError);
+    throw new Error('plans 데이터 불러오기 오류');
+  }
+
+  return bookMarkPlanData;
+};
+
 // users테이블과 plan_mates테이블 연결
 
 export const getMatesByUserIds = async (matesUserId: string[]) => {
@@ -139,6 +196,7 @@ export const getPlansByUserIds = async (userIds: string[]) => {
   const { data, error } = await supabase
     .from('plans')
     .select()
+    .eq('isDeleted', false)
     .in('users_id', userIds);
 
   if (error != null) {
@@ -165,8 +223,15 @@ export const getPlansWithMates = async (userId: string) => {
   const userIds = matesData.map((data) => data.users_id);
   const planIds = matesData.map((data) => data.id).flat();
 
+  // if (userIds.length === 0) {
+  //   throw new Error('getPlansWithMates 에러 2발생');
+  // }
+  // 윗부분떄문에 오류가나서 수정함
   if (userIds.length === 0) {
-    throw new Error('getPlansWithMates 에러 2발생');
+    return {
+      plansData: [],
+      usersDataList: [],
+    };
   }
 
   const plansData = await getPlans(planIds);

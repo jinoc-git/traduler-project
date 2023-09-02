@@ -73,9 +73,6 @@ const Card: React.FC<CardProps> = ({
     }
   };
 
-  // const { user } = supabase.auth.session();
-  // console.log('user=>', user);
-
   useEffect(() => {
     if (plansData != null) {
       setPlanningCount(

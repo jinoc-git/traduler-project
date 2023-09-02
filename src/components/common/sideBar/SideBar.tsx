@@ -19,8 +19,6 @@ import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
-  // const queryClient = useQueryClient();
-
   const navigate = useNavigate();
   const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
   const { resetUser, user } = userStore();
@@ -37,7 +35,6 @@ const SideBar: React.FC = () => {
     async () => await getPlansWithBookmarks(user === null ? '' : user.id),
     { enabled: user !== null },
   );
-  console.log('bookMarkPlanData=>', bookMarkPlanData);
 
   const onClickSignOutHandler = async () => {
     await signOutForSB();
@@ -112,16 +109,12 @@ const SideBar: React.FC = () => {
             <ul>
               {isSideBarOpen &&
                 favoritePlansOpen &&
-                bookMarkPlanData?.map(
-                  (
-                    book, // plans 데이터를 사용하여 목록 렌더링
-                  ) => (
-                    <li className="pl-[65px]" key={book.id}>
-                      <p className="text-xs">{book.title}</p>
-                      <p className="text-xs">{book.dates[0]}</p>
-                    </li>
-                  ),
-                )}
+                bookMarkPlanData?.map((book) => (
+                  <li className="pl-[65px]" key={book.id}>
+                    <p className="text-xs">{book.title}</p>
+                    <p className="text-xs">{book.dates[0]}</p>
+                  </li>
+                ))}
             </ul>
           </div>
 

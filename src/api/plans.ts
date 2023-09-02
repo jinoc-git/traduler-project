@@ -161,7 +161,6 @@ export const getPlansWithBookmarks = async (userId: string) => {
   }
 
   const planIds = bookMarkData.map((item) => item.plan_id);
-  console.log('planIds=>', planIds);
 
   const { data: bookMarkPlanData, error: plansError } = await supabase
     .from('plans')

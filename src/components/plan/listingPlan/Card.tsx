@@ -116,8 +116,17 @@ const Card: React.FC<CardProps> = ({
               className="w-[125px] h-[100px]"
             />
           </div>
-          <p>아직 예정된 여행 일정이 없으시군요!</p>
-          <p>새로운 Tra-dule을 만들어보세요 :)</p>
+          {selectedPlan === 'planning' ? (
+            <div>
+              <p>아직 예정된 여행 일정이 없으시군요!</p>
+              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+            </div>
+          ) : (
+            <div>
+              <p>다녀온 여행 일정이 없으시군요!</p>
+              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+            </div>
+          )}
         </div>
       ) : (
         filterData

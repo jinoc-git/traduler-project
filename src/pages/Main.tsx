@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import Profile from '@components/main/profile/Profile';
-// import Pay from '@components/pay/pay';
 import CardSection from '@components/plan/listingPlan/CardSection';
 import { sideBarStore } from '@store/sideBarStore';
 

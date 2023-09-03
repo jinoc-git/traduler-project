@@ -18,12 +18,12 @@ module.exports = {
     extend: {
       colors: {
         red_light_1: '#FFD5DD',
-        blue: '#2DA4FF',
+        blue: '#5E9FFF',
         blue_dark: '#116DB3',
-        blue_light_0: '#E9F5FF',
-        blue_light_1: '#D5EDFF',
-        blue_light_2: '#ABDBFF',
-        blue_light_3: '#81C8FF',
+        blue_light_0: '#F2F7FF',
+        blue_light_1: '#DFECFF',
+        blue_light_2: '#AECEFF',
+        blue_light_3: '#9EC5FF',
         yellow: '#FFC803',
         yellow_dark: '#C9A219',
         yellow_light_3: '#FFDE68',

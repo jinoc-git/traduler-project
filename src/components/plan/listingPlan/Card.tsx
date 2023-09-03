@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deletePlan } from '@api/plans';
-import { ic_delete_default_1x } from '@assets/icons/1x';
 import { ic_profile_3x } from '@assets/icons/3x';
+import IconAdd from '@assets/icons/IconAdd';
+import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
@@ -88,9 +89,9 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div>
-      <div className="flex flex-row mt-[4px]">
+      <div className="flex flex-row mt-[4px] justify-center">
         <div
-          className={`cursor-pointer ${
+          className={`cursor-pointer mr-[25px] ${
             selectedPlan === 'traveling' ? 'font-bold' : ''
           }`}
           onClick={() => {
@@ -101,7 +102,7 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ${
+          className={`cursor-pointer ml-[25px] mr-[25px] ${
             selectedPlan === 'planning' ? 'font-bold' : ''
           }`}
           onClick={() => {
@@ -112,7 +113,7 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ${
+          className={`cursor-pointer ml-[25px] ${
             selectedPlan === 'end' ? 'font-bold' : ''
           }`}
           onClick={() => {
@@ -123,7 +124,7 @@ const Card: React.FC<CardProps> = ({
         </div>
       </div>
       {filterData?.length === 0 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-[125px]">
           <div>
             <img
               src={defaultMainPlan}
@@ -132,21 +133,32 @@ const Card: React.FC<CardProps> = ({
             />
           </div>
           {selectedPlan === 'planning' ? (
-            <div>
+            <div className="mt-[12px]">
               <p>아직 예정된 여행 일정이 없으시군요!</p>
               <p>새로운 Tra-dule을 만들어보세요 :)</p>
             </div>
           ) : selectedPlan === 'traveling' ? (
-            <div>
+            <div className="mt-[12px]">
               <p>여행중인 일정이 없으시군요!</p>
               <p>새로운 Tra-dule을 만들어보세요 :)</p>
             </div>
           ) : (
-            <div>
+            <div className="mt-[12px]">
               <p>다녀온 여행 일정이 없으시군요!</p>
               <p>새로운 Tra-dule을 만들어보세요 :)</p>
             </div>
           )}
+          <div>
+            <button
+              className="mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center"
+              onClick={() => {
+                navigate('/addPlan');
+              }}
+            >
+              <IconAdd w="16" h="16" fill="black" />
+              <span className="ml-[10px] text-Bold">계획 추가하기</span>
+            </button>
+          </div>
         </div>
       ) : (
         filterData
@@ -171,12 +183,12 @@ const Card: React.FC<CardProps> = ({
             return (
               <div key={plan.id} className="mt-[16px]">
                 <div
-                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card"
+                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
                     navigate(`/plan/${plan.id}`);
                   }}
                 >
-                  <div className="w-1/5 mt-[24px]">
+                  <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
                     <Favorite
                       isFavorite={Boolean(isFavorite)}
                       planId={plan.id}
@@ -184,7 +196,7 @@ const Card: React.FC<CardProps> = ({
                         isFavorite?.id !== undefined ? isFavorite.id : ''
                       }
                     />
-                    <div>
+                    <div className="mt-[8px]">
                       {plan.plan_state === 'end' ? null : plan.dates[0] ===
                         new Date().toISOString().split('T')[0] ? (
                         <span className="text-yellow">D-Day</span>
@@ -201,9 +213,9 @@ const Card: React.FC<CardProps> = ({
                     </div>
                   </div>
 
-                  <div className="w-3/5 h-xs">
-                    <div className="flex items-center ">
-                      <div className="text-gray_dark_1 text-xlg">
+                  <div className="w-3/5 h-[16px]">
+                    <div className="flex items-center mt-[22px]">
+                      <div className="text-gray_dark_1 text-xlg mr-[16px]">
                         {plan.title}
                       </div>
                       {plan.plan_state === 'planning' ? (
@@ -220,11 +232,11 @@ const Card: React.FC<CardProps> = ({
                         </div>
                       )}
                     </div>
-                    <div className="text-gray_dark_1 text-lg">
+                    <div className="text-gray_dark_1 text-lg mt-[8px]">
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                       {plan.dates.length}일
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 mt-[8px]">
                       <div className="flex">
                         {participantsAvatarList.map((avatar, i) => {
                           let gap = '';
@@ -248,15 +260,15 @@ const Card: React.FC<CardProps> = ({
                     </div>
                   </div>
 
-                  <div className="w-1/5 h-xs flex item-center justify-end">
-                    <img
-                      src={ic_delete_default_1x}
-                      className="w-[20px] h-[20px] cursor-pointer mt-lg"
+                  <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">
+                    <button
                       onClick={async () => {
                         await handleDeletePlan(plan.id);
                         navigate('/main');
                       }}
-                    />
+                    >
+                      <IconDeleteDefault fill="#FFB979" />
+                    </button>
                   </div>
                 </div>
               </div>

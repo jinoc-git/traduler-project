@@ -9,17 +9,15 @@ import { useQuery } from '@tanstack/react-query';
 import Card from './Card';
 
 const CardSection = () => {
-  const user = userStore.getState().user;
-
-  if (user === null) return <div>유저없음</div>;
+  const user = userStore((state) => state.user);
 
   const {
     data: matesData,
     isLoading: matesLoading,
     isError: matesError,
   } = useQuery(
-    ['plan_mates', user.id],
-    async () => await getPlansWithMates(user.id),
+    ['plan_mates', user?.id],
+    async () => await getPlansWithMates(user?.id),
     { enabled: user !== null },
   );
 
@@ -29,7 +27,7 @@ const CardSection = () => {
     isError: bookMarkError,
   } = useQuery(
     ['book_mark', user?.id],
-    async () => await getBookMark(user.id),
+    async () => await getBookMark(user?.id),
     { enabled: user !== null },
   );
 

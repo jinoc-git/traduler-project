@@ -207,7 +207,9 @@ export const getPlansByUserIds = async (userIds: string[]) => {
   return data;
 };
 
-export const getPlansWithMates = async (userId: string) => {
+export const getPlansWithMates = async (userId: string | undefined) => {
+  if (userId === undefined) return;
+  
   const { data: matesData, error: matesError } = await supabase
     .from('plan_mates')
     .select()

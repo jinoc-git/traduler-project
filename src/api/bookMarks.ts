@@ -2,7 +2,9 @@ import { type BookMarkType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
-export const getBookMark = async (userId: string) => {
+export const getBookMark = async (userId: string | undefined) => {
+  if (userId === undefined) return;
+
   const { data, error } = await supabase
     .from('book_mark')
     .select('*')

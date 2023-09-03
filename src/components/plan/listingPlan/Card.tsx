@@ -133,17 +133,17 @@ const Card: React.FC<CardProps> = ({
           {selectedPlan === 'planning' ? (
             <div className="mt-[12px]">
               <p>아직 예정된 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           ) : selectedPlan === 'traveling' ? (
             <div className="mt-[12px]">
               <p>여행중인 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           ) : (
             <div className="mt-[12px]">
               <p>다녀온 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           )}
           <div>

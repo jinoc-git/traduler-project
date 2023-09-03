@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/return-await */
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 

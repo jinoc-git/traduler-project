@@ -17,13 +17,13 @@ const DatePage = ({
   currentPage,
 }: PropsType) => {
   return (
-    <div className="flex justify-center gap-5 mb-10 text-[14px] font-semibold">
+    <div className="flex-center gap-[190px] mb-10 text-[14px] font-semibold ">
       {dates.length !== 0 ? (
         <>
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 0}
-            className="cursor-pointer disabled:text-transparent disabled:cursor-none"
+            className="cursor-pointer disabled:cursor-none disabled:opacity-0"
           >
             <IconChevronLeft />
           </button>
@@ -31,7 +31,7 @@ const DatePage = ({
           <button
             onClick={handleNextPage}
             disabled={currentPage === dates.length - 1}
-            className="cursor-pointer disabled:text-transparent disabled:cursor-none"
+            className="cursor-pointer disabled:cursor-none disabled:opacity-0"
           >
             <IconChevronRight />
           </button>

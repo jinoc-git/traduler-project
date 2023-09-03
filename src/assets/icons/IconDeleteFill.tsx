@@ -4,6 +4,8 @@
 import type IconType from 'types/icon';
 
 const IconDeleteFill = ({ w, h, fill }: IconType) => {
+  const width = `w-[${w as string}px]`;
+  const height = `h-[${h as string}px]`;
   return (
     <svg
       width={w || '24'}
@@ -11,6 +13,7 @@ const IconDeleteFill = ({ w, h, fill }: IconType) => {
       viewBox={`0 0 ${w || '24'} ${h || '24'}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
     >
       <path
         fillRule="evenodd"

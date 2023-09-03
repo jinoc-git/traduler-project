@@ -33,27 +33,30 @@ const Card: React.FC<CardProps> = ({
   bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<'planning' | 'end'>(
-    'planning',
-  );
+  const [selectedPlan, setSelectedPlan] = useState<
+    'traveling' | 'planning' | 'end'
+  >('traveling');
   // console.log('bookMarkData=>', bookMarkData);
+  // console.log('plansData=>', plansData);
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
+  const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
 
   const filterData = plansData
-    ?.filter((plan) =>
-      selectedPlan === 'planning'
-        ? plan.plan_state === 'planning' || 'traveling'
-        : plan.plan_state === 'end',
-    )
+    ?.filter((plan) => {
+      if (selectedPlan === 'traveling') {
+        return plan.plan_state === 'traveling';
+      } else if (selectedPlan === 'planning') {
+        return plan.plan_state === 'planning';
+      } else {
+        // selectedPlan이 'end'인 경우
+        return plan.plan_state === 'end';
+      }
+    })
     .filter((plan) => !plan.isDeleted);
 
   // 삭제된 계획
-
-  // const deletePlanMutation = useMutation(async (planId: string) => {
-  //   await deletePlan(planId);
-  // });
 
   const handleDeletePlan = async (planId: string) => {
     try {
@@ -63,9 +66,6 @@ const Card: React.FC<CardProps> = ({
         await deletePlan(planId);
 
         setDeletedPlans([...deletedPlans, planId]);
-        navigate('/main');
-      } else {
-        navigate('/main');
       }
     } catch (error) {
       console.log('계획 삭제 오류', error);
@@ -79,12 +79,27 @@ const Card: React.FC<CardProps> = ({
         plansData.filter((plan) => plan.plan_state === 'planning').length,
       );
       setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
+
+      setTravelingCount(
+        plansData.filter((plan) => plan.plan_state === 'traveling').length,
+      );
     }
   }, [plansData]);
 
   return (
     <div>
-      <div className="flex flex-row">
+      <div className="flex flex-row mt-[4px]">
+        <div
+          className={`cursor-pointer ${
+            selectedPlan === 'traveling' ? 'font-bold' : ''
+          }`}
+          onClick={() => {
+            setSelectedPlan('traveling');
+          }}
+        >
+          여행중 ({travelingCount})
+        </div>
+        <div> | </div>
         <div
           className={`cursor-pointer ${
             selectedPlan === 'planning' ? 'font-bold' : ''
@@ -116,8 +131,22 @@ const Card: React.FC<CardProps> = ({
               className="w-[125px] h-[100px]"
             />
           </div>
-          <p>아직 예정된 여행 일정이 없으시군요!</p>
-          <p>새로운 Tra-dule을 만들어보세요 :)</p>
+          {selectedPlan === 'planning' ? (
+            <div>
+              <p>아직 예정된 여행 일정이 없으시군요!</p>
+              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+            </div>
+          ) : selectedPlan === 'traveling' ? (
+            <div>
+              <p>여행중인 일정이 없으시군요!</p>
+              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+            </div>
+          ) : (
+            <div>
+              <p>다녀온 여행 일정이 없으시군요!</p>
+              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+            </div>
+          )}
         </div>
       ) : (
         filterData
@@ -140,32 +169,58 @@ const Card: React.FC<CardProps> = ({
             );
 
             return (
-              <div key={plan.id}>
+              <div key={plan.id} className="mt-[16px]">
                 <div
-                  className="flex mb-4 border-2 w-[800px] h-[200px]"
+                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card"
                   onClick={() => {
                     navigate(`/plan/${plan.id}`);
                   }}
                 >
-                  <div className="w-1/5 h-12">
-                    {plan.plan_state === 'planning'
-                      ? '예정된 여행'
-                      : '다녀온 여행'}
+                  <div className="w-1/5 mt-[24px]">
+                    <Favorite
+                      isFavorite={Boolean(isFavorite)}
+                      planId={plan.id}
+                      bookMarkId={
+                        isFavorite?.id !== undefined ? isFavorite.id : ''
+                      }
+                    />
+                    <div>
+                      {plan.plan_state === 'end' ? null : plan.dates[0] ===
+                        new Date().toISOString().split('T')[0] ? (
+                        <span className="text-yellow">D-Day</span>
+                      ) : (
+                        <span className="text-yellow">
+                          D-
+                          {Math.ceil(
+                            (new Date(plan.dates[0]).getTime() -
+                              new Date().getTime()) /
+                              (1000 * 60 * 60 * 24),
+                          )}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="w-3/5 h-12">
-                    <div className="flex">
-                      <img
-                        src={ic_delete_default_1x}
-                        className="w-[20px] h-[20px] cursor-pointer"
-                        onClick={async () => {
-                          await handleDeletePlan(plan.id);
-                          navigate('/main');
-                        }}
-                      />
-                      {plan.title}
+                  <div className="w-3/5 h-xs">
+                    <div className="flex items-center ">
+                      <div className="text-gray_dark_1 text-xlg">
+                        {plan.title}
+                      </div>
+                      {plan.plan_state === 'planning' ? (
+                        <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ">
+                          예정된 여행
+                        </div>
+                      ) : plan.plan_state === 'traveling' ? (
+                        <div className="bg-blue rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                          여행중
+                        </div>
+                      ) : (
+                        <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                          다녀온 여행
+                        </div>
+                      )}
                     </div>
-                    <div>
+                    <div className="text-gray_dark_1 text-lg">
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                       {plan.dates.length}일
                     </div>
@@ -187,32 +242,21 @@ const Card: React.FC<CardProps> = ({
                           );
                         })}
                       </div>
-                      <div>
+                      <div className='"text-gray_dark_1 text-sm'>
                         {participantsNicknameList.map((name) => `${name} `)}
                       </div>
                     </div>
                   </div>
 
-                  <div className="w-1/5 h-12">
-                    <Favorite
-                      isFavorite={Boolean(isFavorite)}
-                      planId={plan.id}
-                      bookMarkId={
-                        isFavorite?.id !== undefined ? isFavorite.id : ''
-                      }
+                  <div className="w-1/5 h-xs flex item-center justify-end">
+                    <img
+                      src={ic_delete_default_1x}
+                      className="w-[20px] h-[20px] cursor-pointer mt-lg"
+                      onClick={async () => {
+                        await handleDeletePlan(plan.id);
+                        navigate('/main');
+                      }}
                     />
-                    <div>
-                      {plan.plan_state === 'end'
-                        ? null
-                        : plan.dates[0] ===
-                          new Date().toISOString().split('T')[0]
-                        ? 'D-Day'
-                        : `D-${Math.ceil(
-                            (new Date(plan.dates[0]).getTime() -
-                              new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
-                          )}`}
-                    </div>
                   </div>
                 </div>
               </div>

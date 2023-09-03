@@ -57,9 +57,9 @@ const SignInForm = () => {
     <main className="flex-center w-screen h-screen">
       <form
         onSubmit={handleSubmit(onSubmitSignInHandler)}
-        className="relative flex flex-col w-[450px] h-[410px] px-[50px] py-[37px] border gap-y-2.5 rounded-xl"
+        className="relative flex flex-col w-[450px] h-[410px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
       >
-        <h2 className="border-black border-b-2 w-[54px] text-lg font-semibold	">
+        <h2 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">
           로그인
         </h2>
         <div className="relative">
@@ -74,7 +74,7 @@ const SignInForm = () => {
             type="text"
             id="signin-email"
             {...register('email', emailValidator)}
-            className="border w-full h-[42px] px-8 rounded"
+            className="w-full h-[42px] px-8 rounded"
             placeholder="이메일을 입력하세요"
           />
         </div>
@@ -90,7 +90,7 @@ const SignInForm = () => {
             type={showPassword ? 'text' : 'password'}
             id="signin-password"
             {...register('password')}
-            className="border w-full h-[42px] px-8 rounded"
+            className="w-full h-[42px] px-8 rounded"
             placeholder="비밀번호를 입력하세요"
           />
           <img
@@ -101,18 +101,18 @@ const SignInForm = () => {
           />
         </div>
         <div className="flex justify-between">
-          <label className="text-sm text-slate-400 cursor-pointer">
+          <label className="text-sm text-slate-400 cursor-pointer flex items-center">
             <input type="checkbox" name="keep" className="mr-2" />
             로그인 상태 유지
           </label>
-          <span className="text-sm underline text-slate-400 cursor-pointer">
+          <span className="text-sm underline cursor-pointer text-orange font-semibold">
             비밀번호를 잊으셨나요?
           </span>
         </div>
         <button
           type="submit"
           disabled={isSubmitting || !isValid}
-          className="bg-black text-white h-[45px] rounded-lg"
+          className="bg-blue text-white h-[45px] rounded-lg hover:bg-blue_dark disabled:bg-gray_light_3"
         >
           로그인
         </button>
@@ -124,9 +124,9 @@ const SignInForm = () => {
         <button
           type="button"
           onClick={signInWithGoogle}
-          className="h-[45px] border rounded-lg"
+          className="h-[45px] border rounded-lg border-gray_light_3 hover:bg-gray_dark_1 hover:text-white"
         >
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center ">
             <img
               src={ic_google_1x}
               alt="구글"

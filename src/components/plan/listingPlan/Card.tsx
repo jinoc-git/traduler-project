@@ -68,7 +68,6 @@ const Card: React.FC<CardProps> = ({
         setDeletedPlans([...deletedPlans, planId]);
       }
     } catch (error) {
-
       alert('계획 삭제 중 오류가 발생했습니다.');
     }
   };

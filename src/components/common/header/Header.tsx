@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ic_profile_3x } from '@assets/icons/3x';
-import { logoColor } from '@assets/index';
+import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 
@@ -15,6 +15,7 @@ const Header = () => {
   const user = userStore((state) => state.user);
 
   const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
 
   useEffect(() => {
     authObserver();
@@ -24,7 +25,7 @@ const Header = () => {
       setVisibilityIcon(true);
     }
   }, [user]);
-
+  console.log(isSideBarOpen)
   return (
     <header
       className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
@@ -38,7 +39,15 @@ const Header = () => {
           }}
           className=" ml-[88px] cursor-pointer"
         >
-          <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+          {pathname === '/main' ? isSideBarOpen ? (
+            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+          ) : (
+            <img src={logoWhite} alt="로고" className=" w-[134px] ml-[10px]" />
+          ) : (
+            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+          )
+
+          }
         </h1>
       </div>
       {user !== null ? (

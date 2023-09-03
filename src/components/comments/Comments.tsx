@@ -152,7 +152,7 @@ const Comments = () => {
         <p>다른 여행 일정도 둘러보세요!</p>
         <button
           onClick={handleChangePlanState}
-          className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
+          className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
         >
           목록으로
         </button>

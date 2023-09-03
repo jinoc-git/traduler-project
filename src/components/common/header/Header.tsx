@@ -20,6 +20,8 @@ const Header = () => {
   const goToMain = () => {
     if (user !== null) {
       navigate('/main');
+    } else {
+      navigate('/');
     }
   };
 
@@ -46,7 +48,7 @@ const Header = () => {
         user !== null ? 'bg-transparent' : 'bg-bg_white'
       }`}
     >
-      <div className=" flex items-center">
+      <div className="flex items-center ">
         <h1 onClick={goToMain} className=" ml-[88px] cursor-pointer">
           {pathname === '/main' ? (
             isSideBarOpen ? (

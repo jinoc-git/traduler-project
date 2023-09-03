@@ -89,8 +89,8 @@ const Card: React.FC<CardProps> = ({
     <div>
       <div className="flex flex-row mt-[4px] justify-center">
         <div
-          className={`cursor-pointer mr-[25px] ${
-            selectedPlan === 'traveling' ? 'font-bold' : ''
+          className={`cursor-pointer mr-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'traveling' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('traveling');
@@ -100,8 +100,8 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ml-[25px] mr-[25px] ${
-            selectedPlan === 'planning' ? 'font-bold' : ''
+          className={`cursor-pointer ml-[25px] mr-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'planning' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('planning');
@@ -111,8 +111,8 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ml-[25px] ${
-            selectedPlan === 'end' ? 'font-bold' : ''
+          className={`cursor-pointer ml-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'end' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('end');
@@ -133,17 +133,17 @@ const Card: React.FC<CardProps> = ({
           {selectedPlan === 'planning' ? (
             <div className="mt-[12px]">
               <p>아직 예정된 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           ) : selectedPlan === 'traveling' ? (
             <div className="mt-[12px]">
               <p>여행중인 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           ) : (
             <div className="mt-[12px]">
               <p>다녀온 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-dule을 만들어보세요 :)</p>
+              <p>새로운 Tra-duler을 만들어보세요 :)</p>
             </div>
           )}
           <div>
@@ -154,7 +154,7 @@ const Card: React.FC<CardProps> = ({
               }}
             >
               <IconAdd w="16" h="16" fill="black" />
-              <span className="ml-[10px] text-Bold">계획 추가하기</span>
+              <span className="ml-[10px] text-Bold">계획 생성하기</span>
             </button>
           </div>
         </div>

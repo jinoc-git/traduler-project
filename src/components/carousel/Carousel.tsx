@@ -30,31 +30,34 @@ const Carousel = () => {
   if (isLoading) {
     console.log('로딩중...');
   }
-
   return (
     <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
-      <label>
-        <IconCamera /> 사진첩
-      </label>
-      <Flicking
-        circular={true}
-        plugins={_plugins}
-        panelsPerView={3}
-        align="center"
-      >
-        {photoData.map((url: string, index: number) => (
-          <div
-            key={index}
-            className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
+      {photoData.length > 1 ? (
+        <>
+          <label>
+            <IconCamera /> 사진첩
+          </label>
+          <Flicking
+            circular={true}
+            plugins={_plugins}
+            panelsPerView={3}
+            align="center"
           >
-            <img
-              src={url}
-              alt={`photo${index}`}
-              className="w-full mx-20 h-full object-cover rounded-3xl "
-            />
-          </div>
-        ))}
-      </Flicking>
+            {photoData.map((url: string, index: number) => (
+              <div
+                key={index}
+                className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
+              >
+                <img
+                  src={url}
+                  alt={`photo${index}`}
+                  className="w-full mx-20 h-full object-cover rounded-3xl "
+                />
+              </div>
+            ))}
+          </Flicking>
+        </>
+      ) : null}
     </section>
   );
 };

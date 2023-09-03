@@ -32,7 +32,7 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
         </div>
       </div>
       <button
-        className="border w-12 h-7 rounded-lg cursor-pointer text-gray_dark_2 bg-gray_dark_1 hover:bg-blue_dark hover:text-white"
+        className="border w-12 h-7 rounded-lg cursor-pointer text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white"
         onClick={
           handleInvite != null
             ? async () => {

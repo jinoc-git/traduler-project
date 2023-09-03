@@ -7,9 +7,9 @@ import type IconType from 'types/icon';
 const IconCamera = ({ w, h, fill }: IconType) => {
   return (
     <svg
-      width={w || '24'}
-      height={h || '24'}
-      viewBox={`0 0 ${w || '24'} ${h || '24'}`}
+      width={w || '21'}
+      height={h || '17'}
+      viewBox={`0 0 ${w || '21'} ${h || '17'}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

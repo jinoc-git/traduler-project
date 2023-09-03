@@ -42,6 +42,7 @@ const Card: React.FC<CardProps> = ({
   const [endCount, setEndCount] = useState<number>(0);
   const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
+  const [hovered, setHovered] = useState(false);
 
   const filterData = plansData
     ?.filter((plan) => {
@@ -147,7 +148,7 @@ const Card: React.FC<CardProps> = ({
             </div>
           )}
           <div>
-            <button
+            {/* <button
               className="mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center"
               onClick={() => {
                 navigate('/addPlan');
@@ -155,6 +156,31 @@ const Card: React.FC<CardProps> = ({
             >
               <IconAdd w="16" h="16" fill="black" />
               <span className="ml-[10px] text-Bold">계획 생성하기</span>
+            </button> */}
+            <button
+              className={`mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center 
+          ${
+            hovered
+              ? 'bg-white text-black hover:bg-blue_dark hover:text-blue_dark border-none'
+              : 'border border-black'
+          }`}
+              onMouseEnter={() => {
+                setHovered(true);
+              }}
+              onMouseLeave={() => {
+                setHovered(false);
+              }}
+              onClick={() => {
+                navigate('/addPlan');
+              }}
+            >
+              <IconAdd w="16" h="16" fill={hovered ? 'white' : 'black'} />
+
+              <span
+                className={`ml-[10px] ${hovered ? 'text-white' : 'text-black'}`}
+              >
+                계획 생성하기
+              </span>
             </button>
           </div>
         </div>

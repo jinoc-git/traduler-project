@@ -36,8 +36,7 @@ const Card: React.FC<CardProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<
     'traveling' | 'planning' | 'end'
   >('traveling');
-  // console.log('bookMarkData=>', bookMarkData);
-  // console.log('plansData=>', plansData);
+
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [travelingCount, setTravelingCount] = useState<number>(0);
@@ -68,7 +67,7 @@ const Card: React.FC<CardProps> = ({
         setDeletedPlans([...deletedPlans, planId]);
       }
     } catch (error) {
-      console.log('계획 삭제 오류', error);
+
       alert('계획 삭제 중 오류가 발생했습니다.');
     }
   };

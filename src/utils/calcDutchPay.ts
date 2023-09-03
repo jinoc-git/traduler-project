@@ -7,8 +7,6 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
     const endingTotalCost = await getTotalCost(planId);
     const dailyDates = await getDates(planId);
 
-    console.log('하루 지출 비용 합산 배열:', dailyPaySum);
-
     if (dailyPaySum === undefined || endingTotalCost === null) {
       return;
     }
@@ -20,15 +18,9 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
       [date]: dailyPaySum[i],
     }));
 
-    console.log('예산:', endingTotalCost);
-    console.log('초대 인원:', countPeople);
-    console.log('총 비용:', totalPay);
-    console.log('1인당 비용:', perPersonCost);
-    console.log('남은 예산:', remainingBudget);
-    console.log('날짜:', dailyDates);
-    console.log('새로운 객체:', datesAndPaySum);
     return {
       remainingBudget,
+      dailyPaySum,
       totalPay,
       perPersonCost,
       datesAndPaySum,

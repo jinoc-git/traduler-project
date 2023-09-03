@@ -55,7 +55,7 @@ const Pin = (props: PinProps) => {
       const hoverIndex = idx;
 
       // 호버가 되고 위치가 바뀌면 여기 if문에서 막히게 해서 movePins가 실행이 되지 않게 해야함
-      console.log('==>', dragIndex, hoverIndex);
+
       if (dragIndex === hoverIndex) return;
 
       const hoverBoundingRect = dragBoxRef.current.getBoundingClientRect();

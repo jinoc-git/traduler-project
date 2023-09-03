@@ -81,13 +81,17 @@ const SideBar: React.FC = () => {
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 
-  const activePlan = sortedData?.find((plan) => plan.plan_state === 'traveling');
-
   const startPlans = sortedData?.filter(
     (plan) => plan.plan_state === 'planning',
   );
 
   const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
+
+  const activePlan = sortedData?.find(
+    (plan) => plan.plan_state === 'traveling',
+  );
+  const nextPlan = startPlans ? startPlans[0] : undefined;
+  const hasNextPlan = Boolean(nextPlan);
 
   return isVisibleSideBar ? (
     <aside
@@ -115,7 +119,12 @@ const SideBar: React.FC = () => {
       </div>
 
       <div className="flex flex-col gap-[20px] ">
-        <SideBarStatus isOpen={isSideBarOpen} activePlan={activePlan} />
+        <SideBarStatus
+          isOpen={isSideBarOpen}
+          activePlan={activePlan}
+          hasNextPlan={hasNextPlan}
+          nextPlan={nextPlan}
+        />
 
         <div className="flex flex-col gap-2 min-h-[362px]">
           <p className="text-sm">TRIPS</p>

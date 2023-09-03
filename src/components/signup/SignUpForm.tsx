@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -39,6 +40,9 @@ const SignUpForm = () => {
     useBooleanState(true);
   const { value: isEmailDuplicate, setNeedValue: setIsEmailDuplicate } =
     useBooleanState(true);
+  // 추가사항
+  // const [isCheckingNickname, setIsCheckingNickname] = useState(false);
+  // const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
   const {
     register,
@@ -69,24 +73,54 @@ const SignUpForm = () => {
   };
 
   const checkNicknameDuplication = async () => {
+    if (!nicknameValue) {
+      toast.warning('닉네임을 확인해주세요.');
+      return;
+    }
+
+    // 추가사항
+    // if (isCheckingNickname) {
+    //   return;
+    // }
+
     const res = await checkUserNickname(nicknameValue);
 
     if (res) {
       setIsNicknameDuplicate(!res);
       toast.success('사용 가능한 닉네임입니다.');
     } else {
+      // 추가사항
+      // setIsNicknameDuplicate(true);
       toast.warning('닉네임이 중복 되었습니다.');
     }
+    // 추가사항
+    // setIsCheckingNickname(false);
   };
 
   const checkEmailDuplication = async () => {
+    if (!emailValue) {
+      toast.warning('이메일을 확인해주세요.');
+      return;
+    }
+
+    // 추가사항
+    // if (isCheckingEmail) {
+    //   return;
+    // }
+    // 추가사항
+    // setIsCheckingEmail(true);
     const res = await checkUserEmail(emailValue);
     if (res) {
       setIsEmailDuplicate(!res);
       toast.success('사용 가능한 이메일입니다.');
     } else {
+      // 추가사항
+      // setIsEmailDuplicate(true);
       toast.warning('이메일이 중복 되었습니다.');
     }
+
+    // 추가사항
+    // setIsCheckingEmail(false);
   };
 
   const goToSignIn = () => {
@@ -161,6 +195,7 @@ const SignUpForm = () => {
             중복확인
           </button>
           <p className="h-[20px] pt-1.5 text-center text-sm">
+            {/* {showNicknameWarning} */}
             {errors?.email?.message}
           </p>
         </div>

@@ -9,7 +9,10 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
+import IconCamera from '@assets/icons/IconCamera';
+import Invite from '@components/common/invite/Invite';
 import Loading from '@components/loading/Loading';
+import EndingMap from '@components/plan/ending/EndingMap';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
@@ -63,7 +66,7 @@ const AddPhoto = () => {
   }
 
   if (isError) {
-    return <div>Error occurred while fetching data.</div>; // 에러 발생 시 보여줄 내용
+    return <div>Error occurred while fetching data.</div>;
   }
 
   return (
@@ -76,9 +79,16 @@ const AddPhoto = () => {
           : 'w-[calc(100vw)] ml-0'
       }`}
     >
-      <h2> 사진</h2>
-      <section className="main-layout">
-        <h3>10개 까지 추가 가능합니다.</h3>
+      <section className="main-layout ">
+        <Invite />
+        <EndingMap />
+        <div className="flex items-center">
+          <IconCamera w="20" h="25" fill="#4E4F54" />
+          <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+            추억할 사진 올리기
+          </div>
+        </div>
+        <p className="text-gray">10개 까지 추가 가능합니다.</p>
         <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
         <div className="flex justify-end items-center mt-[106px]">
           <span className="mr-6">여행 잘 다녀오셨나요?</span>

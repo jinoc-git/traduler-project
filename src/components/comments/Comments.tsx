@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { addComment, deleteComment, getComments } from '@api/commets';
+import IconCommentory from '@assets/icons/IconComentory';
 import { defaultImageGray } from '@assets/index';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { userStore } from '@store/userStore';
@@ -69,26 +70,45 @@ const Comments = () => {
   if (isError) {
     return <div>댓글 불러오기 오류 발생...</div>;
   }
+  const navigate = useNavigate();
+  const handleChangePlanState = () => {
+    navigate(`/main`);
+  };
 
   return (
-    <div>
-      <label>한 줄 코멘트</label>
-      {data === null || data === undefined ? (
-        <div>첫 코멘트를 입력해보세요!</div>
+    <section className="w-[720px]">
+      <div className="flex items-center my-[30px]">
+        <IconCommentory w="20" h="25" fill="#4E4F54" />
+        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
+          한줄 코멘트
+        </div>
+      </div>
+      {data === null || data === undefined || data.length === 0 ? (
+        <div className="my-[30px] ml-[20px] text-normal text-gray_dark_1 leading-6 tracking-tighter">
+          첫 코멘트를 입력해보세요!
+        </div>
       ) : (
         data.map((comment) => {
           const isUserImg = inviteduser.find(
             (user) => user.id === comment.user_id,
           )?.avatar_url;
+          const userNickname = inviteduser.find(
+            (user) => user.id === comment.user_id,
+          )?.nickname;
           return (
-            <div key={comment.id} className="flex gap-5">
+            <div
+              key={comment.id}
+              className="flex gap-5 my-[10px] ml-[20px] text-sm text-gray_dark_1 leading-6 tracking-tighter"
+            >
               <img
                 src={isUserImg != null ? isUserImg : defaultImageGray}
                 className="object-cover w-6 h-6 rounded-full"
               />
-              <p>{comment.content}</p>
+              <p>{userNickname}</p>
+              <p className="w-[365px]">{comment.content}</p>
               {comment.user_id === user?.id && (
                 <button
+                  className="flex justify-center items-center w-[45px] h-[30px] border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter"
                   onClick={() => {
                     handleDelete(comment.id);
                   }}
@@ -100,10 +120,12 @@ const Comments = () => {
           );
         })
       )}
-      <div className="flex items-center gap-5">
-        <label>소감</label>
+      <div className="flex items-center gap-5 mt-[20px] ">
+        <div className="ml-[20px] text-sm text-gray_dark_1 leading-6 tracking-tighter">
+          소감
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             <input
               id="comments"
               type="text"
@@ -111,18 +133,31 @@ const Comments = () => {
               {...register('comments', {
                 required: true,
               })}
-              className="outline-none input-border"
+              className="outline-none input-border w-[410px] h-[30px]"
             />
             <p className="h-[20px] pt-1.5 text-sm">
               {errors?.comments?.message}
             </p>
-            <button type="submit" disabled={isSubmitting}>
+            <button
+              className="flex justify-center items-center w-[45px] h-[30px] border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter"
+              type="submit"
+              disabled={isSubmitting}
+            >
               제출
             </button>
           </div>
         </form>
       </div>
-    </div>
+      <div className="flex my-[100px] items-center justify-end gap-5">
+        <p>다른 여행 일정도 둘러보세요!</p>
+        <button
+          onClick={handleChangePlanState}
+          className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
+        >
+          목록으로
+        </button>
+      </div>
+    </section>
   );
 };
 

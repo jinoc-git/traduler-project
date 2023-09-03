@@ -57,7 +57,6 @@ const SideBar: React.FC = () => {
   // supabase데이터 뿌려주기
   const {
     data: matesData,
-    isLoading: matesLoading,
     isError: matesError,
   } = useQuery(
     ['plan_mates', user?.id],
@@ -71,14 +70,11 @@ const SideBar: React.FC = () => {
     return <Loading />;
   }
 
-  if (matesLoading) {
-    return <Loading />;
-  }
   if (matesError) {
     return <div>오류</div>;
   }
 
-  const sortedData = matesData.plansData?.sort(
+  const sortedData = matesData?.plansData?.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 

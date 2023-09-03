@@ -167,10 +167,10 @@ const MapModal = ({
       />
       <form
         onSubmit={handleSubmit(onSubmitPlaceName)}
-        className="flex  gap-[16px]"
+        className="flex gap-[16px]"
       >
         <button
-          className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
+          className="border border-navy text-navy rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px] hover:bg-navy_light_1 duration-200"
           onClick={() => {
             closeModal();
             resetPin();
@@ -181,7 +181,7 @@ const MapModal = ({
         <button
           type="submit"
           disabled={disabledSubmit()}
-          className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
+          className="bg-navy text-white rounded-lg hover:bg-navy_light_3  px-[20px] py-[14px] disabled:bg-gray w-[210px] duration-200"
           onClick={() => {
             handleSubmit(onSubmitPlaceName);
             console.log('여기');

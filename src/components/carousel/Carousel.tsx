@@ -37,11 +37,11 @@ const Carousel = () => {
     return <Loading />;
   }
 
-  return photoData.length > 1 ? (
+  return photoData.length > 3 ? (
     <section className="w-[720px]">
-      <div className="flex items-center">
-        <IconCamera w="20" h="25" fill="#4E4F54" />
-        <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+      <div className="flex items-center my-[30px]">
+        <IconCamera fill="#4E4F54" />
+        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
           사진첩
         </div>
       </div>
@@ -55,12 +55,12 @@ const Carousel = () => {
           {photoData.map((url: string, index: number) => (
             <div
               key={uuid()}
-              className="relative cursor-pointer  brightness-75 hover:brightness-100 transition-filter duration-400"
+              className="relative cursor-pointer brightness-75 hover:brightness-100 transition-filter duration-400"
             >
               <img
                 src={url}
                 alt={`photo${index}`}
-                className="w-full h-full object-cover rounded-3xl "
+                className="object-cover w-full h-full rounded-3xl "
               />
             </div>
           ))}

@@ -113,7 +113,7 @@ const AddPlan = () => {
           })}
           className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
         />
-        <p className="h-[15px] text-sm text-red-400">
+        <p className="h-[15px] text-xs font-bold text-red-600">
           {errors?.title?.message}
         </p>
         <div className="flex flex-col mx-auto w-[700px]">

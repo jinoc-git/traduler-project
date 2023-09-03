@@ -28,9 +28,13 @@ const Header = () => {
     if (user === null) {
       setVisibilityIcon(false);
     } else {
-      setVisibilityIcon(true);
+      if (pathname === '/') {
+        setVisibilityIcon(false);
+      } else {
+        setVisibilityIcon(true);
+      }
     }
-  }, [user]);
+  }, [user, pathname]);
 
   return (
     <header

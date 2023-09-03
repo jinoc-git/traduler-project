@@ -19,7 +19,7 @@ const ProtectRoute = () => {
         navigate('/signin');
       }
     }
-  }, [pathname]);
+  }, [pathname, user]);
 
   return null;
 };

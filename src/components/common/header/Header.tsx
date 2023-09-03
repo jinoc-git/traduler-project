@@ -13,9 +13,9 @@ const Header = () => {
 
   const authObserver = userStore((state) => state.authObserver);
   const user = userStore((state) => state.user);
+  const isLogin = localStorage.getItem('isLogin');
 
-  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
-  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen } = sideBarStore();
 
   const goToMain = () => {
     if (user !== null) {
@@ -25,16 +25,21 @@ const Header = () => {
 
   useEffect(() => {
     authObserver();
-    if (user === null) {
+    if (isLogin === 'false') {
       setVisibilityIcon(false);
+      navigate('/signin');
     } else {
       if (pathname === '/') {
         setVisibilityIcon(false);
       } else {
+        setMenuIsOpen(true);
         setVisibilityIcon(true);
       }
+      if (pathname === '/signin' || pathname === '/signup') {
+        navigate('/main');
+      }
     }
-  }, [user, pathname]);
+  }, [user, pathname, isLogin]);
 
   return (
     <header

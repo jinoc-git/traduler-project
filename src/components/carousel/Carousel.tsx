@@ -36,7 +36,7 @@ const Carousel = () => {
     return <div>로딩중</div>;
   }
 
-  return photoData.length > 1 ? (
+  return photoData.length > 3 ? (
     <section>
       <label className="flex items-center">
         <span className="mr-3">

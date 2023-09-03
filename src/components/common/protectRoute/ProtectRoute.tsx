@@ -1,16 +1,13 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-import { userStore } from '@store/userStore';
-
 const ProtectRoute = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const user = userStore((state) => state.user);
-  console.log(user);
+  const isLogin = localStorage.getItem('isLogin');
 
   useEffect(() => {
-    if (user === null) {
+    if (isLogin === 'false') {
       if (
         pathname !== '/' &&
         pathname !== '/signin' &&
@@ -18,8 +15,13 @@ const ProtectRoute = () => {
       ) {
         navigate('/signin');
       }
-    }
-  }, [pathname, user]);
+    } 
+    // else {
+    //   if (pathname === '/signin' || pathname === '/signup') {
+    //     navigate('/main');
+    //   }
+    // }
+  }, [pathname, isLogin]);
 
   return null;
 };

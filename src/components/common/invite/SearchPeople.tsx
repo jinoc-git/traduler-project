@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { findUsers, updateMates } from '@api/planMates';
+import IconVector from '@assets/icons/IconVector';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
@@ -85,62 +86,89 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   };
 
   return (
-    <div className="mx-auto justify-center w-[500px] h-[500px] bg-white border rounded-lg flex flex-col items-center">
-      <div className="overflow-scroll w-[450px] bg-gray_light_3 rounded-lg mt-3">
-        <div>초대한 목록</div>
-        {invitedUser.length !== 0 &&
-          invitedUser.map((person, idx) => {
-            return (
-              <div key={person.email}>
-                <UserList person={person} idx={idx} deleteUser={deleteUser} />
-              </div>
-            );
-          })}
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50">
+      <div className="mx-auto   w-modal h-modal_2 bg-gray_light_2 rounded-lg shadow-card p-6">
+        <div className="flex flex-col justify-end items-start gap-2">
+          <p className="text-[gray_dark_1] text-xl  ">동행 초대하기</p>
+          <p className="text-[gray] text-xl  ">
+            이 여행에 함께할 친구를 초대해 보세요!
+          </p>
+        </div>
+        <label className="text-sm">초대된 사람</label>
+        <div className="overflow-scroll w-auth h-[120px] bg-white rounded-lg ">
+          {invitedUser.length !== 0 &&
+            invitedUser.map((person, idx) => {
+              return (
+                <div key={person.email}>
+                  <UserList person={person} idx={idx} deleteUser={deleteUser} />
+                </div>
+              );
+            })}
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm">동행 찾기</label>
+          <div className="relative flex items-center ">
+            <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
+              <IconVector fill="#ACACAC" />
+            </span>
+            <input
+              placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."
+              {...register('userInfo', {
+                required: '필수 입력값입니다.',
+                minLength: {
+                  value: 2,
+                  message: '2글자 이상 입력하세요.',
+                },
+                pattern: {
+                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                  message: '모음, 자음 안됨',
+                },
+              })}
+              onChange={(e) =>
+                debouncedSearchUser({ userInfo: e.target.value })
+              }
+              className="pr-3 pl-10 w-auth h-10 border rounded-lg border-none "
+            />
+          </div>
+          <p>{errors?.userInfo?.message}</p>
+        </div>
+        <div className="overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3">
+          {people?.length === 0 && (
+            <div className="text-center">검색 결과가 없습니다.</div>
+          )}
+          {people
+            .filter(
+              (person) =>
+                invitedUser.filter((user) => user.id === person.id).length ===
+                0,
+            )
+            .map((person: UserType, idx) => {
+              return (
+                <div key={person.id}>
+                  <UserList
+                    person={person}
+                    idx={idx}
+                    handleInvite={handleInvite}
+                  />
+                </div>
+              );
+            })}
+        </div>
+        <div className="flex justify-center items-center space-x-4 mt-10">
+          <button
+            onClick={closeModal}
+            className="w-[12.5rem] h-[2.75rem] border rounded-lg hover:bg-gray_light_3 hover:text-white"
+          >
+            취소
+          </button>
+          <button
+            onClick={inviteData}
+            className="bottom-0 mx-auto w-[12.5rem] h-[2.75rem] border rounded-lg bg-navy text-white hover:bg-navy_light_3 hover:text-white"
+          >
+            저장
+          </button>
+        </div>
       </div>
-      <div className="flex flex-col">
-        <div>검색 하기</div>
-        <input
-          placeholder="이메일이나 닉네임을 입력하세요."
-          {...register('userInfo', {
-            required: '필수 입력값입니다.',
-            minLength: {
-              value: 2,
-              message: '2글자 이상 입력하세요.',
-            },
-            pattern: {
-              value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-              message: '모음, 자음 안됨',
-            },
-          })}
-          onChange={(e) => debouncedSearchUser({ userInfo: e.target.value })}
-          className="w-[250px] border rounded-lg outline-none"
-        />
-        <p>{errors?.userInfo?.message}</p>
-      </div>
-      <div className="overflow-scroll w-[450px] h-[250px] bg-gray_light_3 rounded-lg mt-3">
-        {people?.length === 0 && (
-          <div className="text-center">검색 결과가 없습니다.</div>
-        )}
-        {people
-          .filter(
-            (person) =>
-              invitedUser.filter((user) => user.id === person.id).length === 0,
-          )
-          .map((person: UserType, idx) => {
-            return (
-              <div key={person.id}>
-                <UserList
-                  person={person}
-                  idx={idx}
-                  handleInvite={handleInvite}
-                />
-              </div>
-            );
-          })}
-      </div>
-      <button onClick={inviteData} className="bottom-0 mx-auto">
-        저장
-      </button>
     </div>
   );
 };

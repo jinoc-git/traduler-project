@@ -9,6 +9,9 @@ import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
 import DatePage from '@components/plan/DatePage';
+import Pay from '@components/plan/Pay';
+import PayLayout from '@components/plan/PayLayout';
+import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
 import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
@@ -33,7 +36,7 @@ const AddPlan = () => {
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({ mode: 'onChange', defaultValues: { totalCost: 0 } });
+  } = useForm<InputType>({ mode: 'onChange' });
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
 
   const submitPlan = async () => {
@@ -89,7 +92,7 @@ const AddPlan = () => {
       className={`transition-all duration-300  ease-in-out py-[60px] ${
         isSideBarOpen
           ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-50px)] ml-[88px]'
+          : 'w-[calc(100vw-88px)] ml-[88px]'
       }`}
     >
       <Nav
@@ -97,7 +100,7 @@ const AddPlan = () => {
         onClick={handleSubmit(submitPlan)}
         buttonDisabled={buttonDisabled}
       />
-      <div className="px-[210px] py-[100px]">
+      <PlanLayout>
         <input
           id="title"
           type="text"
@@ -111,37 +114,29 @@ const AddPlan = () => {
           })}
           className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
         />
-        <p className="h-[20px] pt-1.5 text-sm">{errors?.title?.message}</p>
-        <Invite />
-        <PostPlan state={'addPlan'} />
-        <div className="flex items-center">
-          <div className="text-[16px] font-semibold mr-[50px]">전체 예산</div>
-          <input
-            id="totalCost"
-            type="number"
-            placeholder="예산을 입력하세요."
-            {...register('totalCost', {
-              required: '예산은 필수입니다.',
-            })}
-            className="text-[14px] font-medium border rounded-lg p-1"
+        <p className="h-[15px] text-sm text-red-400">
+          {errors?.title?.message}
+        </p>
+        <div className="flex flex-col mx-auto w-[700px]">
+          <PostPlan state={'addPlan'} />
+          <Invite />
+          <PayLayout>
+            <Pay register={register} errors={errors} />
+          </PayLayout>
+          <DatePage
+            dates={dates}
+            handleNextPage={handleNextPage}
+            handlePreviousPage={handlePreviousPage}
+            currentPage={currentPage}
           />
-          <p className="h-[20px] pt-1.5 text-sm">
-            {errors?.totalCost?.message}
-          </p>
+          <AddPlanContents
+            currentPage={currentPage}
+            pins={pins}
+            setPins={setPins}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
-        <DatePage
-          dates={dates}
-          handleNextPage={handleNextPage}
-          handlePreviousPage={handlePreviousPage}
-          currentPage={currentPage}
-        />
-        <AddPlanContents
-          currentPage={currentPage}
-          pins={pins}
-          setPins={setPins}
-          setCurrentPage={setCurrentPage}
-        />
-      </div>
+      </PlanLayout>
     </main>
   );
 };

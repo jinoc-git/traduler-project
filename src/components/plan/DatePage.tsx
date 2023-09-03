@@ -17,7 +17,7 @@ const DatePage = ({
   currentPage,
 }: PropsType) => {
   return (
-    <div className="flex-center gap-[190px] mb-10 text-[14px] font-semibold ">
+    <div className="flex-center gap-[190px] mt-[24px] mb-[10px] text-sm font-semibold text-gray_dark_1 ">
       {dates.length !== 0 ? (
         <>
           <button

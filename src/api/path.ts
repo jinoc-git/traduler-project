@@ -44,7 +44,7 @@ export const calcPath = async (distance: PinContentsType[]) => {
   });
 
   const newData: string[] = [];
-  console.log(convertParameters);
+
   for (let i = 0; i < convertParameters.length; i += 1) {
     if (i === convertParameters.length - 1) {
       break;
@@ -59,7 +59,7 @@ export const calcPath = async (distance: PinContentsType[]) => {
       const distanceInKm = data / 1000;
       newData.push(distanceInKm.toFixed(1));
     } catch (err) {
-      console.log(err);
+      throw new Error('카카오 모빌리티 거리 계산 오류');
     }
   }
 

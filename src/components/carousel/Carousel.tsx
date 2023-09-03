@@ -18,14 +18,12 @@ const Carousel = () => {
     queryFn: async () => await getPhoto(planId as string),
   });
 
-  console.log('DATA', data);
-
   useEffect(() => {
     if (data !== null && data !== undefined) {
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-      const photos: string[] = data[0]?.pictures || [];
-      let extendedPhotos: string[] = [...photos];
-      if (photos.length < 4) {
+      const photos = data[0].pictures;
+
+      let extendedPhotos = [...photos];
+      if (photos.length !== 0 && photos.length < 4) {
         while (extendedPhotos.length < 5) {
           extendedPhotos = [...extendedPhotos, ...photos];
         }
@@ -35,8 +33,9 @@ const Carousel = () => {
   }, [data]);
 
   if (isLoading) {
-    console.log('로딩중...');
+    return <div>로딩중</div>;
   }
+
   return (
     <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
       {photoData.length > 1 ? (

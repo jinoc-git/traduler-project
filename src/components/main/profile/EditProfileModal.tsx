@@ -82,7 +82,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     // 프로필 사진 변경
     if (data.avatar[0]) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
-      console.log(res);
       if (res) {
         const { id, email, nickname, profileImg } = res;
         setUser({

@@ -60,10 +60,8 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
     // 수정하기 시
     if (pin !== null) {
       setPins((state) => {
-        console.log('장소수정', newContents);
         return state.map((item, i) => {
           if (i === currentPage) {
-            console.log('장소수정', currentPage);
             item[idx] = newContents;
             return [...item];
           }
@@ -74,7 +72,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
     // 장소추가 시
     else {
       setPins((state) => {
-        console.log('장소추가', newContents);
         return state.map((item, i) => {
           if (i === currentPage) {
             return [...item, newContents];

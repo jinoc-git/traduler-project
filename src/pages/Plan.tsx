@@ -12,6 +12,7 @@ import {
 } from '@api/plans';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
+import Loading from '@components/loading/Loading';
 import Pay from '@components/plan/Pay';
 import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
@@ -118,11 +119,7 @@ const Plan = () => {
   }, [data, planEnding]);
 
   if (isLoading || isPlanEndingLoading) {
-    return (
-      <div className="felx-center text-[400px] text-center font-extrabold">
-        로딩중...
-      </div>
-    );
+    return <Loading />;
   }
 
   const planStateColor = planState === 'planning' ? 'bg-orange' : 'bg-blue';

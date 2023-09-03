@@ -89,8 +89,8 @@ const Card: React.FC<CardProps> = ({
     <div>
       <div className="flex flex-row mt-[4px] justify-center">
         <div
-          className={`cursor-pointer mr-[25px] ${
-            selectedPlan === 'traveling' ? 'font-bold' : ''
+          className={`cursor-pointer mr-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'traveling' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('traveling');
@@ -100,8 +100,8 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ml-[25px] mr-[25px] ${
-            selectedPlan === 'planning' ? 'font-bold' : ''
+          className={`cursor-pointer ml-[25px] mr-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'planning' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('planning');
@@ -111,8 +111,8 @@ const Card: React.FC<CardProps> = ({
         </div>
         <div> | </div>
         <div
-          className={`cursor-pointer ml-[25px] ${
-            selectedPlan === 'end' ? 'font-bold' : ''
+          className={`cursor-pointer ml-[25px] text-white hover:text-yellow_light_2 ${
+            selectedPlan === 'end' ? 'text-yellow_light_2' : 'text-white'
           }`}
           onClick={() => {
             setSelectedPlan('end');
@@ -154,7 +154,7 @@ const Card: React.FC<CardProps> = ({
               }}
             >
               <IconAdd w="16" h="16" fill="black" />
-              <span className="ml-[10px] text-Bold">계획 추가하기</span>
+              <span className="ml-[10px] text-Bold">계획 생성하기</span>
             </button>
           </div>
         </div>

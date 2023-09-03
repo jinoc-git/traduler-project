@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
+import IconFriends from '@assets/icons/IconFriends';
 import { defaultImageGray } from '@assets/index';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { modifyStateStore } from '@store/modifyStateStore';
@@ -64,9 +65,14 @@ const Invite = () => {
 
   return (
     <>
-      <div className="flex items-center">
-        <label className="text-[16px] font-semibold">동행</label>
-        <div className="text-[13px] font-semibold flex">
+      <div className="flex items-center h-[30px] my-[10px]">
+        <div className="flex items-center gap-2">
+          <IconFriends w="20" h="15" fill="#4E4F54" />
+          <label className="font-semibold text-normal text-gray_dark_1 mr-[80px]">
+            동행
+          </label>
+        </div>
+        <div className="flex font-semibold text-normal text-gray_dark_1">
           {isOldInvitedUser ? (
             oldInvitedUser.length > 0 && (
               <div className="flex mr-3">
@@ -111,7 +117,7 @@ const Invite = () => {
         </div>
         {modifyState === 'modify' && (
           <button
-            className="border border-[#484848] rounded-lg text-[12px] p-2"
+            className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px]"
             onClick={switchModal}
           >
             추가

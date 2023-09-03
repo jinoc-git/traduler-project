@@ -24,6 +24,7 @@ const Invite = () => {
   const modifyState = modifyStateStore((state) => state.modifyState);
 
   const { id: planId } = useParams();
+
   const { data } = useQuery(['planMates', planId], async () => {
     if (planId !== undefined) {
       const res = await getMates(planId);

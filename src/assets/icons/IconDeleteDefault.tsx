@@ -4,6 +4,8 @@
 import type IconType from 'types/icon';
 
 const IconDeleteDefault = ({ w, h, fill }: IconType) => {
+  const width = `w-[${w as string}px]`;
+  const height = `h-[${h as string}px]`;
   return (
     <svg
       width={w || '24'}
@@ -11,6 +13,7 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
       viewBox={`0 0 ${w || '24'} ${h || '24'}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
     >
       <path d="M10 8V20H8V8H10Z" fill={fill || 'black'} />
       <path d="M14 8V20H12V8H14Z" fill={fill || 'black'} />

@@ -19,7 +19,7 @@ module.exports = {
       colors: {
         red_light_1: '#FFD5DD',
         blue: '#5E9FFF',
-        blue_dark: '#116DB3',
+        blue_dark: '#1A68DB',
         blue_light_0: '#F2F7FF',
         blue_light_1: '#DFECFF',
         blue_light_2: '#AECEFF',

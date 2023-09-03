@@ -37,13 +37,11 @@ const SignInForm = () => {
     const { email, password } = data;
     const res = await signInWithSB(email, password);
     if (res instanceof AuthError) {
-      // console.log('로그인 오류');
       toast.error('로그인에 실패하였습니다.');
       return false;
     }
 
     reset();
-    // console.log('로그인 성공');
     toast.success('로그인에 성공하였습니다.');
     navigate('/main');
   };

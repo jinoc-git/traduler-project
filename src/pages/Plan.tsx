@@ -165,7 +165,7 @@ const Plan = () => {
                   <p>여행을 떠날 준비가 되셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+                    className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
                   >
                     여행 시작
                   </button>
@@ -175,7 +175,7 @@ const Plan = () => {
                   <p>여행 일정을 마치셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+                    className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
                   >
                     여행 완료
                   </button>

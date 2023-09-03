@@ -114,11 +114,11 @@ export const getPlans = async (planIds: string[]) => {
   }
 };
 
-export const getTotalCost = async (userId: string): Promise<number | null> => {
+export const getTotalCost = async (planId: string): Promise<number | null> => {
   const { data, error } = await supabase
     .from('plans')
     .select('total_cost')
-    .eq('users_id', userId);
+    .eq('id', planId);
 
   if (error !== null) {
     console.log(error);

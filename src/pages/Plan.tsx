@@ -11,6 +11,7 @@ import {
 } from '@api/plans';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
+import Loading from '@components/loading/Loading';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 import { datesStore } from '@store/datesStore';
@@ -107,11 +108,7 @@ const Plan = () => {
   }, [data, planEnding]);
 
   if (isLoading || isPlanEndingLoading) {
-    return (
-      <div className="felx-center text-[400px] text-center font-extrabold">
-        로딩중...
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

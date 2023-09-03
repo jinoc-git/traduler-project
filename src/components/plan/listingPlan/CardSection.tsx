@@ -2,6 +2,7 @@ import React from 'react';
 
 import { getBookMark } from '@api/bookMarks';
 import { getPlansWithMates } from '@api/plans';
+import Loading from '@components/loading/Loading';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
@@ -33,7 +34,7 @@ const CardSection = () => {
   );
 
   if (matesLoading || bookMarkLoading) {
-    return <div>로딩중 ...</div>;
+    return <Loading />;
   }
   if (matesError || bookMarkError) {
     return <div>에러 발생</div>;

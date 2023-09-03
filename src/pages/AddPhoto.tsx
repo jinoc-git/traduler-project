@@ -9,6 +9,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
+import Loading from '@components/loading/Loading';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
@@ -58,7 +59,7 @@ const AddPhoto = () => {
   }, [data]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // 로딩 중일 때 보여줄 내용
+    return <Loading />;
   }
 
   if (isError) {

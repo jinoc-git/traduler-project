@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
 import { getPlan } from '@api/plans';
+import Loading from '@components/loading/Loading';
 import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
 
@@ -92,7 +93,7 @@ const UpdatePlan = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="w-full h-[500px] bg-slate-300">로딩중...</div>;
+    return <Loading />;
   }
 
   if (isError) {

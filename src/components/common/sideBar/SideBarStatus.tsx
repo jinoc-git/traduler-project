@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import React, { useEffect, useState } from 'react';
 
 import calcDateProgress from '@utils/calcDateProgress';
 import {
   changeDotFormatOfDate,
+  formatMonthDay,
   removeYearOfDate,
 } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
@@ -11,15 +13,31 @@ import { type PlanType } from 'types/supabase';
 interface SideBarStatusProps {
   isOpen: boolean;
   activePlan: PlanType | undefined;
+  hasNextPlan: boolean;
+  nextPlan: PlanType | undefined;
 }
 
 const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   const [progressPercent, setProgressPercent] = useState('');
-  const { isOpen, activePlan } = props;
+  const { isOpen, activePlan, hasNextPlan, nextPlan } = props;
   const hasActivePlan = activePlan !== undefined;
 
-  const removedYearStartDay = removeYearOfDate(activePlan?.dates[0]);
-  const changedFormatStartDay = changeDotFormatOfDate(activePlan?.dates[0]);
+  const status = hasActivePlan
+    ? '여행 중'
+    : hasNextPlan
+    ? '여행 예정'
+    : '여행 없음';
+
+  const chipClassName = {
+    '여행 중': 'bg-blue',
+    '여행 예정': 'bg-yellow',
+    '여행 없음': 'bg-orange',
+  };
+  const infoClassName = {
+    '여행 중': 'bg-blue_light_1',
+    '여행 예정': 'bg-yellow_light_1',
+    '여행 없음': 'bg-orange_light_2',
+  };
 
   useEffect(() => {
     if (hasActivePlan) {
@@ -41,33 +59,68 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
         <div
           className={`flex-center rounded-[30px] text-sm text-white ${
             isOpen ? 'w-[72.5px] h-[22px]' : 'w-[38px] h-[10px]'
-          } ${hasActivePlan ? 'bg-blue' : 'bg-yellow_light_3'}`}
+          } ${chipClassName[status]}`}
         >
-          {isOpen ? (hasActivePlan ? '여행중' : '대기중') : ''}
+          {isOpen && status}
         </div>
       </div>
       <div
-        className={`flex flex-col items-center gap-3 bg-blue_light_1 rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`flex flex-col items-center gap-3 rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
             ? 'w-[197px] h-[125px] flex-center flex-col'
             : 'w-[40px] h-[125px]'
-        } ${hasActivePlan ? 'pt-3' : ''}`}
+        } ${infoClassName[status]}`}
       >
-        {!isOpen && hasActivePlan && (
-          <p className="text-sm">{removedYearStartDay}</p>
+        {/* 닫혔을 때 여행 중, 예정일 때 날짜 표시 */}
+        {!isOpen && status === '여행 중' && (
+          <p className="text-sm pt-3">
+            {removeYearOfDate(activePlan?.dates[0])}
+          </p>
         )}
-        {hasActivePlan && (
-          <p className=" bg-gradient-to-r from-blue_light_3 to-blue_light_0 text-transparent bg-clip-text font-bold text-4xl">
+        {!isOpen && status === '여행 예정' && (
+          <p className="text-sm pt-3">{removeYearOfDate(nextPlan?.dates[0])}</p>
+        )}
+
+        {/* 여행 중일 때만 진행률 표시 */}
+        {status === '여행 중' && (
+          <p className=" bg-gradient-to-r from-blue to-blue_dark text-transparent bg-clip-text font-bold text-4xl">
             {progressPercent}
           </p>
         )}
-        {isOpen && !hasActivePlan && (
-          <p className=" text-4xl">진행중인 여행이 없어요!</p>
+
+        {/* 닫혔을 때만 보여지는 내용 */}
+        {!isOpen && status === '여행 예정' && (
+          <p className="text-sm leading-4 mt-[-5px]">
+            여<br />행<br />예<br />정
+          </p>
         )}
-        {isOpen && hasActivePlan && (
+        {!isOpen && status === '여행 없음' && (
+          <p className="text-sm leading-4 mt-6">
+            여<br />행<br />없<br />음
+          </p>
+        )}
+
+        {/* 열렸을 때만 보여지는 내용 */}
+        {isOpen && status === '여행 중' && (
           <div className="text-center">
-            <p className="w-[170px] text-sm truncate">{activePlan.title}</p>
-            <p className="text-sm">{changedFormatStartDay}</p>
+            <p className="w-[170px] text-sm truncate">{activePlan?.title}</p>
+            <p className="text-sm">
+              {changeDotFormatOfDate(activePlan?.dates[0])}
+            </p>
+          </div>
+        )}
+        {isOpen && status === '여행 예정' && (
+          <div className="text-center">
+            <p className="w-[170px] text-sm truncate">{nextPlan?.title}</p>
+            <p className="text-sm">{formatMonthDay(nextPlan!.dates[0])}</p>
+          </div>
+        )}
+        {isOpen && status === '여행 없음' && (
+          <div className="text-center">
+            <p className="w-[170px] text-sm truncate">
+              예정된 여행이 없습니다.
+            </p>
+            <p className="text-sm">새로운 여행을 등록하세요!</p>
           </div>
         )}
       </div>

@@ -9,6 +9,12 @@ module.exports = {
       lg: '18px',
       xlg: '24px',
     },
+    fontFamily: {
+      light: ['Pretendard-Light'],
+      Regular: ['Pretendard-Regular'],
+      SemiBold: ['Pretendard-SemiBold'],
+      Bold: ['Pretendard-Bold'],
+    },
     extend: {
       colors: {
         red_light_1: '#FFD5DD',

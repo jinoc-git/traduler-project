@@ -1,3 +1,5 @@
+import { type Json } from 'types/supabase';
+
 import { getPath } from './path';
 import { type PinContentsType } from './pins';
 import { supabase } from './supabaseAuth';
@@ -16,6 +18,10 @@ export const getCoordinate = async (planId: string) => {
     .from('plans')
     .select('dates')
     .eq('id', planId);
+    
+  if (plansError !== null) {
+    throw new Error('좌표 불러오기 에러');
+  }
 
   if (dates !== null) {
     const { data, error } = await supabase
@@ -28,14 +34,10 @@ export const getCoordinate = async (planId: string) => {
       .eq('plan_id', planId);
 
     if (error !== null) {
-      console.log(error);
+      throw new Error('좌표 불러오기 에러');
     }
     const result = data?.map((item) => item.contents);
-    console.log(result);
     return result;
-  }
-  if (plansError !== null) {
-    console.log(plansError);
   }
 };
 
@@ -52,7 +54,7 @@ export const calcAllPath = async (distance: PinContentsType[][]) => {
     }
     convertParameters.push(pinsOfDate);
   }
-  console.log('==>', convertParameters);
+
   const newDataArr = [];
   for (const data of convertParameters) {
     const oneDay = [];
@@ -66,10 +68,14 @@ export const calcAllPath = async (distance: PinContentsType[][]) => {
         const distanceInKm = result / 1000;
         oneDay.push(distanceInKm.toFixed(1));
       } catch (err) {
-        console.log(err);
+        throw new Error('거리 계산 오류');
       }
     }
-    newDataArr.push(oneDay);
+    if (oneDay.length === 0) {
+      newDataArr.push(['0']);
+    } else {
+      newDataArr.push(oneDay);
+    }
   }
 
   return newDataArr;
@@ -83,7 +89,7 @@ export const getCost = async (planId: string) => {
     .eq('id', planId);
 
   if (plansError !== null) {
-    console.log(plansError);
+    throw new Error('비용 불러오기 오류류');
   }
 
   if (dates !== null) {
@@ -120,7 +126,7 @@ export const calcCostAndInsertPlansEnding = async (planId: string) => {
 
 interface Options {
   id: string;
-  distance: string[][];
+  distance: Json[];
   dates_cost: number[];
   pictures: string[];
 }
@@ -129,8 +135,9 @@ interface Options {
 export const insertPlanEnding = async (options: Options) => {
   const { status, error } = await supabase.from('plans_ending').insert(options);
 
-  console.log('status: ', status);
-  console.log('error: ', error);
+  if (error !== null) {
+    throw new Error(status.toString());
+  }
 };
 
 // plans_ending 데이터 불러오기
@@ -140,7 +147,6 @@ export const getEndingCost = async (planId: string) => {
     .select('distance');
 
   if (distanceError !== null) {
-    console.log(distanceError);
     return;
   }
 
@@ -150,7 +156,6 @@ export const getEndingCost = async (planId: string) => {
     .eq('plan_id', planId);
 
   if (costError !== null) {
-    console.log(costError);
     return;
   }
 
@@ -159,13 +164,9 @@ export const getEndingCost = async (planId: string) => {
     .select('pictures');
 
   if (pictureError !== null) {
-    console.log(pictureError);
     return;
   }
 
-  console.log('distanceData', distanceData);
-  console.log('costData: ', costData);
-  console.log('pictureData: ', pictureData);
   return { distanceData, costData, pictureData };
 };
 
@@ -176,7 +177,7 @@ export const getPhoto = async (planId: string) => {
     .eq('id', planId);
 
   if (endingError !== null) {
-    console.error('사진 불러오기 에러 from supabase.', endingError);
+    throw new Error('사진 불러오기 오류');
   }
   return endingData;
 };

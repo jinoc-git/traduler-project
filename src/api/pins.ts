@@ -23,18 +23,18 @@ export const getPin = async (planId: string, currentpage: number) => {
     .select('dates')
     .eq('id', planId);
 
+  if (plansError !== null) {
+    throw new Error('핀 불러오기 오류');
+  }
   if (dates !== null) {
     const { data, error } = await supabase
       .from('pins')
       .select('contents')
       .match({ plan_id: planId, date: dates[0].dates[currentpage] });
     if (error !== null) {
-      console.log(error);
+      throw new Error('핀 콘텐츠 불러오기 오류');
     }
     return data;
-  }
-  if (plansError !== null) {
-    console.log(plansError);
   }
 };
 
@@ -43,7 +43,6 @@ export const addPin = async (
   planId: string,
   newContents: PinContentsType,
 ) => {
-  console.log(date);
   const { data: oldContents, error: olderror } = await supabase
     .from('pins')
     .select('contents')
@@ -54,19 +53,14 @@ export const addPin = async (
     Arr.push(...oldContents[0].contents, newContents);
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('pins')
     .update({ contents: Arr as Json[] })
     .match({ plan_id: planId, date })
     .select();
 
-  if (data?.length !== 0) {
-    console.log('pins contents 추가됨', data);
-  }
-
   if (error != null || olderror != null) {
-    console.log('olderror', olderror);
-    console.log(error);
+    throw new Error('핀 추가 오류');
   }
 };
 
@@ -81,7 +75,7 @@ export const deletePin = async (
     .match({ plan_id: planId, date });
 
   if (error != null) {
-    console.log(error);
+    throw new Error('핀 삭제 오류');
   }
 
   return data;
@@ -102,8 +96,6 @@ export const updatePin = async (
   if (oldContents != null) {
     Arr = oldContents[0].contents.map((content, i) => {
       if (i === idx) {
-        console.log(content);
-        console.log(newContents);
         return newContents;
       }
       return content;
@@ -117,8 +109,7 @@ export const updatePin = async (
     .select();
 
   if (error != null || olderror != null) {
-    console.log('olderror', olderror);
-    console.log(error);
+    throw new Error('핀 업데이트 오류');
   }
 
   return data;
@@ -128,7 +119,7 @@ export const newDatePin = async (newPin: PinInsertType) => {
   const { error } = await supabase.from('pins').insert(newPin);
 
   if (error !== null) {
-    console.log(error);
+    throw new Error('새 핀 추가 오류');
   }
 };
 
@@ -138,7 +129,6 @@ export const getAllPins = async (planId: string) => {
     .select('contents')
     .eq('plan_id', planId);
   if (error !== null) {
-    console.log(error);
     throw new Error('핀 가져오기 에러발생');
   }
   return data;

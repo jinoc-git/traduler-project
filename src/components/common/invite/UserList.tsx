@@ -12,22 +12,27 @@ interface PropsType {
 
 const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
   return (
-    <div className="flex items-center justify-center gap-3 my-2">
-      {typeof person.avatar_url === 'string' ? (
-        <img
-          className="object-cover rounded-full w-9 h-9"
-          src={person.avatar_url}
-          alt={`Avatar for ${person.nickname}`}
-        />
-      ) : (
-        <img
-          src={defaultImageGray}
-          className="object-cover rounded-full w-9 h-9"
-        />
-      )}
-      <p>{person.nickname}</p>
-      <p>{person.email}</p>
+    <div className="flex justify-between items-center mr-5 ">
+      <div className="flex items-center justify-start ml-5 gap-3 my-2">
+        {typeof person.avatar_url === 'string' ? (
+          <img
+            className="object-cover rounded-full w-9 h-9"
+            src={person.avatar_url}
+            alt={`Avatar for ${person.nickname}`}
+          />
+        ) : (
+          <img
+            src={defaultImageGray}
+            className="object-cover rounded-full w-9 h-9"
+          />
+        )}
+        <div>
+          <p className="text-normal text-blue">{person.nickname}</p>
+          <p className="text-xs text-gray">{person.email}</p>
+        </div>
+      </div>
       <button
+        className="border w-12 h-7 rounded-lg cursor-pointer hover:bg-blue_dark hover:text-white"
         onClick={
           handleInvite != null
             ? async () => {
@@ -36,7 +41,7 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
             : () => deleteUser?.(idx)
         }
       >
-        {handleInvite != null ? '추가' : '삭제'}
+        {handleInvite != null ? '초대' : '삭제'}
       </button>
     </div>
   );

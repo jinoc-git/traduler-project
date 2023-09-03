@@ -31,7 +31,7 @@ const Profile = () => {
             <IconUserDefault w="85" h="85" />
           )}
         </div>
-        <p className="text-white text-base">
+        <p className="text-white text-base text-xlg">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>
             {user?.nickname}
           </span>

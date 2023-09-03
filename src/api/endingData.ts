@@ -10,62 +10,7 @@ interface Contents {
   contents: Content[];
 }
 
-export const getCost = async (planId: string) => {
-  const { data: dates, error: plansError } = await supabase
-    .from('plans')
-    .select('dates')
-    .eq('id', planId);
-
-  if (plansError !== null) {
-    console.log(plansError);
-  }
-
-  if (dates !== null) {
-    const { data } = await supabase
-      .from('pins')
-      .select('contents')
-      .in(
-        'date',
-        Object.values(dates[0]).map((date) => date),
-      )
-      .eq('plan_id', planId)
-      .order('date', { ascending: true });
-
-    return data as Contents[] | null;
-  }
-};
-
-interface Options {
-  id: string;
-  distance: string[][];
-  dates_cost: number[];
-  pictures: string[];
-}
-
-export const insertPlanEnding = async (options: Options) => {
-  const { status, error } = await supabase.from('plans_ending').insert(options);
-
-  console.log('status: ', status);
-  console.log('error: ', error);
-};
-
-// export const insertAddPhotoData = async (options: Options) => {
-//   const { error } = await supabase.from('plans_ending').insert(options);
-
-//   if (error !== null) {
-//     console.log(error);
-//     throw new Error('최종 데이터 로딩 에러');
-//   }
-// };
-
-// export const newDatePin = async (newPin: PinInsertType) => {
-//   const { error } = await supabase.from('pins').insert(newPin);
-
-//   if (error !== null) {
-//     console.log(error);
-//   }
-// };
-
+// 좌표 불러오기
 export const getCoordinate = async (planId: string) => {
   const { data: dates, error: plansError } = await supabase
     .from('plans')
@@ -94,6 +39,7 @@ export const getCoordinate = async (planId: string) => {
   }
 };
 
+// 좌표 변환 후 거리 계산하기
 export const calcAllPath = async (distance: PinContentsType[][]) => {
   const convertParameters = [];
   for (const pinArr of distance) {
@@ -129,6 +75,32 @@ export const calcAllPath = async (distance: PinContentsType[][]) => {
   return newDataArr;
 };
 
+// 비용 불러오기
+export const getCost = async (planId: string) => {
+  const { data: dates, error: plansError } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
+
+  if (plansError !== null) {
+    console.log(plansError);
+  }
+
+  if (dates !== null) {
+    const { data } = await supabase
+      .from('pins')
+      .select('contents')
+      .in(
+        'date',
+        Object.values(dates[0]).map((date) => date),
+      )
+      .eq('plan_id', planId)
+      .order('date', { ascending: true });
+    return data as Contents[] | null;
+  }
+};
+
+// 비용 총합 구하기
 export const calcCostAndInsertPlansEnding = async (planId: string) => {
   const datesCost: number[] = [];
   const response = await getCost(planId);
@@ -144,4 +116,41 @@ export const calcCostAndInsertPlansEnding = async (planId: string) => {
     });
     return datesCost;
   }
+};
+
+interface Options {
+  id: string;
+  distance: string[][];
+  dates_cost: number[];
+  pictures: string[];
+}
+
+// 구한 날짜별 거리 및 날짜별 총 비용 supabase에 데이터 insert
+export const insertPlanEnding = async (options: Options) => {
+  const { status, error } = await supabase.from('plans_ending').insert(options);
+
+  console.log('status: ', status);
+  console.log('error: ', error);
+};
+
+// 예산 및 사용 내역 가져오기
+export const getEndingCost = async () => {
+  const { data: plansData, error: plansError } = await supabase
+    .from('plans')
+    .select('total_cost');
+
+  // const { data: endingData, error: endingError } = await supabase
+  //   .from('plans_ending')
+  //   .select('dates_cost');
+
+  if (plansError !== null) {
+    console.error('Error fetching data from Supabase.');
+    return;
+  }
+
+  const totalCost = plansData[0].total_cost;
+  // const datesCost = endingData[0];
+  console.log('totalCost: ', totalCost);
+  // console.log('datesCost: ', datesCost);
+  return { totalCost };
 };

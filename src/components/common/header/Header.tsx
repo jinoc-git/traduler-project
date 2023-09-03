@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ic_profile_3x } from '@assets/icons/3x';
-import { logoColor } from '@assets/index';
+import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 
@@ -13,17 +13,33 @@ const Header = () => {
 
   const authObserver = userStore((state) => state.authObserver);
   const user = userStore((state) => state.user);
+  const isLogin = localStorage.getItem('isLogin');
 
-  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
+  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen } = sideBarStore();
+
+  const goToMain = () => {
+    if (user !== null) {
+      navigate('/main');
+    }
+  };
 
   useEffect(() => {
     authObserver();
-    if (user === null) {
+    if (isLogin === 'false') {
       setVisibilityIcon(false);
+      navigate('/signin');
     } else {
-      setVisibilityIcon(true);
+      if (pathname === '/') {
+        setVisibilityIcon(false);
+      } else {
+        setMenuIsOpen(true);
+        setVisibilityIcon(true);
+      }
+      if (pathname === '/signin' || pathname === '/signup') {
+        navigate('/main');
+      }
     }
-  }, [user]);
+  }, [user, pathname, isLogin]);
 
   return (
     <header
@@ -32,13 +48,24 @@ const Header = () => {
       }`}
     >
       <div className=" flex items-center">
-        <h1
-          onClick={() => {
-            navigate('/main');
-          }}
-          className=" ml-[88px] cursor-pointer"
-        >
-          <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+        <h1 onClick={goToMain} className=" ml-[88px] cursor-pointer">
+          {pathname === '/main' ? (
+            isSideBarOpen ? (
+              <img
+                src={logoColor}
+                alt="로고"
+                className=" w-[134px] ml-[10px]"
+              />
+            ) : (
+              <img
+                src={logoWhite}
+                alt="로고"
+                className=" w-[134px] ml-[10px]"
+              />
+            )
+          ) : (
+            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+          )}
         </h1>
       </div>
       {user !== null ? (

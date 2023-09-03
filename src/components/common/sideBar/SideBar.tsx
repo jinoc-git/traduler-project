@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { ic_menu_1x } from '@assets/icons/1x';
 import { logoColor } from '@assets/index';
+import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -56,7 +57,6 @@ const SideBar: React.FC = () => {
   // supabase데이터 뿌려주기
   const {
     data: matesData,
-    isLoading: matesLoading,
     isError: matesError,
   } = useQuery(
     ['plan_mates', user?.id],
@@ -67,17 +67,14 @@ const SideBar: React.FC = () => {
   );
 
   if (matesData === null) {
-    return <div>로딩중 ...</div>;
+    return <Loading />;
   }
 
-  if (matesLoading) {
-    return <div>로딩중 ..</div>;
-  }
   if (matesError) {
     return <div>오류</div>;
   }
 
-  const sortedData = matesData.plansData?.sort(
+  const sortedData = matesData?.plansData?.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 

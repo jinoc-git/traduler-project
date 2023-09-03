@@ -11,8 +11,12 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
 import { getPlan } from '@api/plans';
+import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import Loading from '@components/loading/Loading';
 import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
+
+import DatePage from '../DatePage';
 
 declare global {
   interface Window {
@@ -92,7 +96,7 @@ const UpdatePlan = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="w-full h-[500px] bg-slate-300">로딩중...</div>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -101,24 +105,17 @@ const UpdatePlan = () => {
 
   return (
     <>
-      <div className="flex justify-center gap-5 mb-10 text-[14px] font-semibold">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 0}
-          className="cursor-pointer disabled:text-transparent disabled:cursor-none"
-        >
-          ⬅️
-        </button>
-        <h1>{dates?.[currentPage]}</h1>
-        <button
-          onClick={handleNextPage}
-          disabled={dates !== undefined && currentPage === dates.length - 1}
-          className="cursor-pointer disabled:text-transparent disabled:cursor-none"
-        >
-          ➡️
-        </button>
-      </div>
+      <DatePage
+        dates={dates ?? []}
+        handleNextPage={handleNextPage}
+        handlePreviousPage={handlePreviousPage}
+        currentPage={currentPage}
+      />
       <div className="flex flex-col justify-center gap-5">
+        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+          <IconLocationDefault w="20" h="20" />
+          <label>여행지역</label>
+        </div>
         <div className="flex justify-center">
           <Map
             center={{
@@ -152,7 +149,7 @@ const UpdatePlan = () => {
                 return { lat: pin.lat as number, lng: pin.lng as number };
               })}
               strokeWeight={5} // 선의 두께 입니다
-              strokeColor={'#FFAE00'} // 선의 색깔입니다
+              strokeColor={'#162F70'} // 선의 색깔입니다
               strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
               strokeStyle={'solid'} // 선의 스타일입니다
             />

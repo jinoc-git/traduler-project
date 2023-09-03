@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import {
   Map,
   MapMarker,
@@ -15,41 +15,6 @@ interface PropsType {
 }
 
 const MapPoly = ({ pins, currentPage }: PropsType) => {
-  const mapRef = useRef<any>();
-  const [style, setStyle] = useState({
-    width: '95vw',
-    height: '400px',
-    borderRadius: '8px',
-  });
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (map !== undefined) {
-      const timer = setTimeout(() => {
-        map.relayout();
-      }, 300);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [style]);
-
-  useEffect(() => {
-    const windowResize = () => {
-      setStyle({
-        width: '95vw',
-        height: '400px',
-        borderRadius: '8px',
-      });
-    };
-    window.addEventListener(`resize`, windowResize);
-
-    return () => {
-      window.removeEventListener(`resize`, windowResize);
-    };
-  }, []);
-
   return (
     <div className="flex justify-center">
       <Map
@@ -64,8 +29,11 @@ const MapPoly = ({ pins, currentPage }: PropsType) => {
               : 126.978652258309,
         }}
         level={3}
-        ref={mapRef}
-        style={style}
+        style={{
+          width: '95vw',
+          height: '400px',
+          borderRadius: '8px',
+        }}
       >
         {pins[currentPage]?.map((pin) => {
           return (

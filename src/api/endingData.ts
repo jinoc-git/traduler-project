@@ -18,7 +18,7 @@ export const getCoordinate = async (planId: string) => {
     .from('plans')
     .select('dates')
     .eq('id', planId);
-    
+
   if (plansError !== null) {
     throw new Error('좌표 불러오기 에러');
   }

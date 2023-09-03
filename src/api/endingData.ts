@@ -1,7 +1,8 @@
 import { type Json } from 'types/supabase';
 
 import { getPath } from './path';
-import { type PinContentsType } from './pins';
+import { getAllPins, type PinContentsType } from './pins';
+import { getPlansDate } from './plans';
 import { supabase } from './supabaseAuth';
 
 interface Content {
@@ -197,4 +198,20 @@ export const getDates = async (planId: string) => {
   const datesArray = data[0].dates;
 
   return datesArray;
+};
+
+export const getPlaceWithDate = async (planId: string) => {
+  const placeDataList = await getAllPins(planId);
+  const planDateList = await getPlansDate(planId);
+
+  const result = placeDataList.map((item, i) => {
+    const day = planDateList[0].dates[i];
+    const mix = {
+      [day]: item.contents,
+    };
+    return mix;
+  });
+
+  console.log(result);
+  return result;
 };

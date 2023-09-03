@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React from 'react';
 
 import { type PinContentsType } from '@api/pins';
@@ -5,15 +6,16 @@ import { type PinContentsType } from '@api/pins';
 import DropDown from './updatePlan/DropDown';
 
 interface PropsType {
-  pin: PinContentsType;
+  pin: PinContentsType | [];
   idx: number;
-  updatePin: (idx: number) => void;
-  deletePin: (idx: number) => void;
+  isEnding: boolean;
+  updatePin?: (idx: number) => void;
+  deletePin?: (idx: number) => void;
 }
 
-const PinLayout = ({ pin, idx, updatePin, deletePin }: PropsType) => {
+const PinLayout = ({ pin, idx, updatePin, deletePin, isEnding }: PropsType) => {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center gap-4">
       <div className="absolute translate-x-[17.5px] -z-10 border border-l-black h-[116px]" />
       <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] text-center font-semibold text-white border-[5px] border-white">
         {idx + 1}
@@ -27,32 +29,34 @@ const PinLayout = ({ pin, idx, updatePin, deletePin }: PropsType) => {
             <span>￦{pin.cost}</span>
           )}
         </div>
-        <DropDown>
-          <ul className="absolute left-0 bottom-[-60px] rounded-md bg-white">
-            <li
-              onMouseDown={(e) => {
-                e.preventDefault();
-              }}
-              onClick={() => {
-                updatePin(idx);
-              }}
-              className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
-            >
-              수정
-            </li>
-            <li
-              onMouseDown={(e) => {
-                e.preventDefault();
-              }}
-              onClick={() => {
-                deletePin(idx);
-              }}
-              className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
-            >
-              삭제
-            </li>
-          </ul>
-        </DropDown>
+        {!isEnding && updatePin && deletePin && (
+          <DropDown>
+            <ul className="absolute left-0 bottom-[-60px] rounded-md bg-white">
+              <li
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
+                onClick={() => {
+                  updatePin(idx);
+                }}
+                className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
+              >
+                수정
+              </li>
+              <li
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
+                onClick={() => {
+                  deletePin(idx);
+                }}
+                className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
+              >
+                삭제
+              </li>
+            </ul>
+          </DropDown>
+        )}
       </div>
     </div>
   );

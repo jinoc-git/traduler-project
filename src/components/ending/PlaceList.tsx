@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import { getPlaceWithDate } from '@api/endingData';
 import { type PinContentsType } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
+import Loading from '@components/loading/Loading';
 import PinLayout from '@components/plan/PinLayout';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
@@ -22,7 +23,7 @@ const PlaceList = () => {
   );
 
   if (isLoading) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   }
   if (data === undefined) {
     return null;

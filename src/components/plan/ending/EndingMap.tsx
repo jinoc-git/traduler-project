@@ -10,6 +10,7 @@ import {
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getAllPins } from '@api/pins';
+import Loading from '@components/loading/Loading';
 import { useQuery } from '@tanstack/react-query';
 
 const EndingMap = () => {
@@ -29,7 +30,7 @@ const EndingMap = () => {
   }, [data]);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <Loading />;
   }
 
   return (

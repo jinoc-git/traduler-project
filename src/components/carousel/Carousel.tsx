@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { getPhoto } from '@api/endingData';
 import IconCamera from '@assets/icons/IconCamera';
+import Loading from '@components/loading/Loading';
 import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
@@ -33,7 +34,7 @@ const Carousel = () => {
   }, [data]);
 
   if (isLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   return photoData.length > 1 ? (

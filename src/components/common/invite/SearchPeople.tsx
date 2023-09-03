@@ -156,13 +156,13 @@ const SearchPeople = ({ closeModal }: PropsType) => {
         <div className="flex justify-center items-center space-x-4 mt-10">
           <button
             onClick={closeModal}
-            className="w-[12.5rem] h-[2.75rem] border rounded-lg hover:bg-gray_light_3 hover:text-white"
+            className="w-[12.5rem] h-[2.75rem] border-navy rounded-lg bg-white text-navy hover:bg-navy_light_1 hover:text-black hover:border-navy_light_3"
           >
             취소
           </button>
           <button
             onClick={inviteData}
-            className="bottom-0 mx-auto w-[12.5rem] h-[2.75rem] border rounded-lg bg-navy text-white hover:bg-navy_light_3 hover:text-white"
+            className="bottom-0 mx-auto w-[12.5rem] h-[2.75rem] rounded-lg border-navy  bg-navy text-white hover:bg-navy_light_3 hover:gray_light_1"
           >
             저장
           </button>

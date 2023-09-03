@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
@@ -9,6 +8,10 @@ import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
+
+import MapModalInput from '../MapModalInput';
+import MapNonePoly from '../MapNonePoly';
+import MapModalLayout from '../ModalLayout';
 
 interface InputType {
   address?: string;
@@ -20,7 +23,9 @@ const MapModal = ({
   openModal,
   date,
   currentPage,
+  closeModal,
 }: {
+  closeModal: () => void;
   openModal: () => void;
   date: string;
   currentPage: number;
@@ -30,25 +35,36 @@ const MapModal = ({
     lat: pin !== null ? (pin.lat as number) : 0,
     lng: pin !== null ? (pin.lng as number) : 0,
   });
+  // const {
+  //   register,
+  //   formState: { errors, isSubmitting },
+  // } = useForm<InputType>();
+  // const {
+  //   register: registerPlaceName,
+  //   watch,
+  //   handleSubmit: handleSubmitPlaceName,
+  //   formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
+  // } = useForm<InputType>({
+  //   defaultValues: {
+  //     placeName: pin !== null ? (pin.placeName as string) : '',
+  //     cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
+  //   },
+  // });
   const {
     register,
-    formState: { errors, isSubmitting },
-  } = useForm<InputType>();
-  const {
-    register: registerPlaceName,
+    handleSubmit,
     watch,
-    handleSubmit: handleSubmitPlaceName,
-    formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
+    formState: { errors, isSubmitting },
   } = useForm<InputType>({
     defaultValues: {
-      placeName: pin !== null ? (pin.placeName as string) : '',
+      placeName: pin != null ? pin.placeName : '',
       cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
   const { id } = useParams();
   const planId: string = id as string;
 
-  // 장소 검색 버튼
+  // 장소 검색
   const onSubmit: SubmitHandler<InputType> = (data) => {
     if (data.address != null) {
       searchMap(data.address);
@@ -58,6 +74,7 @@ const MapModal = ({
 
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
+    console.log('여기는??', data);
     const newContents: PinContentsType = {
       id: uuid(),
       lat: position.lat,
@@ -75,7 +92,6 @@ const MapModal = ({
     else {
       addMutation.mutate([date, planId, newContents]);
     }
-
     openModal();
   };
 
@@ -127,8 +143,8 @@ const MapModal = ({
     if (
       position.lat === 0 ||
       position.lng === 0 ||
-      isSubmittingPlaceName ||
-      watch('placeName') === ''
+      isSubmitting ||
+      watch('placeName')?.length === 0
     ) {
       return true;
     }
@@ -136,112 +152,45 @@ const MapModal = ({
   };
 
   return (
-    <div className="absolute top-0 z-10 w-screen h-screen flex-center bg-black/70">
-      <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
-        <Map // 지도를 표시할 Container
-          center={{
-            // 지도의 중심좌표
-            lat: pin != null ? (pin.lat as number) : 37.566826004661,
-            lng: pin !== null ? (pin.lng as number) : 126.978652258309,
-          }}
-          style={{
-            // 지도의 크기
-            width: '50vw',
-            height: '500px',
-          }}
-          level={3} // 지도의 확대 레벨
-          onCreate={setMap}
-        >
-          <MapMarker
-            position={position}
-            draggable={true}
-            onDragEnd={(marker) => {
-              setPosition({
-                lat: marker.getPosition().getLat(),
-                lng: marker.getPosition().getLng(),
-              });
-            }}
-          ></MapMarker>
-        </Map>
-        <label htmlFor="address">주소</label>
-        <input
-          id="address"
-          type="text"
-          placeholder="주소를 검색하세요"
-          {...register('address', {
-            required: '주소를 입력하고 검색해주세요.',
-            minLength: {
-              value: 2,
-              message: '주소는 2글자 이상이어야 합니다.',
-            },
-            pattern: {
-              value: /^[가-힣|0-9|\s-]*$/,
-              message: '모음, 자음 안됨',
-            },
-          })}
-          onChange={(e) => debouncedSearchMap({ address: e.target.value })}
-        />
-        <p>{errors?.address?.message}</p>
-        <button type="submit" disabled={isSubmitting} className="bg-slate-400">
-          검색
-        </button>
-        <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
-          <label htmlFor="placeName">장소 이름</label>
-          <input
-            id="placeName"
-            type="text"
-            placeholder="장소 이름을 입력하세요"
-            {...registerPlaceName('placeName', {
-              required: '장소 이름은 필수 입력값입니다.',
-              minLength: {
-                value: 2,
-                message: '장소 이름은 2자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errorsPlaceName?.placeName?.message}</p>
-          <label htmlFor="cost">지출 비용</label>
-          <input
-            id="cost"
-            type="number"
-            placeholder="지출 비용을 입력해주세요."
-            {...registerPlaceName('cost', {
-              valueAsNumber: true,
-            })}
-            className="border border-#4f4f4f rounded-lg p-3"
-          />
-          <button
-            type="submit"
-            disabled={disabledSubmit()}
-            className="bg-slate-400"
-          >
-            저장
-          </button>
-        </form>
-        <div>
-          위도, 경도
-          <br />
-          {position.lat}, {position.lng}
-          <br />
-          장소이름
-          <br />
-          {watch('placeName')}
-        </div>
+    <MapModalLayout>
+      {/* <form onSubmit={()=>handleSubmit(onSubmitPlaceName)}> */}
+      <MapModalInput
+        register={register}
+        errors={errors}
+        debouncedFunc={debouncedSearchMap}
+      />
+      <MapNonePoly
+        pin={pin}
+        setMap={setMap}
+        position={position}
+        setPosition={setPosition}
+      />
+      <form
+        onSubmit={handleSubmit(onSubmitPlaceName)}
+        className="flex  gap-[16px]"
+      >
         <button
-          className="bg-slate-400"
+          className="border border-#4f4f4f rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px]"
           onClick={() => {
-            openModal();
+            closeModal();
             resetPin();
           }}
         >
-          닫기
+          취소
         </button>
-      </div>
-    </div>
+        <button
+          type="submit"
+          disabled={disabledSubmit()}
+          className="bg-[#4f4f4f] text-white rounded-lg px-[20px] py-[14px] disabled:bg-black w-[210px]"
+          onClick={() => {
+            handleSubmit(onSubmitPlaceName);
+            console.log('여기');
+          }}
+        >
+          {pin !== null ? '수정하기' : '새 장소 추가'}
+        </button>
+      </form>
+    </MapModalLayout>
   );
 };
 

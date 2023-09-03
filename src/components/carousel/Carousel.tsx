@@ -6,6 +6,7 @@ import IconCamera from '@assets/icons/IconCamera';
 import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 
 const Carousel = () => {
@@ -25,7 +26,7 @@ const Carousel = () => {
       const photos: string[] = data[0]?.pictures || [];
       let extendedPhotos: string[] = [...photos];
       if (photos.length < 4) {
-        while (extendedPhotos.length < 12) {
+        while (extendedPhotos.length < 5) {
           extendedPhotos = [...extendedPhotos, ...photos];
         }
       }
@@ -40,8 +41,11 @@ const Carousel = () => {
     <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
       {photoData.length > 1 ? (
         <>
-          <label>
-            <IconCamera /> 사진첩
+          <label className="flex items-center">
+            <span className="mr-3">
+              <IconCamera />
+            </span>
+            <p className="text-lg">사진첩</p>
           </label>
           <Flicking
             circular={true}
@@ -51,13 +55,13 @@ const Carousel = () => {
           >
             {photoData.map((url: string, index: number) => (
               <div
-                key={index}
+                key={uuid()}
                 className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
               >
                 <img
                   src={url}
                   alt={`photo${index}`}
-                  className="w-full mx-20 h-full object-cover rounded-3xl "
+                  className="w-full h-full object-cover rounded-3xl "
                 />
               </div>
             ))}

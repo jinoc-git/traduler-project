@@ -37,6 +37,7 @@ const Card: React.FC<CardProps> = ({
     'planning',
   );
   // console.log('bookMarkData=>', bookMarkData);
+  // console.log('plansData=>', plansData);
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
@@ -63,9 +64,6 @@ const Card: React.FC<CardProps> = ({
         await deletePlan(planId);
 
         setDeletedPlans([...deletedPlans, planId]);
-        navigate('/main');
-      } else {
-        navigate('/main');
       }
     } catch (error) {
       console.log('계획 삭제 오류', error);
@@ -84,7 +82,7 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div>
-      <div className="flex flex-row">
+      <div className="flex flex-row mt-[4px]">
         <div
           className={`cursor-pointer ${
             selectedPlan === 'planning' ? 'font-bold' : ''
@@ -151,7 +149,7 @@ const Card: React.FC<CardProps> = ({
             return (
               <div key={plan.id}>
                 <div
-                  className="flex mb-4 border-2 w-[800px] h-[200px]"
+                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[25px] shadow-lg"
                   onClick={() => {
                     navigate(`/plan/${plan.id}`);
                   }}
@@ -165,16 +163,24 @@ const Card: React.FC<CardProps> = ({
                       }
                     />
                     <div>
-                      {plan.plan_state === 'end'
-                        ? null
-                        : plan.dates[0] ===
-                          new Date().toISOString().split('T')[0]
-                        ? 'D-Day'
-                        : `D-${Math.ceil(
+                      {plan.plan_state === 'end' ? null : plan.dates[0] ===
+                        new Date().toISOString().split('T')[0] ? (
+                        <span className="text-red">D-Day</span>
+                      ) : (
+                        <span className="text-red">
+                          D-
+                          {Math.ceil(
                             (new Date(plan.dates[0]).getTime() -
                               new Date().getTime()) /
                               (1000 * 60 * 60 * 24),
-                          )}`}
+                          )}
+                        </span>
+                        // `D-${Math.ceil(
+                        //   (new Date(plan.dates[0]).getTime() -
+                        //     new Date().getTime()) /
+                        //     (1000 * 60 * 60 * 24),
+                        // )}`
+                      )}
                     </div>
                   </div>
 
@@ -182,9 +188,13 @@ const Card: React.FC<CardProps> = ({
                     <div className="flex">
                       {plan.title}
                       {plan.plan_state === 'planning' ? (
-                        <p>예정된 여행</p>
+                        <div className='className="bg-yellow rounded-3xl w-[70px] h-[25px] text-[9px] flex-center font-normal text-white"'>
+                          예정된 여행
+                        </div>
                       ) : (
-                        <p>다녀온 여행</p>
+                        <div className='className="bg-orange rounded-3xl w-[70px] h-[25px] text-[9px] flex-center font-normal text-white"'>
+                          다녀온 여행
+                        </div>
                       )}
                     </div>
                     <div>
@@ -215,7 +225,7 @@ const Card: React.FC<CardProps> = ({
                     </div>
                   </div>
 
-                  <div className="w-1/5 h-12">
+                  <div className="w-1/5 h-12 flex item-center justify-end">
                     <img
                       src={ic_delete_default_1x}
                       className="w-[20px] h-[20px] cursor-pointer"

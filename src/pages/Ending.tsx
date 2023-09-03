@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Carousel from '@components/carousel/Carousel';
 import Comments from '@components/comments/Comments';
 import Invite from '@components/common/invite/Invite';
 import TotalPay from '@components/pay/TotalPay';
@@ -22,6 +23,7 @@ const Ending = () => {
     >
       <Invite />
       <EndingMap />
+      <Carousel />
       <TotalPay />
       <Comments />
     </main>

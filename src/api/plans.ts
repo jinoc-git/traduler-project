@@ -288,3 +288,17 @@ export const getPlanEnding = async (planId: string) => {
   }
   return data;
 };
+
+export const getPlansDate = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
+
+  if (error !== null) {
+    console.log(error);
+    throw new Error('plans_ending 불러오기 오류발생');
+  }
+  
+  return data;
+};

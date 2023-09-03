@@ -84,7 +84,7 @@ const AddPhoto = () => {
           <span>여행 잘 다녀오셨나요?</span>
           <button
             onClick={handleButton}
-            className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
+            className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
           >
             여행 저장
           </button>

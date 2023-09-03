@@ -111,13 +111,16 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   const [map, setMap] = useState<any>();
 
   return (
-    <div className="fixed top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
-      <div className="flex flex-col p-10 justify-center bg-white w-[500px] h-[575px] rounded-lg px-[40px] py-[36px] gap-3">
+    <div className="fixed inset-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
+      <div className="flex flex-col justify-center bg-white w-modal h-modal_2 rounded-lg px-[40px] py-[36px] gap-3">
         <div className="text-[20px] font-bold">방문할 장소</div>
-        <div className="text-[16px] font-normal mb-[12px]">
+        <div className="text-[16px] font-normal mb-[20px]">
           방문할 장소와 관련된 정보를 저장하세요.
         </div>
-        <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
+        <form
+          onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}
+          className="flex flex-col gap-[16px]"
+        >
           <div className="flex flex-col">
             <label htmlFor="placeName">장소 이름</label>
             <input
@@ -135,7 +138,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
                   message: '모음, 자음 안됨',
                 },
               })}
-              className="border border-#4f4f4f rounded-lg p-3"
+              className="input-border"
             />
             <p>{errorsPlaceName?.placeName?.message}</p>
           </div>
@@ -157,7 +160,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
                 },
               })}
               onChange={(e) => debouncedSearchMap({ address: e.target.value })}
-              className="border border-#4f4f4f rounded-lg p-3"
+              className="input-border"
             />
             <p>{errors?.address?.message}</p>
           </div>
@@ -170,7 +173,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
               {...registerPlaceName('cost', {
                 valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
               })}
-              className="border border-#4f4f4f rounded-lg p-3"
+              className="input-border"
             />
           </div>
           <Map

@@ -32,7 +32,6 @@ const Favorite: React.FC<FavoriteProps> = ({
   >(addBookMark, {
     onMutate: async (newBookMark: BookMarkType) => {
       await queryClient.cancelQueries(['book_mark']);
-      console.log('onMutate 호출', newBookMark);
       const previousData = queryClient.getQueryData<BookMarkType[]>([
         'book_mark',
         userId,

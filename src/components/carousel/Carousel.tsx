@@ -6,7 +6,7 @@ import IconCamera from '@assets/icons/IconCamera';
 import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
-import '@egjs/flicking-plugins/dist/arrow.css';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 
 const Carousel = () => {
@@ -19,42 +19,55 @@ const Carousel = () => {
   });
 
   console.log('DATA', data);
+
   useEffect(() => {
     if (data !== null && data !== undefined) {
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       const photos: string[] = data[0]?.pictures || [];
-      setPhotoData(photos);
+      let extendedPhotos: string[] = [...photos];
+      if (photos.length < 4) {
+        while (extendedPhotos.length < 5) {
+          extendedPhotos = [...extendedPhotos, ...photos];
+        }
+      }
+      setPhotoData(extendedPhotos);
     }
   }, [data]);
 
   if (isLoading) {
     console.log('로딩중...');
   }
-
   return (
     <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
-      <label>
-        <IconCamera /> 사진첩
-      </label>
-      <Flicking
-        circular={true}
-        plugins={_plugins}
-        panelsPerView={3}
-        align="center"
-      >
-        {photoData.map((url: string, index: number) => (
-          <div
-            key={index}
-            className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
+      {photoData.length > 1 ? (
+        <>
+          <label className="flex items-center">
+            <span className="mr-3">
+              <IconCamera />
+            </span>
+            <p className="text-lg">사진첩</p>
+          </label>
+          <Flicking
+            circular={true}
+            plugins={_plugins}
+            panelsPerView={3}
+            align="center"
           >
-            <img
-              src={url}
-              alt={`photo${index}`}
-              className="w-full mx-20 h-full object-cover rounded-3xl "
-            />
-          </div>
-        ))}
-      </Flicking>
+            {photoData.map((url: string, index: number) => (
+              <div
+                key={uuid()}
+                className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
+              >
+                <img
+                  src={url}
+                  alt={`photo${index}`}
+                  className="w-full h-full object-cover rounded-3xl "
+                />
+              </div>
+            ))}
+          </Flicking>
+        </>
+      ) : null}
     </section>
   );
 };

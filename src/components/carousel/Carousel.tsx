@@ -6,7 +6,6 @@ import IconCamera from '@assets/icons/IconCamera';
 import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
-import '@egjs/flicking-plugins/dist/arrow.css';
 import { useQuery } from '@tanstack/react-query';
 
 const Carousel = () => {
@@ -19,11 +18,18 @@ const Carousel = () => {
   });
 
   console.log('DATA', data);
+
   useEffect(() => {
     if (data !== null && data !== undefined) {
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
       const photos: string[] = data[0]?.pictures || [];
-      setPhotoData(photos);
+      let extendedPhotos: string[] = [...photos];
+      if (photos.length < 4) {
+        while (extendedPhotos.length < 12) {
+          extendedPhotos = [...extendedPhotos, ...photos];
+        }
+      }
+      setPhotoData(extendedPhotos);
     }
   }, [data]);
 

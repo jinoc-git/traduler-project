@@ -31,7 +31,7 @@ const Favorite: React.FC<FavoriteProps> = ({
     { previousData: BookMarkType[] | undefined }
   >(addBookMark, {
     onMutate: async (newBookMark: BookMarkType) => {
-      await queryClient.cancelQueries(['book_mark', userId]);
+      await queryClient.cancelQueries(['book_mark']);
       console.log('onMutate 호출', newBookMark);
       const previousData = queryClient.getQueryData<BookMarkType[]>([
         'book_mark',
@@ -57,7 +57,7 @@ const Favorite: React.FC<FavoriteProps> = ({
       queryClient.setQueryData(['book_mark'], context?.previousData);
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['book_mark', userId]);
+      void queryClient.invalidateQueries(['book_mark']);
     },
   });
 
@@ -68,7 +68,7 @@ const Favorite: React.FC<FavoriteProps> = ({
     { previousData: BookMarkType[] | undefined }
   >(deleteBookMark, {
     onMutate: async (bookMarkId: string) => {
-      await queryClient.cancelQueries(['book_mark', userId]);
+      await queryClient.cancelQueries(['book_mark']);
       const previousData = queryClient.getQueryData<BookMarkType[]>([
         'book_mark',
         userId,
@@ -90,7 +90,7 @@ const Favorite: React.FC<FavoriteProps> = ({
       queryClient.setQueryData(['book_mark', userId], context?.previousData);
     },
     onSettled: () => {
-      void queryClient.invalidateQueries(['book_mark', userId]);
+      void queryClient.invalidateQueries(['book_mark']);
     },
   });
 

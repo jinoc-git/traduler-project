@@ -37,7 +37,7 @@ const Carousel = () => {
     return <Loading />;
   }
 
-  return photoData.length > 1 ? (
+  return photoData.length > 3 ? (
     <section className="w-[720px]">
       <div className="flex items-center my-[30px]">
         <IconCamera fill="#4E4F54" />

@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
   checkUserEmail,
@@ -58,31 +59,33 @@ const SignUpForm = () => {
     const res = await signUpWithSB(email, password, nickname);
 
     if (res instanceof AuthError || res instanceof Error) {
-      console.log('회원가입 에러');
+      toast.error('회원가입에 실패하였습니다.');
       return false;
     }
     reset();
-    console.log('성공');
+
+    toast.success('회원가입에 성공하였습니다');
     navigate('/main');
   };
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nicknameValue);
-    console.log(res);
+
     if (res) {
       setIsNicknameDuplicate(!res);
+      toast.success('사용 가능한 닉네임입니다.');
     } else {
-      console.log('닉네임 중복');
+      toast.warning('닉네임이 중복 되었습니다.');
     }
   };
 
   const checkEmailDuplication = async () => {
     const res = await checkUserEmail(emailValue);
-    console.log(res);
     if (res) {
       setIsEmailDuplicate(!res);
+      toast.success('사용 가능한 이메일입니다.');
     } else {
-      console.log('닉네임 중복');
+      toast.warning('이메일이 중복 되었습니다.');
     }
   };
 

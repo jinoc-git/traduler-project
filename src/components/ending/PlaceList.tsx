@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/return-await */
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -43,8 +44,10 @@ const PlaceList = () => {
         const pins = day[days[0]];
 
         return (
-          <div key={uuid()} className='text-center'>
-            <p className='mt-[15px] mb-[35px] text-lg font-bold text-gray_dark_1'>{days[0]}</p>
+          <div key={uuid()} className="text-center">
+            <p className="mt-[15px] mb-[35px] text-lg font-bold text-gray_dark_1">
+              {days[0]}
+            </p>
             {pins.map((pin, j) => {
               return (
                 <PinLayout

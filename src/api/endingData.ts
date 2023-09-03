@@ -168,3 +168,15 @@ export const getEndingCost = async (planId: string) => {
   console.log('pictureData: ', pictureData);
   return { distanceData, costData, pictureData };
 };
+
+export const getPhoto = async (planId: string) => {
+  const { data: endingData, error: endingError } = await supabase
+    .from('plans_ending')
+    .select('pictures')
+    .eq('id', planId);
+
+  if (endingError !== null) {
+    console.error('사진 불러오기 에러 from supabase.', endingError);
+  }
+  return endingData;
+};

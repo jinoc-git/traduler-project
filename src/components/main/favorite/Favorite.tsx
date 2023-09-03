@@ -18,9 +18,9 @@ interface FavoriteProps {
 const Favorite: React.FC<FavoriteProps> = ({
   isFavorite,
   bookMarkId,
-  planId /*, userId */,
+  planId,
 }) => {
-  const user = userStore.getState().user;
+  const user = userStore((state) => state.user);
   const queryClient = useQueryClient();
   const userId = user?.id;
 

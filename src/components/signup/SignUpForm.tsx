@@ -116,7 +116,7 @@ const SignUpForm = () => {
     <main className="flex-center w-screen h-screen">
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
-        className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] border gap-y-2.5 rounded-xl"
+        className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
       >
         <h2 className="border-black border-b-2 w-[72px] text-lg font-semibold	">
           회원가입
@@ -133,16 +133,18 @@ const SignUpForm = () => {
             type="text"
             id="nickname"
             {...register('nickname', nicknameValidator)}
-            className="border w-full h-[42px] px-8 rounded"
+            placeholder="닉네임을 입력하세요"
+            className="w-full h-[42px] px-8 rounded"
           />
           <button
             type="button"
             onClick={checkNicknameDuplication}
             disabled={
               Boolean(errors?.nickname?.message) ||
-              Boolean(nicknameValue?.length < 2)
+              Boolean(nicknameValue?.length < 2) ||
+              nicknameValue === undefined
             }
-            className="absolute top-[4px] right-[4px] h-[34px] p-1 border text-sm rounded"
+            className="absolute top-[4px] right-[4px] h-[34px] p-1 bg-blue_light_2 disabled:bg-gray_light_3 text-sm text-white rounded"
           >
             중복확인
           </button>
@@ -162,12 +164,18 @@ const SignUpForm = () => {
             type="text"
             id="email"
             {...register('email', emailValidator)}
-            className="border w-full h-[42px] px-8 rounded"
+            placeholder="이메일을 입력하세요"
+            className="w-full h-[42px] px-8 rounded"
           />
           <button
             type="button"
             onClick={checkEmailDuplication}
-            className="absolute top-[4px] right-[4px] h-[34px] p-1 border text-sm rounded"
+            disabled={
+              Boolean(errors?.email?.message) ||
+              emailValue === undefined ||
+              emailValue === ''
+            }
+            className="absolute top-[4px] right-[4px] h-[34px] p-1  bg-blue_light_2 disabled:bg-gray_light_3 text-sm text-white rounded"
           >
             중복확인
           </button>
@@ -188,7 +196,8 @@ const SignUpForm = () => {
             type={showPassword ? 'text' : 'password'}
             id="password"
             {...register('password', passwordValidator)}
-            className="border w-full h-[42px] px-8 rounded"
+            placeholder="최소 6자리를 입력하세요"
+            className="w-full h-[42px] px-8 rounded"
           />
           <img
             src={showPassword ? ic_visible_solid_1x : ic_visible_default_1x}
@@ -215,7 +224,8 @@ const SignUpForm = () => {
               required: true,
               validate: (v, fv) => fv.password === v,
             })}
-            className="border w-full h-[42px] px-8 rounded"
+            placeholder="비밀번호를 다시 입력하세요"
+            className="w-full h-[42px] px-8 rounded"
           />
           <img
             src={
@@ -233,7 +243,7 @@ const SignUpForm = () => {
           disabled={
             isSubmitting || !isValid || isNicknameDuplicate || isEmailDuplicate
           }
-          className="h-[45px] border rounded-lg"
+          className="h-[45px] rounded-lg text-white bg-blue hover:bg-blue_dark disabled:bg-gray_light_3"
         >
           회원가입
         </button>
@@ -245,7 +255,7 @@ const SignUpForm = () => {
         <button
           type="button"
           onClick={signInWithGoogle}
-          className="h-[45px] border rounded-lg"
+          className="h-[45px] border rounded-lg border-gray_light_3 hover:bg-gray_dark_1 hover:text-white"
         >
           <div className="flex-center">
             <img

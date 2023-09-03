@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
+import { ic_name_1x } from '@assets/icons/1x';
+import { ic_profile_3x } from '@assets/icons/3x';
+import IconClose from '@assets/icons/IconClose';
 import { defaultImageGray } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
@@ -35,7 +38,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     handleSubmit,
     register,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<EditProfileForm>({ mode: 'onChange' });
 
   const preview = watch('avatar');
@@ -134,9 +137,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   }, [preview]);
 
   return (
-    <div className="absolute top-0 z-10 flex-center w-screen h-screen bg-black/70">
+    <div className="absolute top-0 left-0 z-[40] flex-center w-screen h-screen bg-black/70">
       <form
-        className="relative flex flex-col p-10 items-center justify-between align-middle bg-white h-[400px]"
+        className="relative flex flex-col p-10 items-center justify-between align-middle bg-white h-[575px] rounded-xl"
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}
       >
         <button
@@ -144,34 +147,17 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           type="button"
           onClick={onClickCloseModalHandler}
         >
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16 1L1 16"
-              stroke="#606060"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M1 1L16 16"
-              stroke="#606060"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <IconClose />
         </button>
+        <div className='flex items-center gap-3 w-[408px]'>
+          <img src={ic_profile_3x} alt="프로필 아이콘" className='w-[30px] h-[30px]'/>
+          <p className=' text-xlg font-semibold'>프로필 편집</p>
+        </div>
         <label htmlFor="avatar">
           <img
             src={previewImg !== '' ? previewImg : defaultImageGray}
             alt="프로필이미지"
-            className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer"
+            className="w-[200px] h-[200px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer"
           />
         </label>
         <input
@@ -186,33 +172,53 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
         </p>
         <div>
-          <input
-            type="text"
-            {...register('nickname', { ...nicknameValidator, required: false })}
-            className="border"
-            placeholder={user?.nickname}
-          />
-          <button
-            type="button"
-            onClick={checkNicknameDuplication}
-            className="border"
-          >
-            중복확인
-          </button>
-          {errors.nickname !== null && <p>{errors.nickname?.message}</p>}
+          <div className="flex justify-between w-[370px]">
+            <div className="relative">
+              <label htmlFor="edit-nickname">
+                <img
+                  src={ic_name_1x}
+                  alt="이메일 아이콘"
+                  className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
+                />
+              </label>
+              <input
+                type="text"
+                id="edit-nickname"
+                {...register('nickname', {
+                  ...nicknameValidator,
+                  required: false,
+                })}
+                className=" w-[275px] h-[40px] px-8 rounded-md border"
+                placeholder={user?.nickname}
+              />
+            </div>
+            <button
+              type="button"
+              disabled={!isValid || nickname === ''}
+              onClick={checkNicknameDuplication}
+              className="w-[87px] h-[40px] rounded-md bg-blue border text-white  disabled:bg-gray_light_3"
+            >
+              중복확인
+            </button>
+          </div>
+          {errors.nickname !== null && (
+            <p className="mt-3 h-[18px] text-center">
+              {errors.nickname?.message}
+            </p>
+          )}
         </div>
-        <div>
+        <div className="flex justify-between w-[408px]">
           <button
             type="button"
             onClick={removeAvartarBtnHandler}
-            className="bg-slate-400 mr-2"
+            className="w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1"
           >
             사진 제거
           </button>
           <button
             disabled={shouldBlockSubmitBtn}
             type="submit"
-            className="bg-slate-400"
+            className="w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3"
           >
             프로필 변경 {isSubmitting && '제출중'}
           </button>

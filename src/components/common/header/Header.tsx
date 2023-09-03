@@ -29,7 +29,6 @@ const Header = () => {
     authObserver();
     if (isLogin === 'false') {
       setVisibilityIcon(false);
-      // navigate('/signin');
     } else {
       if (pathname === '/') {
         setVisibilityIcon(false);

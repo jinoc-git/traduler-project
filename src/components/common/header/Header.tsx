@@ -17,6 +17,12 @@ const Header = () => {
   const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
 
+  const goToMain = () => {
+    if (user !== null) {
+      navigate('/main');
+    }
+  };
+
   useEffect(() => {
     authObserver();
     if (user === null) {
@@ -25,7 +31,7 @@ const Header = () => {
       setVisibilityIcon(true);
     }
   }, [user]);
-  console.log(isSideBarOpen)
+
   return (
     <header
       className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
@@ -33,21 +39,24 @@ const Header = () => {
       }`}
     >
       <div className=" flex items-center">
-        <h1
-          onClick={() => {
-            navigate('/main');
-          }}
-          className=" ml-[88px] cursor-pointer"
-        >
-          {pathname === '/main' ? isSideBarOpen ? (
-            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+        <h1 onClick={goToMain} className=" ml-[88px] cursor-pointer">
+          {pathname === '/main' ? (
+            isSideBarOpen ? (
+              <img
+                src={logoColor}
+                alt="로고"
+                className=" w-[134px] ml-[10px]"
+              />
+            ) : (
+              <img
+                src={logoWhite}
+                alt="로고"
+                className=" w-[134px] ml-[10px]"
+              />
+            )
           ) : (
-            <img src={logoWhite} alt="로고" className=" w-[134px] ml-[10px]" />
-          ) : (
             <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
-          )
-
-          }
+          )}
         </h1>
       </div>
       {user !== null ? (

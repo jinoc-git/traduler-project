@@ -1,9 +1,27 @@
-import React from 'react'
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+
+import { userStore } from '@store/userStore';
 
 const ProtectRoute = () => {
-  return (
-    <div>ProtectRoute</div>
-  )
-}
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const user = userStore((state) => state.user);
+  console.log(user);
 
-export default ProtectRoute
+  useEffect(() => {
+    if (user === null) {
+      if (
+        pathname !== '/' &&
+        pathname !== '/signin' &&
+        pathname !== '/signup'
+      ) {
+        navigate('/signin');
+      }
+    }
+  }, [pathname]);
+
+  return null;
+};
+
+export default ProtectRoute;

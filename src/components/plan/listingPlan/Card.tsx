@@ -43,14 +43,6 @@ const Card: React.FC<CardProps> = ({
   const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
 
-  // const filterData = plansData
-  //   ?.filter((plan) =>
-  //     selectedPlan === 'planning'
-  //       ? plan.plan_state === 'planning' || plan.plan_state === 'traveling'
-  //       : plan.plan_state === 'end',
-  //   )
-  //   .filter((plan) => !plan.isDeleted);
-
   const filterData = plansData
     ?.filter((plan) => {
       if (selectedPlan === 'traveling') {
@@ -65,10 +57,6 @@ const Card: React.FC<CardProps> = ({
     .filter((plan) => !plan.isDeleted);
 
   // 삭제된 계획
-
-  // const deletePlanMutation = useMutation(async (planId: string) => {
-  //   await deletePlan(planId);
-  // });
 
   const handleDeletePlan = async (planId: string) => {
     try {
@@ -150,7 +138,7 @@ const Card: React.FC<CardProps> = ({
             </div>
           ) : selectedPlan === 'traveling' ? (
             <div>
-              <p>아직 여행중인 일정이 없으시군요!</p>
+              <p>여행중인 일정이 없으시군요!</p>
               <p>새로운 Tra-dule을 만들어보세요 :)</p>
             </div>
           ) : (
@@ -181,14 +169,14 @@ const Card: React.FC<CardProps> = ({
             );
 
             return (
-              <div key={plan.id}>
+              <div key={plan.id} className="mt-[16px]">
                 <div
-                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[25px] shadow-lg"
+                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card"
                   onClick={() => {
                     navigate(`/plan/${plan.id}`);
                   }}
                 >
-                  <div className="w-1/5 h-12">
+                  <div className="w-1/5 mt-[24px]">
                     <Favorite
                       isFavorite={Boolean(isFavorite)}
                       planId={plan.id}
@@ -213,11 +201,13 @@ const Card: React.FC<CardProps> = ({
                     </div>
                   </div>
 
-                  <div className="w-3/5 h-12">
-                    <div className="flex">
-                      {plan.title}
+                  <div className="w-3/5 h-xs">
+                    <div className="flex items-center ">
+                      <div className="text-gray_dark_1 text-xlg">
+                        {plan.title}
+                      </div>
                       {plan.plan_state === 'planning' ? (
-                        <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                        <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ">
                           예정된 여행
                         </div>
                       ) : plan.plan_state === 'traveling' ? (
@@ -230,7 +220,7 @@ const Card: React.FC<CardProps> = ({
                         </div>
                       )}
                     </div>
-                    <div>
+                    <div className="text-gray_dark_1 text-lg">
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                       {plan.dates.length}일
                     </div>
@@ -252,16 +242,16 @@ const Card: React.FC<CardProps> = ({
                           );
                         })}
                       </div>
-                      <div>
+                      <div className='"text-gray_dark_1 text-sm'>
                         {participantsNicknameList.map((name) => `${name} `)}
                       </div>
                     </div>
                   </div>
 
-                  <div className="w-1/5 h-12 flex item-center justify-end">
+                  <div className="w-1/5 h-xs flex item-center justify-end">
                     <img
                       src={ic_delete_default_1x}
-                      className="w-[20px] h-[20px] cursor-pointer"
+                      className="w-[20px] h-[20px] cursor-pointer mt-lg"
                       onClick={async () => {
                         await handleDeletePlan(plan.id);
                         navigate('/main');

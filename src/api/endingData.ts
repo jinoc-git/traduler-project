@@ -154,3 +154,15 @@ export const getEndingCost = async () => {
   // console.log('datesCost: ', datesCost);
   return { totalCost };
 };
+
+export const getPhoto = async (planId: string) => {
+  const { data: endingData, error: endingError } = await supabase
+    .from('plans_ending')
+    .select('pictures')
+    .eq('id', planId);
+
+  if (endingError !== null) {
+    console.error('사진 불러오기 에러 from supabase.', endingError);
+  }
+  return endingData;
+};

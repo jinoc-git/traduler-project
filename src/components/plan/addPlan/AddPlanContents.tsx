@@ -84,6 +84,7 @@ const AddPlanContents = ({
                 <PinLayout
                   pin={pin}
                   idx={idx}
+                  isEnding={false}
                   updatePin={updatePin}
                   deletePin={deletePin}
                 />

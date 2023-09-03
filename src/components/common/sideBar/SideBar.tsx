@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { ic_menu_1x } from '@assets/icons/1x';
 import { logoColor } from '@assets/index';
+import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -67,11 +68,11 @@ const SideBar: React.FC = () => {
   );
 
   if (matesData === null) {
-    return <div>로딩중 ...</div>;
+    return <Loading />;
   }
 
   if (matesLoading) {
-    return <div>로딩중 ..</div>;
+    return <Loading />;
   }
   if (matesError) {
     return <div>오류</div>;

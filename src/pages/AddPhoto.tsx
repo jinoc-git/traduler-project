@@ -9,10 +9,12 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
+import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
 
 const AddPhoto = () => {
+  const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
 
   const { id } = useParams();
@@ -67,19 +69,30 @@ const AddPhoto = () => {
   }
 
   return (
-    <>
-      newContents
+    <main
+      className={`transition-all duration-300 ease-in-out pt-[108px]  ${
+        isVisibleSideBar
+          ? isSideBarOpen
+            ? 'w-[calc(100vw-270px)] ml-[270px]'
+            : 'w-[calc(100vw-88px)] ml-[88px]'
+          : 'w-[calc(100vw)] ml-0'
+      }`}
+    >
       <h2> 사진</h2>
-      <h3>10개 까지 추가 가능합니다.</h3>
-      <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
-      <button
-        style={{ marginLeft: '200px' }}
-        onClick={handleButton}
-        className="p-3 border rounded-lg border-gray w-[130px]"
-      >
-        사진 저장
-      </button>
-    </>
+      <section className="main-layout">
+        <h3>10개 까지 추가 가능합니다.</h3>
+        <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
+        <div className="flex justify-end items-center mt-[106px]">
+          <span className="mr-6">여행 잘 다녀오셨나요?</span>
+          <button
+            onClick={handleButton}
+            className="flex-center w-[130px] h-[43px] border border-blue_light_2 rounded-lg text-blue "
+          >
+            여행 저장
+          </button>
+        </div>
+      </section>
+    </main>
   );
 };
 

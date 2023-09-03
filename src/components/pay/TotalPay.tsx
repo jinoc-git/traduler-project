@@ -78,8 +78,15 @@ const TotalPay = () => {
           <p>총 사용 경비는 {endingInfo.totalPay}원 입니다.</p>
           <br />
           <br />
-          <p>{endingInfo.remainingBudget}남았네요</p>
-          <p>인당 {endingInfo.perPersonCost}정산해주세요!</p>)
+          {endingInfo.remainingBudget >= 0
+            ? `+ ${endingInfo.remainingBudget}원 남았네요`
+            : `${Math.abs(endingInfo.remainingBudget)}원 예산 초과 되셨네요`}
+          <br />
+          {endingInfo.perPersonCost > 0
+            ? `인당 ${endingInfo.perPersonCost}원 정산해주세요!`
+            : `초과 예산 인당 ${Math.abs(
+                endingInfo.perPersonCost,
+              )}원 추가 정산해주세요!`}
         </>
       ) : (
         <p>Ending Info is undefined</p>

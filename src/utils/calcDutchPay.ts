@@ -14,8 +14,8 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
     }
 
     const totalPay = dailyPaySum.reduce((acc, val) => acc + val, 0);
-    const perPersonCost = totalPay / countPeople;
-    const remainingBudget = endingTotalCost - perPersonCost;
+    const remainingBudget = Math.floor(endingTotalCost - totalPay);
+    const perPersonCost = Math.floor(remainingBudget / countPeople);
     const datesAndPaySum = dailyDates.map((date, i) => ({
       [date]: dailyPaySum[i],
     }));

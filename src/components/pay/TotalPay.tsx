@@ -3,12 +3,24 @@ import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
 import { getTotalCost } from '@api/plans';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 import { calcDutchPay } from '@utils/calcDutchPay';
+import { removeYearOfDate } from '@utils/changeFormatDay';
+
+type DatesAndPaySum = Record<string, number>;
 
 const TotalPay = () => {
   const [totalCost, setTotalCost] = useState<number | null>(null);
-  // state를 설정하라
+  const [endingInfo, setEndingInfo] = useState<
+    | {
+        remainingBudget: number;
+        totalPay: number;
+        perPersonCost: number;
+        datesAndPaySum: DatesAndPaySum[];
+      }
+    | undefined
+  >();
   const { id: planId } = useParams();
 
   const { data: invitePeople } = useQuery(['planMates', planId], async () => {
@@ -23,7 +35,7 @@ const TotalPay = () => {
     const getRemainingBudget = async () => {
       if (planId !== undefined && countPeople !== undefined) {
         const remainingBudget = await calcDutchPay(planId, countPeople);
-        // setstate해서 안에다가 뿌려줘라
+        setEndingInfo(remainingBudget);
         console.log('remainingBudget: ', remainingBudget);
       }
     };
@@ -49,13 +61,29 @@ const TotalPay = () => {
   return (
     <div>
       <p>예산은 {totalCost}원 입니다.</p>
-      <p>2023.08.21 </p>
-      <p>2023.08.22 120000원</p>
-      {/* <p>총 사용 경비는 {}원 입니다.</p> */}
-      <br />
-      <br />
-      <p>남았네요</p>
-      {/* <p>인당 {remainingBudget}정산해주세요!</p> */}
+      {endingInfo != null ? (
+        <>
+          <div>
+            {endingInfo?.datesAndPaySum.map((item) => {
+              const day = removeYearOfDate(Object.keys(item)[0]);
+              const pay = Object.values(item)[0];
+              return (
+                <div key={uuid()}>
+                  <span>{day}</span> &nbsp;
+                  <span>{pay}원</span>
+                </div>
+              );
+            })}
+          </div>
+          <p>총 사용 경비는 {endingInfo.totalPay}원 입니다.</p>
+          <br />
+          <br />
+          <p>{endingInfo.remainingBudget}남았네요</p>
+          <p>인당 {endingInfo.perPersonCost}정산해주세요!</p>)
+        </>
+      ) : (
+        <p>Ending Info is undefined</p>
+      )}
     </div>
   );
 };

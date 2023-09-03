@@ -20,6 +20,8 @@ export const userStore = create<UserStore>((set, get) => {
     supabase.auth.onAuthStateChange((event, session) => {
       const currentUser = get().user;
       if (session !== null && currentUser === null) {
+        localStorage.setItem('isLogin', 'true');
+
         if (session.user.app_metadata.provider === 'google') {
           const {
             id,
@@ -51,6 +53,8 @@ export const userStore = create<UserStore>((set, get) => {
 
           set({ user });
         }
+      } else if (session === null) {
+        localStorage.setItem('isLogin', 'false');
       }
     });
   };

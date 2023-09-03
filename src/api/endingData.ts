@@ -133,24 +133,38 @@ export const insertPlanEnding = async (options: Options) => {
   console.log('error: ', error);
 };
 
-// 예산 및 사용 내역 가져오기
-export const getEndingCost = async () => {
-  const { data: plansData, error: plansError } = await supabase
-    .from('plans')
-    .select('total_cost');
+// plans_ending 데이터 불러오기
+export const getEndingCost = async (planId: string) => {
+  const { data: distanceData, error: distanceError } = await supabase
+    .from('plans_ending')
+    .select('distance');
 
-  // const { data: endingData, error: endingError } = await supabase
-  //   .from('plans_ending')
-  //   .select('dates_cost');
-
-  if (plansError !== null) {
-    console.error('Error fetching data from Supabase.');
+  if (distanceError !== null) {
+    console.log(distanceError);
     return;
   }
 
-  const totalCost = plansData[0].total_cost;
-  // const datesCost = endingData[0];
-  console.log('totalCost: ', totalCost);
-  // console.log('datesCost: ', datesCost);
-  return { totalCost };
+  const { data: costData, error: costError } = await supabase
+    .from('plans_ending')
+    .select('dates_cost')
+    .eq('plan_id', planId);
+
+  if (costError !== null) {
+    console.log(costError);
+    return;
+  }
+
+  const { data: pictureData, error: pictureError } = await supabase
+    .from('plans_ending')
+    .select('pictures');
+
+  if (pictureError !== null) {
+    console.log(pictureError);
+    return;
+  }
+
+  console.log('distanceData', distanceData);
+  console.log('costData: ', costData);
+  console.log('pictureData: ', pictureData);
+  return { distanceData, costData, pictureData };
 };

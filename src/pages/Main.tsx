@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
 import Profile from '@components/main/profile/Profile';
-// import Pay from '@components/pay/pay';
 import CardSection from '@components/plan/listingPlan/CardSection';
 import { sideBarStore } from '@store/sideBarStore';
 

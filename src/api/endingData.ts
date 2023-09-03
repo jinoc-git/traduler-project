@@ -183,6 +183,23 @@ export const getPhoto = async (planId: string) => {
   return endingData;
 };
 
+// plans 날짜 불러오기
+export const getDates = async (planId: string) => {
+  const { data, error: plansError } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
+
+  if (plansError !== null || data === null) {
+    console.log(plansError);
+    throw new Error('오류발생');
+  }
+
+  const datesArray = data[0].dates;
+
+  return datesArray;
+};
+
 export const getPlaceWithDate = async (planId: string) => {
   const placeDataList = await getAllPins(planId);
   const planDateList = await getPlansDate(planId);

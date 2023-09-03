@@ -29,7 +29,6 @@ const AddPhoto = () => {
 
   const handleButton = async () => {
     // 전체 거리 계산 데이터
-    console.log('=>', distancePin);
     const distanceDataList = await calcAllPath(distancePin);
     // 전체 비용 계산 데이터
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
@@ -52,10 +51,8 @@ const AddPhoto = () => {
   useEffect(() => {
     if (data !== undefined && data !== null) {
       const response = data.map((item) => {
-        console.log('detailData.contents:', item);
         return item;
       });
-      console.log(response);
       setDistancePin(response as PinContentsType[][]);
     }
   }, [data]);

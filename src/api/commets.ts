@@ -5,7 +5,6 @@ import { supabase } from './supabaseAuth';
 export const addComment = async (newComment: CommentsType) => {
   const { error } = await supabase.from('comments').insert(newComment);
   if (error !== null) {
-    console.log(error);
     throw new Error('댓글 작성 오류 발생');
   }
 };
@@ -17,7 +16,6 @@ export const getComments = async (planId: string) => {
     .eq('plan_id', planId)
     .order('created_at');
   if (error !== null) {
-    console.log(error);
     throw new Error('댓글 가져오기 오류 발생');
   }
   if (data !== null) {
@@ -31,7 +29,6 @@ export const deleteComment = async (commentId: string) => {
     .delete()
     .eq('id', commentId);
   if (error !== null) {
-    console.log(error);
     throw new Error('댓글 가져오기 오류 발생');
   }
 };

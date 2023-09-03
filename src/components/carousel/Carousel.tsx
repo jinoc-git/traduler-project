@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { getPhoto } from '@api/endingData';
 import IconCamera from '@assets/icons/IconCamera';
+import Loading from '@components/loading/Loading';
 import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
@@ -33,18 +34,18 @@ const Carousel = () => {
   }, [data]);
 
   if (isLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
-  return photoData.length > 1 ? (
-    <section>
-      <label className="flex items-center">
-        <span className="mr-3">
-          <IconCamera fill="#4E4F54" />
-        </span>
-        <p className="text-lg font-semibold text-gray_dark_1">사진첩</p>
-      </label>
-      <div className="w-[720px] p-5 overflow-hidden ">
+  return photoData.length > 3 ? (
+    <section className="w-[720px]">
+      <div className="flex items-center my-[30px]">
+        <IconCamera fill="#4E4F54" />
+        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
+          사진첩
+        </div>
+      </div>
+      <div className="w-[720px] p-5 overflow-hidden">
         <Flicking
           circular={true}
           plugins={_plugins}

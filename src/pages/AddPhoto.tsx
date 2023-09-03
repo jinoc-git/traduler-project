@@ -9,6 +9,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
+import Loading from '@components/loading/Loading';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
@@ -58,7 +59,7 @@ const AddPhoto = () => {
   }, [data]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // 로딩 중일 때 보여줄 내용
+    return <Loading />;
   }
 
   if (isError) {
@@ -79,11 +80,11 @@ const AddPhoto = () => {
       <section className="main-layout">
         <h3>10개 까지 추가 가능합니다.</h3>
         <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
-        <div className="flex justify-end items-center mt-[106px]">
-          <span className="mr-6">여행 잘 다녀오셨나요?</span>
+        <div className="flex my-[100px] items-center justify-end gap-5">
+          <span>여행 잘 다녀오셨나요?</span>
           <button
             onClick={handleButton}
-            className="flex-center w-[130px] h-[43px] border border-blue_light_2 rounded-lg text-blue "
+            className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
           >
             여행 저장
           </button>

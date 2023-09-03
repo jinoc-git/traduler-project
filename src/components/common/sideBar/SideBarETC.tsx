@@ -10,7 +10,7 @@ import { userStore } from '@store/userStore';
 const SideBarETC = () => {
   const navigate = useNavigate();
   const resetUser = userStore((state) => state.resetUser);
-  const { isSideBarOpen, toggleMenu } = sideBarStore();
+  const { isSideBarOpen } = sideBarStore();
 
   const onClickAddPlan = () => {
     navigate('/addPlan');
@@ -18,9 +18,8 @@ const SideBarETC = () => {
 
   const onClickSignOutHandler = async () => {
     await signOutForSB();
+    navigate('/signin');
     resetUser();
-    navigate('/main');
-    toggleMenu();
   };
 
   return (

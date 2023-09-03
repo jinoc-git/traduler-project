@@ -12,6 +12,7 @@ import {
 } from '@api/plans';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
+import Loading from '@components/loading/Loading';
 import Pay from '@components/plan/Pay';
 import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
@@ -118,11 +119,7 @@ const Plan = () => {
   }, [data, planEnding]);
 
   if (isLoading || isPlanEndingLoading) {
-    return (
-      <div className="felx-center text-[400px] text-center font-extrabold">
-        로딩중...
-      </div>
-    );
+    return <Loading />;
   }
 
   const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
@@ -164,7 +161,7 @@ const Plan = () => {
             <UpdatePlan />
             <div className="flex items-center justify-end gap-5 mt-16">
               {planState === 'planning' ? (
-                <>
+                <div className="flex my-[100px] items-center justify-end gap-5">
                   <p>여행을 떠날 준비가 되셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
@@ -172,9 +169,9 @@ const Plan = () => {
                   >
                     여행 시작
                   </button>
-                </>
+                </div>
               ) : (
-                <>
+                <div className="flex my-[100px] items-center justify-end gap-5">
                   <p>여행 일정을 마치셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
@@ -182,7 +179,7 @@ const Plan = () => {
                   >
                     여행 완료
                   </button>
-                </>
+                </div>
               )}
             </div>
           </PlanLayout>

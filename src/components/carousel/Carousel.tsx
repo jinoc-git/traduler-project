@@ -55,12 +55,12 @@ const Carousel = () => {
           {photoData.map((url: string, index: number) => (
             <div
               key={uuid()}
-              className="relative cursor-pointer  brightness-75 hover:brightness-100 transition-filter duration-400"
+              className="relative cursor-pointer brightness-75 hover:brightness-100 transition-filter duration-400"
             >
               <img
                 src={url}
                 alt={`photo${index}`}
-                className="w-full h-full object-cover rounded-3xl "
+                className="object-cover w-full h-full rounded-3xl "
               />
             </div>
           ))}

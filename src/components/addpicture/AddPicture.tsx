@@ -58,7 +58,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             onClick={() => {
               fileRef?.current?.click();
             }}
-            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 flex items-center justify-center font-Regular text-gray-300"
+            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 mr-[20px] flex items-center justify-center font-Regular text-gray-300"
           >
             <div className="flex items-center">
               <IconUploadPicture fill="#4E4F54" />

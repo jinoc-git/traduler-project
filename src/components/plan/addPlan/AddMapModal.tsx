@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
@@ -112,6 +112,13 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   };
 
   const [map, setMap] = useState<any>();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'hidden';
+    };
+  });
 
   return (
     <ModalLayout>

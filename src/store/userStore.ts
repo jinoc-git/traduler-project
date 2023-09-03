@@ -5,12 +5,13 @@ interface UserInfo {
   id: string;
   email: string;
   nickname: string;
+  profileImg: string | null;
 }
 
 interface UserStore {
   user: UserInfo | null;
-  // isLogin: boolean;
   authObserver: () => void;
+  setUser: (user: UserInfo) => void;
   resetUser: () => void;
 }
 
@@ -19,21 +20,47 @@ export const userStore = create<UserStore>((set, get) => {
     supabase.auth.onAuthStateChange((event, session) => {
       const currentUser = get().user;
       if (session !== null && currentUser === null) {
-        const {
-          id,
-          email,
-          user_metadata: { nickname },
-        } = session.user;
+        localStorage.setItem('isLogin', 'true');
 
-        const user: UserInfo = {
-          id,
-          email: email as string,
-          nickname,
-        };
+        if (session.user.app_metadata.provider === 'google') {
+          const {
+            id,
+            email,
+            user_metadata: { name: nickname, profileImg },
+          } = session.user;
 
-        set({ user });
+          const user: UserInfo = {
+            id,
+            email: email as string,
+            nickname,
+            profileImg: profileImg ?? null,
+          };
+
+          set({ user });
+        } else {
+          const {
+            id,
+            email,
+            user_metadata: { nickname, profileImg },
+          } = session.user;
+
+          const user: UserInfo = {
+            id,
+            email: email as string,
+            nickname,
+            profileImg: profileImg ?? null,
+          };
+
+          set({ user });
+        }
+      } else if (session === null) {
+        localStorage.setItem('isLogin', 'false');
       }
     });
+  };
+
+  const setUser = (user: UserInfo) => {
+    set({ user });
   };
 
   const resetUser = () => {
@@ -44,6 +71,7 @@ export const userStore = create<UserStore>((set, get) => {
     user: null,
     // isLogin: false,
     authObserver,
+    setUser,
     resetUser,
   };
 });

@@ -47,6 +47,7 @@ module.exports = {
         modal: '500px',
         card: '800px',
         plan: '720px',
+        pin_card: '600px',
       },
       height: {
         auth_1: '410px',
@@ -54,6 +55,7 @@ module.exports = {
         modal_1: '575px',
         modal_2: '675px',
         card: '150px',
+        pin_card: '100px',
       },
       padding: {
         modal: '36px 40px',
@@ -62,6 +64,7 @@ module.exports = {
         base: '0px 20px 20px 0px rgba(0, 0, 0, 0.08), 0px 0px 2px 0px rgba(0, 0, 0, 0.12)',
         sideBar: '4px 4px 50px 2px rgba(0, 0, 0, 0.05) inset',
         card: ' 2px 6px 50px 2px rgba(0, 0, 0, 0.05)',
+        index: '0px 2px 2px rgba(0, 0, 0, 0.10)',
       },
     },
   },

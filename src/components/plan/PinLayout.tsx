@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
 import { type PinContentsType } from '@api/pins';
 
@@ -9,9 +9,10 @@ interface PropsType {
   idx: number;
   updatePin: (idx: number) => void;
   deletePin: (idx: number) => void;
+  children?: ReactNode;
 }
 
-const PinLayout = ({ pin, idx, updatePin, deletePin }: PropsType) => {
+const PinLayout = ({ pin, idx, updatePin, deletePin, children }: PropsType) => {
   return (
     <div className="flex items-center justify-between gap-4">
       <div className="absolute translate-x-[17.5px] -z-10 border border-l-black h-[116px]" />
@@ -19,6 +20,7 @@ const PinLayout = ({ pin, idx, updatePin, deletePin }: PropsType) => {
         {idx + 1}
       </p>
       <div className="flex items-center justify-between border rounded-lg w-pin_card h-pin_card border-gray_dark_1 p-[30px] py-[8px] mb-[10px]">
+        {children}
         <div className="flex flex-col text-normal text-gray_dark_1 ">
           {pin !== null && typeof pin === 'object' && 'placeName' in pin && (
             <span className="font-bold">{pin.placeName}</span>

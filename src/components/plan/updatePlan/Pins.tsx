@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import { calcPath } from '@api/path';
 import { type PinContentsType, getPin, deletePin } from '@api/pins';
+import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import { updatePinStore } from '@store/updatePinStore';
@@ -26,6 +27,9 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
+  };
+  const closeModal = () => {
+    setIsOpenModal(false);
   };
 
   const { id } = useParams();
@@ -85,23 +89,27 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   return (
     <>
-      <div className="flex gap-3 mb-5">
-        <IconPin />
-        <h3>방문할 장소</h3>
+      <div className="flex flex-col justify-center gap-5">
+        <div className="flex items-center mt-[36px]">
+          <IconPin w="20" h="25" fill="#4E4F54" />
+          <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+            방문할 장소
+          </div>
+        </div>
       </div>
       <DndProvider backend={HTML5Backend}>
-        <ul className="flex flex-col gap-4 ">
+        <ul className="flex flex-col ">
           {pinArr.map((pin, idx) => {
-            const betweenDistanceData = distanceData[idx] ?? '';
-            const pinArrLength = pinArr.length;
+            // const betweenDistanceData = distanceData[idx] ?? '';
+            // const pinArrLength = pinArr.length;
             return (
               <Pin
                 key={`${pin.lat as number}`}
                 pin={pin}
                 id={`${pin.lat as number}`}
                 idx={idx}
-                betweenDistanceData={betweenDistanceData}
-                pinArrLength={pinArrLength}
+                // betweenDistanceData={betweenDistanceData}
+                // pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
                 movePins={movePins}
@@ -110,12 +118,21 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           })}
         </ul>
       </DndProvider>
-      <button onClick={openModal} className="p-5 bg-slate-500">
-        장소 추가하기
-      </button>
+      <div className="flex items-center justify-between my-[8px]">
+        {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
+        <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
+        <button
+          type="button"
+          onClick={openModal}
+          className="w-pin_card h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1"
+        >
+          장소 추가하기
+        </button>
+      </div>
       {isOpenModal && (
         <MapModal
           openModal={openModal}
+          closeModal={closeModal}
           date={dates[currentPage]}
           currentPage={currentPage}
         />

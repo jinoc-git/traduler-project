@@ -10,7 +10,6 @@ import Nav from '@components/common/nav/Nav';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
 import DatePage from '@components/plan/DatePage';
 import Pay from '@components/plan/Pay';
-import PayLayout from '@components/plan/PayLayout';
 import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
 import { datesStore } from '@store/datesStore';
@@ -120,9 +119,7 @@ const AddPlan = () => {
         <div className="flex flex-col mx-auto w-[700px]">
           <PostPlan state={'addPlan'} />
           <Invite />
-          <PayLayout>
-            <Pay register={register} errors={errors} />
-          </PayLayout>
+          <Pay register={register} errors={errors} />
           <DatePage
             dates={dates}
             handleNextPage={handleNextPage}

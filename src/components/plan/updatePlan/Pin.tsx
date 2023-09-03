@@ -7,14 +7,14 @@ import IconSixDots from '@assets/icons/IconSixDots';
 import { type Identifier } from 'dnd-core';
 // import _ from 'lodash';
 
-import DropDown from './DropDown';
+import PinLayout from '../PinLayout';
 
 interface PinProps {
   id: string;
   pin: PinContentsType;
   idx: number;
-  betweenDistanceData: string;
-  pinArrLength: number;
+  // betweenDistanceData: string;
+  // pinArrLength: number;
   handleUpdate: (idx: number) => void;
   handleDelete: (idx: number) => void;
   movePins: (beforeIdx: number, afterIdx: number) => void;
@@ -30,8 +30,8 @@ const Pin = (props: PinProps) => {
     id,
     pin,
     idx,
-    betweenDistanceData,
-    pinArrLength,
+    // betweenDistanceData,
+    // pinArrLength,
     handleUpdate,
     handleDelete,
     movePins,
@@ -99,63 +99,18 @@ const Pin = (props: PinProps) => {
     <li
       ref={dragBoxRef}
       data-handler-id={handlerId}
-      className={`flex gap-[10px] h-[100px] transition-all ${
-        isDragging ? 'opacity-0' : 'opacity-100'
-      }`}
+      className={`transition-all ${isDragging ? 'opacity-0' : 'opacity-100'}`}
     >
-      <div className="w-[65px]">
-        <p>{idx + 1}</p>
-        {idx < pinArrLength - 1 && (
-          <div>
-            <p>{betweenDistanceData}</p>
-          </div>
-        )}
-      </div>
-      <div className="flex w-full border">
+      <PinLayout
+        pin={pin}
+        idx={idx}
+        updatePin={handleUpdate}
+        deletePin={handleDelete}
+      >
         <button ref={dragRef} className="flex-center w-[50px] m-3">
           <IconSixDots fill="orange" />
         </button>
-        <div className="flex flex-col justify-center gap-2 w-full">
-          <p>
-            {pin !== null && typeof pin === 'object' && 'placeName' in pin && (
-              <span>{pin.placeName as string}</span>
-            )}
-          </p>
-          <p>
-            {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-              <span>￦{pin.cost}</span>
-            )}
-          </p>
-        </div>
-        <div className="flex items-center ">
-          <DropDown>
-            <ul className="absolute left-0 bottom-[-60px] rounded-md bg-white">
-              <li
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-                onClick={() => {
-                  handleUpdate(idx);
-                }}
-                className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
-              >
-                수정
-              </li>
-              <li
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-                onClick={() => {
-                  handleDelete(idx);
-                }}
-                className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
-              >
-                삭제
-              </li>
-            </ul>
-          </DropDown>
-        </div>
-      </div>
+      </PinLayout>
     </li>
   );
 };

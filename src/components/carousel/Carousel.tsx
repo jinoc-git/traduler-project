@@ -38,13 +38,13 @@ const Carousel = () => {
   }
 
   return photoData.length > 1 ? (
-    <section>
-      <label className="flex items-center">
-        <span className="mr-3">
-          <IconCamera />
-        </span>
-        <p className="text-lg">사진첩</p>
-      </label>
+    <section className="w-[720px]">
+      <div className="flex items-center">
+        <IconCamera w="20" h="25" fill="#4E4F54" />
+        <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+          사진첩
+        </div>
+      </div>
       <div className="w-[720px] p-5 overflow-hidden">
         <Flicking
           circular={true}

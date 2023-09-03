@@ -161,25 +161,25 @@ const Plan = () => {
             <UpdatePlan />
             <div className="flex items-center justify-end gap-5 mt-16">
               {planState === 'planning' ? (
-                <>
+                <div className="flex my-[100px] items-center justify-end gap-5">
                   <p>여행을 떠날 준비가 되셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg border-blue w-[130px] text-blue"
+                    className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
                   >
                     여행 시작
                   </button>
-                </>
+                </div>
               ) : (
-                <>
+                <div className="flex my-[100px] items-center justify-end gap-5">
                   <p>여행 일정을 마치셨나요?</p>
                   <button
                     onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg border-blue w-[130px] text-blue"
+                    className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
                   >
                     여행 완료
                   </button>
-                </>
+                </div>
               )}
             </div>
           </PlanLayout>

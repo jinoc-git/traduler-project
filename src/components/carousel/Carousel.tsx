@@ -36,39 +36,35 @@ const Carousel = () => {
     return <div>로딩중</div>;
   }
 
-  return (
+  return photoData.length > 1 ? (
     <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
-      {photoData.length > 1 ? (
-        <>
-          <label className="flex items-center">
-            <span className="mr-3">
-              <IconCamera />
-            </span>
-            <p className="text-lg">사진첩</p>
-          </label>
-          <Flicking
-            circular={true}
-            plugins={_plugins}
-            panelsPerView={3}
-            align="center"
+      <label className="flex items-center">
+        <span className="mr-3">
+          <IconCamera />
+        </span>
+        <p className="text-lg">사진첩</p>
+      </label>
+      <Flicking
+        circular={true}
+        plugins={_plugins}
+        panelsPerView={3}
+        align="center"
+      >
+        {photoData.map((url: string, index: number) => (
+          <div
+            key={uuid()}
+            className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
           >
-            {photoData.map((url: string, index: number) => (
-              <div
-                key={uuid()}
-                className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
-              >
-                <img
-                  src={url}
-                  alt={`photo${index}`}
-                  className="w-full h-full object-cover rounded-3xl "
-                />
-              </div>
-            ))}
-          </Flicking>
-        </>
-      ) : null}
+            <img
+              src={url}
+              alt={`photo${index}`}
+              className="w-full h-full object-cover rounded-3xl "
+            />
+          </div>
+        ))}
+      </Flicking>
     </section>
-  );
+  ) : null;
 };
 
 export default Carousel;

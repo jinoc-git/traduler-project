@@ -1,18 +1,16 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  Map,
-  MapMarker,
-  MapTypeControl,
-  Polyline,
-  ZoomControl,
-} from 'react-kakao-maps-sdk';
+import React, { useEffect, useState } from 'react';
 
 import { type PinContentsType } from '@api/pins';
+import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import IconPin from '@assets/icons/IconPin';
 import AddMapModal from '@components/plan/addPlan/AddMapModal';
 import { datesStore } from '@store/datesStore';
 import { updatePinStore } from '@store/updatePinStore';
+
+import MapPoly from '../MapPoly';
+import PinLayout from '../PinLayout';
 
 interface PropsType {
   currentPage: number;
@@ -65,134 +63,46 @@ const AddPlanContents = ({
     setPins(() => newPins);
   }, [dates]);
 
-  const mapRef = useRef<any>();
-  const [style, setStyle] = useState({
-    width: '95vw',
-    height: '400px',
-    borderRadius: '8px',
-  });
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (map !== undefined) {
-      const timer = setTimeout(() => {
-        map.relayout();
-      }, 300);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [style]);
-
-  useEffect(() => {
-    const windowResize = () => {
-      setStyle({
-        width: '95vw',
-        height: '400px',
-        borderRadius: '8px',
-      });
-    };
-    window.addEventListener(`resize`, windowResize);
-
-    return () => {
-      window.removeEventListener(`resize`, windowResize);
-    };
-  }, []);
-
   return (
     <>
       <div className="flex flex-col justify-center gap-5">
-        <div className="flex justify-center">
-          <Map
-            center={{
-              lat:
-                pins.length !== 0 && pins[currentPage].length !== 0
-                  ? (pins[currentPage][0].lat as number)
-                  : 37.566826004661,
-              lng:
-                pins.length !== 0 && pins[currentPage].length !== 0
-                  ? (pins[currentPage][0].lng as number)
-                  : 126.978652258309,
-            }}
-            level={3}
-            ref={mapRef}
-            style={style}
-          >
-            {pins[currentPage]?.map((pin) => {
-              return (
-                <MapMarker
-                  key={pin.lng}
-                  position={{
-                    lat: pin?.lat as number,
-                    lng: pin?.lng as number,
-                  }}
-                ></MapMarker>
-              );
-            })}
-            {pins.length !== 0 && pins[currentPage].length !== 0 && (
-              <Polyline
-                path={pins[currentPage].map((pin) => {
-                  return {
-                    lat: pin.lat as number,
-                    lng: pin.lng as number,
-                  };
-                })}
-                strokeWeight={5} // 선의 두께 입니다
-                strokeColor={'#FFAE00'} // 선의 색깔입니다
-                strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-                strokeStyle={'solid'} // 선의 스타일입니다
-              />
-            )}
-            <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-            <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
-          </Map>
+        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+          <IconLocationDefault w="20" h="20" />
+          <label>여행지역</label>
         </div>
+        <MapPoly pins={pins} currentPage={currentPage} />
         <div className="flex flex-col justify-center">
-          <div className="w-[95%] mt-[17px] mx-auto font-bold text-[18px]">
-            방문할 장소
+          <div className="flex items-center">
+            <IconPin w="20" h="25" fill="#4E4F54" />
+            <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+              방문할 장소
+            </div>
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (
               <div key={pin.lat}>
-                <p>{idx + 1}</p>
-                <p>
-                  {pin !== null &&
-                    typeof pin === 'object' &&
-                    'placeName' in pin && <span>{pin.placeName}</span>}
-                </p>
-                <p>
-                  {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-                    <span>￦{pin.cost}</span>
-                  )}
-                </p>
-                <button
-                  className="m-4 bg-slate-400"
-                  onClick={() => {
-                    updatePin(idx);
-                  }}
-                >
-                  수정
-                </button>
-                <button
-                  className="m-4 bg-slate-400"
-                  onClick={() => {
-                    deletePin(idx);
-                  }}
-                >
-                  삭제
-                </button>
+                <PinLayout
+                  pin={pin}
+                  idx={idx}
+                  isEnding={false}
+                  updatePin={updatePin}
+                  deletePin={deletePin}
+                />
               </div>
             );
           })}
           {dates.length !== 0 && (
-            <button
-              type="button"
-              onClick={openModal}
-              className="w-[95%] h-[100px] border border-dashed mt-[17px] rounded-lg mx-auto font-bold text-[18px]"
-            >
-              장소 추가하기
-            </button>
+            <div className="flex items-center justify-between my-[8px]">
+              {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
+              <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
+              <button
+                type="button"
+                onClick={openModal}
+                className="w-pin_card h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1"
+              >
+                장소 추가하기
+              </button>
+            </div>
           )}
         </div>
       </div>

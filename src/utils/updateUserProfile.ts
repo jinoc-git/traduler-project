@@ -12,8 +12,7 @@ export const updateUserAvatar = async (
   const filePath = await uploadProfileImg(file, email);
 
   if (typeof filePath !== 'string') {
-    console.log('업로드 에러');
-    return;
+    throw new Error('프로필 사진 업데이트 오류');
   }
 
   const res = await updateUserProfileImage(filePath, userId);

@@ -18,12 +18,12 @@ module.exports = {
     extend: {
       colors: {
         red_light_1: '#FFD5DD',
-        blue: '#2DA4FF',
+        blue: '#5E9FFF',
         blue_dark: '#116DB3',
-        blue_light_0: '#E9F5FF',
-        blue_light_1: '#D5EDFF',
-        blue_light_2: '#ABDBFF',
-        blue_light_3: '#81C8FF',
+        blue_light_0: '#F2F7FF',
+        blue_light_1: '#DFECFF',
+        blue_light_2: '#AECEFF',
+        blue_light_3: '#9EC5FF',
         yellow: '#FFC803',
         yellow_dark: '#C9A219',
         yellow_light_3: '#FFDE68',
@@ -53,6 +53,7 @@ module.exports = {
         modal: '500px',
         card: '800px',
         plan: '720px',
+        pin_card: '600px',
       },
       height: {
         auth_1: '410px',
@@ -60,6 +61,7 @@ module.exports = {
         modal_1: '575px',
         modal_2: '675px',
         card: '150px',
+        pin_card: '100px',
       },
       padding: {
         modal: '36px 40px',
@@ -68,6 +70,7 @@ module.exports = {
         base: '0px 20px 20px 0px rgba(0, 0, 0, 0.08), 0px 0px 2px 0px rgba(0, 0, 0, 0.12)',
         sideBar: '4px 4px 50px 2px rgba(0, 0, 0, 0.05) inset',
         card: ' 2px 6px 50px 2px rgba(0, 0, 0, 0.05)',
+        index: '0px 2px 2px rgba(0, 0, 0, 0.10)',
       },
     },
   },

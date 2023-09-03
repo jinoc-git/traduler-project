@@ -36,7 +36,6 @@ const Comments = () => {
   });
 
   const onSubmit: SubmitHandler<InputType> = (data) => {
-    console.log(data.comments);
     const newComment: CommentsType = {
       content: data.comments,
       user_id: user?.id as string,

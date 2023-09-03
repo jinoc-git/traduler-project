@@ -83,16 +83,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     }
   }, [pin]);
 
-  // useEffect(() => {
-  //   const getCalcPathData = async (data: PinContentsType[]) => {
-  //     const pathData = await calcPath(data);
-  //     setDistanceData(pathData);
-  //   };
-  //   if (pinArr.length > 1) {
-  //     void getCalcPathData(pinArr);
-  //   }
-  // }, [pinArr]);
-
   return (
     <>
       <div className="flex gap-3 mb-5">
@@ -106,9 +96,10 @@ const Pins = ({ currentPage, dates }: PropsType) => {
             const pinArrLength = pinArr.length;
             return (
               <Pin
-                key={`${pin.lat as number}`}
+                key={pin.id}
                 pin={pin}
-                id={`${pin.lat as number}`}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                id={pin.id!}
                 idx={idx}
                 betweenDistanceData={betweenDistanceData}
                 pinArrLength={pinArrLength}

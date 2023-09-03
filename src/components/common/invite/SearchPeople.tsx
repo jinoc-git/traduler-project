@@ -80,7 +80,6 @@ const SearchPeople = ({ closeModal }: PropsType) => {
 
   // 초대한 유저 삭제
   const deleteUser = (idx: number) => {
-    console.log(invitedUser[idx]);
     const deletedUser = invitedUser.filter((_, index) => index !== idx);
     setUser(deletedUser);
   };

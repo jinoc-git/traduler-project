@@ -2,8 +2,8 @@
 import React from 'react';
 
 import { addBookMark, deleteBookMark } from '@api/bookMarks';
-import favoriteDefault from '@assets/icons/1x/ic-favorite-default-1x.png';
-import favoriteSolid from '@assets/icons/1x/ic-favorite-solid-1x.png';
+import IconFavoriteDefault from '@assets/icons/IconFavoriteDefault';
+import IconFavoriteFill from '@assets/icons/IconFavoriteFill';
 import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
@@ -32,7 +32,6 @@ const Favorite: React.FC<FavoriteProps> = ({
   >(addBookMark, {
     onMutate: async (newBookMark: BookMarkType) => {
       await queryClient.cancelQueries(['book_mark']);
-      console.log('onMutate 호출', newBookMark);
       const previousData = queryClient.getQueryData<BookMarkType[]>([
         'book_mark',
         userId,
@@ -117,12 +116,19 @@ const Favorite: React.FC<FavoriteProps> = ({
   };
 
   return (
-    <button onClick={favoriteHandler}>
-      <img
-        className="h-4 cursor-pointer w-"
-        src={isFavorite ? favoriteSolid : favoriteDefault}
-        alt="Favorite Icon"
-      />
+    // <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
+    //   <img
+    //     className="w-[25px] h-[25px] cursor-pointer "
+    //     src={isFavorite ? favoriteSolid : favoriteDefault}
+    //     alt="Favorite Icon"
+    //   />
+    // </button>
+    <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
+      {isFavorite ? (
+        <IconFavoriteFill fill="#FFC803" />
+      ) : (
+        <IconFavoriteDefault fill="#E1E2E3" />
+      )}
     </button>
   );
 };

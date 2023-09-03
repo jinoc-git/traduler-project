@@ -4,6 +4,7 @@ import React from 'react';
 import Carousel from '@components/carousel/Carousel';
 import Comments from '@components/comments/Comments';
 import Invite from '@components/common/invite/Invite';
+import PlaceList from '@components/ending/PlaceList';
 import TotalPay from '@components/pay/TotalPay';
 import EndingMap from '@components/plan/ending/EndingMap';
 import { sideBarStore } from '@store/sideBarStore';
@@ -25,6 +26,7 @@ const Ending = () => {
       <Invite />
       <EndingMap />
       <Carousel />
+      <PlaceList />
       <TotalPay />
       <Comments />
     </main>

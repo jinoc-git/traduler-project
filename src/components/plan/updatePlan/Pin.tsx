@@ -106,6 +106,7 @@ const Pin = (props: PinProps) => {
         idx={idx}
         updatePin={handleUpdate}
         deletePin={handleDelete}
+        isEnding={false}
       >
         <button ref={dragRef} className="flex-center w-[50px] m-3">
           <IconSixDots fill="orange" />

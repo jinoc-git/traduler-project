@@ -1,7 +1,8 @@
 import { type Json } from 'types/supabase';
 
 import { getPath } from './path';
-import { type PinContentsType } from './pins';
+import { getAllPins, type PinContentsType } from './pins';
+import { getPlansDate } from './plans';
 import { supabase } from './supabaseAuth';
 
 interface Content {
@@ -18,7 +19,7 @@ export const getCoordinate = async (planId: string) => {
     .from('plans')
     .select('dates')
     .eq('id', planId);
-    
+
   if (plansError !== null) {
     throw new Error('좌표 불러오기 에러');
   }
@@ -180,4 +181,37 @@ export const getPhoto = async (planId: string) => {
     throw new Error('사진 불러오기 오류');
   }
   return endingData;
+};
+
+// plans 날짜 불러오기
+export const getDates = async (planId: string) => {
+  const { data, error: plansError } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
+
+  if (plansError !== null || data === null) {
+    console.log(plansError);
+    throw new Error('오류발생');
+  }
+
+  const datesArray = data[0].dates;
+
+  return datesArray;
+};
+
+export const getPlaceWithDate = async (planId: string) => {
+  const placeDataList = await getAllPins(planId);
+  const planDateList = await getPlansDate(planId);
+
+  const result = placeDataList.map((item, i) => {
+    const day = planDateList[0].dates[i];
+    const mix = {
+      [day]: item.contents,
+    };
+    return mix;
+  });
+
+  console.log(result);
+  return result;
 };

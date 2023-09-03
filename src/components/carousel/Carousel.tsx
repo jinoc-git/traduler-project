@@ -36,39 +36,37 @@ const Carousel = () => {
     return <div>로딩중</div>;
   }
 
-  return (
-    <section className="p-5 md:p-10 pb-20 overflow-hidden w-2/3">
-      {photoData.length > 1 ? (
-        <>
-          <label className="flex items-center">
-            <span className="mr-3">
-              <IconCamera />
-            </span>
-            <p className="text-lg">사진첩</p>
-          </label>
-          <Flicking
-            circular={true}
-            plugins={_plugins}
-            panelsPerView={3}
-            align="center"
-          >
-            {photoData.map((url: string, index: number) => (
-              <div
-                key={uuid()}
-                className="relative cursor-pointer  brightness-75 hover:brightness-100 transition duration-400"
-              >
-                <img
-                  src={url}
-                  alt={`photo${index}`}
-                  className="w-full h-full object-cover rounded-3xl "
-                />
-              </div>
-            ))}
-          </Flicking>
-        </>
-      ) : null}
+  return photoData.length > 1 ? (
+    <section>
+      <label className="flex items-center">
+        <span className="mr-3">
+          <IconCamera />
+        </span>
+        <p className="text-lg">사진첩</p>
+      </label>
+      <div className='w-[720px] p-5 overflow-hidden'>
+        <Flicking
+          circular={true}
+          plugins={_plugins}
+          panelsPerView={3}
+          align="center"
+        >
+          {photoData.map((url: string, index: number) => (
+            <div
+              key={uuid()}
+              className="relative cursor-pointer  brightness-75 hover:brightness-100 transition-filter duration-400"
+            >
+              <img
+                src={url}
+                alt={`photo${index}`}
+                className="w-full h-full object-cover rounded-3xl "
+              />
+            </div>
+          ))}
+        </Flicking>
+      </div>
     </section>
-  );
+  ) : null;
 };
 
 export default Carousel;

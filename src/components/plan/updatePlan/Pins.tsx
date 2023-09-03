@@ -104,9 +104,10 @@ const Pins = ({ currentPage, dates }: PropsType) => {
             // const pinArrLength = pinArr.length;
             return (
               <Pin
-                key={`${pin.lat as number}`}
+                key={pin.id}
                 pin={pin}
-                id={`${pin.lat as number}`}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                id={pin.id!}
                 idx={idx}
                 // betweenDistanceData={betweenDistanceData}
                 // pinArrLength={pinArrLength}

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import IconUploadPicture from '@assets/icons/IconUploadPicture';
 import imageCompression from 'browser-image-compression';
 
 interface TypePicture {
@@ -43,7 +44,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
   };
 
   return (
-    <div className="flex w-full overflow-auto scrollbar-hide">
+    <div className="flex w-full overflow-auto scrollbar-hide flex-wrap">
       {limit !== imgSrcList?.length ? (
         <div>
           <input
@@ -57,9 +58,14 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             onClick={() => {
               fileRef?.current?.click();
             }}
-            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 flex items-center justify-center font-jua text-gray-300"
+            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 flex items-center justify-center font-Regular text-gray-300"
           >
-            +
+            <div className="flex items-center">
+              <IconUploadPicture fill="#4E4F54" />
+              <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+                사진업로드
+              </div>
+            </div>
           </div>
         </div>
       ) : null}
@@ -67,7 +73,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
         return (
           <div
             key={i}
-            className="relative min-w-[200px] max-w-[200px] min-h-[200px] max-h-[200px] bg-black mt-5 mr-5 flex items-center justify-center"
+            className="relative w-[33.33%] min-w-[200px] max-w-[200px] min-h-[200px] max-h-[200px] bg-black mt-5 mr-5 flex items-center justify-center"
           >
             <button
               className="absolute top-0 right-0 bg-[#444040b8] text-white w-8 h-8 flex justify-center items-center"

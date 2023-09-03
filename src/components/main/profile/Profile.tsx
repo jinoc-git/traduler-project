@@ -25,7 +25,7 @@ const Profile = () => {
           {user !== null && typeof profileImg === 'string' ? (
             <img
               src={profileImg}
-              className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer"
+              className="w-[85px] h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer"
             />
           ) : (
             <IconUserDefault w="85" h="85" />

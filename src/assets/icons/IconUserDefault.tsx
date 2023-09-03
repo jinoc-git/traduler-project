@@ -4,7 +4,7 @@ import React from 'react';
 
 import type IconType from 'types/icon';
 
-const IconUserDefault = ({ w, h, fill }: IconType) => {
+const IconUserDefault = ({ w, h }: IconType) => {
   const width = `w-[${w as string}px]`;
   const height = `h-[${h as string}px]`;
   return (

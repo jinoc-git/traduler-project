@@ -98,7 +98,7 @@ const AddPlanContents = ({
               <button
                 type="button"
                 onClick={openModal}
-                className="w-pin_card h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1"
+                className="w-pin_card h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1 hover:bg-navy_light_1 duration-200"
               >
                 장소 추가하기
               </button>

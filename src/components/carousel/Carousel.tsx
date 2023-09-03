@@ -40,11 +40,11 @@ const Carousel = () => {
     <section>
       <label className="flex items-center">
         <span className="mr-3">
-          <IconCamera />
+          <IconCamera fill="#4E4F54" />
         </span>
-        <p className="text-lg">사진첩</p>
+        <p className="text-lg font-semibold text-gray_dark_1">사진첩</p>
       </label>
-      <div className='w-[720px] p-5 overflow-hidden'>
+      <div className="w-[720px] p-5 overflow-hidden ">
         <Flicking
           circular={true}
           plugins={_plugins}
@@ -54,12 +54,12 @@ const Carousel = () => {
           {photoData.map((url: string, index: number) => (
             <div
               key={uuid()}
-              className="relative cursor-pointer  brightness-75 hover:brightness-100 transition-filter duration-400"
+              className="relative cursor-pointer brightness-75 hover:brightness-100 transition-filter duration-400"
             >
               <img
                 src={url}
                 alt={`photo${index}`}
-                className="w-full h-full object-cover rounded-3xl "
+                className="object-cover w-full h-full rounded-3xl "
               />
             </div>
           ))}

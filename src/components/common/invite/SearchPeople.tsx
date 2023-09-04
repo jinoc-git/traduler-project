@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -83,6 +83,13 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     const deletedUser = invitedUser.filter((_, index) => index !== idx);
     setUser(deletedUser);
   };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'hidden';
+    };
+  });
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50">

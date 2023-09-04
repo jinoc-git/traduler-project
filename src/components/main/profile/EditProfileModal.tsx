@@ -136,6 +136,13 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     };
   }, [preview]);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'hidden';
+    };
+  });
+
   return (
     <div className="absolute top-0 left-0 z-[40] flex-center w-screen h-screen bg-black/70">
       <form

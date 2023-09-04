@@ -45,7 +45,11 @@ const Header = () => {
   return (
     <header
       className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
-        user !== null ? 'bg-transparent' : 'bg-bg_white'
+        pathname !== '/'
+          ? user !== null
+            ? 'bg-transparent'
+            : 'bg-bg_white'
+          : 'bg-transparent'
       }`}
     >
       <div className="flex items-center ">
@@ -79,6 +83,25 @@ const Header = () => {
             />
           </div>
         ) : null
+      ) : pathname === '/' ? (
+        <div>
+          <button
+            onClick={() => {
+              navigate('/signin');
+            }}
+            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+          >
+            로그인
+          </button>
+          <button
+            onClick={() => {
+              navigate('/signup');
+            }}
+            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+          >
+            회원가입
+          </button>
+        </div>
       ) : pathname === '/signin' ? (
         <button
           onClick={() => {
@@ -93,7 +116,7 @@ const Header = () => {
           onClick={() => {
             navigate('/signin');
           }}
-          className="w-[147px]"
+          className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
         >
           로그인
         </button>

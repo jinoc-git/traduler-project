@@ -139,7 +139,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'auto';
     };
   });
 
@@ -150,15 +150,19 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}
       >
         <button
-          className="w-6 h-6 absolute top-2 right-2"
+          className="absolute w-6 h-6 top-2 right-2"
           type="button"
           onClick={onClickCloseModalHandler}
         >
           <IconClose />
         </button>
-        <div className='flex items-center gap-3 w-[408px]'>
-          <img src={ic_profile_3x} alt="프로필 아이콘" className='w-[30px] h-[30px]'/>
-          <p className=' text-xlg font-semibold'>프로필 편집</p>
+        <div className="flex items-center gap-3 w-[408px]">
+          <img
+            src={ic_profile_3x}
+            alt="프로필 아이콘"
+            className="w-[30px] h-[30px]"
+          />
+          <p className="font-semibold  text-xlg">프로필 편집</p>
         </div>
         <label htmlFor="avatar">
           <img
@@ -172,7 +176,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           type="file"
           {...register('avatar')}
           accept=".jpg, .jpeg, .png"
-          className="border hidden"
+          className="hidden border"
         />
         <p className="text-center">
           프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />

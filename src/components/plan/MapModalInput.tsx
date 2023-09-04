@@ -56,11 +56,6 @@ const MapModalInput = ({ register, errors, debouncedFunc }: PropsType) => {
           type="text"
           placeholder="주소를 검색하세요"
           {...register('address', {
-            required: '주소를 입력하고 검색해주세요.',
-            minLength: {
-              value: 2,
-              message: '주소는 2글자 이상이어야 합니다.',
-            },
             pattern: {
               value: /^[가-힣|0-9|\s-]*$/,
               message: '모음, 자음 안됨',

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/return-await */
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -9,6 +10,7 @@ import Loading from '@components/loading/Loading';
 import PinLayout from '@components/plan/PinLayout';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
+import { type Json } from 'types/supabase';
 
 const PlaceList = () => {
   const navigate = useNavigate();
@@ -39,10 +41,10 @@ const PlaceList = () => {
         </div>
       </div>
       {data.map((day) => {
-        console.log(data);
-        console.log(day);
         const days = Object.keys(day);
-        const pins = day[days[0]];
+        const pins = day[days[0]] as Json[];
+        const distanceList = day.distance as string[];
+        const distanceLength = distanceList.length;
 
         return (
           <div key={uuid()} className="text-center">
@@ -50,13 +52,24 @@ const PlaceList = () => {
               {days[0]}
             </p>
             {pins.map((pin, j) => {
+              let distance = '0';
+              if (distanceLength > 0) {
+                distance = distanceList[j - 1];
+              }
+
               return (
                 <PinLayout
                   key={uuid()}
                   pin={pin as PinContentsType}
                   idx={j}
                   isEnding={true}
-                />
+                >
+                  {distance !== '0' && distance !== undefined && (
+                    <span className="absolute top-[-20px] left-[40px] text-gray_dark_2">
+                      {distance}km
+                    </span>
+                  )}
+                </PinLayout>
               );
             })}
           </div>

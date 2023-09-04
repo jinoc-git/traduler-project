@@ -53,9 +53,10 @@ const PlaceList = () => {
             </p>
             {pins.map((pin, j) => {
               let distance = '0';
-              if (distanceLength === j) {
+              if (distanceLength > 0) {
                 distance = distanceList[j - 1];
               }
+
               return (
                 <PinLayout
                   key={uuid()}
@@ -63,7 +64,7 @@ const PlaceList = () => {
                   idx={j}
                   isEnding={true}
                 >
-                  {distance !== '0' && (
+                  {distance !== '0' && distance !== undefined && (
                     <span className="absolute top-[-20px] left-[40px] text-gray_dark_2">
                       {distance}km
                     </span>

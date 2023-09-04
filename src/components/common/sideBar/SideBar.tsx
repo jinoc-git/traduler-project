@@ -21,6 +21,26 @@ const SideBar: React.FC = () => {
   const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
   const user = userStore((state) => state.user);
 
+  const paths = [
+    '/',
+    '/main',
+    '/signin',
+    '/signup',
+    '/plan',
+    '/addPlan',
+    '/ending',
+    '/addPhoto',
+    '/welcome',
+  ];
+  const dynamicPaths = /^\/detail|user|update\/[\w\d]+$/;
+
+  if (
+    !paths.includes(window.location.pathname) &&
+    !dynamicPaths.test(window.location.pathname)
+  ) {
+    return null;
+  }
+
   const {
     value: bookMarkPlansOpen,
     toggleValue: toggleBookMarkPlansOpen,
@@ -55,10 +75,7 @@ const SideBar: React.FC = () => {
   };
 
   // supabase데이터 뿌려주기
-  const {
-    data: matesData,
-    isError: matesError,
-  } = useQuery(
+  const { data: matesData, isError: matesError } = useQuery(
     ['plan_mates', user?.id],
     async () => {
       return await getPlansWithMates(user === null ? '' : user.id);

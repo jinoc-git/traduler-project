@@ -162,7 +162,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             alt="프로필 아이콘"
             className="w-[30px] h-[30px]"
           />
-          <p className="font-semibold  text-xlg">프로필 편집</p>
+          <p className="font-semibold text-xlg">프로필 편집</p>
         </div>
         <label htmlFor="avatar">
           <img

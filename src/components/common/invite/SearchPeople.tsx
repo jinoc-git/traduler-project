@@ -87,14 +87,14 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'auto';
     };
   });
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50">
-      <div className="mx-auto   w-modal h-modal_2 bg-gray_light_2 rounded-lg shadow-card p-6">
-        <div className="flex flex-col justify-end items-start gap-2">
+    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
+      <div className="p-6 mx-auto rounded-lg w-modal h-modal_2 bg-gray_light_2 shadow-card">
+        <div className="flex flex-col items-start justify-end gap-2">
           <p className="text-[gray_dark_1] text-xl  ">동행 초대하기</p>
           <p className="text-[gray] text-xl  ">
             이 여행에 함께할 친구를 초대해 보세요!
@@ -133,7 +133,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
               onChange={(e) =>
                 debouncedSearchUser({ userInfo: e.target.value })
               }
-              className="pr-3 pl-10 w-auth h-10 border rounded-lg border-none "
+              className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth "
             />
           </div>
           <p>{errors?.userInfo?.message}</p>
@@ -160,7 +160,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
               );
             })}
         </div>
-        <div className="flex justify-center items-center space-x-4 mt-10">
+        <div className="flex items-center justify-center mt-10 space-x-4">
           <button
             onClick={closeModal}
             className="w-[12.5rem] h-[2.75rem] border-navy rounded-lg bg-white text-navy hover:bg-navy_light_1 hover:text-black hover:border-navy_light_3"

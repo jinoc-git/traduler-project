@@ -73,6 +73,13 @@ const Card: React.FC<CardProps> = ({
     }
   };
 
+  const onClickListItem = (state: string, id: string) => {
+    if (state === 'planning') navigate(`/plan/${id}`);
+    if (state === 'traveling') navigate(`/plan/${id}`);
+    if (state === 'recording') navigate(`/addPhoto/${id}`);
+    if (state === 'end') navigate(`/ending/${id}`);
+  };
+
   useEffect(() => {
     if (plansData != null) {
       setPlanningCount(
@@ -214,16 +221,7 @@ const Card: React.FC<CardProps> = ({
                 <div
                   className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
-                    switch (plan.plan_state) {
-                      case 'recording':
-                        navigate(`/addPhoto/${plan.id}`);
-                        break;
-                      case 'end':
-                        navigate(`/ending/${plan.id}`);
-                        break;
-                      default:
-                        navigate(`/plan/${plan.id}`);
-                    }
+                    onClickListItem(plan.plan_state, plan.id);
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">

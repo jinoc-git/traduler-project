@@ -71,9 +71,6 @@ const Comments = () => {
     return <div>댓글 불러오기 오류 발생...</div>;
   }
   const navigate = useNavigate();
-  const handleChangePlanState = () => {
-    navigate(`/main`);
-  };
 
   return (
     <section className="w-[720px]">
@@ -151,7 +148,9 @@ const Comments = () => {
       <div className="flex my-[100px] items-center justify-end gap-5">
         <p>다른 여행 일정도 둘러보세요!</p>
         <button
-          onClick={handleChangePlanState}
+          onClick={() => {
+            navigate('/main');
+          }}
           className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
         >
           목록으로

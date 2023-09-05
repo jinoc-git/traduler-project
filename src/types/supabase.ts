@@ -114,7 +114,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          plan_state: 'planning' | 'traveling' | 'end';
+          plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
           total_cost: number;
           users_id: string;
@@ -124,7 +124,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          plan_state: 'planning' | 'traveling' | 'end';
+          plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
           total_cost: number;
           users_id: string;
@@ -134,7 +134,7 @@ export interface Database {
           dates?: string[];
           id?: string;
           isDeleted?: boolean;
-          plan_state?: 'planning' | 'traveling' | 'end';
+          plan_state?: 'planning' | 'traveling' | 'recording' | 'end';
           title?: string;
           total_cost?: number;
           users_id?: string;

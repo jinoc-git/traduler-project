@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
-import { changePlanState, getPlan } from '@api/plans';
+import { changePlanState, getPlan, getPlanEnding } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import Invite from '@components/common/invite/Invite';
@@ -42,6 +42,12 @@ const AddPhoto = () => {
     ['planCoordinate', planId],
     async () => await getCoordinate(planId),
   );
+
+  const { data: planEnding, isLoading: isPlanEndingLoading } = useQuery(
+    ['planEnding', planId],
+    async () => await getPlanEnding(planId),
+  );
+
   const queryClient = useQueryClient();
   const changeMutation = useMutation({
     mutationFn: changePlanState,
@@ -70,6 +76,12 @@ const AddPhoto = () => {
     }
   };
 
+  useLayoutEffect(() => {
+    if (planEnding !== undefined && planEnding.length !== 0) {
+      navigate('/main');
+    }
+  }, [planEnding]);
+
   useEffect(() => {
     if (
       data !== undefined &&
@@ -86,7 +98,7 @@ const AddPhoto = () => {
     }
   }, [data, plan]);
 
-  if (isPlanLoading || isLoading) {
+  if (isPlanLoading || isLoading || isPlanEndingLoading) {
     return <Loading />;
   }
 

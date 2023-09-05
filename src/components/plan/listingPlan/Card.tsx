@@ -191,6 +191,7 @@ const Card: React.FC<CardProps> = ({
             const participantsAvatarList = participants[plan.id].map(
               (user) => user.avatar_url,
             );
+            // console.log('participantsAvatarList=>', participantsAvatarList);
             const participantsNicknameList = participants[plan.id].map(
               (user) => user.nickname,
             );
@@ -256,7 +257,8 @@ const Card: React.FC<CardProps> = ({
                         {participantsAvatarList.map((avatar, i) => {
                           let gap = '';
                           if (i > 0) {
-                            gap = '-translate-x-1/2';
+                            // gap = '-translate-x-1/2';
+                            gap = '-ml-[8px]';
                           }
 
                           return (
@@ -266,6 +268,17 @@ const Card: React.FC<CardProps> = ({
                               alt="유저아바타"
                               className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
                             />
+
+                            // {avatar ? (
+                            //   <img
+                            //     key={uuid()}
+                            //     src={avatar}
+                            //     alt="유저아바타"
+                            //     className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
+                            //   />
+                            // ) : (
+                            //   <IconUserDefault w={20} h={20} />
+                            // )}
                           );
                         })}
                       </div>
@@ -291,8 +304,35 @@ const Card: React.FC<CardProps> = ({
                         navigate('/main');
                       }}
                     >
-                      <IconDeleteDefault fill="#FFB979" />
+                      <IconDeleteDefault fill="#E1E2E3" />
+                      {/* <IconDeleteDefault
+                        fill={hovered ? '#FFC803' : '#E1E2E3'} */}
+                      {/* /> */}
                     </button>
+                    {/* <button
+                      onClick={async () => {
+                        await handleDeletePlan(plan.id);
+                        navigate('/main');
+                      }}
+                    >
+                      {deletedPlans.includes(plan.id) ? (
+                        <IconDeleteFill
+                          fill={
+                            deletedPlans.includes(plan.id)
+                              ? '#FFC803'
+                              : '#E1E2E3'
+                          }
+                        />
+                      ) : (
+                        <IconDeleteDefault
+                          fill={
+                            deletedPlans.includes(plan.id)
+                              ? '#FFC803'
+                              : '#E1E2E3'
+                          }
+                        />
+                      )}
+                    </button> */}
                   </div>
                 </div>
               </div>

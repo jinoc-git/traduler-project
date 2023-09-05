@@ -73,12 +73,11 @@ export const calcAllPath = async (distance: PinContentsType[][]) => {
       }
     }
     if (oneDay.length === 0) {
-      newDataArr.push(['0']);
+      newDataArr.push({ '0': '0' });
     } else {
-      newDataArr.push(oneDay);
+      newDataArr.push({ ...oneDay });
     }
   }
-
   return newDataArr;
 };
 

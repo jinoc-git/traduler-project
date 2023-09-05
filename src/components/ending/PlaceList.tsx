@@ -25,17 +25,6 @@ const PlaceList = () => {
     async () => await getPlaceWithDate(planId),
   );
 
-  // useEffect(() => {
-  //   // if (data !== null && data !== undefined) {
-  //   //   const distances: Json[] | null | undefined = data[0]?.distance;
-  //   //   if (Array.isArray(data[0]?.distance)) {
-  //   //     data[0]?.distance.map((item) => Object.values(item));
-  //   //   }
-  //   //   // data?.[0].distance.map((item) => Object.values(item));
-  //   // }
-  //   console.log(data);
-  // }, [data]);
-
   if (isLoading) {
     return <Loading />;
   }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   ic_chevron_down_1x,
@@ -21,6 +22,7 @@ interface SideBarPlanListProps {
 const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const { toggleFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const navigate = useNavigate();
 
   const iconList = {
     bookMark: ic_favorite_default_1x,
@@ -52,6 +54,13 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
     end: 'bg-orange_light_1',
   };
 
+  const onClickListItem = (state: string, id: string) => {
+    if (state === 'planning') navigate(`/plan/${id}`);
+    if (state === 'traveling') navigate(`/plan/${id}`);
+    if (state === 'recording') navigate(`/addPhoto/${id}`);
+    if (state === 'end') navigate(`/ending/${id}`);
+  };
+
   return (
     <div>
       <div
@@ -81,6 +90,9 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
         {isOpen &&
           planList.map((plan) => (
             <li
+              onClick={() => {
+                onClickListItem(plan.plan_state, plan.id);
+              }}
               className="w-[160px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
               key={plan.id}
             >

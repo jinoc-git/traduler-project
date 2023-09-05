@@ -47,10 +47,10 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const isAvatarChanged = preview?.length !== 0;
   const isNicknameChanged = nickname !== '';
 
-  const shouldBlockSubmitBtn = isRemoveAvatar
-    ? false
-    : (!isAvatarChanged && !isNicknameChanged) ||
-      (isNicknameChanged && isDuplicate);
+  const NicknameState = isNicknameChanged ? !isDuplicate : true;
+  const AvatarState = isAvatarChanged ? true : isRemoveAvatar;
+
+  const shouldBlockSubmitBtn = NicknameState && AvatarState;
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
@@ -227,7 +227,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             사진 제거
           </button>
           <button
-            disabled={shouldBlockSubmitBtn}
+            disabled={!shouldBlockSubmitBtn}
             type="submit"
             className="w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3"
           >

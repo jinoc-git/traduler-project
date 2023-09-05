@@ -148,15 +148,6 @@ const Card: React.FC<CardProps> = ({
             </div>
           )}
           <div>
-            {/* <button
-              className="mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center"
-              onClick={() => {
-                navigate('/addPlan');
-              }}
-            >
-              <IconAdd w="16" h="16" fill="black" />
-              <span className="ml-[10px] text-Bold">계획 생성하기</span>
-            </button> */}
             <button
               className={`mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center 
           ${
@@ -279,7 +270,16 @@ const Card: React.FC<CardProps> = ({
                         })}
                       </div>
                       <div className='"text-gray_dark_1 text-sm'>
-                        {participantsNicknameList.map((name) => `${name} `)}
+                        {participantsNicknameList.length <= 3 ? (
+                          participantsNicknameList
+                            .map((name) => `${name}`)
+                            .join(', ')
+                        ) : (
+                          <>
+                            {participantsNicknameList.slice(0, 3).join(', ')} 외{' '}
+                            {participantsNicknameList.length - 3}명
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -23,7 +23,7 @@ const SideBarETC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mt-[20px]">
       <div
         onClick={onClickAddPlan}
         className={`flex items-center gap-4 w-[222px] rounded-[8px] cursor-pointer transition-colors duration-300 ease-in-out ${

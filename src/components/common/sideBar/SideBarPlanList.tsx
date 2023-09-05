@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   ic_chevron_down_1x,
   ic_chevron_up_1x,
-  ic_favorite_default_1x,
+  ic_favorite_list_1x,
   ic_planned_time_1x,
   ic_previous_time_1x,
 } from '@assets/icons/1x';
@@ -25,7 +25,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const navigate = useNavigate();
 
   const iconList = {
-    bookMark: ic_favorite_default_1x,
+    bookMark: ic_favorite_list_1x,
     start: ic_planned_time_1x,
     end: ic_previous_time_1x,
   };
@@ -88,20 +88,26 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
       </div>
       <ul className="flex flex-col items-end">
         {isOpen &&
+          planList.length > 0 &&
           planList.map((plan) => (
             <li
               onClick={() => {
                 onClickListItem(plan.plan_state, plan.id);
               }}
-              className="w-[160px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
+              className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
               key={plan.id}
             >
-              <p className="text-xs">{plan.title}</p>
-              <span className="text-xs">
+              <p className="text-[13px]">{plan.title}</p>
+              <span className="text-[13px]">
                 {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
               </span>
             </li>
           ))}
+        {isOpen && planList.length === 0 && (
+          <li className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer ">
+            <p className="text-[13px]">{listName[filter]}이 없습니다</p>
+          </li>
+        )}
       </ul>
     </div>
   );

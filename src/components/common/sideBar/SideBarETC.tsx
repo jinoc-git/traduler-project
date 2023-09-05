@@ -39,7 +39,7 @@ const SideBarETC = () => {
       </div>
       <div
         onClick={onClickSignOutHandler}
-        className={`flex items-center gap-4  w-[222px] rounded-[8px] cursor-pointer ${
+        className={`flex items-center gap-4  w-[222px] rounded-[8px] cursor-pointer hover:bg-[#F6F6F6] ${
           isSideBarOpen ? 'w-[222px]' : 'w-[40px]'
         }`}
       >

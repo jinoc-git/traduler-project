@@ -82,14 +82,14 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           <img
             src={isOpen ? ic_chevron_up_1x : ic_chevron_down_1x}
             alt="다운버튼"
-            className="mr-5"
+            className="w-[14px] mr-5"
           />
         </div>
       </div>
       <ul className="flex flex-col items-end">
         {isOpen &&
           planList.length > 0 &&
-          planList.map((plan) => (
+          planList.slice(0, 3).map((plan) => (
             <li
               onClick={() => {
                 onClickListItem(plan.plan_state, plan.id);

@@ -80,6 +80,7 @@ export { default as ic_micro_menu_1x } from './ic-micro-menu-1x.png';
 export { default as ic_move_horizontal_1x } from './ic-move-horizontal-1x.png';
 export { default as ic_move_vertical_1x } from './ic-move-vertical-1x.png';
 export { default as ic_name_1x } from './ic-name-1x.png';
+export { default as ic_new_menu_1x } from './ic-new-menu-1x.png';
 export { default as ic_note_default_1x } from './ic-note-default-1x.png';
 export { default as ic_note_solid_1x } from './ic-note-solid-1x.png';
 export { default as ic_overflow_menu_1x } from './ic-overflow-menu-1x.png';

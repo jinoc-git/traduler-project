@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -9,7 +10,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
-import { getPlan } from '@api/plans';
+import { getPlan, getPlanEnding } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import Invite from '@components/common/invite/Invite';
@@ -41,11 +42,15 @@ const AddPhoto = () => {
     ['planCoordinate', planId],
     async () => await getCoordinate(planId),
   );
+  const { data: planEnding, isLoading: isPlanEndingLoading } = useQuery(
+    ['planEnding', planId],
+    async () => await getPlanEnding(planId),
+  );
 
   const handleButton = async () => {
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
-    console.log(distanceDataList)
+    console.log(distanceDataList);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
       await insertPlanEnding({
@@ -75,7 +80,13 @@ const AddPhoto = () => {
     }
   }, [data, plan]);
 
-  if (isPlanLoading || isLoading) {
+  useLayoutEffect(() => {
+    if (planEnding !== undefined && planEnding.length !== 0) {
+      navigate(`/ending/${planId}`);
+    }
+  }, [planEnding]);
+
+  if (isPlanLoading || isLoading || isPlanEndingLoading) {
     return <Loading />;
   }
 

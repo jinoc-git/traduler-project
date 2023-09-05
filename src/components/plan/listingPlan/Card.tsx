@@ -209,7 +209,9 @@ const Card: React.FC<CardProps> = ({
                 <div
                   className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
-                    navigate(`/plan/${plan.id}`);
+                    plan.plan_state !== 'end'
+                      ? navigate(`/plan/${plan.id}`)
+                      : navigate(`/addPhoto/${plan.id}`);
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">

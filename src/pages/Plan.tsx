@@ -1,15 +1,10 @@
 /* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import {
-  changePlanState,
-  getPlan,
-  getPlanEnding,
-  updatePlan,
-} from '@api/plans';
+import { changePlanState, getPlan, updatePlan } from '@api/plans';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import Loading from '@components/loading/Loading';
@@ -36,13 +31,6 @@ const Plan = () => {
     ['plan', planId],
     async () => await getPlan(planId),
   );
-
-  const [planEndingState, setPlanEndingState] = useState<any>();
-  const {
-    data: planEnding,
-    isLoading: isPlanEndingLoading,
-    refetch,
-  } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
 
   const [title, setTitle] = useState<string>('');
   const [planState, setPlanState] = useState<string>();
@@ -106,87 +94,75 @@ const Plan = () => {
     },
   });
 
-  useLayoutEffect(() => {
-    void refetch();
+  useEffect(() => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
       setValue('totalCost', data?.[0].total_cost);
       setPlanState(data[0].plan_state);
-      setPlanEndingState(planEnding);
     }
     return () => {
       resetDates();
     };
-  }, [data, planEnding]);
+  }, [data]);
 
-  if (isLoading || isPlanEndingLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
   const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
 
   return (
-    <>
-      {planState === 'end' ? (
-        planEndingState === undefined || planEndingState.length === 0 ? (
-          <Navigate to={`/addPhoto/${planId}`} />
-        ) : (
-          <Navigate to={`/ending/${planId}`} />
-        )
-      ) : (
-        <main
-          className={`transition-all duration-300  ease-in-out py-[60px] ${
-            isSideBarOpen
-              ? 'w-[calc(100vw-270px)] ml-[270px]'
-              : 'w-[calc(100vw-88px)] ml-[88px]'
-          }`}
+    <main
+      className={`transition-all duration-300  ease-in-out py-[60px] ${
+        isSideBarOpen
+          ? 'w-[calc(100vw-270px)] ml-[270px]'
+          : 'w-[calc(100vw-88px)] ml-[88px]'
+      }`}
+    >
+      <Nav page={'plan'} onClick={handleSubmitButton} />
+      <PlanLayout>
+        <input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          readOnly={modifyState === 'readOnly'}
+          className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
+        />
+        <div
+          className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white mt-[16px]`}
         >
-          <Nav page={'plan'} onClick={handleSubmitButton} />
-          <PlanLayout>
-            <input
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-              readOnly={modifyState === 'readOnly'}
-              className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
-            />
-            <div
-              className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white mt-[16px]`}
-            >
-              {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+          {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+        </div>
+        <PostPlan />
+        <Invite />
+        <Pay register={register} errors={errors} />
+        <UpdatePlan />
+        <div className="flex items-center justify-end gap-5 mt-16">
+          {planState === 'planning' ? (
+            <div className="flex my-[100px] items-center justify-end gap-5">
+              <p>여행을 떠날 준비가 되셨나요?</p>
+              <button
+                onClick={handleChangePlanState}
+                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+              >
+                여행 시작
+              </button>
             </div>
-            <PostPlan />
-            <Invite />
-            <Pay register={register} errors={errors} />
-            <UpdatePlan />
-            <div className="flex items-center justify-end gap-5 mt-16">
-              {planState === 'planning' ? (
-                <div className="flex my-[100px] items-center justify-end gap-5">
-                  <p>여행을 떠날 준비가 되셨나요?</p>
-                  <button
-                    onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
-                  >
-                    여행 시작
-                  </button>
-                </div>
-              ) : (
-                <div className="flex my-[100px] items-center justify-end gap-5">
-                  <p>여행 일정을 마치셨나요?</p>
-                  <button
-                    onClick={handleChangePlanState}
-                    className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
-                  >
-                    여행 완료
-                  </button>
-                </div>
-              )}
+          ) : (
+            <div className="flex my-[100px] items-center justify-end gap-5">
+              <p>여행 일정을 마치셨나요?</p>
+              <button
+                onClick={handleChangePlanState}
+                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+              >
+                여행 완료
+              </button>
             </div>
-          </PlanLayout>
-        </main>
-      )}
-    </>
+          )}
+        </div>
+      </PlanLayout>
+    </main>
   );
 };
 

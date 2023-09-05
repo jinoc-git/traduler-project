@@ -6,7 +6,7 @@ import { getTotalCost } from '@api/plans';
 import IconPin from '@assets/icons/IconPin';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
-import { calcDutchPay } from '@utils/calcDutchPay';
+import { calcDutchPay, formatNumberWithCommas } from '@utils/calcDutchPay';
 import { removeYearOfDate } from '@utils/changeFormatDay';
 
 type DatesAndPaySum = Record<string, number>;
@@ -73,7 +73,7 @@ const TotalPay = () => {
             <p className="w-[175px] h-[24px] text-normal font-semibold text-gray_dark_1 leading-6 tracking-tighter">
               <span className="mr-[10px]">예산은 </span>
               <span className="text-yellow font-Pretendard font-semibold text-base leading-6 tracking-tight">
-                {totalCost}원{' '}
+                {totalCost !== null ? formatNumberWithCommas(totalCost) : ''}원
               </span>
               <span>입니다.</span>
             </p>
@@ -82,7 +82,7 @@ const TotalPay = () => {
                 <div className="flex-col items-start ml-[8px] mb-[20px] text-grey-dark-1 font-Pretendard font-sm text-base leading-6 tracking-tighter">
                   {endingInfo?.datesAndPaySum.map((item) => {
                     const day = removeYearOfDate(Object.keys(item)[0]);
-                    const pay = Object.values(item)[0];
+                    const pay = formatNumberWithCommas(Object.values(item)[0]);
                     return (
                       <div className="mt-[5px] mb-[5px]" key={uuid()}>
                         <span className="font-semibold mr-[65px] text-gray_dark_1">
@@ -100,7 +100,7 @@ const TotalPay = () => {
                     총 사용 경비는
                   </span>
                   <span className="text-normal font-semibold text-blue leading-6 tracking-tighter">
-                    {endingInfo.totalPay}원
+                    {formatNumberWithCommas(endingInfo.totalPay)}원
                   </span>
                   <span className="text-normal font-semibold text-gray_dark_1 leading-6 tracking-tighter">
                     입니다.
@@ -111,14 +111,17 @@ const TotalPay = () => {
                     <p>
                       +
                       <span className="text-blue">
-                        {endingInfo.remainingBudget}
+                        {formatNumberWithCommas(endingInfo.remainingBudget)}
                       </span>
                       원 남았네요
                     </p>
                   ) : (
                     <p>
                       <span className="text-orange">
-                        {Math.abs(endingInfo.remainingBudget)}원
+                        {formatNumberWithCommas(
+                          Math.abs(endingInfo.remainingBudget),
+                        )}
+                        원
                       </span>
                       예산 초과 되셨네요!
                     </p>
@@ -130,7 +133,7 @@ const TotalPay = () => {
                     <p>
                       인당{' '}
                       <span className="text-navy">
-                        {endingInfo.perPersonCost}원
+                        {formatNumberWithCommas(endingInfo.perPersonCost)}원
                       </span>{' '}
                       정산해주세요!
                     </p>
@@ -138,7 +141,10 @@ const TotalPay = () => {
                     <p>
                       초과 예산 인당{' '}
                       <span className="text-navy">
-                        {Math.abs(endingInfo.perPersonCost)}원
+                        {formatNumberWithCommas(
+                          Math.abs(endingInfo.perPersonCost),
+                        )}
+                        원
                       </span>{' '}
                       추가 정산해주세요!
                     </p>

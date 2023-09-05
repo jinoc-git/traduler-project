@@ -2,6 +2,7 @@
 import React, { type ReactNode } from 'react';
 
 import { type PinContentsType } from '@api/pins';
+import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 import DropDown from './updatePlan/DropDown';
 
@@ -38,7 +39,12 @@ const PinLayout = ({
             <span className="font-bold">{pin.placeName}</span>
           )}
           {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-            <span>￦{pin.cost}</span>
+            <span>
+              ￦
+              {pin.cost !== null && pin.cost !== undefined
+                ? formatNumberWithCommas(pin.cost)
+                : ''}
+            </span>
           )}
         </div>
         {!isEnding && updatePin && deletePin && (

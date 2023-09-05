@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -9,7 +10,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
-import { getPlan } from '@api/plans';
+import { changePlanState, getPlan, getPlanEnding } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import Invite from '@components/common/invite/Invite';
@@ -18,7 +19,7 @@ import EndingDate from '@components/plan/ending/EndingDate';
 import EndingMap from '@components/plan/ending/EndingMap';
 import EndingPay from '@components/plan/ending/EndingPay';
 import { sideBarStore } from '@store/sideBarStore';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
 
 const AddPhoto = () => {
@@ -42,10 +43,26 @@ const AddPhoto = () => {
     async () => await getCoordinate(planId),
   );
 
+  const { data: planEnding, isLoading: isPlanEndingLoading } = useQuery(
+    ['planEnding', planId],
+    async () => await getPlanEnding(planId),
+  );
+
+  const queryClient = useQueryClient();
+  const changeMutation = useMutation({
+    mutationFn: changePlanState,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const handleButton = async () => {
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
-    console.log(distanceDataList)
+    console.log(distanceDataList);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
       await insertPlanEnding({
@@ -54,10 +71,16 @@ const AddPhoto = () => {
         dates_cost: datesCostList,
         pictures,
       });
-
+      changeMutation.mutate([planId, 'end']);
       navigate(`/ending/${planId}`);
     }
   };
+
+  useLayoutEffect(() => {
+    if (planEnding !== undefined && planEnding.length !== 0) {
+      navigate('/main');
+    }
+  }, [planEnding]);
 
   useEffect(() => {
     if (
@@ -75,7 +98,7 @@ const AddPhoto = () => {
     }
   }, [data, plan]);
 
-  if (isPlanLoading || isLoading) {
+  if (isPlanLoading || isLoading || isPlanEndingLoading) {
     return <Loading />;
   }
 

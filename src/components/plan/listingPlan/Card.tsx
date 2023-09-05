@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
         return plan.plan_state === 'planning';
       } else {
         // selectedPlan이 'end'인 경우
-        return plan.plan_state === 'end';
+        return plan.plan_state === 'end' || plan.plan_state === 'recording';
       }
     })
     .filter((plan) => !plan.isDeleted);
@@ -78,7 +78,12 @@ const Card: React.FC<CardProps> = ({
       setPlanningCount(
         plansData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(
+        plansData.filter(
+          (plan) =>
+            plan.plan_state === 'end' || plan.plan_state === 'recording',
+        ).length,
+      );
 
       setTravelingCount(
         plansData.filter((plan) => plan.plan_state === 'traveling').length,
@@ -209,7 +214,16 @@ const Card: React.FC<CardProps> = ({
                 <div
                   className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
-                    navigate(`/plan/${plan.id}`);
+                    switch (plan.plan_state) {
+                      case 'recording':
+                        navigate(`/addPhoto/${plan.id}`);
+                        break;
+                      case 'end':
+                        navigate(`/ending/${plan.id}`);
+                        break;
+                      default:
+                        navigate(`/plan/${plan.id}`);
+                    }
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">

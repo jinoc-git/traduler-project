@@ -10,6 +10,8 @@ import {
 } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
+import SideBarProgressBar from './SideBarProgressBar';
+
 interface SideBarStatusProps {
   isOpen: boolean;
   activePlan: PlanType | undefined;
@@ -18,7 +20,7 @@ interface SideBarStatusProps {
 }
 
 const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
-  const [progressPercent, setProgressPercent] = useState('');
+  const [progress, setProgress] = useState('');
   const { isOpen, activePlan, hasNextPlan, nextPlan } = props;
   const hasActivePlan = activePlan !== undefined;
 
@@ -44,7 +46,8 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
       const startDay = activePlan.dates[0];
       const endDay = activePlan.dates[activePlan.dates.length - 1];
       const percent = calcDateProgress(startDay, endDay);
-      setProgressPercent(percent);
+      // const progressWidth = ((160 / 100) * +percent).toFixed();
+      setProgress(percent);
     }
   }, [activePlan]);
 
@@ -83,9 +86,12 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
 
         {/* 여행 중일 때만 진행률 표시 */}
         {status === '여행 중' && (
-          <p className=" bg-gradient-to-r from-blue to-blue_dark text-transparent bg-clip-text font-bold text-4xl">
-            {progressPercent}
-          </p>
+          <div className={`flex flex-col items-center`}>
+            <p className=" bg-gradient-to-r from-blue_dark to-blue text-transparent bg-clip-text font-bold text-sm text-4xl">
+              {progress}%
+            </p>
+            <SideBarProgressBar percent={progress} />
+          </div>
         )}
 
         {/* 닫혔을 때만 보여지는 내용 */}

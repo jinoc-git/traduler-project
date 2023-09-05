@@ -25,6 +25,17 @@ const PlaceList = () => {
     async () => await getPlaceWithDate(planId),
   );
 
+  // useEffect(() => {
+  //   // if (data !== null && data !== undefined) {
+  //   //   const distances: Json[] | null | undefined = data[0]?.distance;
+  //   //   if (Array.isArray(data[0]?.distance)) {
+  //   //     data[0]?.distance.map((item) => Object.values(item));
+  //   //   }
+  //   //   // data?.[0].distance.map((item) => Object.values(item));
+  //   // }
+  //   console.log(data);
+  // }, [data]);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -43,7 +54,10 @@ const PlaceList = () => {
       {data.map((day) => {
         const days = Object.keys(day);
         const pins = day[days[0]] as Json[];
-        const distanceList = day.distance as string[];
+        let distanceList: string[] = [];
+        if (day.distance !== null && typeof day.distance === 'object') {
+          distanceList = Object.values(day.distance) as string[];
+        }
         const distanceLength = distanceList.length;
 
         return (

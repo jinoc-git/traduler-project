@@ -124,21 +124,24 @@ const SideBar: React.FC = () => {
           <p className="text-sm">TRIPS</p>
           <SideBarPlanList
             toggleFunc={toggleBookMarkPlansOpen}
+            setFunc={setBookMarkNeedValue}
             planList={bookMarkPlanData ?? []}
             filter="bookMark"
-            isOpen={isSideBarOpen && bookMarkPlansOpen}
+            isOpen={bookMarkPlansOpen}
           />
           <SideBarPlanList
             toggleFunc={toggleStartPlansOpen}
+            setFunc={setStartPlansNeedValue}
             planList={startPlans ?? []}
             filter="start"
-            isOpen={isSideBarOpen && startPlansOpen}
+            isOpen={startPlansOpen}
           />
           <SideBarPlanList
             toggleFunc={toggleEndPlansOpen}
+            setFunc={setEndPlansNeedValue}
             planList={endPlans ?? []}
             filter="end"
-            isOpen={isSideBarOpen && endPlansOpen}
+            isOpen={endPlansOpen}
           />
         </div>
       </div>

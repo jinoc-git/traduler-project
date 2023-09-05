@@ -14,13 +14,14 @@ import { type PlanType } from 'types/supabase';
 
 interface SideBarPlanListProps {
   toggleFunc: () => void;
+  setFunc: (val: boolean) => void;
   planList: PlanType[];
   filter: 'bookMark' | 'start' | 'end';
   isOpen: boolean;
 }
 
 const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
-  const { toggleFunc, planList, filter, isOpen } = props;
+  const { toggleFunc, setFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const navigate = useNavigate();
 
@@ -61,15 +62,20 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
     if (state === 'end') navigate(`/ending/${id}`);
   };
 
+  const isDropDownOpen = isOpen && !isSideBarOpen;
+
   return (
-    <div>
+    <div className=" relative">
       <div
         className={`flex w-[222px] justify-between items-center cursor-pointer rounded-lg ${
           isSideBarOpen ? hoverColor[filter] : ''
-        } ${isOpen ? activeColor[filter] : ''} `}
-        onClick={isSideBarOpen ? toggleFunc : () => {}}
+        } ${isSideBarOpen && isOpen ? activeColor[filter] : ''} `}
+        onClick={toggleFunc}
       >
         <button
+          onBlur={() => {
+            setFunc(false);
+          }}
           className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
           ${focusColor[filter]} ${hoverColor[filter]} `}
         >
@@ -86,21 +92,34 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           />
         </div>
       </div>
-      <ul className="flex flex-col items-end">
+      <ul
+        style={{ overflow: isDropDownOpen ? 'visible' : '' }}
+        className={` flex flex-col  w-[200px] ${
+          isDropDownOpen
+            ? ' fixed flex-center ml-[68px] mt-[-40px] w-[190px] border border-gray_light_3 rounded-lg  bg-white'
+            : 'items-end ml-[22px]'
+        } `}
+      >
         {isOpen &&
           planList.length > 0 &&
           planList.slice(0, 3).map((plan) => (
             <li
+              onMouseDown={(e) => {
+                e.preventDefault();
+              }}
               onClick={() => {
                 onClickListItem(plan.plan_state, plan.id);
               }}
+              style={{ overflow: isDropDownOpen ? 'visible' : '' }}
               className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
               key={plan.id}
             >
               <p className="text-[13px]">{plan.title}</p>
-              <span className="text-[13px]">
-                {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
-              </span>
+              {!isDropDownOpen && (
+                <span className="text-[13px]">
+                  {plan.dates[0]} ~ {plan.dates[plan.dates.length - 1]}
+                </span>
+              )}
             </li>
           ))}
         {isOpen && planList.length === 0 && (

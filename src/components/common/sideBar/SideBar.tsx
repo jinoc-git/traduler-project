@@ -55,10 +55,7 @@ const SideBar: React.FC = () => {
   };
 
   // supabase데이터 뿌려주기
-  const {
-    data: matesData,
-    isError: matesError,
-  } = useQuery(
+  const { data: matesData, isError: matesError } = useQuery(
     ['plan_mates', user?.id],
     async () => {
       return await getPlansWithMates(user === null ? '' : user.id);

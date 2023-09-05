@@ -4,16 +4,17 @@ import { useParams } from 'react-router-dom';
 import { getPhoto } from '@api/endingData';
 import IconCamera from '@assets/icons/IconCamera';
 import Loading from '@components/loading/Loading';
-import { Perspective } from '@egjs/flicking-plugins';
 import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
+import useFlickingPlugins from '@hooks/useFlickingPlugins';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 
 const Carousel = () => {
   const [photoData, setPhotoData] = useState<string[]>([]);
-  const _plugins = [new Perspective({ rotate: 0.5 })];
   const { id: planId } = useParams<{ id: string }>();
+  const { _plugins, flickingRef } = useFlickingPlugins();
+
   const { data, isLoading } = useQuery({
     queryKey: ['ending_photo', planId],
     queryFn: async () => await getPhoto(planId as string),
@@ -50,6 +51,7 @@ const Carousel = () => {
           circular={true}
           plugins={_plugins}
           panelsPerView={3}
+          ref={flickingRef as React.LegacyRef<Flicking>}
           align="center"
         >
           {photoData.map((url: string, index: number) => (

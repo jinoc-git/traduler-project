@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
@@ -56,8 +57,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     const res = await checkUserNickname(nickname);
     if (res) {
       setIsDuplicate(!res);
+      toast.success('사용가능한 닉네임 입니다.');
     } else {
-      console.log('닉네임 중복');
+      toast.error('닉네임 중복');
     }
   };
 
@@ -173,7 +175,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             />
 
             <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
-              <IconCamera fill="gray" w="21px" h="18px" />
+              <IconCamera fill="gray" w="21" h="18" />
             </div>
           </label>
         </div>

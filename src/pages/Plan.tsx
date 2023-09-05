@@ -24,6 +24,7 @@ interface InputType {
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const resetDates = datesStore((state) => state.resetDates);
+  // const dates = datesStore((state) => state.dates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
   const planId: string = id as string;
@@ -34,6 +35,8 @@ const Plan = () => {
 
   const [title, setTitle] = useState<string>('');
   const [planState, setPlanState] = useState<string>();
+  const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
+  const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
   const {
     register,
     watch,
@@ -100,6 +103,23 @@ const Plan = () => {
       setValue('totalCost', data?.[0].total_cost);
       setPlanState(data[0].plan_state);
     }
+
+    const today = new Date();
+    const startDate = new Date(data?.[0].dates[0] as string);
+    const endDate = new Date(
+      data?.[0].dates[data?.[0].dates.length - 1] as string,
+    );
+    if (today >= startDate) {
+      setIsPossibleStart(true);
+    } else {
+      setIsPossibleStart(false);
+    }
+    if (today >= endDate) {
+      setIsPossibleEnd(true);
+    } else {
+      setIsPossibleEnd(false);
+    }
+
     return () => {
       resetDates();
     };
@@ -141,20 +161,30 @@ const Plan = () => {
         <div className="flex items-center justify-end gap-5 mt-16">
           {planState === 'planning' ? (
             <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>여행을 떠날 준비가 되셨나요?</p>
+              <p>
+                {isPossibleStart
+                  ? '여행을 떠날 준비가 되셨나요?'
+                  : '아직 시작일이 되지 않았습니다!'}
+              </p>
               <button
+                disabled={!isPossibleStart}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >
                 여행 시작
               </button>
             </div>
           ) : (
             <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>여행 일정을 마치셨나요?</p>
+              <p>
+                {isPossibleEnd
+                  ? '여행 일정을 마치셨나요?'
+                  : '아직 종료일이 되지 않았습니다!'}
+              </p>
               <button
+                disabled={!isPossibleEnd}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >
                 여행 완료
               </button>

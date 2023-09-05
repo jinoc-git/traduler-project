@@ -5,9 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deletePlan } from '@api/plans';
-import { ic_profile_3x } from '@assets/icons/3x';
 import IconAdd from '@assets/icons/IconAdd';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
+import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
@@ -191,7 +191,7 @@ const Card: React.FC<CardProps> = ({
             const participantsAvatarList = participants[plan.id].map(
               (user) => user.avatar_url,
             );
-            // console.log('participantsAvatarList=>', participantsAvatarList);
+
             const participantsNicknameList = participants[plan.id].map(
               (user) => user.nickname,
             );
@@ -261,24 +261,15 @@ const Card: React.FC<CardProps> = ({
                             gap = '-ml-[8px]';
                           }
 
-                          return (
+                          return avatar ? (
                             <img
                               key={uuid()}
-                              src={avatar ?? ic_profile_3x}
+                              src={avatar}
                               alt="유저아바타"
                               className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
                             />
-
-                            // {avatar ? (
-                            //   <img
-                            //     key={uuid()}
-                            //     src={avatar}
-                            //     alt="유저아바타"
-                            //     className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
-                            //   />
-                            // ) : (
-                            //   <IconUserDefault w={20} h={20} />
-                            // )}
+                          ) : (
+                            <IconUserDefault w={'20'} h={'20'} />
                           );
                         })}
                       </div>
@@ -305,34 +296,7 @@ const Card: React.FC<CardProps> = ({
                       }}
                     >
                       <IconDeleteDefault fill="#E1E2E3" />
-                      {/* <IconDeleteDefault
-                        fill={hovered ? '#FFC803' : '#E1E2E3'} */}
-                      {/* /> */}
                     </button>
-                    {/* <button
-                      onClick={async () => {
-                        await handleDeletePlan(plan.id);
-                        navigate('/main');
-                      }}
-                    >
-                      {deletedPlans.includes(plan.id) ? (
-                        <IconDeleteFill
-                          fill={
-                            deletedPlans.includes(plan.id)
-                              ? '#FFC803'
-                              : '#E1E2E3'
-                          }
-                        />
-                      ) : (
-                        <IconDeleteDefault
-                          fill={
-                            deletedPlans.includes(plan.id)
-                              ? '#FFC803'
-                              : '#E1E2E3'
-                          }
-                        />
-                      )}
-                    </button> */}
                   </div>
                 </div>
               </div>

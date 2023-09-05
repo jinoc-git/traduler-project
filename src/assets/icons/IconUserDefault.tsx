@@ -15,13 +15,14 @@ const IconUserDefault = ({ w, h }: IconType) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
+      // className={`${width} ${height} ${className || ''}`}
     >
       <circle
         cx="50"
         cy="50"
         r="48"
         fill="white"
-        stroke="white"
+        stroke="#C9C3C3"
         strokeWidth="4"
       />
       <path

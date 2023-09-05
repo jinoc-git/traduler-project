@@ -42,6 +42,7 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
         fill={fill || 'black'}
         stroke={outerStrokeColor}
       />
+      {/* 전체컬러 */}
       <path
         fillRule="evenodd"
         clipRule="evenodd"

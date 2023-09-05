@@ -45,7 +45,7 @@ const AddPhoto = () => {
   const handleButton = async () => {
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
-
+    console.log(distanceDataList)
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
       await insertPlanEnding({

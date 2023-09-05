@@ -145,7 +145,8 @@ export const insertPlanEnding = async (options: Options) => {
 export const getEndingCost = async (planId: string) => {
   const { data: distanceData, error: distanceError } = await supabase
     .from('plans_ending')
-    .select('distance');
+    .select('distance')
+    .eq('id', planId);
 
   if (distanceError !== null) {
     return;
@@ -154,7 +155,7 @@ export const getEndingCost = async (planId: string) => {
   const { data: costData, error: costError } = await supabase
     .from('plans_ending')
     .select('dates_cost')
-    .eq('plan_id', planId);
+    .eq('id', planId);
 
   if (costError !== null) {
     return;
@@ -162,7 +163,8 @@ export const getEndingCost = async (planId: string) => {
 
   const { data: pictureData, error: pictureError } = await supabase
     .from('plans_ending')
-    .select('pictures');
+    .select('pictures')
+    .eq('id', planId);
 
   if (pictureError !== null) {
     return;
@@ -203,15 +205,31 @@ export const getDates = async (planId: string) => {
 export const getPlaceWithDate = async (planId: string) => {
   const placeDataList = await getAllPins(planId);
   const planDateList = await getPlansDate(planId);
+  const planDistanceList = await getEndingDistance(planId);
+  console.log(planDistanceList);
 
   const result = placeDataList.map((item, i) => {
     const day = planDateList[0].dates[i];
     const mix = {
       [day]: item.contents,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      distance: planDistanceList[0].distance![i],
     };
     return mix;
   });
 
-  console.log(result);
   return result;
+};
+
+export const getEndingDistance = async (planId: string) => {
+  const { data: distanceData, error: distanceError } = await supabase
+    .from('plans_ending')
+    .select('distance')
+    .eq('id', planId);
+
+  if (distanceError !== null) {
+    throw new Error('엔딩 거리 데이터 불러오기 오류');
+  }
+
+  return distanceData;
 };

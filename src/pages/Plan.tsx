@@ -45,14 +45,15 @@ const Plan = () => {
   } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
 
   const [title, setTitle] = useState<string>('');
-  const [cost, setCost] = useState<number>(0);
   const [planState, setPlanState] = useState<string>();
   const {
     register,
-    // handleSubmit,
-    // watch,
+    watch,
+    setValue,
     formState: { errors },
-  } = useForm<InputType>({ mode: 'onChange' });
+  } = useForm<InputType>({
+    mode: 'onChange',
+  });
 
   const handleSubmitButton = () => {
     if (modifyState === 'modify') {
@@ -60,7 +61,7 @@ const Plan = () => {
     } else {
       setModify();
     }
-    mutation.mutate([planId, title, cost]);
+    mutation.mutate([planId, title, watch('totalCost') as number]);
   };
 
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ const Plan = () => {
     void refetch();
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
-      setCost(data?.[0].total_cost);
+      setValue('totalCost', data?.[0].total_cost);
       setPlanState(data[0].plan_state);
       setPlanEndingState(planEnding);
     }

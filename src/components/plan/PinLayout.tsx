@@ -23,15 +23,16 @@ const PinLayout = ({
   isEnding,
 }: PropsType) => {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex items-center justify-between gap-4 relative">
       <div className="flex items-center">
         <div className="absolute translate-x-[17.5px] -z-10 border border-l-black h-[116px]" />
         <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] text-center font-semibold text-white border-[5px] border-white">
           {idx + 1}
         </p>
       </div>
+      {isEnding && children}
       <div className="flex items-center justify-between border rounded-lg w-pin_card h-pin_card border-gray_dark_1 p-[30px] py-[8px] mb-[10px]">
-        {children}
+        {!isEnding && children}
         <div className="flex flex-col text-left text-normal text-gray_dark_1 w-[400px]">
           {pin !== null && typeof pin === 'object' && 'placeName' in pin && (
             <span className="font-bold">{pin.placeName}</span>

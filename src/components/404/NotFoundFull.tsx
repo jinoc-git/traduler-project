@@ -1,24 +1,66 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { NotFoundImg } from '@assets/index';
+import { sideBarStore } from '@store/sideBarStore';
 
 const NotFoundFull = () => {
-  const goToMain = () => (window.location.href = '/main');
+  const navigate = useNavigate();
+
+  const goToMain = () => {
+    navigate('/welcome');
+  };
+
+  const goToBack = () => {
+    navigate(-1);
+  };
+
+  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
+
+  const backgroundStyle: React.CSSProperties = {
+    backgroundImage: `url('${NotFoundImg}')`,
+    backgroundSize: '80%',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh',
+  };
 
   useEffect(() => {
-    const timeoutId = setTimeout(goToMain, 4000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    setVisibilityIcon(false);
   }, []);
 
   return (
-    <aside>
-      <h1>페이지를 찾을 수 없습니다</h1>
-      <p>페이지가 존재하지 않거나, 사용할 수 없는 페이지 입니다</p>
-      <p>입력하신 주소가 정확한지 다시 한 번 확인해주세요</p>
-      <button onClick={goToMain} className="cursor-pointer">
-        메인페이지로 이동
-      </button>
-    </aside>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center"
+      style={backgroundStyle}
+    >
+      <div className="mt-[240px]">
+        <h1 className="text-center mb-4 text-gray_dark_2 text-xlg font-semibold">
+          저런.. 길을 잃으셨군요!
+        </h1>
+        <p className="text-center mb-4 text-gray_dark_1">
+          존재하지 않는 주소를 입력하셨거나,
+        </p>
+        <p className="text-center mb-4 text-gray_dark_1">
+          요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.
+        </p>
+
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={goToMain}
+            className="cursor-pointer w-[140px] h-[36px] rounded-lg bg-white text-blue border border-blue hover:bg-blue_light_1 hover:text-blue_dark hover:border-blue_dark"
+          >
+            이전 페이지
+          </button>
+          <button
+            onClick={goToBack}
+            className="cursor-pointer w-[140px] h-[36px] rounded-lg bg-gradient-to-r from-blue_dark to-blue text-white border border-blue_dark hover:bg-white hover:text-blue_dark hover:border-blue_dark"
+          >
+            홈으로
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

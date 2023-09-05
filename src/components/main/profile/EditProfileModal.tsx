@@ -4,9 +4,9 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
-import { ic_profile_3x } from '@assets/icons/3x';
+import IconCamera from '@assets/icons/IconCamera';
 import IconClose from '@assets/icons/IconClose';
-import { defaultImageGray } from '@assets/index';
+import { profileDefaultGray, profileDefaultBlack } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
@@ -158,19 +158,25 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         </button>
         <div className="flex items-center gap-3 w-[408px]">
           <img
-            src={ic_profile_3x}
+            src={profileDefaultBlack}
             alt="프로필 아이콘"
             className="w-[30px] h-[30px]"
           />
           <p className="font-semibold text-xlg">프로필 편집</p>
         </div>
-        <label htmlFor="avatar">
-          <img
-            src={previewImg !== '' ? previewImg : defaultImageGray}
-            alt="프로필이미지"
-            className="w-[200px] h-[200px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer"
-          />
-        </label>
+        <div className="relative">
+          <label htmlFor="avatar">
+            <img
+              src={previewImg !== '' ? previewImg : profileDefaultGray}
+              alt="프로필이미지"
+              className="w-[200px] h-[200px] rounded-full border-[2.5px] border-gray object-cover cursor-pointer"
+            />
+
+            <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
+              <IconCamera fill="gray" w="21px" h="18px" />
+            </div>
+          </label>
+        </div>
         <input
           id="avatar"
           type="file"
@@ -178,6 +184,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           accept=".jpg, .jpeg, .png"
           className="hidden border"
         />
+
         <p className="text-center">
           프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
           정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)

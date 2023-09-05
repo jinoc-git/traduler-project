@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
         return plan.plan_state === 'planning';
       } else {
         // selectedPlan이 'end'인 경우
-        return plan.plan_state === 'end';
+        return plan.plan_state === 'end' || plan.plan_state === 'recording';
       }
     })
     .filter((plan) => !plan.isDeleted);
@@ -73,12 +73,24 @@ const Card: React.FC<CardProps> = ({
     }
   };
 
+  const onClickListItem = (state: string, id: string) => {
+    if (state === 'planning') navigate(`/plan/${id}`);
+    if (state === 'traveling') navigate(`/plan/${id}`);
+    if (state === 'recording') navigate(`/addPhoto/${id}`);
+    if (state === 'end') navigate(`/ending/${id}`);
+  };
+
   useEffect(() => {
     if (plansData != null) {
       setPlanningCount(
         plansData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(
+        plansData.filter(
+          (plan) =>
+            plan.plan_state === 'end' || plan.plan_state === 'recording',
+        ).length,
+      );
 
       setTravelingCount(
         plansData.filter((plan) => plan.plan_state === 'traveling').length,
@@ -201,7 +213,7 @@ const Card: React.FC<CardProps> = ({
                 <div
                   className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
-                    navigate(`/plan/${plan.id}`);
+                    onClickListItem(plan.plan_state, plan.id);
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">

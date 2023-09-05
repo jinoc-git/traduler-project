@@ -10,6 +10,8 @@ import {
 } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
+import SideBarProgressBar from './SideBarProgressBar';
+
 interface SideBarStatusProps {
   isOpen: boolean;
   activePlan: PlanType | undefined;
@@ -18,7 +20,7 @@ interface SideBarStatusProps {
 }
 
 const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
-  const [progressPercent, setProgressPercent] = useState('');
+  const [progress, setProgress] = useState('');
   const { isOpen, activePlan, hasNextPlan, nextPlan } = props;
   const hasActivePlan = activePlan !== undefined;
 
@@ -44,7 +46,8 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
       const startDay = activePlan.dates[0];
       const endDay = activePlan.dates[activePlan.dates.length - 1];
       const percent = calcDateProgress(startDay, endDay);
-      setProgressPercent(percent);
+      // const progressWidth = ((160 / 100) * +percent).toFixed();
+      setProgress(percent);
     }
   }, [activePlan]);
 
@@ -65,7 +68,9 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
         </div>
       </div>
       <div
-        className={`flex flex-col items-center gap-3 rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`flex flex-col h-[125px] items-center ${
+          isOpen ? 'gap-3' : ''
+        } rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
             ? 'w-[197px] h-[125px] flex-center flex-col'
             : 'w-[40px] h-[125px]'
@@ -73,7 +78,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
       >
         {/* 닫혔을 때 여행 중, 예정일 때 날짜 표시 */}
         {!isOpen && status === '여행 중' && (
-          <p className="text-sm pt-3">
+          <p className="text-sm pt-2">
             {removeYearOfDate(activePlan?.dates[0])}
           </p>
         )}
@@ -83,9 +88,22 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
 
         {/* 여행 중일 때만 진행률 표시 */}
         {status === '여행 중' && (
-          <p className=" bg-gradient-to-r from-blue to-blue_dark text-transparent bg-clip-text font-bold text-4xl">
-            {progressPercent}
-          </p>
+          <div
+            className={`flex ${
+              isOpen ? 'flex-col' : 'flex-row-reverse gap-1'
+            } items-center`}
+          >
+            <p className=" bg-gradient-to-r from-blue_dark to-blue text-transparent bg-clip-text font-bold text-sm text-4xl">
+              {isOpen && progress + '%'}
+              {!isOpen && (
+                <p className='text-center'>
+                  {progress}
+                  <p>%</p>{' '}
+                </p>
+              )}
+            </p>
+            <SideBarProgressBar percent={progress} isOpen={isOpen} />
+          </div>
         )}
 
         {/* 닫혔을 때만 보여지는 내용 */}

@@ -4,7 +4,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
-import { ic_menu_1x } from '@assets/icons/1x';
+import { ic_new_menu_1x } from '@assets/icons/1x';
 import { logoColor } from '@assets/index';
 import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
@@ -55,10 +55,7 @@ const SideBar: React.FC = () => {
   };
 
   // supabase데이터 뿌려주기
-  const {
-    data: matesData,
-    isError: matesError,
-  } = useQuery(
+  const { data: matesData, isError: matesError } = useQuery(
     ['plan_mates', user?.id],
     async () => {
       return await getPlansWithMates(user === null ? '' : user.id);
@@ -103,9 +100,9 @@ const SideBar: React.FC = () => {
       >
         <button
           onClick={toggleSideBar}
-          className=" flex-center w-[40px] h-[40px]"
+          className=" flex-center w-[39px] h-[40px]"
         >
-          <img src={ic_menu_1x} alt="Menu Icon" />
+          <img src={ic_new_menu_1x} alt="Menu Icon" />
         </button>
         <img
           src={logoColor}
@@ -123,25 +120,28 @@ const SideBar: React.FC = () => {
           nextPlan={nextPlan}
         />
 
-        <div className="flex flex-col gap-2 min-h-[362px]">
+        <div className="flex flex-col gap-2 min-h-[382px]">
           <p className="text-sm">TRIPS</p>
           <SideBarPlanList
             toggleFunc={toggleBookMarkPlansOpen}
+            setFunc={setBookMarkNeedValue}
             planList={bookMarkPlanData ?? []}
             filter="bookMark"
-            isOpen={isSideBarOpen && bookMarkPlansOpen}
+            isOpen={bookMarkPlansOpen}
           />
           <SideBarPlanList
             toggleFunc={toggleStartPlansOpen}
+            setFunc={setStartPlansNeedValue}
             planList={startPlans ?? []}
             filter="start"
-            isOpen={isSideBarOpen && startPlansOpen}
+            isOpen={startPlansOpen}
           />
           <SideBarPlanList
             toggleFunc={toggleEndPlansOpen}
+            setFunc={setEndPlansNeedValue}
             planList={endPlans ?? []}
             filter="end"
-            isOpen={isSideBarOpen && endPlansOpen}
+            isOpen={endPlansOpen}
           />
         </div>
       </div>

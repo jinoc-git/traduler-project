@@ -27,8 +27,8 @@ const Landing = () => {
         </div>
       </div>
       <div className="pl-[150px] pr-[300px] flex justify-center mt-[43px]">
-        <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/4ae3298a-5b57-459b-86ca-1771f8d38f7a)] bg-cover bg-no-repeat w-[926px] h-[557px]">
-          <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/5848a22a-ef7b-4357-aea0-016798a8f60f)] bg-cover bg-no-repeat w-[552px] h-[334px] translate-x-[500px] translate-y-[280px]" />
+        <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/0e1b3853-feb7-45bb-b861-8cbcfd4505f3)] bg-cover bg-no-repeat w-[926px] h-[557px]">
+          <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/31c7fba6-a39c-48dc-9cde-42d8fb4518e7)] bg-cover bg-no-repeat w-[552px] h-[334px] translate-x-[500px] translate-y-[280px]" />
         </div>
       </div>
       <div className="flex flex-col mx-auto">
@@ -69,7 +69,7 @@ const Landing = () => {
             </button>
           </div>
         </div>
-        <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/3bd144d0-2c5e-4521-983b-bf381d29b19c)] bg-cover bg-no-repeat w-[900px] h-[400px] mr-[-200px]" />
+        <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/c262d083-dc9a-4101-913f-f83f70eb3ba3)] bg-cover bg-no-repeat w-[900px] h-[400px] mr-[-200px]" />
       </div>
       <div
         className="text-[30px] font-bold text-center text-blue underline underline-offset-[6px] my-[120px] cursor-pointer"

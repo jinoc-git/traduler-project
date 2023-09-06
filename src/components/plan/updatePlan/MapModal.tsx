@@ -35,21 +35,7 @@ const MapModal = ({
     lat: pin !== null ? (pin.lat as number) : 0,
     lng: pin !== null ? (pin.lng as number) : 0,
   });
-  // const {
-  //   register,
-  //   formState: { errors, isSubmitting },
-  // } = useForm<InputType>();
-  // const {
-  //   register: registerPlaceName,
-  //   watch,
-  //   handleSubmit: handleSubmitPlaceName,
-  //   formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
-  // } = useForm<InputType>({
-  //   defaultValues: {
-  //     placeName: pin !== null ? (pin.placeName as string) : '',
-  //     cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
-  //   },
-  // });
+
   const {
     register,
     handleSubmit,
@@ -74,7 +60,6 @@ const MapModal = ({
 
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
-    console.log('여기는??', data);
     const newContents: PinContentsType = {
       id: uuid(),
       lat: position.lat,
@@ -82,7 +67,6 @@ const MapModal = ({
       placeName: data.placeName as string,
       cost: data.cost as number,
     };
-    console.log(newContents);
     // 수정하기 시
     if (pin !== null) {
       updateMutation.mutate([idx, date, planId, newContents]);
@@ -160,7 +144,6 @@ const MapModal = ({
 
   return (
     <MapModalLayout>
-      {/* <form onSubmit={()=>handleSubmit(onSubmitPlaceName)}> */}
       <MapModalInput
         register={register}
         errors={errors}
@@ -191,7 +174,6 @@ const MapModal = ({
           className="bg-navy text-white rounded-lg hover:bg-navy_light_3  px-[20px] py-[14px] disabled:bg-gray w-[210px] duration-200"
           onClick={() => {
             handleSubmit(onSubmitPlaceName);
-            console.log('여기');
           }}
         >
           {pin !== null ? '수정하기' : '새 장소 추가'}

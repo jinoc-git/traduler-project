@@ -10,22 +10,21 @@ import {
 import { type PinContentsType } from '@api/pins';
 
 interface PropsType {
-  pins: PinContentsType[][];
-  currentPage: number;
+  pins: PinContentsType[];
 }
 
-const MapPoly = ({ pins, currentPage }: PropsType) => {
+const MapPoly = ({ pins }: PropsType) => {
   return (
     <div className="flex justify-center">
       <Map
         center={{
           lat:
-            pins.length !== 0 && pins[currentPage].length !== 0
-              ? (pins[currentPage][0].lat as number)
+            pins !== undefined && pins.length !== 0
+              ? (pins[0].lat as number)
               : 37.566826004661,
           lng:
-            pins.length !== 0 && pins[currentPage].length !== 0
-              ? (pins[currentPage][0].lng as number)
+            pins !== undefined && pins.length !== 0
+              ? (pins[0].lng as number)
               : 126.978652258309,
         }}
         level={3}
@@ -35,7 +34,7 @@ const MapPoly = ({ pins, currentPage }: PropsType) => {
           borderRadius: '8px',
         }}
       >
-        {pins[currentPage]?.map((pin) => {
+        {pins?.map((pin) => {
           return (
             <MapMarker
               key={pin.lng}
@@ -46,9 +45,9 @@ const MapPoly = ({ pins, currentPage }: PropsType) => {
             ></MapMarker>
           );
         })}
-        {pins.length !== 0 && pins[currentPage].length !== 0 && (
+        {pins !== undefined && pins.length !== 0 && (
           <Polyline
-            path={pins[currentPage].map((pin) => {
+            path={pins.map((pin) => {
               return {
                 lat: pin.lat as number,
                 lng: pin.lng as number,

@@ -37,6 +37,7 @@ const Plan = () => {
   const [planState, setPlanState] = useState<string>();
   const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
   const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
+  const isModifying = modifyState === 'modify';
   const {
     register,
     watch,
@@ -166,11 +167,13 @@ const Plan = () => {
             <div className="flex my-[100px] items-center justify-end gap-5">
               <p>
                 {isPossibleStart
-                  ? '여행을 떠날 준비가 되셨나요?'
+                  ? isModifying
+                    ? '상단의 저장 버튼을 눌러주세요.'
+                    : '여행을 떠날 준비가 되셨나요?'
                   : '아직 시작일이 되지 않았습니다!'}
               </p>
               <button
-                disabled={!isPossibleStart}
+                disabled={!isPossibleStart || isModifying}
                 onClick={handleChangePlanState}
                 className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >
@@ -181,11 +184,13 @@ const Plan = () => {
             <div className="flex my-[100px] items-center justify-end gap-5">
               <p>
                 {isPossibleEnd
-                  ? '여행 일정을 마치셨나요?'
+                  ? isModifying
+                    ? '상단의 저장 버튼을 눌러주세요.'
+                    : '여행 일정을 마치셨나요?'
                   : '아직 종료일이 되지 않았습니다!'}
               </p>
               <button
-                disabled={!isPossibleEnd}
+                disabled={!isPossibleEnd || isModifying}
                 onClick={handleChangePlanState}
                 className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >

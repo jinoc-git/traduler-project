@@ -26,13 +26,13 @@ export const userStore = create<UserStore>((set, get) => {
           const {
             id,
             email,
-            user_metadata: { name: nickname, profileImg },
+            user_metadata: { name, nickname, profileImg },
           } = session.user;
-
+          console.log(session.user);
           const user: UserInfo = {
             id,
             email: email as string,
-            nickname,
+            nickname: nickname ?? name,
             profileImg: profileImg ?? null,
           };
 

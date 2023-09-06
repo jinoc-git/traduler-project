@@ -23,6 +23,18 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
     };
   }, []);
 
+  const handleButtonClick = () => {
+    const confirmation = window.confirm(
+      `정말로 ${
+        modifyState === 'modify' ? '저장하기' : '수정하기'
+      }를 하시겠습니까?`,
+    );
+
+    if (confirmation) {
+      onClick();
+    }
+  };
+
   return (
     <nav className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center">
       <div className="ml-[20px] text-navy_dark">여행 계획 시작</div>
@@ -30,7 +42,7 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
         <IconEditDefault w="16" h="16" fill="#162F70" />
         <button
           className="mr-[80px] text-navy_dark"
-          onClick={onClick}
+          onClick={handleButtonClick}
           type="submit"
           disabled={buttonDisabled}
         >

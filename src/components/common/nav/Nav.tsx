@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import IconEditDefault from '@assets/icons/IconEditDefault';
+import useConfirm from '@hooks/useConfirm';
 import { modifyStateStore } from '@store/modifyStateStore';
 
 interface PropsType {
@@ -12,6 +13,19 @@ interface PropsType {
 
 const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
+  const { confirm } = useConfirm();
+
+  const handleButtonClick = () => {
+    const confTitle = '여행 저장하기';
+    const confDesc = '이대로 저장하시겠습니까?';
+    const confFunc = () => {
+      onClick();
+    };
+    if (modifyState === 'modify') {
+      confirm.default(confTitle, confDesc, confFunc);
+    } else onClick();
+  };
+
   useEffect(() => {
     if (page === ' plan') {
       setReadOnly();
@@ -22,18 +36,6 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
       setReadOnly();
     };
   }, []);
-
-  const handleButtonClick = () => {
-    const confirmation = window.confirm(
-      `정말로 ${
-        modifyState === 'modify' ? '저장하기' : '수정하기'
-      }를 하시겠습니까?`,
-    );
-
-    if (confirmation) {
-      onClick();
-    }
-  };
 
   return (
     <nav className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center">

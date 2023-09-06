@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
-import { ic_profile_3x } from '@assets/icons/3x';
+import IconCamera from '@assets/icons/IconCamera';
 import IconClose from '@assets/icons/IconClose';
-import { defaultImageGray } from '@assets/index';
+import { profileDefaultGray, profileDefaultBlack } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
@@ -20,15 +21,23 @@ interface EditProfileForm {
   nickname: string;
 }
 
+// interface User {
+//   id: string;
+//   email: string;
+//   nickname: string;
+//   profileImg: string | null;
+// }
+
 const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [isDuplicate, setIsDuplicate] = useState<boolean>(true);
   const [isRemoveAvatar, setIsRemoveAvatar] = useState<boolean>(false);
+  const [isDefaultProfile, setIsDefaultProfile] = useState<boolean>(false);
+  const [isAvatarChanged, setIsAvatarChanged] = useState<boolean>(false);
+  const { nicknameValidator } = useFormValidator();
 
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
-
-  const { nicknameValidator } = useFormValidator();
 
   const onClickCloseModalHandler = () => {
     handler(false);
@@ -44,20 +53,21 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const preview = watch('avatar');
   const nickname = watch('nickname');
 
-  const isAvatarChanged = preview?.length !== 0;
   const isNicknameChanged = nickname !== '';
 
-  const shouldBlockSubmitBtn = isRemoveAvatar
-    ? false
-    : (!isAvatarChanged && !isNicknameChanged) ||
-      (isNicknameChanged && isDuplicate);
+  const isEditProfileBtnDisabled =
+    (!isNicknameChanged && !isAvatarChanged) ||
+    (isNicknameChanged && isDuplicate) ||
+    (isRemoveAvatar && (!isAvatarChanged || !user?.profileImg));
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
     if (res) {
       setIsDuplicate(!res);
+      toast.success('사용가능한 닉네임 입니다.');
     } else {
-      console.log('닉네임 중복');
+      setIsDuplicate(true);
+      toast.error('닉네임 중복');
     }
   };
 
@@ -67,7 +77,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     if (data.nickname !== '' && isDuplicate) return;
     if (user == null) return;
 
-    // 닉네임 변경
     if (data.nickname !== '') {
       const res = await updateUserNickname(data.nickname, user.id);
 
@@ -82,7 +91,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
       }
     }
 
-    // 프로필 사진 변경
     if (data.avatar[0]) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
       if (res) {
@@ -96,7 +104,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
       }
     }
 
-    // 프로필 이미지 삭제
     if (isRemoveAvatar) {
       const res = await removeUserAvartar(user.id);
 
@@ -114,9 +121,50 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     onClickCloseModalHandler();
   };
 
-  const removeAvartarBtnHandler = () => {
-    setPreviewImg('');
-    setIsRemoveAvatar(true);
+  // const updateProfileImage = (preview: FileList | null, user: User | null) => {
+  //   if (preview && preview.length > 0) {
+  //     const file = preview[0];
+  //     setPreviewImg(URL.createObjectURL(file));
+  //     setIsAvatarChanged(true); // 이미지 변경 여부를 true로 설정
+  //   } else if (user !== null && typeof user.profileImg === 'string') {
+  //     setPreviewImg(user.profileImg);
+  //     setIsAvatarChanged(false); // 이미지 변경 여부를 false로 설정
+  //   }
+  // };
+
+  const removeAvatarBtnHandler = async () => {
+    if (user?.profileImg) {
+      if (isDefaultProfile) {
+        // 이미 기본 프로필인 경우, 프로필 사진 제거
+        setIsDefaultProfile(false);
+        setIsRemoveAvatar(true);
+        setPreviewImg(''); // 프로필 이미지 제거
+        setIsAvatarChanged(true);
+        // 프로필 이미지 제거 요청 보내기
+        const res = await removeUserAvartar(user.id);
+
+        if (res) {
+          const { id, email, nickname, profileImg } = res;
+          setUser({
+            id,
+            email,
+            nickname,
+            profileImg,
+          });
+        }
+      } else {
+        // 이미 사용자 업로드 프로필인 경우, 기본 프로필로 변경
+        setIsDefaultProfile(true); // isDefaultProfile 값을 true로 설정
+        setIsRemoveAvatar(false); // 이미지 제거 플래그 해제
+        setPreviewImg(profileDefaultGray); // 기본 프로필 이미지로 변경
+        setIsAvatarChanged(true);
+      }
+    } else {
+      // 이미지가 없는 경우도 기본 이미지로 설정하려면 이 부분도 수정이 필요할 수 있습니다.
+      setIsDefaultProfile(true); // 이미지가 없는 경우도 기본 이미지로 설정
+      setIsRemoveAvatar(false); // 이미지가 없으므로 제거 플래그를 해제
+      setIsAvatarChanged(true);
+    }
   };
 
   useEffect(() => {
@@ -127,14 +175,12 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     if (preview && preview.length > 0) {
       const file = preview[0];
       setPreviewImg(URL.createObjectURL(file));
+      setIsAvatarChanged(true);
     } else if (user !== null && typeof user.profileImg === 'string') {
       setPreviewImg(user.profileImg);
+      setIsAvatarChanged(false);
     }
-    return () => {
-      setPreviewImg('');
-      setIsDuplicate(true);
-    };
-  }, [preview]);
+  }, [preview, user]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -158,19 +204,25 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         </button>
         <div className="flex items-center gap-3 w-[408px]">
           <img
-            src={ic_profile_3x}
+            src={profileDefaultBlack}
             alt="프로필 아이콘"
             className="w-[30px] h-[30px]"
           />
           <p className="font-semibold text-xlg">프로필 편집</p>
         </div>
-        <label htmlFor="avatar">
-          <img
-            src={previewImg !== '' ? previewImg : defaultImageGray}
-            alt="프로필이미지"
-            className="w-[200px] h-[200px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer"
-          />
-        </label>
+        <div className="relative">
+          <label htmlFor="avatar">
+            <img
+              src={isDefaultProfile ? profileDefaultGray : previewImg}
+              alt="프로필이미지"
+              className="w-[200px] h-[200px] rounded-full border-[2.5px] border-gray object-cover cursor-pointer"
+            />
+
+            <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
+              <IconCamera fill="gray" w="21" h="18" />
+            </div>
+          </label>
+        </div>
         <input
           id="avatar"
           type="file"
@@ -178,6 +230,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           accept=".jpg, .jpeg, .png"
           className="hidden border"
         />
+
         <p className="text-center">
           프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
           정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
@@ -221,15 +274,20 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         <div className="flex justify-between w-[408px]">
           <button
             type="button"
-            onClick={removeAvartarBtnHandler}
-            className="w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1"
+            onClick={removeAvatarBtnHandler}
+            className={`w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1 ${
+              isDefaultProfile ? 'disabled:bg-gray_light_3' : ''
+            }`}
+            disabled={isDefaultProfile}
           >
             사진 제거
           </button>
           <button
-            disabled={shouldBlockSubmitBtn}
+            disabled={isEditProfileBtnDisabled}
             type="submit"
-            className="w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3"
+            className={`w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 ${
+              isEditProfileBtnDisabled ? 'disabled:bg-gray_light_3' : ''
+            }`}
           >
             프로필 변경 {isSubmitting && '제출중'}
           </button>

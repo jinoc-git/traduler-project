@@ -225,22 +225,6 @@ const Card: React.FC<CardProps> = ({
                         isFavorite?.id !== undefined ? isFavorite.id : ''
                       }
                     />
-                    {/* <div className="mt-[8px]">
-                      {plan.plan_state === 'end' ? null : (plan.dates[0]) ===
-                        new Date().toISOString().split('T')[0] ? (
-                        <span className="text-yellow">D-Day</span>
-                      ) : (
-                        <span className="text-yellow">
-                          D-
-                          {Math.ceil(
-                            (new Date(plan.dates[0]).getTime() -
-                              new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
-                          )}
-                        </span>
-                      )}
-                    </div> */}
-
                     <div className="mt-[8px]">
                       {plan.plan_state === 'end' ? null : (
                         <span className="text-yellow">
@@ -278,7 +262,6 @@ const Card: React.FC<CardProps> = ({
                         {participantsAvatarList.map((avatar, i) => {
                           let gap = '';
                           if (i > 0) {
-                            // gap = '-translate-x-1/2';
                             gap = '-ml-[8px]';
                           }
 

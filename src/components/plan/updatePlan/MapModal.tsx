@@ -4,6 +4,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
+import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -58,6 +59,7 @@ const MapModal = ({
   };
   const debouncedSearchMap = _.debounce(onSubmit, 300);
 
+  const { confirm } = useConfirm();
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newContents: PinContentsType = {
@@ -69,14 +71,25 @@ const MapModal = ({
     };
     // 수정하기 시
     if (pin !== null) {
-      updateMutation.mutate([idx, date, planId, newContents]);
-      resetPin();
+      const confTitle = '장소 수정';
+      const confDesc = '이대로 수정하시겠습니까?';
+      const confFunc = () => {
+        updateMutation.mutate([idx, date, planId, newContents]);
+        openModal();
+        resetPin();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
     // 장소추가 시
     else {
-      addMutation.mutate([date, planId, newContents]);
+      const confTitle = '장소 추가';
+      const confDesc = '이대로 추가하시겠습니까?';
+      const confFunc = () => {
+        addMutation.mutate([date, planId, newContents]);
+        openModal();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
-    openModal();
   };
 
   const queryClient = useQueryClient();

@@ -18,6 +18,7 @@ import Loading from '@components/loading/Loading';
 import EndingDate from '@components/plan/ending/EndingDate';
 import EndingMap from '@components/plan/ending/EndingMap';
 import EndingPay from '@components/plan/ending/EndingPay';
+import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import AddPicture from 'components/addpicture/AddPicture';
@@ -64,7 +65,6 @@ const AddPhoto = () => {
     setIsSubmiting(true);
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
-    console.log(distanceDataList);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
       await insertPlanEnding({
@@ -76,6 +76,17 @@ const AddPhoto = () => {
       changeMutation.mutate([planId, 'end']);
       navigate(`/ending/${planId}`);
     }
+  };
+
+  const { confirm } = useConfirm();
+  const handleSubmitButton = () => {
+    const confTitle = '여행 저장';
+    const confDesc =
+      '저장한 여행은 수정할 수 없습니다. 정말로 저장하시겠습니까?';
+    const confFunc = () => {
+      handleButton();
+    };
+    confirm.default(confTitle, confDesc, confFunc);
   };
 
   useLayoutEffect(() => {
@@ -146,16 +157,8 @@ const AddPhoto = () => {
             <span>여행 잘 다녀오셨나요?</span>
             <button
               disabled={isSubmiting}
-              onClick={() => {
-                if (
-                  window.confirm(
-                    '여행을 저장하시겠습니까? 저장 후에는 사진 수정이 불가능합니다.',
-                  )
-                ) {
-                  handleButton();
-                }
-              }}
-              className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
+              onClick={handleSubmitButton}
+              className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1 hover:bg-blue_light_1 duration-200"
             >
               {isSubmiting ? '저장 중' : '여행 저장'}
             </button>

@@ -80,7 +80,7 @@ const AddPlanContents = ({
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (
-              <div key={pin.lat}>
+              <div key={pin.id}>
                 <PinLayout
                   pin={pin}
                   idx={idx}

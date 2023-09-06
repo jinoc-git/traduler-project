@@ -49,7 +49,7 @@ const Main = () => {
           <span
             className={`ml-[10px] ${hovered ? 'text-blue_dark' : 'text-white'}`}
           >
-            계획 생성하기
+            여행 생성하기
           </span>
         </button>
       </section>

@@ -5,4 +5,7 @@ export { default as signOutDropDown } from './btn-logout-dropdown-w-contents.png
 export { default as defaultMainPlan } from './main-background-default-plan-125x101.png';
 export { default as logoColor } from './img-traduler-logo-color-4x.png';
 export { default as logoWhite } from './img-traduler-logo-white-4x.png';
+export { default as NotFoundImg } from './img-not-found.png';
 export { default as LoadingGif } from './loader-all-color.gif';
+export { default as profileDefaultGray } from './profile-default-gray.svg';
+export { default as profileDefaultBlack } from './profile-default-black.svg';

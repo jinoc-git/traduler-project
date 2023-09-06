@@ -114,11 +114,12 @@ const SignUpForm = () => {
 
   return (
     <main className="flex-center w-screen h-screen">
+      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/fd90f3f8-15f5-458c-8e4e-c5b35e781f10)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
         className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
       >
-        <h2 className="border-black border-b-2 w-[72px] text-lg font-semibold	">
+        <h2 className="text-blue border-blue border-b-2 w-[64px] text-lg font-semibold	">
           회원가입
         </h2>
         <div className="relative">
@@ -144,7 +145,7 @@ const SignUpForm = () => {
               Boolean(nicknameValue?.length < 2) ||
               nicknameValue === undefined
             }
-            className="absolute top-[4px] right-[4px] h-[34px] p-1 bg-blue_light_2 disabled:bg-gray_light_3 text-sm text-white rounded"
+            className="absolute top-[4px] right-[4px] w-[68px] h-[34px] p-1 text-sm border text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white rounded"
           >
             중복확인
           </button>
@@ -175,7 +176,7 @@ const SignUpForm = () => {
               emailValue === undefined ||
               emailValue === ''
             }
-            className="absolute top-[4px] right-[4px] h-[34px] p-1  bg-blue_light_2 disabled:bg-gray_light_3 text-sm text-white rounded"
+            className="absolute top-[4px] right-[4px] w-[68px] h-[34px] p-1 text-sm border text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white rounded"
           >
             중복확인
           </button>

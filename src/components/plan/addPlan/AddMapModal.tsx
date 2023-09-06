@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
+import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import _ from 'lodash';
 
 import MapModalInput from '../MapModalInput';
 import MapNonePoly from '../MapNonePoly';
-import ModalLayout from '../ModalLayout';
+import MapModalLayout from '../ModalLayout';
 
 interface InputType {
   address?: string;
@@ -48,8 +49,8 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   };
   const debouncedSearchMap = _.debounce(onSubmit, 300);
 
+  const { confirm } = useConfirm();
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
-    console.log('addplan', data);
     const newContents: PinContentsType = {
       id: uuid(),
       lat: position.lat,
@@ -57,33 +58,43 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       placeName: data.placeName as string,
       cost: data.cost as number,
     };
-
     // 수정하기 시
     if (pin !== null) {
-      setPins((state) => {
-        return state.map((item, i) => {
-          if (i === currentPage) {
-            item[idx] = newContents;
-            return [...item];
-          }
-          return item;
+      const confTitle = '장소 수정';
+      const confDesc = '이대로 수정하시겠습니까?';
+      const confFunc = () => {
+        setPins((state) => {
+          return state.map((item, i) => {
+            if (i === currentPage) {
+              item[idx] = newContents;
+              return [...item];
+            }
+            return item;
+          });
         });
-      });
+        setIsOpenModal(false);
+        resetPin();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
     // 장소추가 시
     else {
-      setPins((state) => {
-        return state.map((item, i) => {
-          if (i === currentPage) {
-            return [...item, newContents];
-          }
-          return item;
+      const confTitle = '장소 추가';
+      const confDesc = '이대로 추가하시겠습니까?';
+      const confFunc = () => {
+        setPins((state) => {
+          return state.map((item, i) => {
+            if (i === currentPage) {
+              return [...item, newContents];
+            }
+            return item;
+          });
         });
-      });
+        setIsOpenModal(false);
+        resetPin();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
-
-    setIsOpenModal(false);
-    resetPin();
   };
 
   const disabledSubmit = () => {
@@ -121,7 +132,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   });
 
   return (
-    <ModalLayout>
+    <MapModalLayout>
       <MapModalInput
         register={register}
         errors={errors}
@@ -157,7 +168,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
           {pin !== null ? '수정하기' : '새 장소 추가'}
         </button>
       </form>
-    </ModalLayout>
+    </MapModalLayout>
   );
 };
 export default AddMapModal;

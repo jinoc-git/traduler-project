@@ -116,13 +116,6 @@ const Favorite: React.FC<FavoriteProps> = ({
   };
 
   return (
-    // <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
-    //   <img
-    //     className="w-[25px] h-[25px] cursor-pointer "
-    //     src={isFavorite ? favoriteSolid : favoriteDefault}
-    //     alt="Favorite Icon"
-    //   />
-    // </button>
     <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
       {isFavorite ? (
         <IconFavoriteFill fill="#FFC803" />

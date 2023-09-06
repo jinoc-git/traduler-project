@@ -2,10 +2,12 @@
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { addComment, deleteComment, getComments } from '@api/commets';
 import IconCommentory from '@assets/icons/IconComentory';
 import { defaultImageGray } from '@assets/index';
+import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -46,11 +48,15 @@ const Comments = () => {
     addMutation.mutate(newComment);
   };
 
+  const { confirm } = useConfirm();
   const handleDelete = (commentId: string) => {
-    const conf = window.confirm('정말 삭제하시겠습니까?');
-    if (conf) {
+    const deleteFunc = () => {
       deleteMutation.mutate(commentId);
-    }
+    };
+    const confTitle = '댓글 삭제 확인';
+    const confDesc =
+      '삭제한 댓글은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+    confirm.delete(confTitle, confDesc, deleteFunc);
   };
 
   const queryClient = useQueryClient();
@@ -59,11 +65,17 @@ const Comments = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', planId] });
     },
+    onError: () => {
+      toast.error('댓글 작성에 실패했습니다.');
+    },
   });
   const deleteMutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', planId] });
+    },
+    onError: () => {
+      toast.error('댓글 삭제에 실패했습니다.');
     },
   });
 
@@ -71,9 +83,6 @@ const Comments = () => {
     return <div>댓글 불러오기 오류 발생...</div>;
   }
   const navigate = useNavigate();
-  const handleChangePlanState = () => {
-    navigate(`/main`);
-  };
 
   return (
     <section className="w-[720px]">
@@ -151,7 +160,9 @@ const Comments = () => {
       <div className="flex my-[100px] items-center justify-end gap-5">
         <p>다른 여행 일정도 둘러보세요!</p>
         <button
-          onClick={handleChangePlanState}
+          onClick={() => {
+            navigate('/main');
+          }}
           className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
         >
           목록으로

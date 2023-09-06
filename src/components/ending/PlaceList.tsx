@@ -43,7 +43,10 @@ const PlaceList = () => {
       {data.map((day) => {
         const days = Object.keys(day);
         const pins = day[days[0]] as Json[];
-        const distanceList = day.distance as string[];
+        let distanceList: string[] = [];
+        if (day.distance !== null && typeof day.distance === 'object') {
+          distanceList = Object.values(day.distance) as string[];
+        }
         const distanceLength = distanceList.length;
 
         return (

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
@@ -5,20 +7,23 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deletePlan } from '@api/plans';
-import { ic_profile_3x } from '@assets/icons/3x';
 import IconAdd from '@assets/icons/IconAdd';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
+import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
+import useConfirm from '@hooks/useConfirm';
+import { usePlanStore } from '@store/usePlanStore';
+import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
+import { calculateDday } from '@utils/dateFormat';
 import {
   type PlanType,
   type BookMarkType,
   type UserType,
 } from 'types/supabase';
-
-// 다른 임포트들...
 
 type UsersDataList = Record<string, UserType[]>;
 
@@ -34,15 +39,25 @@ const Card: React.FC<CardProps> = ({
   bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<
-    'traveling' | 'planning' | 'end'
-  >('traveling');
+
+  const queryClient = useQueryClient();
+  const user = userStore((state) => state.user);
 
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
   const [hovered, setHovered] = useState(false);
+
+  // 전역상태관리
+  const { selectedPlan, setSelectedPlan } = usePlanStore();
+
+  // deletePlan mutation 함수정의
+  const deletePlanMutation = useMutation(deletePlan, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['plan_mates', user?.id]);
+    },
+  });
 
   const filterData = plansData
     ?.filter((plan) => {
@@ -52,25 +67,34 @@ const Card: React.FC<CardProps> = ({
         return plan.plan_state === 'planning';
       } else {
         // selectedPlan이 'end'인 경우
-        return plan.plan_state === 'end';
+        return plan.plan_state === 'end' || plan.plan_state === 'recording';
       }
     })
     .filter((plan) => !plan.isDeleted);
 
   // 삭제된 계획
+  const { confirm } = useConfirm();
 
   const handleDeletePlan = async (planId: string) => {
     try {
-      const shouldDelete = window.confirm('정말로 삭제하시겠습니까?');
-
-      if (shouldDelete) {
-        await deletePlan(planId);
-
-        setDeletedPlans([...deletedPlans, planId]);
-      }
+      const confTitle = '여행 삭제';
+      const confDesc =
+        '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+      const confFunc = () => {
+        deletePlanMutation.mutate(planId);
+      };
+      confirm.delete(confTitle, confDesc, confFunc);
+      setDeletedPlans(() => [...deletedPlans, planId]);
     } catch (error) {
       alert('계획 삭제 중 오류가 발생했습니다.');
     }
+  };
+
+  const onClickListItem = (state: string, id: string) => {
+    if (state === 'planning') navigate(`/plan/${id}`);
+    if (state === 'traveling') navigate(`/plan/${id}`);
+    if (state === 'recording') navigate(`/addPhoto/${id}`);
+    if (state === 'end') navigate(`/ending/${id}`);
   };
 
   useEffect(() => {
@@ -78,7 +102,12 @@ const Card: React.FC<CardProps> = ({
       setPlanningCount(
         plansData.filter((plan) => plan.plan_state === 'planning').length,
       );
-      setEndCount(plansData.filter((plan) => plan.plan_state === 'end').length);
+      setEndCount(
+        plansData.filter(
+          (plan) =>
+            plan.plan_state === 'end' || plan.plan_state === 'recording',
+        ).length,
+      );
 
       setTravelingCount(
         plansData.filter((plan) => plan.plan_state === 'traveling').length,
@@ -108,7 +137,7 @@ const Card: React.FC<CardProps> = ({
             setSelectedPlan('planning');
           }}
         >
-          예정된 계획 ({planningCount})
+          예정된 여행 ({planningCount})
         </div>
         <div> | </div>
         <div
@@ -148,15 +177,6 @@ const Card: React.FC<CardProps> = ({
             </div>
           )}
           <div>
-            {/* <button
-              className="mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center"
-              onClick={() => {
-                navigate('/addPlan');
-              }}
-            >
-              <IconAdd w="16" h="16" fill="black" />
-              <span className="ml-[10px] text-Bold">계획 생성하기</span>
-            </button> */}
             <button
               className={`mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center 
           ${
@@ -179,7 +199,7 @@ const Card: React.FC<CardProps> = ({
               <span
                 className={`ml-[10px] ${hovered ? 'text-white' : 'text-black'}`}
               >
-                계획 생성하기
+                여행 생성하기
               </span>
             </button>
           </div>
@@ -200,6 +220,7 @@ const Card: React.FC<CardProps> = ({
             const participantsAvatarList = participants[plan.id].map(
               (user) => user.avatar_url,
             );
+
             const participantsNicknameList = participants[plan.id].map(
               (user) => user.nickname,
             );
@@ -209,7 +230,7 @@ const Card: React.FC<CardProps> = ({
                 <div
                   className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                   onClick={() => {
-                    navigate(`/plan/${plan.id}`);
+                    onClickListItem(plan.plan_state, plan.id);
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
@@ -221,17 +242,9 @@ const Card: React.FC<CardProps> = ({
                       }
                     />
                     <div className="mt-[8px]">
-                      {plan.plan_state === 'end' ? null : plan.dates[0] ===
-                        new Date().toISOString().split('T')[0] ? (
-                        <span className="text-yellow">D-Day</span>
-                      ) : (
+                      {plan.plan_state === 'end' ? null : (
                         <span className="text-yellow">
-                          D-
-                          {Math.ceil(
-                            (new Date(plan.dates[0]).getTime() -
-                              new Date().getTime()) /
-                              (1000 * 60 * 60 * 24),
-                          )}
+                          {calculateDday(new Date(plan.dates[0]))}
                         </span>
                       )}
                     </div>
@@ -265,21 +278,37 @@ const Card: React.FC<CardProps> = ({
                         {participantsAvatarList.map((avatar, i) => {
                           let gap = '';
                           if (i > 0) {
-                            gap = '-translate-x-1/2';
+                            gap = '-ml-[8px]';
                           }
 
-                          return (
+                          return avatar ? (
                             <img
                               key={uuid()}
-                              src={avatar ?? ic_profile_3x}
+                              src={avatar}
                               alt="유저아바타"
-                              className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
+                              className={`w-[20px] h-[20px] rounded-full ${gap} border border-[#979797] object-cover `}
                             />
+                          ) : (
+                            <div
+                              className={`rounded-full ${gap} border border-[#979797] `}
+                              key={uuid()}
+                            >
+                              <IconUserDefault w={'20'} h={'20'} />
+                            </div>
                           );
                         })}
                       </div>
                       <div className='"text-gray_dark_1 text-sm'>
-                        {participantsNicknameList.map((name) => `${name} `)}
+                        {participantsNicknameList.length <= 3 ? (
+                          participantsNicknameList
+                            .map((name) => `${name}`)
+                            .join(', ')
+                        ) : (
+                          <>
+                            {participantsNicknameList.slice(0, 3).join(', ')} 외{' '}
+                            {participantsNicknameList.length - 3}명
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -291,7 +320,7 @@ const Card: React.FC<CardProps> = ({
                         navigate('/main');
                       }}
                     >
-                      <IconDeleteDefault fill="#FFB979" />
+                      <IconDeleteDefault fill="#E1E2E3" />
                     </button>
                   </div>
                 </div>

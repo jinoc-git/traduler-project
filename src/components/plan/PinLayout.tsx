@@ -2,6 +2,7 @@
 import React, { type ReactNode } from 'react';
 
 import { type PinContentsType } from '@api/pins';
+import useConfirm from '@hooks/useConfirm';
 import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 import DropDown from './updatePlan/DropDown';
@@ -23,8 +24,22 @@ const PinLayout = ({
   children,
   isEnding,
 }: PropsType) => {
+  const { confirm } = useConfirm();
+
+  const handleDelete = (idx: number) => {
+    const confTitle = '장소 삭제';
+    const confDesc =
+      '삭제한 장소는 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+    const confFunc = () => {
+      if (deletePin) {
+        deletePin(idx);
+      }
+    };
+    confirm.delete(confTitle, confDesc, confFunc);
+  };
+
   return (
-    <div className="flex items-center justify-between gap-4 relative">
+    <div className="relative flex items-center justify-between gap-4">
       <div className="flex items-center">
         <div className="absolute translate-x-[17.5px] -z-10 border border-l-black h-[116px]" />
         <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] text-center font-semibold text-white border-[5px] border-white">
@@ -55,9 +70,7 @@ const PinLayout = ({
                   e.preventDefault();
                 }}
                 onClick={() => {
-                  if (window.confirm('수정하시겠습니까?')) {
-                    updatePin(idx);
-                  }
+                  updatePin(idx);
                 }}
                 className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
               >
@@ -68,9 +81,7 @@ const PinLayout = ({
                   e.preventDefault();
                 }}
                 onClick={() => {
-                  if (window.confirm('삭제하시겠습니까?')) {
-                    deletePin(idx);
-                  }
+                  handleDelete(idx);
                 }}
                 className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
               >

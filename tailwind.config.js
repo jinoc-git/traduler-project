@@ -83,8 +83,8 @@ module.exports = {
         },
       },
       animation: {
-        fadeIn: 'fadeIn 0.3s forwards',
-        fadeOut: 'fadeOut 0.3s forwards',
+        fadeIn: 'fadeIn 0.2s forwards',
+        fadeOut: 'fadeOut 0.2s forwards',
       },
     },
   },

@@ -22,7 +22,7 @@ const ConfirmModal = () => {
       case 'modify':
         return ButtonText.modify;
       case 'delete':
-        return ButtonText.defalut;
+        return ButtonText.delete;
       default:
         return ButtonText.defalut;
     }

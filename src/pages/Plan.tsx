@@ -12,6 +12,7 @@ import Pay from '@components/plan/Pay';
 import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
+import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
@@ -56,23 +57,30 @@ const Plan = () => {
     mutation.mutate([planId, title, watch('totalCost') as number]);
   };
 
+  const { confirm } = useConfirm();
   const navigate = useNavigate();
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const handleChangePlanState = () => {
     if (planState === 'planning') {
-      const conf = window.confirm(
-        '여행 중으로 변경하시겠습니까? 계획 중으로 다시 되돌릴 수 없습니다.',
-      );
-      if (conf) {
+      const confTitle = '여행 중으로 변경';
+      const confDesc =
+        '여행 중으로 변경할 경우 다시 계획 중으로 되돌릴 수 없습니다. 변경하시겠습니까?';
+      const confFunc = () => {
         changeMutation.mutate([planId, 'traveling']);
-      }
+        scrollTop();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     } else {
-      const conf = window.confirm(
-        `여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 정말 완료하시겠습니까?`,
-      );
-      if (conf) {
+      const confTitle = '여행 완료로 변경';
+      const confDesc =
+        '여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 완료하시겠습니까?';
+      const confFunc = () => {
         changeMutation.mutate([planId, 'recording']);
         navigate(`/addPhoto/${planId}`);
-      }
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
   };
 

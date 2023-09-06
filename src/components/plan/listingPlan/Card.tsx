@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
@@ -10,6 +11,7 @@ import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
+import useConfirm from '@hooks/useConfirm';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
@@ -59,16 +61,17 @@ const Card: React.FC<CardProps> = ({
     .filter((plan) => !plan.isDeleted);
 
   // 삭제된 계획
-
+  const { confirm } = useConfirm();
   const handleDeletePlan = async (planId: string) => {
     try {
-      const shouldDelete = window.confirm('정말로 삭제하시겠습니까?');
-
-      if (shouldDelete) {
+      const confTitle = '여행 삭제';
+      const confDesc =
+        '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+      const confFunc = async () => {
         await deletePlan(planId);
-
-        setDeletedPlans([...deletedPlans, planId]);
-      }
+      };
+      confirm.delete(confTitle, confDesc, confFunc);
+      setDeletedPlans(() => [...deletedPlans, planId]);
     } catch (error) {
       alert('계획 삭제 중 오류가 발생했습니다.');
     }

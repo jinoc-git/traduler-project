@@ -75,6 +75,7 @@ export const signInWithGoogle = async () => {
     provider: 'google',
     options: {
       redirectTo: 'http://localhost:3000/welcome',
+      // redirectTo: 'https://traduler-project.vercel.app/welcome',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',

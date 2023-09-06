@@ -5,12 +5,11 @@ import { useParams } from 'react-router-dom';
 import { type PinContentsType, getPin } from '@api/pins';
 import { getPlan } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import DatePage from '@components/addPlan/datePage/DatePage';
 import Loading from '@components/loading/Loading';
+import MapPoly from '@components/plan/common/MapPoly';
 import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
-
-import DatePage from '../DatePage';
-import MapPoly from '../MapPoly';
 
 declare global {
   interface Window {

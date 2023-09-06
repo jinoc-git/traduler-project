@@ -6,15 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
 import { ic_new_menu_1x } from '@assets/icons/1x';
 import { logoColor } from '@assets/index';
+import SideBarETC from '@components/common/sideBar/SideBarETC';
+import SideBarPlanList from '@components/common/sideBar/SideBarPlanList';
+import SideBarStatus from '@components/common/sideBar/SideBarStatus';
 import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
-
-import SideBarETC from './SideBarETC';
-import SideBarPlanList from './SideBarPlanList';
-import SideBarStatus from './SideBarStatus';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();

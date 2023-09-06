@@ -1,8 +1,7 @@
 import React from 'react';
 
 import IconCalendarDefault from '@assets/icons/IconCalendarDefault';
-
-import PayLayout from '../PayLayout';
+import PayLayout from '@components/common/layout/PayLayout';
 
 interface PropsType {
   planDates: string[];

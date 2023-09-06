@@ -2,10 +2,9 @@
 import React, { type ReactNode } from 'react';
 
 import { type PinContentsType } from '@api/pins';
+import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
 import { formatNumberWithCommas } from '@utils/calcDutchPay';
-
-import DropDown from './updatePlan/DropDown';
 
 interface PropsType {
   pin: PinContentsType | [];

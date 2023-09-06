@@ -5,12 +5,11 @@ import React, { useEffect, useState } from 'react';
 import { type PinContentsType } from '@api/pins';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import IconPin from '@assets/icons/IconPin';
+import PinLayout from '@components/common/layout/PinLayout';
 import AddMapModal from '@components/plan/addPlan/AddMapModal';
+import MapPoly from '@components/plan/common/MapPoly';
 import { datesStore } from '@store/datesStore';
 import { updatePinStore } from '@store/updatePinStore';
-
-import MapPoly from '../MapPoly';
-import PinLayout from '../PinLayout';
 
 interface PropsType {
   currentPage: number;

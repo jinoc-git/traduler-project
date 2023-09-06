@@ -13,15 +13,15 @@ import { type PinContentsType } from '@api/pins';
 import { changePlanState, getPlan, getPlanEnding } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import AddPicture from '@components/addPhoto/addPicture/AddPicture';
+import EndingMap from '@components/addPhoto/endingMap/EndingMap';
+import EndingDate from '@components/common/date/EndingDate';
 import Invite from '@components/common/invite/Invite';
+import EndingPay from '@components/common/pay/EndingPay';
 import Loading from '@components/loading/Loading';
-import EndingDate from '@components/plan/ending/EndingDate';
-import EndingMap from '@components/plan/ending/EndingMap';
-import EndingPay from '@components/plan/ending/EndingPay';
 import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import AddPicture from 'components/addpicture/AddPicture';
 
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();

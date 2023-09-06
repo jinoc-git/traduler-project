@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import React, { useEffect, useState } from 'react';
 
+import SideBarProgressBar from '@components/common/sideBar/SideBarProgressBar';
 import calcDateProgress from '@utils/calcDateProgress';
 import {
   changeDotFormatOfDate,
@@ -9,8 +10,6 @@ import {
   removeYearOfDate,
 } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
-
-import SideBarProgressBar from './SideBarProgressBar';
 
 interface SideBarStatusProps {
   isOpen: boolean;
@@ -96,7 +95,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
             <p className=" bg-gradient-to-r from-blue_dark to-blue text-transparent bg-clip-text font-bold text-sm text-4xl">
               {isOpen && progress + '%'}
               {!isOpen && (
-                <p className='text-center'>
+                <p className="text-center">
                   {progress}
                   <p>%</p>{' '}
                 </p>

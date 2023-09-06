@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
@@ -12,7 +13,10 @@ import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
 import useConfirm from '@hooks/useConfirm';
+import { usePlanStore } from '@store/usePlanStore';
+import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
 import {
@@ -20,8 +24,6 @@ import {
   type BookMarkType,
   type UserType,
 } from 'types/supabase';
-
-// 다른 임포트들...
 
 type UsersDataList = Record<string, UserType[]>;
 
@@ -37,15 +39,25 @@ const Card: React.FC<CardProps> = ({
   bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<
-    'traveling' | 'planning' | 'end'
-  >('traveling');
+
+  const queryClient = useQueryClient();
+  const user = userStore((state) => state.user);
 
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
   const [hovered, setHovered] = useState(false);
+
+  // 전역상태관리
+  const { selectedPlan, setSelectedPlan } = usePlanStore();
+
+  // deletePlan mutation 함수정의
+  const deletePlanMutation = useMutation(deletePlan, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['plan_mates', user?.id]);
+    },
+  });
 
   const filterData = plansData
     ?.filter((plan) => {
@@ -62,13 +74,14 @@ const Card: React.FC<CardProps> = ({
 
   // 삭제된 계획
   const { confirm } = useConfirm();
+
   const handleDeletePlan = async (planId: string) => {
     try {
       const confTitle = '여행 삭제';
       const confDesc =
         '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
-      const confFunc = async () => {
-        await deletePlan(planId);
+      const confFunc = () => {
+        deletePlanMutation.mutate(planId);
       };
       confirm.delete(confTitle, confDesc, confFunc);
       setDeletedPlans(() => [...deletedPlans, planId]);
@@ -124,7 +137,7 @@ const Card: React.FC<CardProps> = ({
             setSelectedPlan('planning');
           }}
         >
-          예정된 계획 ({planningCount})
+          예정된 여행 ({planningCount})
         </div>
         <div> | </div>
         <div
@@ -186,7 +199,7 @@ const Card: React.FC<CardProps> = ({
               <span
                 className={`ml-[10px] ${hovered ? 'text-white' : 'text-black'}`}
               >
-                계획 생성하기
+                여행 생성하기
               </span>
             </button>
           </div>

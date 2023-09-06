@@ -35,21 +35,7 @@ const MapModal = ({
     lat: pin !== null ? (pin.lat as number) : 0,
     lng: pin !== null ? (pin.lng as number) : 0,
   });
-  // const {
-  //   register,
-  //   formState: { errors, isSubmitting },
-  // } = useForm<InputType>();
-  // const {
-  //   register: registerPlaceName,
-  //   watch,
-  //   handleSubmit: handleSubmitPlaceName,
-  //   formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
-  // } = useForm<InputType>({
-  //   defaultValues: {
-  //     placeName: pin !== null ? (pin.placeName as string) : '',
-  //     cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
-  //   },
-  // });
+
   const {
     register,
     handleSubmit,
@@ -58,7 +44,7 @@ const MapModal = ({
   } = useForm<InputType>({
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
-      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
+      cost: pin !== null ? pin.cost : 0,
     },
   });
   const { id } = useParams();
@@ -160,7 +146,6 @@ const MapModal = ({
 
   return (
     <MapModalLayout>
-      {/* <form onSubmit={()=>handleSubmit(onSubmitPlaceName)}> */}
       <MapModalInput
         register={register}
         errors={errors}

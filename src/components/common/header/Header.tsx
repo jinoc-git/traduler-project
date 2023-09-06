@@ -46,7 +46,7 @@ const Header = () => {
   return (
     <header
       className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
-        pathname !== '/'
+        pathname !== '/' && pathname !== '/signin' && pathname !== '/signup'
           ? user !== null
             ? 'bg-transparent'
             : 'bg-bg_white'

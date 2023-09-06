@@ -3,8 +3,8 @@ const calcDateProgress = (start: string, end: string) => {
   const startDay = new Date(start);
   const endDay = new Date(end);
 
-  if (today < startDay) return '0 %';
-  if (today > endDay) return '100 %';
+  if (today < startDay) return '0';
+  if (today > endDay) return '100';
 
   const travelTime = Math.abs(startDay.getTime() - endDay.getTime());
   const todayTime = Math.abs(startDay.getTime() - today.getTime());

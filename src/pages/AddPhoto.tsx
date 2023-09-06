@@ -146,7 +146,15 @@ const AddPhoto = () => {
             <span>여행 잘 다녀오셨나요?</span>
             <button
               disabled={isSubmiting}
-              onClick={handleButton}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    '여행을 저장하시겠습니까? 저장 후에는 사진 수정이 불가능합니다.',
+                  )
+                ) {
+                  handleButton();
+                }
+              }}
               className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
             >
               {isSubmiting ? '저장 중' : '여행 저장'}

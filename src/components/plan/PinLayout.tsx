@@ -55,7 +55,9 @@ const PinLayout = ({
                   e.preventDefault();
                 }}
                 onClick={() => {
-                  updatePin(idx);
+                  if (window.confirm('수정하시겠습니까?')) {
+                    updatePin(idx);
+                  }
                 }}
                 className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
               >
@@ -66,7 +68,9 @@ const PinLayout = ({
                   e.preventDefault();
                 }}
                 onClick={() => {
-                  deletePin(idx);
+                  if (window.confirm('삭제하시겠습니까?')) {
+                    deletePin(idx);
+                  }
                 }}
                 className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
               >

@@ -10,6 +10,7 @@ import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
+import { usePlanStore } from '@store/usePlanStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
@@ -35,15 +36,18 @@ const Card: React.FC<CardProps> = ({
   bookMarkData,
 }) => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<
-    'traveling' | 'planning' | 'end'
-  >('traveling');
+  // const [selectedPlan, setSelectedPlan] = useState<
+  //   'traveling' | 'planning' | 'end'
+  // >('traveling');
 
   const [planningCount, setPlanningCount] = useState<number>(0);
   const [endCount, setEndCount] = useState<number>(0);
   const [travelingCount, setTravelingCount] = useState<number>(0);
   const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
   const [hovered, setHovered] = useState(false);
+
+  // 전역상태관리
+  const { selectedPlan, setSelectedPlan } = usePlanStore();
 
   const filterData = plansData
     ?.filter((plan) => {

@@ -70,7 +70,7 @@ const AddPlanContents = ({
           <IconLocationDefault w="20" h="20" />
           <label>여행지역</label>
         </div>
-        <MapPoly pins={pins} currentPage={currentPage} />
+        <MapPoly pins={pins[currentPage]} />
         <div className="flex flex-col justify-center">
           <div className="flex items-center">
             <IconPin w="20" h="25" fill="#4E4F54" />

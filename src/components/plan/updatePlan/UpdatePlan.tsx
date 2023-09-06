@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Map,
-  MapMarker,
-  MapTypeControl,
-  Polyline,
-  ZoomControl,
-} from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
@@ -17,6 +10,7 @@ import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
 
 import DatePage from '../DatePage';
+import MapPoly from '../MapPoly';
 
 declare global {
   interface Window {
@@ -54,7 +48,6 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
-      // plan을 불러왔을때
       setDates(plan[0].dates);
       setCurrentPage(0);
     }
@@ -116,47 +109,7 @@ const UpdatePlan = () => {
           <IconLocationDefault w="20" h="20" />
           <label>여행지역</label>
         </div>
-        <div className="flex justify-center">
-          <Map
-            center={{
-              lat:
-                pinArr.length !== 0
-                  ? (pinArr[0].lat as number)
-                  : 37.566826004661,
-              lng:
-                pinArr.length !== 0
-                  ? (pinArr[0].lng as number)
-                  : 126.978652258309,
-            }}
-            level={3}
-            ref={mapRef}
-            style={style}
-          >
-            {pinArr?.map((pin) => {
-              return (
-                <div key={pin.lng}>
-                  <MapMarker
-                    position={{
-                      lat: pin?.lat as number,
-                      lng: pin?.lng as number,
-                    }}
-                  ></MapMarker>
-                </div>
-              );
-            })}
-            <Polyline
-              path={pinArr.map((pin) => {
-                return { lat: pin.lat as number, lng: pin.lng as number };
-              })}
-              strokeWeight={5} // 선의 두께 입니다
-              strokeColor={'#162F70'} // 선의 색깔입니다
-              strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-              strokeStyle={'solid'} // 선의 스타일입니다
-            />
-            <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
-            <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
-          </Map>
-        </div>
+        <MapPoly pins={pinArr} />
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />
     </>

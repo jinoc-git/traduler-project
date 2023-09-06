@@ -17,6 +17,7 @@ export const updatePinStore = create<updatePinStoreType>((set) => ({
         lat: data.lat,
         lng: data.lng,
         placeName: data.placeName,
+        cost: data.cost,
       },
       idx,
     }));

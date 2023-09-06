@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,9 @@ import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
-import { type UserType } from 'types/supabase';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type PlanType, type UserType } from 'types/supabase';
 
 interface InputType {
   title?: string;
@@ -37,18 +40,35 @@ const AddPlan = () => {
     formState: { errors, isSubmitting },
   } = useForm<InputType>({ mode: 'onChange' });
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: addPlan,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['plan_mates', userId] });
+    },
+    onError: () => {
+      toast.error('여행 생성에 실패했습니다.');
+    },
+  });
 
   const submitPlan = async () => {
     if (userId !== null) {
-      const totalCost = watch('totalCost') as number;
-      await addPlan(
-        userId as string,
-        watch('title') as string,
-        parseInt(totalCost.toString(), 10),
-        pins,
+      const newPlan: PlanType = {
+        id: uuid(),
+        users_id: userId as string,
+        title: watch('title') as string,
+        total_cost: watch('totalCost') as number,
+        isDeleted: false,
         dates,
+        plan_state: 'planning',
+      };
+      const addPlanObj = {
+        newPlan,
+        pins,
         invitedUser,
-      );
+      };
+      mutation.mutate(addPlanObj);
+      await addPlan(addPlanObj);
       toast.success('저장되었습니다.');
       navigate('/main');
     }

@@ -20,13 +20,13 @@ export const updateUserAvatar = async (
     const {
       id,
       email,
-      user_metadata: { nickname, profileImg, name },
+      user_metadata: { profileImg, name, nickname },
     } = res;
     console.log(profileImg, nickname);
     return {
       id,
       email: email as string,
-      nickname: nickname === undefined ? name : nickname,
+      nickname: nickname ?? name,
       profileImg,
     };
   }
@@ -38,13 +38,13 @@ export const removeUserAvartar = async (userId: string) => {
     const {
       id,
       email,
-      user_metadata: { nickname },
+      user_metadata: { name, nickname },
     } = res;
 
     return {
       id,
       email: email as string,
-      nickname,
+      nickname: nickname ?? name,
       profileImg: null,
     };
   }

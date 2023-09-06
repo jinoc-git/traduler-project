@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
+import { getPlansWithMates } from '@api/plans';
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
 import { ic_profile_3x } from '@assets/icons/3x';
@@ -10,6 +11,7 @@ import IconClose from '@assets/icons/IconClose';
 import { defaultImageGray } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
 
 interface EditProfileModalProps {
@@ -22,6 +24,7 @@ interface EditProfileForm {
 }
 
 interface ShouldBlockSubmitBtn {
+  isChanged: boolean;
   isDuplicate: boolean;
   isRemoveAvatar: boolean;
   result: boolean;
@@ -31,6 +34,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [shouldBlockSubmitBtn, setShouldBlockSubmitBtn] =
     useState<ShouldBlockSubmitBtn>({
+      isChanged: false,
       isDuplicate: true,
       isRemoveAvatar: false,
       result: true,
@@ -38,6 +42,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
+  const queryClient = useQueryClient();
 
   const { nicknameValidator } = useFormValidator();
 
@@ -65,9 +70,22 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         result: false,
       }));
     } else {
+      setShouldBlockSubmitBtn((prev) => ({
+        ...prev,
+        isDuplicate: true,
+        result: true,
+      }));
       console.log('닉네임 중복');
     }
   };
+
+  const userMutation = useMutation(getPlansWithMates, {
+    onSuccess: async () => {
+      if (user !== null) {
+        await queryClient.invalidateQueries(['plan_mates', user.id]);
+      }
+    },
+  });
 
   const onSubmitEditProfileBtn: SubmitHandler<EditProfileForm> = async (
     data,
@@ -76,8 +94,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
     // 닉네임 변경
     if (data.nickname !== '') {
+      console.log(data.nickname)
       const res = await updateUserNickname(data.nickname, user.id);
-
+      console.log('닉', res);
       if (res) {
         const { id, email, nickname, profileImg } = res;
         setUser({
@@ -90,8 +109,10 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     }
 
     // 프로필 사진 변경
-    if (data.avatar.length !== 0) {
+    if (data.avatar !== undefined && preview.length !== 0) {
+      console.log(data.avatar);
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
+      console.log('프', res);
       if (res) {
         const { id, email, nickname, profileImg } = res;
         setUser({
@@ -106,6 +127,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     // 프로필 이미지 삭제
     if (shouldBlockSubmitBtn.isRemoveAvatar) {
       const res = await removeUserAvartar(user.id);
+      console.log('프삭', res);
 
       if (res) {
         const { id, email, nickname, profileImg } = res;
@@ -118,15 +140,17 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
       }
     }
 
+    userMutation.mutate(user.id);
     onClickCloseModalHandler();
   };
 
   const removeAvartarBtnHandler = () => {
     setPreviewImg('');
     setShouldBlockSubmitBtn((prev) => {
-      if (prev.isDuplicate) {
+      if (prev.isDuplicate && nickname !== '') {
         prev.result = true;
       } else {
+        prev.isChanged = true;
         prev.result = false;
       }
 
@@ -136,18 +160,29 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   };
 
   useEffect(() => {
-    setShouldBlockSubmitBtn((prev) => ({
-      ...prev,
-      isDuplicate: true,
-      result: true,
-    }));
+    setShouldBlockSubmitBtn((prev) => {
+      console.log(nickname);
+      if (nickname === '' && prev.isChanged) {
+        prev.isDuplicate = false;
+        prev.result = false;
+      } else {
+        prev.isDuplicate = true;
+        prev.result = true;
+      }
+
+      return { ...prev };
+    });
   }, [nickname]);
 
   useEffect(() => {
     if (preview && preview.length > 0) {
       const file = preview[0];
       setPreviewImg(URL.createObjectURL(file));
-      setShouldBlockSubmitBtn((prev) => ({ ...prev, result: false }));
+      setShouldBlockSubmitBtn((prev) => ({
+        ...prev,
+        isChanged: true,
+        result: false,
+      }));
     }
   }, [preview]);
 

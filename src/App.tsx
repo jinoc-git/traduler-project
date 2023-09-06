@@ -18,7 +18,7 @@ const App = () => {
       <ToastContainer
         bodyClassName={() => 'text-sm font-white p-3 flex items-center'}
         position="top-center"
-        autoClose={2500}
+        autoClose={1500}
         hideProgressBar
         newestOnTop={false}
         closeOnClick

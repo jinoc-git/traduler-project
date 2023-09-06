@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { signOutForSB } from '@api/supabaseAuth';
 import IconAdd from '@assets/icons/IconAdd';
@@ -18,6 +19,7 @@ const SideBarETC = () => {
 
   const onClickSignOutHandler = async () => {
     await signOutForSB();
+    toast.success('로그아웃에 성공하였습니다.');
     navigate('/signin');
     resetUser();
   };

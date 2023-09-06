@@ -287,10 +287,13 @@ const Card: React.FC<CardProps> = ({
                               key={uuid()}
                               src={avatar}
                               alt="유저아바타"
-                              className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
+                              className={`w-[20px] h-[20px] rounded-full ${gap} border border-[#979797] `}
                             />
                           ) : (
-                            <div className={`rounded-full ${gap}`}>
+                            <div
+                              className={`rounded-full ${gap} border border-[#979797] `}
+                              key={uuid()}
+                            >
                               <IconUserDefault w={'20'} h={'20'} />
                             </div>
                           );

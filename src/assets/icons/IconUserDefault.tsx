@@ -21,7 +21,7 @@ const IconUserDefault = ({ w, h }: IconType) => {
         cy="50"
         r="48"
         fill="white"
-        stroke="#C9C3C3"
+        stroke="white"
         strokeWidth="4"
       />
       <path

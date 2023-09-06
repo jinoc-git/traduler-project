@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import MapModalInput from '../MapModalInput';
 import MapNonePoly from '../MapNonePoly';
-import ModalLayout from '../ModalLayout';
+import MapModalLayout from '../ModalLayout';
 
 interface InputType {
   address?: string;
@@ -121,7 +121,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   });
 
   return (
-    <ModalLayout>
+    <MapModalLayout>
       <MapModalInput
         register={register}
         errors={errors}
@@ -157,7 +157,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
           {pin !== null ? '수정하기' : '새 장소 추가'}
         </button>
       </form>
-    </ModalLayout>
+    </MapModalLayout>
   );
 };
 export default AddMapModal;

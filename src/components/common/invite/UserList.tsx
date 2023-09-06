@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { defaultImageGray } from '@assets/index';
+import { userStore } from '@store/userStore';
 import { type UserType } from 'types/supabase';
 
 interface PropsType {
@@ -11,9 +12,10 @@ interface PropsType {
 }
 
 const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
+  const { user } = userStore();
   return (
-    <div className="flex justify-between items-center mr-5 ">
-      <div className="flex items-center justify-start ml-5 gap-3 my-2">
+    <div className="flex items-center justify-between mr-5 ">
+      <div className="flex items-center justify-start gap-3 my-2 ml-5">
         {typeof person.avatar_url === 'string' ? (
           <img
             className="object-cover rounded-full w-9 h-9"
@@ -31,18 +33,20 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
           <p className="text-xs text-gray">{person.email}</p>
         </div>
       </div>
-      <button
-        className="border w-12 h-7 rounded-lg cursor-pointer text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white"
-        onClick={
-          handleInvite != null
-            ? async () => {
-                await handleInvite(person);
-              }
-            : () => deleteUser?.(idx)
-        }
-      >
-        {handleInvite != null ? '초대' : '삭제'}
-      </button>
+      {user?.id !== person.id && (
+        <button
+          className="w-12 border rounded-lg cursor-pointer h-7 text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white"
+          onClick={
+            handleInvite != null
+              ? async () => {
+                  await handleInvite(person);
+                }
+              : () => deleteUser?.(idx)
+          }
+        >
+          {handleInvite != null ? '초대' : '삭제'}
+        </button>
+      )}
     </div>
   );
 };

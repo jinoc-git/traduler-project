@@ -12,6 +12,7 @@ import Pay from '@components/plan/Pay';
 import PlanLayout from '@components/plan/PlanLayout';
 import PostPlan from '@components/plan/PostPlan';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
+import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
@@ -37,6 +38,7 @@ const Plan = () => {
   const [planState, setPlanState] = useState<string>();
   const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
   const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
+  const isModifying = modifyState === 'modify';
   const {
     register,
     watch,
@@ -55,23 +57,30 @@ const Plan = () => {
     mutation.mutate([planId, title, watch('totalCost') as number]);
   };
 
+  const { confirm } = useConfirm();
   const navigate = useNavigate();
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   const handleChangePlanState = () => {
     if (planState === 'planning') {
-      const conf = window.confirm(
-        '여행 중으로 변경하시겠습니까? 계획 중으로 다시 되돌릴 수 없습니다.',
-      );
-      if (conf) {
+      const confTitle = '여행 중으로 변경';
+      const confDesc =
+        '여행 중으로 변경할 경우 다시 계획 중으로 되돌릴 수 없습니다. 변경하시겠습니까?';
+      const confFunc = () => {
         changeMutation.mutate([planId, 'traveling']);
-      }
+        scrollTop();
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     } else {
-      const conf = window.confirm(
-        `여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 정말 완료하시겠습니까?`,
-      );
-      if (conf) {
+      const confTitle = '여행 완료로 변경';
+      const confDesc =
+        '여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 완료하시겠습니까?';
+      const confFunc = () => {
         changeMutation.mutate([planId, 'recording']);
         navigate(`/addPhoto/${planId}`);
-      }
+      };
+      confirm.default(confTitle, confDesc, confFunc);
     }
   };
 
@@ -96,7 +105,6 @@ const Plan = () => {
       console.log(error);
     },
   });
-
   useEffect(() => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
@@ -156,18 +164,24 @@ const Plan = () => {
         </div>
         <PostPlan />
         <Invite />
-        <Pay register={register} errors={errors} />
+        <Pay
+          total_Cost={watch('totalCost')}
+          register={register}
+          errors={errors}
+        />
         <UpdatePlan />
         <div className="flex items-center justify-end gap-5 mt-16">
           {planState === 'planning' ? (
             <div className="flex my-[100px] items-center justify-end gap-5">
               <p>
                 {isPossibleStart
-                  ? '여행을 떠날 준비가 되셨나요?'
+                  ? isModifying
+                    ? '상단의 저장 버튼을 눌러주세요.'
+                    : '여행을 떠날 준비가 되셨나요?'
                   : '아직 시작일이 되지 않았습니다!'}
               </p>
               <button
-                disabled={!isPossibleStart}
+                disabled={!isPossibleStart || isModifying}
                 onClick={handleChangePlanState}
                 className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >
@@ -178,11 +192,13 @@ const Plan = () => {
             <div className="flex my-[100px] items-center justify-end gap-5">
               <p>
                 {isPossibleEnd
-                  ? '여행 일정을 마치셨나요?'
+                  ? isModifying
+                    ? '상단의 저장 버튼을 눌러주세요.'
+                    : '여행 일정을 마치셨나요?'
                   : '아직 종료일이 되지 않았습니다!'}
               </p>
               <button
-                disabled={!isPossibleEnd}
+                disabled={!isPossibleEnd || isModifying}
                 onClick={handleChangePlanState}
                 className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
               >

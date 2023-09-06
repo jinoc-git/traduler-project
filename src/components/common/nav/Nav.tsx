@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import IconEditDefault from '@assets/icons/IconEditDefault';
+import useConfirm from '@hooks/useConfirm';
 import { modifyStateStore } from '@store/modifyStateStore';
 
 interface PropsType {
@@ -12,6 +13,19 @@ interface PropsType {
 
 const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
+  const { confirm } = useConfirm();
+
+  const handleButtonClick = () => {
+    const confTitle = '여행 저장하기';
+    const confDesc = '이대로 저장하시겠습니까?';
+    const confFunc = () => {
+      onClick();
+    };
+    if (modifyState === 'modify') {
+      confirm.default(confTitle, confDesc, confFunc);
+    } else onClick();
+  };
+
   useEffect(() => {
     if (page === ' plan') {
       setReadOnly();
@@ -30,7 +44,7 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
         <IconEditDefault w="16" h="16" fill="#162F70" />
         <button
           className="mr-[80px] text-navy_dark"
-          onClick={onClick}
+          onClick={handleButtonClick}
           type="submit"
           disabled={buttonDisabled}
         >

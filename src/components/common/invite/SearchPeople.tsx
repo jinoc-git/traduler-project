@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 
 import { findUsers, updateMates } from '@api/planMates';
 import IconVector from '@assets/icons/IconVector';
+import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
@@ -48,11 +49,14 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   const { invitedUser, inviteUser, setUser, syncInviteduser } =
     inviteUserStore();
   const usersId = invitedUser.map((item) => item.id);
+  const { confirm } = useConfirm();
   const handleInvite = async (user: UserType) => {
-    const conf = window.confirm('해당 여행에 초대하시겠습니까?');
-    if (conf) {
+    const confTitle = '동행 초대';
+    const confDesc = '해당 여행에 초대하시겠습니까?';
+    const confFunc = () => {
       inviteUser(user);
-    }
+    };
+    confirm.default(confTitle, confDesc, confFunc);
   };
 
   // 유저 초대 react-query
@@ -80,8 +84,13 @@ const SearchPeople = ({ closeModal }: PropsType) => {
 
   // 초대한 유저 삭제
   const deleteUser = (idx: number) => {
-    const deletedUser = invitedUser.filter((_, index) => index !== idx);
-    setUser(deletedUser);
+    const confTitle = '동행 초대 삭제';
+    const confDesc = '해당 여행에서 삭제하시겠습니까?';
+    const confFunc = () => {
+      const deletedUser = invitedUser.filter((_, index) => index !== idx);
+      setUser(deletedUser);
+    };
+    confirm.delete(confTitle, confDesc, confFunc);
   };
 
   useEffect(() => {

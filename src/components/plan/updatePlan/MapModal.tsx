@@ -44,7 +44,7 @@ const MapModal = ({
   } = useForm<InputType>({
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
-      cost: pin !== null ? pin.cost : 0,
+      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
   const { id } = useParams();

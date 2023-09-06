@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ModalLayout from '@components/plan/ModalLayout';
+import ModalLayout from '@components/plan/addPlan/ModalLayout';
 import { confirmStore } from '@store/confirmStore';
 
 enum ButtonText {

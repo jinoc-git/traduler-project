@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { newDatePin } from '@api/pins';
 import { getPlan, updateDatePlan } from '@api/plans';
-import Calendar from '@components/plan/Calendar';
+import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PinInsertType } from 'types/supabase';

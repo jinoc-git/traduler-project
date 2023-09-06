@@ -4,14 +4,14 @@ import { useParams } from 'react-router';
 
 import { getPlan } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
-import Carousel from '@components/carousel/Carousel';
-import Comments from '@components/comments/Comments';
+import EndingMap from '@components/addPhoto/endingMap/EndingMap';
+import EndingDate from '@components/common/date/EndingDate';
 import Invite from '@components/common/invite/Invite';
-import PlaceList from '@components/ending/PlaceList';
-import TotalPay from '@components/pay/TotalPay';
-import EndingDate from '@components/plan/ending/EndingDate';
-import EndingMap from '@components/plan/ending/EndingMap';
-import EndingPay from '@components/plan/ending/EndingPay';
+import EndingPay from '@components/common/pay/EndingPay';
+import Carousel from '@components/ending/carousel/Carousel';
+import Comments from '@components/ending/comments/Comments';
+import PlaceList from '@components/ending/placeList/PlaceList';
+import TotalPay from '@components/ending/totalPay/TotalPay';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 

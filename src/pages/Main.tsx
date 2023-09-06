@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
+import CardSection from '@components/main/card/CardSection';
 import Profile from '@components/main/profile/Profile';
-import CardSection from '@components/plan/listingPlan/CardSection';
 import { sideBarStore } from '@store/sideBarStore';
 
 const Main = () => {

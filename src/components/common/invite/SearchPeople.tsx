@@ -6,13 +6,12 @@ import { toast } from 'react-toastify';
 
 import { findUsers, updateMates } from '@api/planMates';
 import IconVector from '@assets/icons/IconVector';
+import UserList from '@components/common/invite/UserList';
 import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
-
-import UserList from './UserList';
 
 interface InputType {
   userInfo: string;

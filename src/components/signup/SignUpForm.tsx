@@ -114,7 +114,7 @@ const SignUpForm = () => {
 
   return (
     <main className="flex-center w-screen h-screen">
-      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/127144e1-d63a-44e5-8622-5d429cb86586)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
+      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/fd90f3f8-15f5-458c-8e4e-c5b35e781f10)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
         className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"

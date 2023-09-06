@@ -22,7 +22,7 @@ export const updateUserAvatar = async (
       email,
       user_metadata: { nickname, profileImg, name },
     } = res;
-
+    console.log(profileImg, nickname);
     return {
       id,
       email: email as string,

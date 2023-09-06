@@ -74,7 +74,7 @@ export const signInWithGoogle = async () => {
   await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'http://https://traduler-project.vercel.app//welcome',
+      redirectTo: 'https://localhost:3000/welcome',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',
@@ -184,7 +184,7 @@ export const checkUserEmail = async (email: string) => {
 
 export const updateUserNickname = async (nickname: string, userId: string) => {
   const { data } = await supabase.auth.updateUser({
-    data: { nickname },
+    data: { name: nickname },
   });
 
   const { error } = await supabase
@@ -205,7 +205,7 @@ export const updateUserNickname = async (nickname: string, userId: string) => {
       const {
         id,
         email,
-        user_metadata: { nickname, profileImg },
+        user_metadata: { name: nickname, profileImg },
       } = data.user;
 
       return {

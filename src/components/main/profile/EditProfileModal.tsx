@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -20,10 +21,21 @@ interface EditProfileForm {
   nickname: string;
 }
 
+interface ShouldBlockSubmitBtn {
+  isDuplicate: boolean;
+  isRemoveAvatar: boolean;
+  result: boolean;
+}
+
 const EditProfileModal = ({ handler }: EditProfileModalProps) => {
+  const [firstImg, setFirstImg] = useState('');
   const [previewImg, setPreviewImg] = useState<string>('');
-  const [isDuplicate, setIsDuplicate] = useState<boolean>(true);
-  const [isRemoveAvatar, setIsRemoveAvatar] = useState<boolean>(false);
+  const [shouldBlockSubmitBtn, setShouldBlockSubmitBtn] =
+    useState<ShouldBlockSubmitBtn>({
+      isDuplicate: true,
+      isRemoveAvatar: false,
+      result: true,
+    });
 
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
@@ -38,24 +50,39 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     handleSubmit,
     register,
     watch,
+    resetField,
     formState: { errors, isSubmitting, isValid },
   } = useForm<EditProfileForm>({ mode: 'onChange' });
 
   const preview = watch('avatar');
   const nickname = watch('nickname');
 
-  const isAvatarChanged = preview?.length !== 0;
-  const isNicknameChanged = nickname !== '';
+  // const isAvatarChanged = firstImg === 'default' && previewImg !== '';
+  // : preview && preview.length !== 0;
+  // const isNicknameChanged = nickname !== '';
+  // 프로필 변경 버튼 활성화 조건
+  // 1. 프로필 사진이 있었고 제거만 했을 때 => isRemoveAvatar
+  // 2. 프로필 사진이 없었고 프로필 사진을 추가했을 때 => isAvatarChanged
+  // 3. 프로필 사진을 제거하고 닉네임 변경, 중복 확인을 했을 때 => isRemoveAvatar && !isDuplicate
+  // 4. 프로필 사진을 추가하고 닉네임 변경, 중복확인을 했을 때 => isAvatarChanged && !isDuplicate
+  // 5. 프로필 사진에 변경이 없고 닉네임 변경, 중복 확인을 했을 때 => isAvatarChanged && isRemoveAvatar && !isDuplicate
 
-  const NicknameState = isNicknameChanged ? !isDuplicate : true;
-  const AvatarState = isAvatarChanged ? true : isRemoveAvatar;
-
-  const shouldBlockSubmitBtn = NicknameState && AvatarState;
+  // 사진 제거 버튼 조건
+  // 프로필 사진이 있을 때만
+  // const NicknameState = isNicknameChanged ? !isDuplicate : true;
+  // const AvatarState = isRemoveAvatar ? true : isAvatarChanged;
+  // const nothingChanged = !isNicknameChanged && !AvatarState;
+  // const nothingChanged = !isNicknameChanged && !isAvatarChanged;
+  // const shouldBlockSubmitBtn = !NicknameState || !AvatarState || nothingChanged;
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
     if (res) {
-      setIsDuplicate(!res);
+      setShouldBlockSubmitBtn((prev) => ({
+        ...prev,
+        isDuplicate: false,
+        result: false,
+      }));
     } else {
       console.log('닉네임 중복');
     }
@@ -64,7 +91,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const onSubmitEditProfileBtn: SubmitHandler<EditProfileForm> = async (
     data,
   ) => {
-    if (data.nickname !== '' && isDuplicate) return;
+    // if (data.nickname !== '' && isDuplicate) return;
     if (user == null) return;
 
     // 닉네임 변경
@@ -83,7 +110,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     }
 
     // 프로필 사진 변경
-    if (data.avatar[0]) {
+    if (data.avatar.length !== 0) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
       if (res) {
         const { id, email, nickname, profileImg } = res;
@@ -97,7 +124,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     }
 
     // 프로필 이미지 삭제
-    if (isRemoveAvatar) {
+    if (shouldBlockSubmitBtn.isRemoveAvatar) {
       const res = await removeUserAvartar(user.id);
 
       if (res) {
@@ -116,32 +143,48 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   const removeAvartarBtnHandler = () => {
     setPreviewImg('');
-    setIsRemoveAvatar(true);
+    setShouldBlockSubmitBtn((prev) => {
+      if (prev.isDuplicate) {
+        prev.result = true;
+      } else {
+        prev.result = false;
+      }
+
+      return { ...prev, isRemoveAvatar: true };
+    });
+    resetField('avatar');
   };
 
   useEffect(() => {
-    setIsDuplicate(true);
+    setShouldBlockSubmitBtn((prev) => ({
+      ...prev,
+      isDuplicate: true,
+      result: true,
+    }));
   }, [nickname]);
 
   useEffect(() => {
     if (preview && preview.length > 0) {
       const file = preview[0];
       setPreviewImg(URL.createObjectURL(file));
-    } else if (user !== null && typeof user.profileImg === 'string') {
-      setPreviewImg(user.profileImg);
+      setShouldBlockSubmitBtn((prev) => ({ ...prev, result: false }));
     }
-    return () => {
-      setPreviewImg('');
-      setIsDuplicate(true);
-    };
   }, [preview]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+    if (user !== null && user.profileImg !== null) {
+      setFirstImg('personal');
+      setPreviewImg(user.profileImg);
+    }
+    if (user !== null && user.profileImg === null) setFirstImg('default');
+
     return () => {
       document.body.style.overflow = 'auto';
+      setPreviewImg('');
     };
-  });
+  }, []);
 
   return (
     <div className="absolute top-0 left-0 z-[40] flex-center w-screen h-screen bg-black/70">
@@ -166,7 +209,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         </div>
         <label htmlFor="avatar">
           <img
-            src={previewImg !== '' ? previewImg : defaultImageGray}
+            src={previewImg === '' ? defaultImageGray : previewImg}
             alt="프로필이미지"
             className="w-[200px] h-[200px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer"
           />
@@ -221,13 +264,14 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
         <div className="flex justify-between w-[408px]">
           <button
             type="button"
+            disabled={previewImg === ''}
             onClick={removeAvartarBtnHandler}
-            className="w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1"
+            className="w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1 disabled:bg-gray_light_3"
           >
             사진 제거
           </button>
           <button
-            disabled={!shouldBlockSubmitBtn}
+            disabled={shouldBlockSubmitBtn.result}
             type="submit"
             className="w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3"
           >

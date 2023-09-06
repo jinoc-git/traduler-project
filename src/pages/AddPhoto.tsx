@@ -59,7 +59,9 @@ const AddPhoto = () => {
     },
   });
 
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
   const handleButton = async () => {
+    setIsSubmiting(true);
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
     console.log(distanceDataList);
@@ -143,10 +145,11 @@ const AddPhoto = () => {
           <div className="flex my-[100px] items-center justify-end gap-5">
             <span>여행 잘 다녀오셨나요?</span>
             <button
+              disabled={isSubmiting}
               onClick={handleButton}
-              className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue"
+              className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
             >
-              여행 저장
+              {isSubmiting ? '저장 중' : '여행 저장'}
             </button>
           </div>
         </div>

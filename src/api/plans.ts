@@ -1,4 +1,3 @@
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import {
   type PlanMatesType,
   type Json,
@@ -9,33 +8,24 @@ import {
 import { type PinContentsType } from './pins';
 import { supabase } from './supabaseAuth';
 
-export const addPlan = async (
-  userId: string,
-  title: string,
-  totalCost: number,
-  pins: PinContentsType[][],
-  dates: string[],
-  invitedUser: UserType[],
-) => {
-  const planId = uuid();
+interface addPlanObj {
+  newPlan: PlanType;
+  pins: PinContentsType[][];
+  invitedUser: UserType[];
+}
 
-  const plan: PlanType = {
-    id: planId,
-    users_id: userId,
-    title,
-    total_cost: totalCost,
-    isDeleted: false,
-    dates,
-    plan_state: 'planning',
-  };
+export const addPlan = async (addPlanObj: addPlanObj) => {
+  const { newPlan, pins, invitedUser } = addPlanObj;
+
+  const plan: PlanType = { ...newPlan };
 
   const { data, error } = await supabase.from('plans').insert(plan);
 
-  for (let i = 0; i < dates.length; i++) {
+  for (let i = 0; i < newPlan.dates.length; i++) {
     const { error: errorPins } = await supabase.from('pins').insert({
-      plan_id: planId,
+      plan_id: newPlan.id,
       contents: pins[i] as Json[],
-      date: dates[i],
+      date: newPlan.dates[i],
     });
     if (errorPins != null) {
       console.log(`오류발생 ${i}번째 pin`, errorPins);
@@ -43,7 +33,7 @@ export const addPlan = async (
   }
 
   const newplanMates: PlanMatesType = {
-    id: planId,
+    id: newPlan.id,
     users_id: invitedUser.map((user) => user.id),
   };
   const { error: planMatesError } = await supabase
@@ -209,7 +199,7 @@ export const getPlansByUserIds = async (userIds: string[]) => {
 
 export const getPlansWithMates = async (userId: string | undefined) => {
   if (userId === undefined) return;
-  
+
   const { data: matesData, error: matesError } = await supabase
     .from('plan_mates')
     .select()
@@ -301,6 +291,6 @@ export const getPlansDate = async (planId: string) => {
     console.log(error);
     throw new Error('plans_ending 불러오기 오류발생');
   }
-  
+
   return data;
 };

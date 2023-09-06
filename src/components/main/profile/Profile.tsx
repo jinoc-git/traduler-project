@@ -35,7 +35,7 @@ const Profile = () => {
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>
             {user?.nickname}
           </span>
-          님의 여행계획
+          님의 여행 계획
         </p>
       </div>
       {isEditModalOpen && <EditProfileModal handler={setIsEditModalOpen} />}

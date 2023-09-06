@@ -12,6 +12,7 @@ import { defaultMainPlan } from '@assets/index';
 import Favorite from '@components/main/favorite/Favorite';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { formatPlanDates } from '@utils/changeFormatDay';
+import { calculateDday } from '@utils/dateFormat';
 import {
   type PlanType,
   type BookMarkType,
@@ -224,8 +225,8 @@ const Card: React.FC<CardProps> = ({
                         isFavorite?.id !== undefined ? isFavorite.id : ''
                       }
                     />
-                    <div className="mt-[8px]">
-                      {plan.plan_state === 'end' ? null : plan.dates[0] ===
+                    {/* <div className="mt-[8px]">
+                      {plan.plan_state === 'end' ? null : (plan.dates[0]) ===
                         new Date().toISOString().split('T')[0] ? (
                         <span className="text-yellow">D-Day</span>
                       ) : (
@@ -236,6 +237,14 @@ const Card: React.FC<CardProps> = ({
                               new Date().getTime()) /
                               (1000 * 60 * 60 * 24),
                           )}
+                        </span>
+                      )}
+                    </div> */}
+
+                    <div className="mt-[8px]">
+                      {plan.plan_state === 'end' ? null : (
+                        <span className="text-yellow">
+                          {calculateDday(new Date(plan.dates[0]))}
                         </span>
                       )}
                     </div>
@@ -281,7 +290,9 @@ const Card: React.FC<CardProps> = ({
                               className={`${'w-[20px]'} ${'h-[20px]'} rounded-full ${gap}`}
                             />
                           ) : (
-                            <IconUserDefault w={'20'} h={'20'} />
+                            <div className={`rounded-full ${gap}`}>
+                              <IconUserDefault w={'20'} h={'20'} />
+                            </div>
                           );
                         })}
                       </div>

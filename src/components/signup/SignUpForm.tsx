@@ -145,7 +145,7 @@ const SignUpForm = () => {
               Boolean(nicknameValue?.length < 2) ||
               nicknameValue === undefined
             }
-            className="absolute top-[4px] right-[4px] h-[34px] p-1 text-sm text-white bg-blue hover:bg-blue_dark disabled:bg-gray_light_3 rounded"
+            className="absolute top-[4px] right-[4px] w-[68px] h-[34px] p-1 text-sm border text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white rounded"
           >
             중복확인
           </button>
@@ -176,7 +176,7 @@ const SignUpForm = () => {
               emailValue === undefined ||
               emailValue === ''
             }
-            className="absolute top-[4px] right-[4px] h-[34px] p-1 text-sm text-white bg-blue hover:bg-blue_dark disabled:bg-gray_light_3 rounded"
+            className="absolute top-[4px] right-[4px] w-[68px] h-[34px] p-1 text-sm border text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white rounded"
           >
             중복확인
           </button>

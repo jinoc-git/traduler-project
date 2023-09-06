@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Map,
-  MapMarker,
-  MapTypeControl,
-  Polyline,
-  ZoomControl,
-} from 'react-kakao-maps-sdk';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
@@ -17,6 +10,7 @@ import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
 
 import DatePage from '../DatePage';
+import MapPoly from '../MapPoly';
 
 declare global {
   interface Window {
@@ -54,7 +48,6 @@ const UpdatePlan = () => {
 
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
-      // plan을 불러왔을때
       setDates(plan[0].dates);
       setCurrentPage(0);
     }
@@ -116,7 +109,8 @@ const UpdatePlan = () => {
           <IconLocationDefault w="20" h="20" />
           <label>여행지역</label>
         </div>
-        <div className="flex justify-center">
+        <MapPoly pins={pinArr} />
+        {/* <div className="flex justify-center">
           <Map
             center={{
               lat:
@@ -156,7 +150,7 @@ const UpdatePlan = () => {
             <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />
             <ZoomControl position={kakao.maps.ControlPosition.RIGHT} />
           </Map>
-        </div>
+        </div> */}
       </div>
       <Pins currentPage={currentPage} dates={dates as string[]} />
     </>

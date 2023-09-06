@@ -2,10 +2,12 @@
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import { toast } from 'react-toastify';
 
 import { addComment, deleteComment, getComments } from '@api/commets';
 import IconCommentory from '@assets/icons/IconComentory';
 import { defaultImageGray } from '@assets/index';
+import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -46,11 +48,15 @@ const Comments = () => {
     addMutation.mutate(newComment);
   };
 
+  const { confirm } = useConfirm();
   const handleDelete = (commentId: string) => {
-    const conf = window.confirm('정말 삭제하시겠습니까?');
-    if (conf) {
+    const deleteFunc = () => {
       deleteMutation.mutate(commentId);
-    }
+    };
+    const confTitle = '댓글 삭제 확인';
+    const confDesc =
+      '삭제한 댓글은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+    confirm.delete(confTitle, confDesc, deleteFunc);
   };
 
   const queryClient = useQueryClient();
@@ -59,11 +65,17 @@ const Comments = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', planId] });
     },
+    onError: () => {
+      toast.error('댓글 작성에 실패했습니다.');
+    },
   });
   const deleteMutation = useMutation({
     mutationFn: deleteComment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', planId] });
+    },
+    onError: () => {
+      toast.error('댓글 삭제에 실패했습니다.');
     },
   });
 

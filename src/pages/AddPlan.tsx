@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 
 import { type PinContentsType } from '@api/pins';
 import { addPlan } from '@api/plans';
+import DatePage from '@components/addPlan/datePage/DatePage';
+import PlanLayout from '@components/addPlan/planLayout/PlanLayout';
+import PostPlan from '@components/addPlan/postPlan/PostPlan';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
-import DatePage from '@components/plan/DatePage';
-import Pay from '@components/plan/Pay';
-import PlanLayout from '@components/plan/PlanLayout';
-import PostPlan from '@components/plan/PostPlan';
+import Pay from '@components/common/pay/Pay';
 import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { sideBarStore } from '@store/sideBarStore';

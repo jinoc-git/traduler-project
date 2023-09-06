@@ -3,10 +3,9 @@ import React from 'react';
 import { getBookMark } from '@api/bookMarks';
 import { getPlansWithMates } from '@api/plans';
 import Loading from '@components/loading/Loading';
+import Card from '@components/main/card/Card';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
-
-import Card from './Card';
 
 const CardSection = () => {
   const user = userStore((state) => state.user);

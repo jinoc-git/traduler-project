@@ -5,11 +5,10 @@ import { useParams } from 'react-router-dom';
 import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
 import { defaultImageGray } from '@assets/index';
+import SearchPeople from '@components/common/invite/SearchPeople';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { useQuery } from '@tanstack/react-query';
-
-import SearchPeople from './SearchPeople';
 
 const Invite = () => {
   const [isOpen, setIsOpen] = useState(false);

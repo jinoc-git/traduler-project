@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
+import MapModalInput from '@components/plan/addPlan/MapModalInput';
+import MapNonePoly from '@components/plan/addPlan/MapNonePoly';
+import MapModalLayout from '@components/plan/addPlan/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import _ from 'lodash';
-
-import MapModalInput from '../MapModalInput';
-import MapNonePoly from '../MapNonePoly';
-import MapModalLayout from '../ModalLayout';
 
 interface InputType {
   address?: string;

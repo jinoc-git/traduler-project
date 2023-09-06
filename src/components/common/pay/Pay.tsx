@@ -3,10 +3,9 @@ import React from 'react';
 import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
 
 import IconWallet from '@assets/icons/IconWallet';
+import PayLayout from '@components/common/layout/PayLayout';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { formatNumberWithCommas } from '@utils/calcDutchPay';
-
-import PayLayout from './PayLayout';
 
 interface InputType {
   totalCost?: number;

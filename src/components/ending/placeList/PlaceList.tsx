@@ -7,7 +7,7 @@ import { getPlaceWithDate } from '@api/endingData';
 import { type PinContentsType } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import Loading from '@components/loading/Loading';
-import PinLayout from '@components/plan/PinLayout';
+import PinLayout from '@components/common/layout/PinLayout';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 import { type Json } from 'types/supabase';

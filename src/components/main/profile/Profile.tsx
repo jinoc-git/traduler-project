@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
 import IconUserDefault from '@assets/icons/IconUserDefault';
+import EditProfileModal from '@components/main/profile/EditProfileModal';
 import { userStore } from '@store/userStore';
-
-import EditProfileModal from './EditProfileModal';
 
 const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);

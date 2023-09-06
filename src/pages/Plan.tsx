@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { changePlanState, getPlan, updatePlan } from '@api/plans';
+import PlanLayout from '@components/addPlan/planLayout/PlanLayout';
+import PostPlan from '@components/addPlan/postPlan/PostPlan';
 import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import Loading from '@components/loading/Loading';
-import Pay from '@components/plan/Pay';
-import PlanLayout from '@components/plan/PlanLayout';
-import PostPlan from '@components/plan/PostPlan';
+import Pay from '@components/common/pay/Pay';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';

@@ -4,10 +4,9 @@ import { type XYCoord, useDrag, useDrop } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
+import PinLayout from '@components/common/layout/PinLayout';
 import { type Identifier } from 'dnd-core';
 // import _ from 'lodash';
-
-import PinLayout from '../PinLayout';
 
 interface PinProps {
   id: string;

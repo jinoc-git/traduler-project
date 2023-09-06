@@ -1,9 +1,8 @@
 import React from 'react';
 
 import IconWallet from '@assets/icons/IconWallet';
+import PayLayout from '@components/common/layout/PayLayout';
 import { formatNumberWithCommas } from '@utils/calcDutchPay';
-
-import PayLayout from '../PayLayout';
 
 interface PropsType {
   pay: number;

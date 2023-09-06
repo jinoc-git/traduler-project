@@ -96,7 +96,6 @@ const Plan = () => {
       console.log(error);
     },
   });
-
   useEffect(() => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
@@ -156,7 +155,11 @@ const Plan = () => {
         </div>
         <PostPlan />
         <Invite />
-        <Pay register={register} errors={errors} />
+        <Pay
+          total_Cost={watch('totalCost')}
+          register={register}
+          errors={errors}
+        />
         <UpdatePlan />
         <div className="flex items-center justify-end gap-5 mt-16">
           {planState === 'planning' ? (

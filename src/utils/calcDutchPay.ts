@@ -14,6 +14,7 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
     const totalPay = dailyPaySum.reduce((acc, val) => acc + val, 0);
     const remainingBudget = Math.floor(endingTotalCost - totalPay);
     const perPersonCost = Math.floor(remainingBudget / countPeople);
+
     const datesAndPaySum = dailyDates.map((date, i) => ({
       [date]: dailyPaySum[i],
     }));
@@ -28,4 +29,9 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+// 세자리 수 콤마
+export const formatNumberWithCommas = (number: number): string => {
+  return new Intl.NumberFormat('en-US').format(number);
 };

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ic_profile_3x } from '@assets/icons/3x';
+import IconUserDefault from '@assets/icons/IconUserDefault';
 import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
@@ -76,11 +77,17 @@ const Header = () => {
       {user !== null ? (
         pathname !== '/main' ? (
           <div className="flex-center w-[70px] h-[50px]">
-            <img
-              src={user.profileImg !== null ? user.profileImg : ic_profile_3x}
-              alt="프로필 이미지"
-              className=" w-[37px] h-[37px] object-cover rounded-full border"
-            />
+            {user.profileImg != null ? (
+              <img
+                src={user.profileImg !== null ? user.profileImg : ic_profile_3x}
+                alt="프로필 이미지"
+                className=" w-[37px] h-[37px] object-cover rounded-full border border-navy/50 "
+              />
+            ) : (
+              <div className="rounded-full border border-navy/50 ">
+                <IconUserDefault w={'37'} h={'37'} />
+              </div>
+            )}
           </div>
         ) : null
       ) : pathname === '/' ? (

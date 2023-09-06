@@ -28,7 +28,6 @@ interface ShouldBlockSubmitBtn {
 }
 
 const EditProfileModal = ({ handler }: EditProfileModalProps) => {
-  const [firstImg, setFirstImg] = useState('');
   const [previewImg, setPreviewImg] = useState<string>('');
   const [shouldBlockSubmitBtn, setShouldBlockSubmitBtn] =
     useState<ShouldBlockSubmitBtn>({
@@ -57,24 +56,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const preview = watch('avatar');
   const nickname = watch('nickname');
 
-  // const isAvatarChanged = firstImg === 'default' && previewImg !== '';
-  // : preview && preview.length !== 0;
-  // const isNicknameChanged = nickname !== '';
-  // 프로필 변경 버튼 활성화 조건
-  // 1. 프로필 사진이 있었고 제거만 했을 때 => isRemoveAvatar
-  // 2. 프로필 사진이 없었고 프로필 사진을 추가했을 때 => isAvatarChanged
-  // 3. 프로필 사진을 제거하고 닉네임 변경, 중복 확인을 했을 때 => isRemoveAvatar && !isDuplicate
-  // 4. 프로필 사진을 추가하고 닉네임 변경, 중복확인을 했을 때 => isAvatarChanged && !isDuplicate
-  // 5. 프로필 사진에 변경이 없고 닉네임 변경, 중복 확인을 했을 때 => isAvatarChanged && isRemoveAvatar && !isDuplicate
-
-  // 사진 제거 버튼 조건
-  // 프로필 사진이 있을 때만
-  // const NicknameState = isNicknameChanged ? !isDuplicate : true;
-  // const AvatarState = isRemoveAvatar ? true : isAvatarChanged;
-  // const nothingChanged = !isNicknameChanged && !AvatarState;
-  // const nothingChanged = !isNicknameChanged && !isAvatarChanged;
-  // const shouldBlockSubmitBtn = !NicknameState || !AvatarState || nothingChanged;
-
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
     if (res) {
@@ -91,7 +72,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const onSubmitEditProfileBtn: SubmitHandler<EditProfileForm> = async (
     data,
   ) => {
-    // if (data.nickname !== '' && isDuplicate) return;
     if (user == null) return;
 
     // 닉네임 변경
@@ -175,10 +155,8 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     document.body.style.overflow = 'hidden';
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (user !== null && user.profileImg !== null) {
-      setFirstImg('personal');
       setPreviewImg(user.profileImg);
     }
-    if (user !== null && user.profileImg === null) setFirstImg('default');
 
     return () => {
       document.body.style.overflow = 'auto';

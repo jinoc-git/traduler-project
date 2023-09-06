@@ -28,7 +28,7 @@ export const userStore = create<UserStore>((set, get) => {
             email,
             user_metadata: { name: nickname, profileImg },
           } = session.user;
-          console.log(session.user)
+
           const user: UserInfo = {
             id,
             email: email as string,

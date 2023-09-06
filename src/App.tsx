@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const { isOpen } = confirmStore();
-  // const { confirm } = useConfirm();
 
   return (
     <>

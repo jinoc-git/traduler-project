@@ -6,14 +6,8 @@ import { confirmStore } from '@store/confirmStore';
 enum ButtonText {
   modify = '수정하기',
   delete = '삭제하기',
+  defalut = '확인',
 }
-
-// interface PropsType {
-//   title: string;
-//   description: string;
-//   buttonText?: 'modify' | 'delete';
-//   confirmFunc: () => void;
-// }
 
 const ConfirmModal = () => {
   const { title, desc, func, closeConfirm, buttonText } = confirmStore();
@@ -23,15 +17,35 @@ const ConfirmModal = () => {
     closeConfirm();
   };
 
-  const button =
-    buttonText === 'modify' ? ButtonText.modify : ButtonText.delete ?? '확인';
+  const button = () => {
+    switch (buttonText) {
+      case 'modify':
+        return ButtonText.modify;
+      case 'delete':
+        return ButtonText.defalut;
+      default:
+        return ButtonText.defalut;
+    }
+  };
 
   return (
     <ModalLayout>
-      <div>{title}</div>
-      <div>{desc}</div>
-      <button onClick={closeConfirm}>취소</button>
-      <button onClick={handleConfirm}>{button}</button>
+      <div className="text-lg font-bold text-navy_dark">{title}</div>
+      <div className="mb-6 text-gray_dark_1">{desc}</div>
+      <div className="flex">
+        <button
+          onClick={closeConfirm}
+          className="border border-navy text-navy rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px] hover:bg-navy_light_1 duration-200"
+        >
+          취소
+        </button>
+        <button
+          onClick={handleConfirm}
+          className="bg-navy text-white rounded-lg hover:bg-navy_light_3  px-[20px] py-[14px] disabled:bg-gray w-[210px] duration-200"
+        >
+          {button()}
+        </button>
+      </div>
     </ModalLayout>
   );
 };

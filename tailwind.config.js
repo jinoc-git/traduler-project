@@ -72,6 +72,20 @@ module.exports = {
         card: ' 2px 6px 50px 2px rgba(0, 0, 0, 0.05)',
         index: '0px 2px 2px rgba(0, 0, 0, 0.10)',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.3s forwards',
+        fadeOut: 'fadeOut 0.3s forwards',
+      },
     },
   },
   plugins: [],

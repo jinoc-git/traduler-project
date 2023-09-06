@@ -64,7 +64,7 @@ const PinLayout = ({
         </div>
         {!isEnding && updatePin && deletePin && (
           <DropDown>
-            <ul className="absolute left-0 bottom-[-60px] rounded-md bg-white">
+            <ul className="absolute left-[40px] bottom-[-50px] border rounded-md bg-white z-10">
               <li
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -72,7 +72,7 @@ const PinLayout = ({
                 onClick={() => {
                   updatePin(idx);
                 }}
-                className="flex-center w-[80px] h-[40px] border rounded-t-md cursor-pointer"
+                className="flex-center w-[80px] h-[40px] rounded-t-md border-b bg-white cursor-pointer hover:bg-gray_light_3"
               >
                 수정
               </li>
@@ -83,7 +83,7 @@ const PinLayout = ({
                 onClick={() => {
                   handleDelete(idx);
                 }}
-                className="flex-center w-[80px] h-[40px] border rounded-b-md cursor-pointer"
+                className="flex-center w-[80px] h-[40px] rounded-b-md bg-white cursor-pointer hover:bg-gray_light_3"
               >
                 삭제
               </li>

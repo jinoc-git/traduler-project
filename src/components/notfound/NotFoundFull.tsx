@@ -6,6 +6,7 @@ import { sideBarStore } from '@store/sideBarStore';
 
 const NotFoundFull = () => {
   const navigate = useNavigate();
+  const setIsNotFoundPage = sideBarStore((set) => set.setIsNotFoundPage);
 
   const goToMain = () => {
     navigate('/welcome');
@@ -14,8 +15,9 @@ const NotFoundFull = () => {
   const goToBack = () => {
     navigate(-1);
   };
-
-  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
+  useEffect(() => {
+    setIsNotFoundPage(true);
+  }, []);
 
   const backgroundStyle: React.CSSProperties = {
     backgroundImage: `url('${NotFoundImg}')`,
@@ -24,10 +26,6 @@ const NotFoundFull = () => {
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
   };
-
-  useEffect(() => {
-    setVisibilityIcon(false);
-  }, []);
 
   return (
     <div

@@ -15,6 +15,14 @@ module.exports = {
       SemiBold: ['Pretendard-SemiBold'],
       Bold: ['Pretendard-Bold'],
     },
+    backgroundSize: {
+      auto: 'auto',
+      cover: 'cover',
+      contain: 'contain',
+      '80%': '80%',
+      '50%': '50%',
+      16: '4rem',
+    },
     extend: {
       colors: {
         red_light_1: '#FFD5DD',

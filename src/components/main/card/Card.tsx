@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { deletePlan } from '@api/plans';
-import IconAdd from '@assets/icons/IconAdd';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
-import { defaultMainPlan } from '@assets/index';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import { usePlanStore } from '@store/usePlanStore';
@@ -21,6 +19,7 @@ import {
   type UserType,
 } from 'types/supabase';
 
+import CardAddNewPlan from './CardAddNewPlan';
 import CardTabMenu from './CardTabMenu';
 import CardUserList from './CardUserList';
 
@@ -64,9 +63,13 @@ const Card: React.FC<CardProps> = ({
     },
   });
 
-  const filterData = planDataList?.filter((plan) => {
-    return plan.plan_state === selectedPlan && !plan.isDeleted;
-  });
+  const filteredData = planDataList
+    ?.filter((plan) => {
+      return plan.plan_state === selectedPlan && !plan.isDeleted;
+    })
+    ?.sort(
+      (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
+    );
 
   const { confirm } = useConfirm();
 
@@ -108,132 +111,91 @@ const Card: React.FC<CardProps> = ({
   return (
     <div>
       <CardTabMenu planCount={planCount} />
-      {filterData?.length === 0 ? (
-        <div className="flex flex-col items-center mt-[125px]">
-          <div>
-            <img
-              src={defaultMainPlan}
-              alt="사진"
-              className="w-[125px] h-[100px]"
-            />
-          </div>
-          {selectedPlan === 'planning' ? (
-            <div className="mt-[12px]">
-              <p>아직 예정된 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-duler을 만들어보세요 :)</p>
-            </div>
-          ) : selectedPlan === 'traveling' ? (
-            <div className="mt-[12px]">
-              <p>여행중인 일정이 없으시군요!</p>
-              <p>새로운 Tra-duler을 만들어보세요 :)</p>
-            </div>
-          ) : (
-            <div className="mt-[12px]">
-              <p>다녀온 여행 일정이 없으시군요!</p>
-              <p>새로운 Tra-duler을 만들어보세요 :)</p>
-            </div>
-          )}
-          <div>
-            <button
-              className=" group flex-center gap-[10px] mt-[35px] w-[160px] h-[45px] border border-black rounded-[7px] bg-white hover:bg-blue_dark hover:text-white hover:border-none"
-              onClick={() => {
-                navigate('/addPlan');
-              }}
-            >
-              <IconAdd w="16" h="16" />
-              여행 생성하기
-            </button>
-          </div>
-        </div>
+      {filteredData?.length === 0 ? (
+        <CardAddNewPlan />
       ) : (
-        filterData
-          ?.slice()
-          .sort(
-            (a, b) =>
-              new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
-          )
-          .map((plan) => {
-            const { startDate, endDate } = formatPlanDates(plan);
-            const isFavorite = bookMarkData.find(
-              (bookMark) => bookMark.plan_id === plan.id,
-            );
-            const participants = usersDataList.find((users) => users[plan.id])!;
-            const participantsAvatarList = participants[plan.id].map(
-              (user) => user.avatar_url,
-            );
+        filteredData?.map((plan) => {
+          const { startDate, endDate } = formatPlanDates(plan);
+          const isFavorite = bookMarkData.find(
+            (bookMark) => bookMark.plan_id === plan.id,
+          );
+          const participants = usersDataList.find((users) => users[plan.id])!;
+          const participantsAvatarList = participants[plan.id].map(
+            (user) => user.avatar_url,
+          );
 
-            const participantsNicknameList = participants[plan.id].map(
-              (user) => user.nickname,
-            );
+          const participantsNicknameList = participants[plan.id].map(
+            (user) => user.nickname,
+          );
 
-            return (
-              <div key={plan.id} className="mt-[16px]">
-                <div
-                  className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
-                  onClick={() => {
-                    onClickListItem(plan.plan_state, plan.id);
-                  }}
-                >
-                  <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
-                    <BookMark
-                      isFavorite={Boolean(isFavorite)}
-                      planId={plan.id}
-                      bookMarkId={
-                        isFavorite?.id !== undefined ? isFavorite.id : ''
-                      }
-                    />
-                    <div className="mt-[8px]">
-                      {plan.plan_state === 'end' ? null : (
-                        <span className="text-yellow">
-                          {calculateDday(new Date(plan.dates[0]))}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="w-3/5 h-[16px]">
-                    <div className="flex items-center mt-[22px]">
-                      <div className="text-gray_dark_1 text-xlg mr-[16px]">
-                        {plan.title}
-                      </div>
-                      {plan.plan_state === 'planning' ? (
-                        <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ">
-                          예정된 여행
-                        </div>
-                      ) : plan.plan_state === 'traveling' ? (
-                        <div className="bg-blue rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
-                          여행중
-                        </div>
-                      ) : (
-                        <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
-                          다녀온 여행
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-gray_dark_1 text-lg mt-[8px]">
-                      {startDate}~{endDate} {plan.dates.length - 1}박{' '}
-                      {plan.dates.length}일
-                    </div>
-                    <CardUserList
-                      participantsAvatarList={participantsAvatarList}
-                      participantsNicknameList={participantsNicknameList}
-                    />
-                  </div>
-
-                  <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeletePlan(plan.id);
-                      }}
-                    >
-                      <IconDeleteDefault fill="#E1E2E3" />
-                    </button>
+          return (
+            <div key={plan.id} className="mt-[16px]">
+              <div
+                className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
+                onClick={() => {
+                  onClickListItem(plan.plan_state, plan.id);
+                }}
+              >
+                <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
+                  <BookMark
+                    isFavorite={Boolean(isFavorite)}
+                    planId={plan.id}
+                    bookMarkId={
+                      isFavorite?.id !== undefined ? isFavorite.id : ''
+                    }
+                  />
+                  <div className="mt-[8px]">
+                    {plan.plan_state === 'end' ? null : (
+                      <span className="text-yellow">
+                        {calculateDday(new Date(plan.dates[0]))}
+                      </span>
+                    )}
                   </div>
                 </div>
+
+                <div className="w-3/5 h-[16px]">
+                  <div className="flex items-center mt-[22px]">
+                    <p className="text-gray_dark_1 text-xlg mr-[16px]">
+                      {plan.title}
+                    </p>
+                    {plan.plan_state === 'planning' ? (
+                      <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ">
+                        예정된 여행
+                      </div>
+                    ) : plan.plan_state === 'traveling' ? (
+                      <div className="bg-blue rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                        여행중
+                      </div>
+                    ) : (
+                      <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                        다녀온 여행
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-gray_dark_1 text-lg mt-[8px]">
+                    {startDate}~{endDate} {plan.dates.length - 1}박{' '}
+                    {plan.dates.length}일
+                  </div>
+                  <CardUserList
+                    participantsAvatarList={participantsAvatarList}
+                    participantsNicknameList={participantsNicknameList}
+                  />
+                </div>
+
+                <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePlan(plan.id);
+                    }}
+                  >
+                    <IconDeleteDefault fill="#E1E2E3" />
+                  </button>
+                </div>
               </div>
-            );
-          })
+            </div>
+          );
+        })
       )}
     </div>
   );

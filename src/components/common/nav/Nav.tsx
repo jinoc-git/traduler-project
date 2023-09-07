@@ -39,14 +39,14 @@ const Nav = ({ onClick, page }: PropsType) => {
 
   return (
     <nav className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center">
-      <div className="ml-[20px] text-navy_dark">여행 계획 시작 </div>
-      <div className="flex items-center gap-2">
-        <IconEditDefault w="16" h="16" fill="#162F70" />
+      <div className="ml-[20px] text-navy_dark">여행 계획 시작</div>
+      <div className="flex items-center">
         <button
-          className="mr-[80px] text-navy_dark"
+          className="mr-[80px] text-navy_dark flex items-center gap-2"
           onClick={handleButtonClick}
           type="submit"
         >
+          <IconEditDefault w="16" h="16" fill="#162F70" />
           {modifyState === 'modify' ? `저장하기` : `수정하기`}
         </button>
       </div>

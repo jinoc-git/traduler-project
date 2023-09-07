@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { sideBarStore } from '@store/sideBarStore';
 
 const ErrorPageFull = () => {
   const navigate = useNavigate();
@@ -9,20 +7,6 @@ const ErrorPageFull = () => {
   const goToMain = () => {
     navigate('/main');
   };
-
-  const setIsErrorPage = sideBarStore((set) => set.setIsErrorPage);
-
-  // const backgroundStyle: React.CSSProperties = {
-  //   // backgroundImage: `url('${errorImg}')`,
-  //   backgroundSize: '30%',
-  //   backgroundPosition: 'center',
-  //   backgroundRepeat: 'no-repeat',
-  //   minHeight: '100vh',
-  // };
-
-  useEffect(() => {
-    setIsErrorPage(true);
-  }, []);
 
   return (
     <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/104746237/18bee0d6-3507-42d5-b42e-54c17173d077)] bg-no-repeat bg-center min-h-screen bg-70% flex flex-col items-center justify-center">

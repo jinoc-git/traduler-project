@@ -20,7 +20,7 @@ const Header = () => {
     setVisibilityIcon,
     isSideBarOpen,
     setMenuIsOpen,
-    isErrorPage,
+
     isNotFoundPage,
   } = sideBarStore();
 
@@ -41,17 +41,19 @@ const Header = () => {
       setVisibilityIcon(true);
       if (pathname === '/') {
         setVisibilityIcon(false);
+      } else if (pathname === '/error') {
+        setVisibilityIcon(false);
       } else {
-        setMenuIsOpen(!isErrorPage);
-        setVisibilityIcon(!isErrorPage);
         setMenuIsOpen(!isNotFoundPage);
         setVisibilityIcon(!isNotFoundPage);
+        // setMenuIsOpen(!isErrorPage);
+        // setVisibilityIcon(!isErrorPage);
       }
       if (pathname === '/signin' || pathname === '/signup') {
         navigate('/main');
       }
     }
-  }, [user, pathname, isLogin, isErrorPage, isNotFoundPage]);
+  }, [user, pathname, isLogin, isNotFoundPage]);
 
   return (
     <header

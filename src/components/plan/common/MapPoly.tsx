@@ -53,10 +53,10 @@ const MapPoly = ({ pins }: PropsType) => {
                 lng: pin.lng as number,
               };
             })}
-            strokeWeight={5} // 선의 두께 입니다
-            strokeColor={'#162F70'} // 선의 색깔입니다
-            strokeOpacity={0.7} // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-            strokeStyle={'solid'} // 선의 스타일입니다
+            strokeWeight={5}
+            strokeColor={'#162F70'}
+            strokeOpacity={0.7}
+            strokeStyle={'solid'}
           />
         )}
         <MapTypeControl position={kakao.maps.ControlPosition.TOPRIGHT} />

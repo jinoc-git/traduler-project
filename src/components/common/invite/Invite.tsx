@@ -97,7 +97,7 @@ const Invite = () => {
             ) : (
               oldInvitedUser.map((user) => (
                 <div key={user.id} className="mr-[2px]">
-                  {user.nickname}
+                  {user.nickname}&nbsp;
                 </div>
               ))
             )

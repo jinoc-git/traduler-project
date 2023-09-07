@@ -32,13 +32,6 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
     dataDates = plan?.[0].dates as string[];
   }
 
-  useEffect(() => {
-    if (state !== 'addPlan' && dataDates != null) {
-      setStartDate(new Date(dataDates[0]));
-      setEndDate(new Date(dataDates[dataDates.length - 1]));
-    }
-  }, [dataDates]);
-
   const StartDateChangeHandler = (date: Date | null) => {
     setStartDate(date);
   };
@@ -66,7 +59,7 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       await updateDatePlan(planId, dates);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['plan'] });
+      void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
   });
 
@@ -89,6 +82,13 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       }
     }
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    if (state !== 'addPlan' && dataDates != null) {
+      setStartDate(new Date(dataDates[0]));
+      setEndDate(new Date(dataDates[dataDates.length - 1]));
+    }
+  }, [dataDates]);
 
   return (
     <>

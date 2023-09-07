@@ -64,7 +64,6 @@ export const getPlan = async (planId: string) => {
 
 // 삭제함수
 export const deletePlan = async (planId: string) => {
-  console.log('planId=>', planId);
   try {
     const { error } = await supabase
       .from('plans')
@@ -173,7 +172,7 @@ export const getMatesByUserIds = async (matesUserId: string[]) => {
     .from('users')
     .select()
     .in('id', matesUserId);
-  // console.log('MatesData=>', data);
+
   if (error != null) {
     console.log('에러발생', matesUserId);
     throw new Error('getMatesByUserIds 에러발생');
@@ -215,10 +214,6 @@ export const getPlansWithMates = async (userId: string | undefined) => {
   const userIds = matesData.map((data) => data.users_id);
   const planIds = matesData.map((data) => data.id).flat();
 
-  // if (userIds.length === 0) {
-  //   throw new Error('getPlansWithMates 에러 2발생');
-  // }
-  // 윗부분떄문에 오류가나서 수정함
   if (userIds.length === 0) {
     return {
       plansData: [],

@@ -159,7 +159,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   useEffect(() => {
     setShouldBlockSubmitBtn((prev) => {
-      console.log(nickname);
       if (nickname === '' && prev.isChanged) {
         prev.isDuplicate = false;
         prev.result = false;

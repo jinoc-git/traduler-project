@@ -10,8 +10,6 @@ const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
 
-  // const [hovered, setHovered] = useState(false);
-
   const navigate = useNavigate();
 
   return (
@@ -28,12 +26,12 @@ const Main = () => {
       <Profile />
       <section className="flex main-layout ">
         <button
-          className="mt-[35px] ml-auto w-[160px] h-[45px] border border-white rounded-[7px] flex items-center justify-center  text-white hover:bg-white hover:text-blue_dark gap-3 fill-white hover:fill-blue_dark"
+          className="group mt-[35px] ml-auto w-[160px] h-[45px] border border-white rounded-[7px] flex items-center justify-center  text-white hover:bg-white hover:text-blue_dark gap-3 fill-white "
           onClick={() => {
             navigate('/addPlan');
           }}
         >
-          <IconAdd w="16" h="16" />
+          <IconAdd w="16" h="16" fill="#1A68DB" />
           여행 생성하기
         </button>
       </section>

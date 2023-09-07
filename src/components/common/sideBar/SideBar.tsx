@@ -3,7 +3,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getPlansWithBookmarks, getPlansWithMates } from '@api/plans';
+import { getPlansWithBookmarks, getPlanListAndMateList } from '@api/plans';
 import { ic_new_menu_1x } from '@assets/icons/1x';
 import { logoColor } from '@assets/index';
 import SideBarETC from '@components/common/sideBar/SideBarETC';
@@ -56,7 +56,7 @@ const SideBar: React.FC = () => {
   const { data: matesData, isError: matesError } = useQuery(
     ['plan_mates', user?.id],
     async () => {
-      return await getPlansWithMates(user === null ? '' : user.id);
+      return await getPlanListAndMateList(user === null ? '' : user.id);
     },
     { enabled: user !== null },
   );
@@ -69,7 +69,7 @@ const SideBar: React.FC = () => {
     return <div>오류</div>;
   }
 
-  const sortedData = matesData?.plansData?.sort(
+  const sortedData = matesData?.planDataList?.sort(
     (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
   );
 

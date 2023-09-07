@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/prefer-optional-chain */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { deletePlan } from '@api/plans';
 import IconAdd from '@assets/icons/IconAdd';
@@ -20,8 +21,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
 import {
-  type PlanType,
   type BookMarkType,
+  type PlanType,
   type UserType,
 } from 'types/supabase';
 
@@ -29,50 +30,43 @@ type UsersDataList = Record<string, UserType[]>;
 
 interface CardProps {
   bookMarkData: BookMarkType[];
-  plansData: PlanType[] | undefined;
+  planDataList: PlanType[] | undefined;
   usersDataList: UsersDataList[];
+}
+
+interface PlanCountList {
+  planning: number;
+  traveling: number;
+  end: number;
 }
 
 const Card: React.FC<CardProps> = ({
   usersDataList,
-  plansData,
+  planDataList,
   bookMarkData,
 }) => {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
   const user = userStore((state) => state.user);
-
-  const [planningCount, setPlanningCount] = useState<number>(0);
-  const [endCount, setEndCount] = useState<number>(0);
-  const [travelingCount, setTravelingCount] = useState<number>(0);
-  const [deletedPlans, setDeletedPlans] = useState<string[]>([]);
-  const [hovered, setHovered] = useState(false);
-
-  // 전역상태관리
   const { selectedPlan, setSelectedPlan } = usePlanStore();
 
-  // deletePlan mutation 함수정의
+  const [planCount, setPlanCount] = useState<PlanCountList>({
+    planning: 0,
+    traveling: 0,
+    end: 0,
+  });
+
   const deletePlanMutation = useMutation(deletePlan, {
     onSuccess: () => {
       queryClient.invalidateQueries(['plan_mates', user?.id]);
     },
   });
 
-  const filterData = plansData
-    ?.filter((plan) => {
-      if (selectedPlan === 'traveling') {
-        return plan.plan_state === 'traveling';
-      } else if (selectedPlan === 'planning') {
-        return plan.plan_state === 'planning';
-      } else {
-        // selectedPlan이 'end'인 경우
-        return plan.plan_state === 'end' || plan.plan_state === 'recording';
-      }
-    })
-    .filter((plan) => !plan.isDeleted);
+  const filterData = planDataList?.filter((plan) => {
+    return plan.plan_state === selectedPlan && !plan.isDeleted;
+  });
 
-  // 삭제된 계획
   const { confirm } = useConfirm();
 
   const handleDeletePlan = async (planId: string) => {
@@ -80,13 +74,14 @@ const Card: React.FC<CardProps> = ({
       const confTitle = '여행 삭제';
       const confDesc =
         '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+
       const confFunc = () => {
         deletePlanMutation.mutate(planId);
       };
+
       confirm.delete(confTitle, confDesc, confFunc);
-      setDeletedPlans(() => [...deletedPlans, planId]);
     } catch (error) {
-      alert('계획 삭제 중 오류가 발생했습니다.');
+      toast.error('계획 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -98,22 +93,20 @@ const Card: React.FC<CardProps> = ({
   };
 
   useEffect(() => {
-    if (plansData != null) {
-      setPlanningCount(
-        plansData.filter((plan) => plan.plan_state === 'planning').length,
-      );
-      setEndCount(
-        plansData.filter(
+    if (planDataList != null) {
+      setPlanCount({
+        planning: planDataList.filter((plan) => plan.plan_state === 'planning')
+          .length,
+        traveling: planDataList.filter(
+          (plan) => plan.plan_state === 'traveling',
+        ).length,
+        end: planDataList.filter(
           (plan) =>
             plan.plan_state === 'end' || plan.plan_state === 'recording',
         ).length,
-      );
-
-      setTravelingCount(
-        plansData.filter((plan) => plan.plan_state === 'traveling').length,
-      );
+      });
     }
-  }, [plansData]);
+  }, [planDataList]);
 
   return (
     <div>
@@ -126,7 +119,7 @@ const Card: React.FC<CardProps> = ({
             setSelectedPlan('traveling');
           }}
         >
-          여행중 ({travelingCount})
+          여행중 ({planCount.traveling})
         </div>
         <div> | </div>
         <div
@@ -137,7 +130,7 @@ const Card: React.FC<CardProps> = ({
             setSelectedPlan('planning');
           }}
         >
-          예정된 여행 ({planningCount})
+          예정된 여행 ({planCount.planning})
         </div>
         <div> | </div>
         <div
@@ -148,7 +141,7 @@ const Card: React.FC<CardProps> = ({
             setSelectedPlan('end');
           }}
         >
-          다녀온 여행 ({endCount})
+          다녀온 여행 ({planCount.end})
         </div>
       </div>
       {filterData?.length === 0 ? (
@@ -178,29 +171,13 @@ const Card: React.FC<CardProps> = ({
           )}
           <div>
             <button
-              className={`mt-[35px] ml-auto w-[160px] h-[45px] border border-black rounded-[7px] flex items-center justify-center 
-          ${
-            hovered
-              ? 'bg-white text-black hover:bg-blue_dark hover:text-blue_dark border-none'
-              : 'border border-black'
-          }`}
-              onMouseEnter={() => {
-                setHovered(true);
-              }}
-              onMouseLeave={() => {
-                setHovered(false);
-              }}
+              className=" group flex-center gap-[10px] mt-[35px] w-[160px] h-[45px] border border-black rounded-[7px] bg-white hover:bg-blue_dark hover:text-white hover:border-none"
               onClick={() => {
                 navigate('/addPlan');
               }}
             >
-              <IconAdd w="16" h="16" fill={hovered ? 'white' : 'black'} />
-
-              <span
-                className={`ml-[10px] ${hovered ? 'text-white' : 'text-black'}`}
-              >
-                여행 생성하기
-              </span>
+              <IconAdd w="16" h="16" />
+              여행 생성하기
             </button>
           </div>
         </div>

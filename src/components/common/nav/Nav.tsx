@@ -11,7 +11,7 @@ interface PropsType {
   setIsModified?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
+const Nav = ({ onClick, page }: PropsType) => {
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { confirm } = useConfirm();
 
@@ -39,14 +39,13 @@ const Nav = ({ onClick, buttonDisabled, page }: PropsType) => {
 
   return (
     <nav className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center">
-      <div className="ml-[20px] text-navy_dark">여행 계획 시작</div>
+      <div className="ml-[20px] text-navy_dark">여행 계획 시작 </div>
       <div className="flex items-center gap-2">
         <IconEditDefault w="16" h="16" fill="#162F70" />
         <button
           className="mr-[80px] text-navy_dark"
           onClick={handleButtonClick}
           type="submit"
-          disabled={buttonDisabled}
         >
           {modifyState === 'modify' ? `저장하기` : `수정하기`}
         </button>

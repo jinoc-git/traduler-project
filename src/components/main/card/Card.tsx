@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-/* eslint-disable @typescript-eslint/prefer-optional-chain */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -10,13 +7,11 @@ import { toast } from 'react-toastify';
 import { deletePlan } from '@api/plans';
 import IconAdd from '@assets/icons/IconAdd';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
-import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import { usePlanStore } from '@store/usePlanStore';
 import { userStore } from '@store/userStore';
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
@@ -25,6 +20,8 @@ import {
   type PlanType,
   type UserType,
 } from 'types/supabase';
+
+import CardUserList from './CardUserList';
 
 type UsersDataList = Record<string, UserType[]>;
 
@@ -58,8 +55,8 @@ const Card: React.FC<CardProps> = ({
   });
 
   const deletePlanMutation = useMutation(deletePlan, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['plan_mates', user?.id]);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['plan_mates', user?.id]);
     },
   });
 
@@ -250,44 +247,10 @@ const Card: React.FC<CardProps> = ({
                       {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                       {plan.dates.length}일
                     </div>
-                    <div className="flex gap-3 mt-[8px]">
-                      <div className="flex">
-                        {participantsAvatarList.map((avatar, i) => {
-                          let gap = '';
-                          if (i > 0) {
-                            gap = '-ml-[8px]';
-                          }
-
-                          return avatar ? (
-                            <img
-                              key={uuid()}
-                              src={avatar}
-                              alt="유저아바타"
-                              className={`w-[20px] h-[20px] rounded-full ${gap} border border-[#979797] object-cover `}
-                            />
-                          ) : (
-                            <div
-                              className={`rounded-full ${gap} border border-[#979797] `}
-                              key={uuid()}
-                            >
-                              <IconUserDefault w={'20'} h={'20'} />
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div className='"text-gray_dark_1 text-sm'>
-                        {participantsNicknameList.length <= 3 ? (
-                          participantsNicknameList
-                            .map((name) => `${name}`)
-                            .join(', ')
-                        ) : (
-                          <>
-                            {participantsNicknameList.slice(0, 3).join(', ')} 외{' '}
-                            {participantsNicknameList.length - 3}명
-                          </>
-                        )}
-                      </div>
-                    </div>
+                    <CardUserList
+                      participantsAvatarList={participantsAvatarList}
+                      participantsNicknameList={participantsNicknameList}
+                    />
                   </div>
 
                   <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">

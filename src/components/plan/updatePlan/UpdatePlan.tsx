@@ -9,19 +9,15 @@ import DatePage from '@components/addPlan/datePage/DatePage';
 import Loading from '@components/loading/Loading';
 import MapPoly from '@components/plan/common/MapPoly';
 import Pins from '@components/plan/updatePlan/Pins';
+import useHandlePage from '@hooks/useHandlePage';
 import { useQuery } from '@tanstack/react-query';
 
 const UpdatePlan = () => {
   const { id } = useParams();
   const planId: string = id as string;
   const [dates, setDates] = useState<string[]>();
-  const [currentPage, setCurrentPage] = useState(0);
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
+  const { currentPage, handleNextPage, handlePreviousPage, setCurrentPage } =
+    useHandlePage();
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const {
     data: plan,

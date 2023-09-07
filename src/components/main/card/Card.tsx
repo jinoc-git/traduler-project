@@ -12,7 +12,7 @@ import IconAdd from '@assets/icons/IconAdd';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { defaultMainPlan } from '@assets/index';
-import Favorite from '@components/main/favorite/Favorite';
+import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import { usePlanStore } from '@store/usePlanStore';
 import { userStore } from '@store/userStore';
@@ -211,7 +211,7 @@ const Card: React.FC<CardProps> = ({
                   }}
                 >
                   <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
-                    <Favorite
+                    <BookMark
                       isFavorite={Boolean(isFavorite)}
                       planId={plan.id}
                       bookMarkId={

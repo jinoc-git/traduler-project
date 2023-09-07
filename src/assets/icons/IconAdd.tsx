@@ -7,6 +7,8 @@ import type IconType from 'types/icon';
 const IconAdd = ({ w, h, fill }: IconType) => {
   const width = `w-[${w as string}px]`;
   const height = `h-[${h as string}px]`;
+  const hover = fill ?  `group-hover:fill-${fill}` : 'group-hover:fill-white'
+
   return (
     <svg
       width={w || '16'}
@@ -14,11 +16,12 @@ const IconAdd = ({ w, h, fill }: IconType) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
+      className={`${w !== undefined && h !== undefined ? `${width} ${height}` : ''}`}
     >
       <path
         d="M14 0H10V10H0V14H10V24H14V14H24V10H14V0Z"
         fill={fill || 'black'}
+        className={hover}
       />
     </svg>
   );

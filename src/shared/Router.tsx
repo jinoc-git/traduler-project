@@ -7,6 +7,7 @@ import AddPhoto from '@pages/AddPhoto';
 import AddPlan from '@pages/AddPlan';
 import AuthLoading from '@pages/AuthLoading';
 import Ending from '@pages/Ending';
+import ErrorPage from '@pages/ErrorPage';
 import Landing from '@pages/Landing';
 import Main from '@pages/Main';
 import NotFound from '@pages/NotFound';
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path="/addPhoto/:id" element={<AddPhoto />} />
         <Route path="/welcome" element={<AuthLoading />} />
         <Route path="/*" element={<NotFound />} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );

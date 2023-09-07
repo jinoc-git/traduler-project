@@ -1,4 +1,4 @@
-import { type Json, type PinInsertType } from 'types/supabase';
+import { type PinType, type Json, type PinInsertType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
@@ -29,7 +29,7 @@ export const getPin = async (planId: string, currentpage: number) => {
   if (dates !== null) {
     const { data, error } = await supabase
       .from('pins')
-      .select('contents')
+      .select()
       .match({ plan_id: planId, date: dates[0].dates[currentpage] });
     if (error !== null) {
       throw new Error('핀 콘텐츠 불러오기 오류');
@@ -38,28 +38,13 @@ export const getPin = async (planId: string, currentpage: number) => {
   }
 };
 
-export const addPin = async (
-  date: string,
-  planId: string,
-  newContents: PinContentsType,
-) => {
-  const { data: oldContents, error: olderror } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
-
-  const Arr = [];
-  if (oldContents != null) {
-    Arr.push(...oldContents[0].contents, newContents);
-  }
-
+export const addPin = async (newPin: PinType) => {
   const { error } = await supabase
     .from('pins')
-    .update({ contents: Arr as Json[] })
-    .match({ plan_id: planId, date })
-    .select();
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
 
-  if (error != null || olderror != null) {
+  if (error != null) {
     throw new Error('핀 추가 오류');
   }
 };
@@ -81,34 +66,13 @@ export const deletePin = async (
   return data;
 };
 
-export const updatePin = async (
-  idx: number,
-  date: string,
-  planId: string,
-  newContents: PinContentsType,
-) => {
-  const { data: oldContents, error: olderror } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
-
-  let Arr: Array<Json | PinContentsType> = [];
-  if (oldContents != null) {
-    Arr = oldContents[0].contents.map((content, i) => {
-      if (i === idx) {
-        return newContents;
-      }
-      return content;
-    });
-  }
-
+export const updatePin = async (newPin: PinType) => {
   const { data, error } = await supabase
     .from('pins')
-    .update({ contents: Arr as Json[] })
-    .match({ plan_id: planId, date })
-    .select();
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
 
-  if (error != null || olderror != null) {
+  if (error != null) {
     throw new Error('핀 업데이트 오류');
   }
 

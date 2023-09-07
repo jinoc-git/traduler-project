@@ -107,7 +107,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
 
         {/* 닫혔을 때만 보여지는 내용 */}
         {!isOpen && status === '여행 예정' && (
-          <p className="text-sm leading-4 mt-[-5px]">
+          <p className="text-sm leading-4">
             여<br />행<br />예<br />정
           </p>
         )}

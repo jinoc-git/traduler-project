@@ -1,5 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
@@ -35,15 +35,6 @@ const Invite = () => {
   const isOldInvitedUser =
     oldInvitedUser.length !== 0 && oldInvitedUser !== null;
   const maxDisplayCount = 4;
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const modalOutSideClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    if (modalRef.current === e.target) {
-      closeModal();
-    }
-  };
 
   useEffect(() => {
     return () => {
@@ -124,13 +115,7 @@ const Invite = () => {
         )}
       </div>
       {isOpen && (
-        <div
-          ref={modalRef}
-          className="absolute inset-0 z-40 w-full h-full bg-black/20"
-          onClick={(e) => {
-            modalOutSideClick(e);
-          }}
-        >
+        <div className="absolute inset-0 z-40 w-full h-full bg-black/20">
           <SearchPeople closeModal={closeModal} />
         </div>
       )}

@@ -21,6 +21,7 @@ import {
   type UserType,
 } from 'types/supabase';
 
+import CardTabMenu from './CardTabMenu';
 import CardUserList from './CardUserList';
 
 type UsersDataList = Record<string, UserType[]>;
@@ -31,7 +32,7 @@ interface CardProps {
   usersDataList: UsersDataList[];
 }
 
-interface PlanCountList {
+export interface PlanCountList {
   planning: number;
   traveling: number;
   end: number;
@@ -46,7 +47,7 @@ const Card: React.FC<CardProps> = ({
 
   const queryClient = useQueryClient();
   const user = userStore((state) => state.user);
-  const { selectedPlan, setSelectedPlan } = usePlanStore();
+  const { selectedPlan } = usePlanStore();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({
     planning: 0,
@@ -58,6 +59,9 @@ const Card: React.FC<CardProps> = ({
     onSuccess: async () => {
       await queryClient.invalidateQueries(['plan_mates', user?.id]);
     },
+    onError: () => {
+      toast.error('계획 삭제 중 오류가 발생했습니다.');
+    },
   });
 
   const filterData = planDataList?.filter((plan) => {
@@ -66,20 +70,16 @@ const Card: React.FC<CardProps> = ({
 
   const { confirm } = useConfirm();
 
-  const handleDeletePlan = async (planId: string) => {
-    try {
-      const confTitle = '여행 삭제';
-      const confDesc =
-        '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+  const handleDeletePlan = (planId: string) => {
+    const confTitle = '여행 삭제';
+    const confDesc =
+      '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
 
-      const confFunc = () => {
-        deletePlanMutation.mutate(planId);
-      };
+    const confFunc = () => {
+      deletePlanMutation.mutate(planId);
+    };
 
-      confirm.delete(confTitle, confDesc, confFunc);
-    } catch (error) {
-      toast.error('계획 삭제 중 오류가 발생했습니다.');
-    }
+    confirm.delete(confTitle, confDesc, confFunc);
   };
 
   const onClickListItem = (state: string, id: string) => {
@@ -107,40 +107,7 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div>
-      <div className="flex flex-row mt-[4px] justify-center">
-        <div
-          className={`cursor-pointer mr-[25px] text-white hover:text-yellow_light_2 ${
-            selectedPlan === 'traveling' ? 'text-yellow_light_2' : 'text-white'
-          }`}
-          onClick={() => {
-            setSelectedPlan('traveling');
-          }}
-        >
-          여행중 ({planCount.traveling})
-        </div>
-        <div> | </div>
-        <div
-          className={`cursor-pointer ml-[25px] mr-[25px] text-white hover:text-yellow_light_2 ${
-            selectedPlan === 'planning' ? 'text-yellow_light_2' : 'text-white'
-          }`}
-          onClick={() => {
-            setSelectedPlan('planning');
-          }}
-        >
-          예정된 여행 ({planCount.planning})
-        </div>
-        <div> | </div>
-        <div
-          className={`cursor-pointer ml-[25px] text-white hover:text-yellow_light_2 ${
-            selectedPlan === 'end' ? 'text-yellow_light_2' : 'text-white'
-          }`}
-          onClick={() => {
-            setSelectedPlan('end');
-          }}
-        >
-          다녀온 여행 ({planCount.end})
-        </div>
-      </div>
+      <CardTabMenu planCount={planCount} />
       {filterData?.length === 0 ? (
         <div className="flex flex-col items-center mt-[125px]">
           <div>
@@ -255,9 +222,9 @@ const Card: React.FC<CardProps> = ({
 
                   <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">
                     <button
-                      onClick={async () => {
-                        await handleDeletePlan(plan.id);
-                        navigate('/main');
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePlan(plan.id);
                       }}
                     >
                       <IconDeleteDefault fill="#E1E2E3" />

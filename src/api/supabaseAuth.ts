@@ -154,12 +154,11 @@ export const deleteUserProfileImage = async (userId: string) => {
 };
 
 export const checkUserNickname = async (nickname: string) => {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('users')
     .select('nickname')
     .eq('nickname', nickname);
 
-  console.log(error);
   if (data !== null && data.length === 0) {
     return true;
   }
@@ -169,12 +168,10 @@ export const checkUserNickname = async (nickname: string) => {
 };
 
 export const checkUserEmail = async (email: string) => {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('users')
     .select('email')
     .eq('email', email);
-
-  console.log(error);
   if (data !== null && data.length === 0) {
     return true;
   }

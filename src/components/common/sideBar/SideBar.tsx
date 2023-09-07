@@ -53,7 +53,6 @@ const SideBar: React.FC = () => {
     setEndPlansNeedValue(false);
   };
 
-  // supabase데이터 뿌려주기
   const { data: matesData, isError: matesError } = useQuery(
     ['plan_mates', user?.id],
     async () => {

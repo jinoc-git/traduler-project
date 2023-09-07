@@ -16,8 +16,13 @@ const Header = () => {
   const user = userStore((state) => state.user);
   const isLogin = localStorage.getItem('isLogin');
 
-  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen, isErrorPage } =
-    sideBarStore();
+  const {
+    setVisibilityIcon,
+    isSideBarOpen,
+    setMenuIsOpen,
+    isErrorPage,
+    isNotFoundPage,
+  } = sideBarStore();
 
   const goToMain = () => {
     if (user !== null) {
@@ -39,12 +44,14 @@ const Header = () => {
       } else {
         setMenuIsOpen(!isErrorPage);
         setVisibilityIcon(!isErrorPage);
+        setMenuIsOpen(!isNotFoundPage);
+        setVisibilityIcon(!isNotFoundPage);
       }
       if (pathname === '/signin' || pathname === '/signup') {
         navigate('/main');
       }
     }
-  }, [user, pathname, isLogin, isErrorPage]);
+  }, [user, pathname, isLogin, isErrorPage, isNotFoundPage]);
 
   return (
     <header

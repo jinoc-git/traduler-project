@@ -64,27 +64,17 @@ export const getPlan = async (planId: string) => {
 
 // 삭제함수
 export const deletePlan = async (planId: string) => {
-  try {
-    const { error } = await supabase
-      .from('plans')
-      .update({ isDeleted: true })
-      .eq('id', planId);
+  const { error } = await supabase
+    .from('plans')
+    .update({ isDeleted: true })
+    .eq('id', planId);
 
-    if (error != null) {
-      console.error('계획 삭제 오류', error);
-      throw new Error('계획 삭제 중 오류가 발생했습니다.');
-    }
-
-    // if (data === null || data.length === 0) {
-    //   throw new Error('해당 계획을 찾을 수 없습니다.');
-    // }
-  } catch (error) {
-    console.error('계획 삭제 오류', error);
-    throw error;
+  if (error != null) {
+    throw new Error('계획 삭제 중 오류가 발생했습니다.');
   }
 };
 
-export const getPlans = async (planIds: string[]) => {
+export const getPlanList = async (planIds: string[]) => {
   if (planIds.length === 0) {
     return;
   }
@@ -196,13 +186,32 @@ export const getPlansByUserIds = async (userIds: string[]) => {
   return data;
 };
 
-export const getPlansWithMates = async (userId: string | undefined) => {
+export const getPlanIdAndUserIdListByLoginUserId = async (
+  userId: string | undefined,
+) => {
+  if (userId === undefined) return;
+
+  const { data: userPlanAndMateList, error: userPlanAndMateListError } =
+    await supabase.from('plan_mates').select().contains('users_id', [userId]);
+
+  if (userPlanAndMateListError !== null) {
+    throw new Error('getPlanIdAndUserIdListByLoginUserId 오류');
+  }
+
+  // const userIdList = userPlanAndMateList.map((data) => data.users_id);
+  // const planIdList = userPlanAndMateList.map((data) => data.id).flat();
+
+  if (userPlanAndMateList !== null) {
+    return userPlanAndMateList;
+  }
+};
+
+export const getPlanListAndMateList = async (userId: string | undefined) => {
   if (userId === undefined) return;
 
   const { data: matesData, error: matesError } = await supabase
     .from('plan_mates')
     .select()
-    // 배열의 비교는 contains 연산자를 사용
     .contains('users_id', [userId]);
 
   if (matesError != null) {
@@ -210,29 +219,27 @@ export const getPlansWithMates = async (userId: string | undefined) => {
     throw new Error('getPlansWithMates 에러 1발생');
   }
 
-  // flatMap을 사용하면 중복 구조로 되어있는 리스트를 하나의 스트림처럼 다룰 수 있다.
-  const userIds = matesData.map((data) => data.users_id);
-  const planIds = matesData.map((data) => data.id).flat();
+  const planIdList = matesData.map((data) => data.id).flat();
+  const userIdList = matesData.map((data) => data.users_id);
 
-  if (userIds.length === 0) {
+  if (userIdList.length === 0) {
     return {
-      plansData: [],
+      planDataList: [],
       usersDataList: [],
     };
   }
 
-  const plansData = await getPlans(planIds);
+  const planDataList = await getPlanList(planIdList);
   const usersDataList = [];
-  for (let i = 0; i < userIds.length; i++) {
-    const users = await getMatesByUserIds(userIds[i]);
+  for (let i = 0; i < userIdList.length; i++) {
+    const users = await getMatesByUserIds(userIdList[i]);
 
-    const userList = { [planIds[i]]: users };
+    const userList = { [planIdList[i]]: users };
     usersDataList.push(userList);
   }
 
   return {
-    plansData,
-    // 배열로 가져오던걸 객체로 바꾸기위해서
+    planDataList,
     usersDataList,
   };
 };

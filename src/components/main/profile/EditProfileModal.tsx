@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { getPlansWithMates } from '@api/plans';
+import { getPlanListAndMateList } from '@api/plans';
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
 import IconCamera from '@assets/icons/IconCamera';
@@ -81,7 +81,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     }
   };
 
-  const userMutation = useMutation(getPlansWithMates, {
+  const userMutation = useMutation(getPlanListAndMateList, {
     onSuccess: async () => {
       if (user !== null) {
         await queryClient.invalidateQueries(['plan_mates', user.id]);

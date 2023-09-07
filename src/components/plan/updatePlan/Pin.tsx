@@ -25,16 +25,7 @@ interface ItemType {
 }
 
 const Pin = (props: PinProps) => {
-  const {
-    id,
-    pin,
-    idx,
-    // betweenDistanceData,
-    // pinArrLength,
-    handleUpdate,
-    handleDelete,
-    movePins,
-  } = props;
+  const { id, pin, idx, handleUpdate, handleDelete, movePins } = props;
 
   const dragBoxRef = useRef<HTMLLIElement>(null);
 

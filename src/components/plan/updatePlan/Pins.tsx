@@ -23,7 +23,6 @@ interface PropsType {
 
 const Pins = ({ currentPage, dates }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [distanceData, setDistanceData] = useState<string[]>([]);
 
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
@@ -132,9 +131,9 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       </div>
       {isOpenModal && (
         <MapModal
+          pinQuery={pin?.[0]}
           openModal={openModal}
           closeModal={closeModal}
-          date={dates[currentPage]}
           currentPage={currentPage}
         />
       )}

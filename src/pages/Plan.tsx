@@ -25,7 +25,6 @@ interface InputType {
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const resetDates = datesStore((state) => state.resetDates);
-  // const dates = datesStore((state) => state.dates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
   const planId: string = id as string;

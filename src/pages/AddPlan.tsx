@@ -13,6 +13,7 @@ import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import Pay from '@components/common/pay/Pay';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
+import useHandlePage from '@hooks/useHandlePage';
 import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { sideBarStore } from '@store/sideBarStore';
@@ -79,13 +80,8 @@ const AddPlan = () => {
     watch('title')?.length === 0 ||
     dates.length === 0;
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
+  const { currentPage, handleNextPage, handlePreviousPage, setCurrentPage } =
+    useHandlePage();
 
   useEffect(() => {
     return () => {

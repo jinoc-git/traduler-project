@@ -10,6 +10,7 @@ import { type PinContentsType, getPin, deletePin } from '@api/pins';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
+import useBooleanState from '@hooks/useBooleanState';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -22,27 +23,29 @@ interface PropsType {
 }
 
 const Pins = ({ currentPage, dates }: PropsType) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [distanceData, setDistanceData] = useState<string[]>([]);
+  const {
+    value: isOpenModal,
+    toggleValue: openModal,
+    setNeedValue,
+  } = useBooleanState(false);
 
-  const openModal = () => {
-    setIsOpenModal(!isOpenModal);
-  };
   const closeModal = () => {
-    setIsOpenModal(false);
+    setNeedValue(false);
   };
 
   const { id } = useParams();
   const planId: string = id as string;
+  const { updateClick } = updatePinStore();
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
 
+  const { data: pin } = useQuery({
+    queryKey: ['pin', planId, currentPage],
+    queryFn: async () => await getPin(planId, currentPage),
+    // cacheTime: 600000,
+    staleTime: 60 * 1000,
+  });
+
   const queryClient = useQueryClient();
-
-  const { data: pin } = useQuery(
-    ['pin', planId, currentPage],
-    async () => await getPin(planId, currentPage),
-  );
-
   const deletemutation = useMutation({
     mutationFn: async ([date, planId, deletedPin]: [
       string,
@@ -57,8 +60,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       });
     },
   });
-
-  const { updateClick } = updatePinStore();
 
   const handleUpdate = (idx: number) => {
     const updatePin = pinArr[idx];
@@ -100,8 +101,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       <DndProvider backend={HTML5Backend}>
         <ul className="flex flex-col ">
           {pinArr.map((pin, idx) => {
-            // const betweenDistanceData = distanceData[idx] ?? '';
-            // const pinArrLength = pinArr.length;
             return (
               <Pin
                 key={pin.id}
@@ -109,8 +108,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 id={pin.id!}
                 idx={idx}
-                // betweenDistanceData={betweenDistanceData}
-                // pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
                 movePins={movePins}
@@ -120,7 +117,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         </ul>
       </DndProvider>
       <div className="flex items-center justify-between my-[8px]">
-        {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
         <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
         <button
           type="button"
@@ -132,9 +128,9 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       </div>
       {isOpenModal && (
         <MapModal
+          pinQuery={pin?.[0]}
           openModal={openModal}
           closeModal={closeModal}
-          date={dates[currentPage]}
           currentPage={currentPage}
         />
       )}

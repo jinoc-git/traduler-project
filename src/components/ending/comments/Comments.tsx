@@ -27,7 +27,6 @@ const Comments = () => {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({ mode: 'onChange' });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, isError } = useQuery({
     queryKey: ['comments', planId],
     queryFn: async () => {

@@ -1,28 +1,18 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
-import React from 'react';
-
 import { addBookMark, deleteBookMark } from '@api/bookMarks';
-import IconFavoriteDefault from '@assets/icons/IconFavoriteDefault';
-import IconFavoriteFill from '@assets/icons/IconFavoriteFill';
-import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { type BookMarkType } from 'types/supabase';
 
-interface FavoriteProps {
-  planId: string;
-  bookMarkId: string;
-  isFavorite: boolean;
+interface UseBookMarkMutationReturnType {
+  throttleAddMutaion: _.DebouncedFunc<(newBookMark: BookMarkType) => void>;
+  throttleDeleteMutaion: _.DebouncedFunc<(bookMarkId: string) => void>;
 }
 
-const Favorite: React.FC<FavoriteProps> = ({
-  isFavorite,
-  bookMarkId,
-  planId,
-}) => {
-  const user = userStore((state) => state.user);
+const useBookMarkMutation = (
+  userId: string | undefined,
+): UseBookMarkMutationReturnType => {
   const queryClient = useQueryClient();
-  const userId = user?.id;
 
   const addMutation = useMutation<
     void,
@@ -48,7 +38,6 @@ const Favorite: React.FC<FavoriteProps> = ({
 
       return { previousData };
     },
-
     onError: (err, newBookMark, context) => {
       if (err instanceof Error) {
         console.log(err);
@@ -101,29 +90,7 @@ const Favorite: React.FC<FavoriteProps> = ({
     deletemutaition.mutate(bookMarkId);
   }, 250);
 
-  const favoriteHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.stopPropagation();
-
-    if (isFavorite) {
-      throttleDeleteMutaion(bookMarkId);
-    } else {
-      if (userId !== undefined) {
-        throttleAddMutaion({ plan_id: planId, user_id: userId });
-      }
-    }
-  };
-
-  return (
-    <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
-      {isFavorite ? (
-        <IconFavoriteFill fill="#FFC803" />
-      ) : (
-        <IconFavoriteDefault fill="#E1E2E3" />
-      )}
-    </button>
-  );
+  return { throttleAddMutaion, throttleDeleteMutaion };
 };
 
-export default Favorite;
+export default useBookMarkMutation;

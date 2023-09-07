@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
@@ -9,8 +9,6 @@ import { sideBarStore } from '@store/sideBarStore';
 const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
-
-  const [hovered, setHovered] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,31 +24,15 @@ const Main = () => {
     >
       <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>
       <Profile />
-      <section className="main-layout flex">
+      <section className="flex main-layout ">
         <button
-          className={`mt-[35px] ml-auto w-[160px] h-[45px] border border-white rounded-[7px] flex items-center justify-center 
-          ${
-            hovered
-              ? 'bg-white text-blue_dark hover:bg-white hover:text-blue_dark'
-              : ''
-          }`}
-          onMouseEnter={() => {
-            setHovered(true);
-          }}
-          onMouseLeave={() => {
-            setHovered(false);
-          }}
+          className="group mt-[35px] ml-auto w-[160px] h-[45px] border border-white rounded-[7px] flex items-center justify-center  text-white hover:bg-white hover:text-blue_dark gap-3 fill-white "
           onClick={() => {
             navigate('/addPlan');
           }}
         >
-          <IconAdd w="16" h="16" fill={hovered ? '#116DB3' : 'white'} />
-
-          <span
-            className={`ml-[10px] ${hovered ? 'text-blue_dark' : 'text-white'}`}
-          >
-            여행 생성하기
-          </span>
+          <IconAdd w="16" h="16" fill="#1A68DB" />
+          여행 생성하기
         </button>
       </section>
       <CardSection />

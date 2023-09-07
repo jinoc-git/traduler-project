@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { changePlanState, getPlan, updatePlan } from '@api/plans';
 import PlanLayout from '@components/addPlan/planLayout/PlanLayout';
@@ -27,17 +28,19 @@ const Plan = () => {
   const resetDates = datesStore((state) => state.resetDates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
-  const planId: string = id as string;
-  const { data, isLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId),
-  );
-
+  const { confirm } = useConfirm();
+  const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [planState, setPlanState] = useState<string>();
   const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
   const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
   const isModifying = modifyState === 'modify';
+  const planId: string = id as string;
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
+
   const {
     register,
     watch,
@@ -46,6 +49,11 @@ const Plan = () => {
   } = useForm<InputType>({
     mode: 'onChange',
   });
+
+  const { data, isLoading } = useQuery(
+    ['plan', planId],
+    async () => await getPlan(planId),
+  );
 
   const handleSubmitButton = () => {
     if (modifyState === 'modify') {
@@ -56,11 +64,6 @@ const Plan = () => {
     mutation.mutate([planId, title, watch('totalCost') as number]);
   };
 
-  const { confirm } = useConfirm();
-  const navigate = useNavigate();
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
   const handleChangePlanState = () => {
     if (planState === 'planning') {
       const confTitle = '여행 중으로 변경';
@@ -92,7 +95,8 @@ const Plan = () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
+      toast.error('계획 수정하기 오류 발생');
     },
   });
   const changeMutation = useMutation({
@@ -101,9 +105,11 @@ const Plan = () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
+      toast.error('오류 발생');
     },
   });
+
   useEffect(() => {
     if (data?.[0] !== undefined) {
       setTitle(data?.[0].title);
@@ -135,8 +141,6 @@ const Plan = () => {
   if (isLoading) {
     return <Loading />;
   }
-
-  const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
 
   return (
     <main

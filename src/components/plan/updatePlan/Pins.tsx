@@ -37,10 +37,12 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   const queryClient = useQueryClient();
 
-  const { data: pin } = useQuery(
-    ['pin', planId, currentPage],
-    async () => await getPin(planId, currentPage),
-  );
+  const { data: pin } = useQuery({
+    queryKey: ['pin', planId, currentPage],
+    queryFn: async () => await getPin(planId, currentPage),
+    // cacheTime: 600000,
+    staleTime: 60 * 1000,
+  });
 
   const deletemutation = useMutation({
     mutationFn: async ([date, planId, deletedPin]: [

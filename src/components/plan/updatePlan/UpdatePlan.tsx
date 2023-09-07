@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
@@ -10,12 +10,6 @@ import Loading from '@components/loading/Loading';
 import MapPoly from '@components/plan/common/MapPoly';
 import Pins from '@components/plan/updatePlan/Pins';
 import { useQuery } from '@tanstack/react-query';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
 
 const UpdatePlan = () => {
   const { id } = useParams();
@@ -51,41 +45,6 @@ const UpdatePlan = () => {
       setCurrentPage(0);
     }
   }, [plan]);
-
-  const mapRef = useRef<any>();
-  const [style, setStyle] = useState({
-    width: '95vw',
-    height: '400px',
-    borderRadius: '8px',
-  });
-
-  useEffect(() => {
-    const map = mapRef.current;
-    if (map !== undefined) {
-      const timer = setTimeout(() => {
-        map.relayout();
-      }, 300);
-
-      return () => {
-        clearTimeout(timer);
-      };
-    }
-  }, [style]);
-
-  useEffect(() => {
-    const windowResize = () => {
-      setStyle({
-        width: '95vw',
-        height: '400px',
-        borderRadius: '8px',
-      });
-    };
-    window.addEventListener(`resize`, windowResize);
-
-    return () => {
-      window.removeEventListener(`resize`, windowResize);
-    };
-  }, []);
 
   if (isLoading) {
     return <Loading />;

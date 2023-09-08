@@ -34,6 +34,7 @@ const AddPlan = () => {
   const { dates, resetDates } = datesStore();
   const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -41,6 +42,7 @@ const AddPlan = () => {
     watch,
     formState: { errors, isSubmitting, isValid },
   } = useForm<InputType>({ mode: 'onChange' });
+
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({

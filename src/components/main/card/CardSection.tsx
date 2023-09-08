@@ -45,14 +45,11 @@ const CardSection = () => {
 
   return (
     <section className="main-layout">
-      <div></div>
-      <div>
-        <Card
-          planDataList={planDataList}
-          usersDataList={usersDataList}
-          bookMarkData={bookMarkData}
-        />
-      </div>
+      <Card
+        planDataList={planDataList}
+        usersDataList={usersDataList}
+        bookMarkData={bookMarkData}
+      />
     </section>
   );
 };

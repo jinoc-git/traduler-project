@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,6 +16,7 @@ import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import ErrorPage from './ErrorPage';
@@ -27,6 +27,7 @@ interface InputType {
 
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const user = userStore((state) => state.user);
   const resetDates = datesStore((state) => state.resetDates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
@@ -101,10 +102,14 @@ const Plan = () => {
       toast.error('계획 수정하기 오류 발생');
     },
   });
+  
   const changeMutation = useMutation({
     mutationFn: changePlanState,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+      void queryClient.invalidateQueries({
+        queryKey: ['plan_mates', user?.id],
+      });
     },
     onError: (error) => {
       console.error(error);

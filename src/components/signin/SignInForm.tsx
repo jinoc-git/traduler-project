@@ -106,7 +106,7 @@ const SignInForm = () => {
           </div>
           <div className="flex justify-between">
             <label className="text-sm text-slate-400 cursor-pointer flex items-center">
-              <input type="checkbox" name="keep" className="mr-2" checked />
+              <input type="checkbox" name="keep" className="mr-2" defaultChecked />
               로그인 상태 유지
             </label>
             <span className="text-sm underline cursor-pointer text-orange font-semibold">

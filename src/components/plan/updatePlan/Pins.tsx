@@ -1,19 +1,17 @@
-/* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useParams } from 'react-router-dom';
 
-import { calcPath } from '@api/path';
-import { type PinContentsType, getPin, deletePin } from '@api/pins';
-import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import { type PinContentsType, getPin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
 import useBooleanState from '@hooks/useBooleanState';
+import usePinMutation from '@hooks/usePinMutation';
 import { updatePinStore } from '@store/updatePinStore';
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import update from 'immutability-helper';
 
 import Pin from './Pin';
 
@@ -45,21 +43,10 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     staleTime: 60 * 1000,
   });
 
-  const queryClient = useQueryClient();
-  const deletemutation = useMutation({
-    mutationFn: async ([date, planId, deletedPin]: [
-      string,
-      string,
-      PinContentsType[],
-    ]) => {
-      await deletePin(date, planId, deletedPin);
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ['pin', planId, currentPage],
-      });
-    },
-  });
+  const { deleteMutation, debounceNewOrderMutaion } = usePinMutation(
+    planId,
+    currentPage,
+  );
 
   const handleUpdate = (idx: number) => {
     const updatePin = pinArr[idx];
@@ -68,23 +55,29 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   };
   const handleDelete = (idx: number) => {
     const deletedPin = pinArr.filter((pin, i) => i !== idx);
-    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
+    deleteMutation([dates[currentPage], planId, deletedPin]);
   };
 
   // drang drop
   const movePins = useCallback((beforeIdx: number, afterIdx: number) => {
     if (beforeIdx === afterIdx) return;
-    setPinArr((prev) => {
-      const newPinArr = [...prev];
-      const item = newPinArr.splice(beforeIdx, 1);
-      newPinArr.splice(afterIdx, 0, ...item);
-      return newPinArr;
-    });
+    setPinArr((prev) =>
+      update(prev, {
+        $splice: [
+          [beforeIdx, 1],
+          [afterIdx, 0, prev[beforeIdx]],
+        ],
+      }),
+    );
   }, []);
+
+  const changeOrderAtDidDrop = () => {
+    debounceNewOrderMutaion([dates[currentPage], planId, pinArr]);
+  };
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
-      setPinArr(pin?.[0].contents as []);
+      setPinArr(pin[0].contents as []);
     }
   }, [pin]);
 
@@ -111,6 +104,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
                 movePins={movePins}
+                changeOrderAtDidDrop={changeOrderAtDidDrop}
               />
             );
           })}

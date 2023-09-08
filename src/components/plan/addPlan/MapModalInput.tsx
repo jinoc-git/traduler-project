@@ -35,8 +35,8 @@ const MapModalInput = ({ register, errors, debouncedFunc }: PropsType) => {
           {...register('placeName', {
             required: '장소 이름은 필수 입력값입니다.',
             minLength: {
-              value: 2,
-              message: '장소 이름은 2자 이상이어야 합니다.',
+              value: 1,
+              message: '장소 이름은 1자 이상이어야 합니다.',
             },
             pattern: {
               value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,

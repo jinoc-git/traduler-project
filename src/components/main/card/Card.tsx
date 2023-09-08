@@ -32,6 +32,7 @@ interface CardProps {
 }
 
 export interface PlanCountList {
+  bookMark: number;
   planning: number;
   traveling: number;
   end: number;
@@ -49,6 +50,7 @@ const Card: React.FC<CardProps> = ({
   const { selectedPlan } = usePlanStore();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({
+    bookMark: 0,
     planning: 0,
     traveling: 0,
     end: 0,
@@ -62,9 +64,13 @@ const Card: React.FC<CardProps> = ({
       toast.error('계획 삭제 중 오류가 발생했습니다.');
     },
   });
+  const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
     ?.filter((plan) => {
+      if (selectedPlan === 'bookMark') {
+        return bookMarkPlanIdList.find((id) => id === plan.id);
+      }
       if (selectedPlan === 'end') {
         return (
           (plan.plan_state === selectedPlan && !plan.isDeleted) ||
@@ -73,9 +79,21 @@ const Card: React.FC<CardProps> = ({
       }
       return plan.plan_state === selectedPlan && !plan.isDeleted;
     })
-    ?.sort(
-      (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
-    );
+    ?.sort((a, b) => {
+      if (selectedPlan === 'bookMark') {
+        const bookMarkA = bookMarkData.find(
+          (bookMark) => bookMark.plan_id === a.id,
+        )!;
+        const bookMarkB = bookMarkData.find(
+          (bookMark) => bookMark.plan_id === b.id,
+        )!;
+        return (
+          new Date(bookMarkA.created_at!).getTime() -
+          new Date(bookMarkB.created_at!).getTime()
+        );
+      }
+      return new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime();
+    });
 
   const { confirm } = useConfirm();
 
@@ -101,6 +119,7 @@ const Card: React.FC<CardProps> = ({
   useEffect(() => {
     if (planDataList != null) {
       setPlanCount({
+        bookMark: bookMarkData.length,
         planning: planDataList.filter((plan) => plan.plan_state === 'planning')
           .length,
         traveling: planDataList.filter(
@@ -112,10 +131,10 @@ const Card: React.FC<CardProps> = ({
         ).length,
       });
     }
-  }, [planDataList]);
+  }, [planDataList, bookMarkData]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-[16px]">
       <CardTabMenu planCount={planCount} />
       {filteredData?.length === 0 ? (
         <CardAddNewPlan />
@@ -135,9 +154,9 @@ const Card: React.FC<CardProps> = ({
           );
 
           return (
-            <div key={plan.id} className="mt-[16px]">
+            <div key={plan.id}>
               <div
-                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] sm:mt-[16px] md:w-[800px] md:h-[150px] md:mt-[24px] shadow-card rounded-[7px] cursor-pointer"
+                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] sm:mt-[16px] md:w-[800px] md:h-[150px] md:mt-[15px] shadow-card rounded-[7px] cursor-pointer"
                 onClick={() => {
                   onClickListItem(plan.plan_state, plan.id);
                 }}

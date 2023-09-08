@@ -87,7 +87,7 @@ const SideBar: React.FC = () => {
 
   return isVisibleSideBar ? (
     <aside
-      className={`fixed h-[100vh] w-[270px] border-r border-slate-300 rounded-r-[12px] px-[24px] z-[31] bg-white transition-all duration-300 ease-in-out overflow-hidden  ${
+      className={`hidden md:block fixed h-[100vh] w-[270px] border-r border-slate-300 rounded-r-[12px] px-[24px] z-[31] bg-white transition-all duration-300 ease-in-out overflow-hidden  ${
         isSideBarOpen ? 'w-[270px] ' : 'w-[88px]'
       }`}
     >

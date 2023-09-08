@@ -13,7 +13,7 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
   const { participantsAvatarList, participantsNicknameList } = props;
 
   return (
-    <div className="flex gap-3 mt-[8px]">
+    <div className="flex gap-3 sm:mt-[6px] md:mt-[8px]">
       <div className="flex">
         {participantsAvatarList.map((avatar, i) => {
           let gap = '';
@@ -38,7 +38,7 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
           );
         })}
       </div>
-      <div className='"text-gray_dark_1 text-sm'>
+      <div className='"text-gray_dark_1 md:text-sm sm:text-[8px]'>
         {participantsNicknameList.length <= 3 ? (
           participantsNicknameList.map((name) => `${name}`).join(', ')
         ) : (

@@ -66,13 +66,13 @@ const Plan = () => {
     async () => await getPlan(planId),
   );
 
-  const handleSubmitButton = () => {
+  const handleSubmitOrStateChangeBtn = () => {
     if (modifyState === 'modify') {
+      mutation.mutate([planId, watch('title'), watch('totalCost')]);
       setReadOnly();
     } else {
       setModify();
     }
-    mutation.mutate([planId, watch('title'), watch('totalCost')]);
   };
 
   const handleChangePlanState = () => {
@@ -172,7 +172,7 @@ const Plan = () => {
       <Nav
         isValid={isValid}
         page={'plan'}
-        onClick={handleSubmitButton}
+        onClick={handleSubmitOrStateChangeBtn}
         modifyInputSetFocus={setFocus}
         modifyInputWatch={watch}
       />

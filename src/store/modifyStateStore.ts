@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface ModifyStateStoreType {
-  modifyState: '' | 'modify' | 'readOnly';
+  modifyState: 'modify' | 'readOnly';
   requiredDates: {
     start: boolean;
     end: boolean;

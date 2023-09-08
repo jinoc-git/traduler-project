@@ -29,7 +29,7 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             >
               {total_Cost !== undefined
-                ? formatNumberWithCommas(total_Cost)
+                ? formatNumberWithCommas(total_Cost) + ' 원'
                 : null}
             </div>
           </div>

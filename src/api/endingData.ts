@@ -1,4 +1,4 @@
-import { type Json } from 'types/supabase';
+import { type PlansEndingType } from 'types/supabase';
 
 import { getPath } from './path';
 import { getAllPins, type PinContentsType } from './pins';
@@ -124,15 +124,15 @@ export const calcCostAndInsertPlansEnding = async (planId: string) => {
   }
 };
 
-interface Options {
-  id: string;
-  distance: Json[];
-  dates_cost: number[];
-  pictures: string[];
-}
+// interface Options {
+//   id: string;
+//   distance: Json[];
+//   dates_cost: number[];
+//   pictures: string[];
+// }
 
 // 구한 날짜별 거리 및 날짜별 총 비용 supabase에 데이터 insert
-export const insertPlanEnding = async (options: Options) => {
+export const insertPlanEnding = async (options: PlansEndingType) => {
   const { status, error } = await supabase.from('plans_ending').insert(options);
 
   if (error !== null) {

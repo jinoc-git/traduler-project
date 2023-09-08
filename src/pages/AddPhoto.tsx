@@ -22,6 +22,7 @@ import Loading from '@components/loading/Loading';
 import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type PlansEndingType } from 'types/supabase';
 
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
@@ -67,12 +68,16 @@ const AddPhoto = () => {
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
-      await insertPlanEnding({
+      const planEnding: PlansEndingType = {
         id: planId,
         distance: distanceDataList,
         dates_cost: datesCostList,
         pictures,
-      });
+        title: plan?.[0].title,
+        total_cost: plan?.[0].total_cost,
+        dates: plan?.[0].dates,
+      };
+      await insertPlanEnding(planEnding);
       changeMutation.mutate([planId, 'end']);
       navigate(`/ending/${planId}`);
     }

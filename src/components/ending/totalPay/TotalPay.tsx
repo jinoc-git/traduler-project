@@ -37,7 +37,6 @@ const TotalPay = () => {
       if (planId !== undefined && countPeople !== undefined) {
         const remainingBudget = await calcDutchPay(planId, countPeople);
         setEndingInfo(remainingBudget);
-        console.log('remainingBudget: ', remainingBudget);
       }
     };
     void getRemainingBudget();

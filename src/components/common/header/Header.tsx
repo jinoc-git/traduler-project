@@ -36,6 +36,8 @@ const Header = () => {
       setVisibilityIcon(true);
       if (pathname === '/') {
         setVisibilityIcon(false);
+      } else if (pathname === '/error') {
+        setVisibilityIcon(false);
       } else {
         setMenuIsOpen(!isNotFoundPage);
         setVisibilityIcon(!isNotFoundPage);

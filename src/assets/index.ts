@@ -9,3 +9,4 @@ export { default as NotFoundImg } from './img-not-found.png';
 export { default as LoadingGif } from './loader-all-color.gif';
 export { default as profileDefaultGray } from './profile-default-gray.svg';
 export { default as profileDefaultBlack } from './profile-default-black.svg';
+export { default as errorImg } from './ImgError.png';

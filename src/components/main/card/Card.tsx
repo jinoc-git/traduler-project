@@ -65,6 +65,12 @@ const Card: React.FC<CardProps> = ({
 
   const filteredData = planDataList
     ?.filter((plan) => {
+      if (selectedPlan === 'end') {
+        return (
+          (plan.plan_state === selectedPlan && !plan.isDeleted) ||
+          (plan.plan_state === 'recording' && !plan.isDeleted)
+        );
+      }
       return plan.plan_state === selectedPlan && !plan.isDeleted;
     })
     ?.sort(

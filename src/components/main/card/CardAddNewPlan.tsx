@@ -42,30 +42,16 @@ const CardAddNewPlan = () => {
       {selectedPlan !== 'bookMark' && (
         <div>
           <button
-            className=" group flex-center gap-[10px] mt-[35px] w-[160px] h-[45px] border border-black rounded-[7px] bg-white hover:bg-blue_dark hover:text-white hover:border-none"
+            className="group flex-center md:gap-[10px] md:mt-[35px] md:w-[160px] md:h-[45px] border border-black rounded-[7px] bg-white hover:bg-blue_dark hover:text-white hover:border-none"
             onClick={() => {
               navigate('/addPlan');
             }}
           >
-            <IconAdd w="16" h="16" />
+            <IconAdd w="w-[16px]" h="h-[16px]" />
             여행 생성하기
           </button>
         </div>
       )}
-<<<<<<< HEAD
-=======
-      <div>
-        <button
-          className="group flex-center md:gap-[10px] md:mt-[35px] md:w-[160px] md:h-[45px] border border-black rounded-[7px] bg-white hover:bg-blue_dark hover:text-white hover:border-none"
-          onClick={() => {
-            navigate('/addPlan');
-          }}
-        >
-          <IconAdd w="w-[16px]" h="h-[16px]" />
-          여행 생성하기
-        </button>
-      </div>
->>>>>>> 5d6a56df598151f8d18cd49f5e238343a693dbcd
     </div>
   );
 };

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getAllPinsDate, newDatePin } from '@api/pins';
-import { updateDatePlan } from '@api/plans';
+import { getPlan, updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -21,7 +21,8 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const { setDates } = datesStore();
-  let dataDates: string[] = [];
+  let dataPinDates: string[] = [];
+  let dataPlanDates: string[] = [];
   const { id } = useParams();
   const planId: string = id as string;
   if (state !== 'addPlan') {
@@ -30,7 +31,12 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
         ['pinDate', planId],
         async () => await getAllPinsDate(planId),
       );
-      dataDates = data as string[];
+      dataPinDates = data as string[];
+      const { data: plan } = useQuery(
+        ['plan', planId],
+        async () => await getPlan(planId),
+      );
+      dataPlanDates = plan?.[0].dates as string[];
     }
   }
 
@@ -69,7 +75,7 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   useEffect(() => {
     if (startDate != null && endDate != null) {
       const dates = allPlanDates(startDate, endDate);
-      const newDates = dates?.filter((date) => !dataDates?.includes(date));
+      const newDates = dates?.filter((date) => !dataPinDates?.includes(date));
       if (newDates.length !== 0 && state !== 'addPlan') {
         newDates.forEach((date) => {
           const newPin: PinInsertType = {
@@ -87,11 +93,11 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   }, [startDate, endDate]);
 
   useEffect(() => {
-    if (state !== 'addPlan' && dataDates != null) {
-      setStartDate(new Date(dataDates[0]));
-      setEndDate(new Date(dataDates[dataDates.length - 1]));
+    if (state !== 'addPlan' && dataPlanDates != null) {
+      setStartDate(new Date(dataPlanDates[0]));
+      setEndDate(new Date(dataPlanDates[dataPlanDates.length - 1]));
     }
-  }, [dataDates]);
+  }, [dataPlanDates]);
 
   return (
     <>

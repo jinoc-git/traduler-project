@@ -22,6 +22,7 @@ const Calendar: React.FC<CalendarProps> = ({
   EndDateChangeHandler,
 }) => {
   const modifyState = modifyStateStore((state) => state.modifyState);
+  // const today = new Date();
 
   return (
     <div className="relative z-10 flex items-center py-[10px] pr-[62px] w-[638px]">
@@ -37,6 +38,7 @@ const Calendar: React.FC<CalendarProps> = ({
         onChange={(date) => {
           StartDateChangeHandler(date);
         }}
+        // minDate={today}
         maxDate={endDate}
         selectsStart
         startDate={startDate}

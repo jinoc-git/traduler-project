@@ -100,6 +100,7 @@ export const getAllPinsDate = async (planId: string) => {
     .from('pins')
     .select('date')
     .eq('plan_id', planId);
+
   if (error !== null) {
     throw new Error('핀 날짜 가져오기 에러발생');
   }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
-import { changePlanState, getPlan, getPlanEnding } from '@api/plans';
+import { changePlanState, getPlan } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import AddPicture from '@components/addPhoto/addPicture/AddPicture';
@@ -22,6 +22,7 @@ import Loading from '@components/loading/Loading';
 import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type PlansEndingType } from 'types/supabase';
 
 import ErrorPage from './ErrorPage';
 
@@ -47,12 +48,6 @@ const AddPhoto = () => {
     async () => await getCoordinate(planId),
   );
 
-  const {
-    data: planEnding,
-    isLoading: isPlanEndingLoading,
-    isError: isPlanEndingError,
-  } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
-
   const queryClient = useQueryClient();
   const changeMutation = useMutation({
     mutationFn: changePlanState,
@@ -71,12 +66,16 @@ const AddPhoto = () => {
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
-      await insertPlanEnding({
+      const planEnding: PlansEndingType = {
         id: planId,
         distance: distanceDataList,
         dates_cost: datesCostList,
         pictures,
-      });
+        title: plan?.[0].title as string,
+        total_cost: plan?.[0].total_cost as number,
+        dates: plan?.[0].dates as string[],
+      };
+      await insertPlanEnding(planEnding);
       changeMutation.mutate([planId, 'end']);
       navigate(`/ending/${planId}`);
     }
@@ -92,12 +91,6 @@ const AddPhoto = () => {
     };
     confirm.default(confTitle, confDesc, confFunc);
   };
-
-  useLayoutEffect(() => {
-    if (planEnding !== undefined && planEnding.length !== 0) {
-      navigate('/main');
-    }
-  }, [planEnding]);
 
   useEffect(() => {
     if (
@@ -115,11 +108,11 @@ const AddPhoto = () => {
     }
   }, [data, plan]);
 
-  if (isPlanLoading || isLoading || isPlanEndingLoading) {
+  if (isPlanLoading || isLoading) {
     return <Loading />;
   }
 
-  if (isPlanError || isPlanEndingError || isError) {
+  if (isPlanError || isError) {
     return <ErrorPage />;
   }
 
@@ -148,7 +141,7 @@ const AddPhoto = () => {
             <IconLocationDefault w="20" h="20" />
             <label>여행지역</label>
           </div>
-          <EndingMap />
+          <EndingMap dates={dates as string[]} />
           <div className="flex items-center">
             <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">

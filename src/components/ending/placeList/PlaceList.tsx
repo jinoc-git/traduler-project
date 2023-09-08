@@ -12,16 +12,17 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 import { type Json } from 'types/supabase';
 
-const PlaceList = () => {
+const PlaceList = ({ distance }: { distance: Json[] }) => {
   const navigate = useNavigate();
   const { id: planId } = useParams();
+
   if (planId === undefined) {
     navigate('/main');
     return;
   }
 
   const { data, isLoading } = useQuery(
-    ['ending', planId],
+    ['plansEndingDistance', planId],
     async () => await getPlaceWithDate(planId),
   );
 
@@ -30,6 +31,11 @@ const PlaceList = () => {
   }
   if (data === undefined) {
     return null;
+  }
+
+  if (planId === undefined) {
+    navigate('/main');
+    return;
   }
 
   return (
@@ -59,7 +65,6 @@ const PlaceList = () => {
               if (distanceLength > 0) {
                 distance = distanceList[j - 1];
               }
-
               return (
                 <PinLayout
                   key={uuid()}

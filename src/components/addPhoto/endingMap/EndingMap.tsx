@@ -11,23 +11,38 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getAllPins } from '@api/pins';
 import Loading from '@components/loading/Loading';
+import useBooleanState from '@hooks/useBooleanState';
 import { useQuery } from '@tanstack/react-query';
 
-const EndingMap = () => {
+const EndingMap = ({ dates }: { dates: string[] }) => {
   const { id: planId } = useParams();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['pins', planId],
-    queryFn: async () => await getAllPins(planId as string),
+    queryFn: async () => {
+      if (planId !== undefined && dates !== undefined) {
+        const pinsData = await getAllPins(planId, dates);
+        return pinsData;
+      }
+      return null;
+    },
   });
-  const [pins, SetPins] = useState<PinContentsType[]>();
+  const [pins, setPins] = useState<PinContentsType[]>([]);
+  const { value: isInfoOpen, toggleValue: toggleInfo } = useBooleanState(false);
 
   useEffect(() => {
-    if (data !== undefined) {
+    if (data !== undefined && data !== null) {
       const res = data.map((item) => item.contents);
       const flattenedRes = res.flatMap((innerRes) => innerRes);
-      SetPins(flattenedRes as PinContentsType[]);
+      setPins(flattenedRes as PinContentsType[]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (planId !== undefined && dates !== undefined) {
+      setPins([]);
+      void refetch();
+    }
+  }, [planId, dates]);
 
   if (isLoading) {
     return <Loading />;
@@ -52,7 +67,31 @@ const EndingMap = () => {
                     lat: pin?.lat as number,
                     lng: pin?.lng as number,
                   }}
-                ></MapMarker>
+                  clickable={true} // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
+                  onClick={toggleInfo}
+                >
+                  {isInfoOpen && (
+                    <div style={{ padding: '5px', color: '#000' }}>
+                      {pin?.placeName} <br />
+                      <a
+                        href="https://map.kakao.com/link/map/Hello World!,33.450701,126.570667"
+                        style={{ color: 'blue' }}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        큰지도보기
+                      </a>{' '}
+                      <a
+                        href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667"
+                        style={{ color: 'blue' }}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        길찾기
+                      </a>
+                    </div>
+                  )}
+                </MapMarker>
               </div>
             );
           })}

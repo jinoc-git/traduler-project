@@ -9,9 +9,9 @@ const IconVector = ({ w, h, fill }: IconType) => {
   const height = `h-[${h as string}px]`;
   return (
     <svg
-      width={w || '20'}
-      height={h || '20'}
-      viewBox={`0 0 ${w || '24'} ${h || '24'}`}
+      width="20"
+      height="20"
+      viewBox="0 0 24 h  24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}

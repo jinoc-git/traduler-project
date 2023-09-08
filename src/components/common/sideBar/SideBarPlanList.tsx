@@ -2,13 +2,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  ic_chevron_down_1x,
-  ic_chevron_up_1x,
-  ic_favorite_list_1x,
-  ic_planned_time_1x,
-  ic_previous_time_1x,
-} from '@assets/icons/1x';
+import IconChevronDown from '@assets/icons/IconChevronDown';
+import IconChevronUp from '@assets/icons/IconChevronUp';
+import IconFavoriteList from '@assets/icons/IconFavoriteList';
+import IconPlannedTime from '@assets/icons/IconPlannedTime';
+import IconPreviousTime from '@assets/icons/IconPreviousTime';
 import { sideBarStore } from '@store/sideBarStore';
 import { type PlanType } from 'types/supabase';
 
@@ -26,9 +24,9 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const navigate = useNavigate();
 
   const iconList = {
-    bookMark: ic_favorite_list_1x,
-    start: ic_planned_time_1x,
-    end: ic_previous_time_1x,
+    bookMark: <IconFavoriteList />,
+    start: <IconPlannedTime />,
+    end: <IconPreviousTime />,
   };
 
   const listName = {
@@ -79,17 +77,15 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
           ${focusColor[filter]} ${hoverColor[filter]} `}
         >
-          <img src={iconList[filter]} />
+          {iconList[filter]}
         </button>
         <div className="flex items-center">
           <span className="w-[110px] font-bold text-sm text-gray_dark_1">
             {listName[filter]}
           </span>
-          <img
-            src={isOpen ? ic_chevron_up_1x : ic_chevron_down_1x}
-            alt="다운버튼"
-            className="w-[14px] mr-5"
-          />
+          <div className="w-[14px] mr-5">
+            {isOpen ? <IconChevronUp /> : <IconChevronDown />}
+          </div>
         </div>
       </div>
       <ul

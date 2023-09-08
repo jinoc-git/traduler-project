@@ -24,7 +24,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const navigate = useNavigate();
 
   const iconList = {
-    bookMark: <IconFavoriteList />,
+    bookMark: <IconFavoriteList w="w-[24px]" h="h-[24px]" fill="#6E6F76" />,
     start: <IconPlannedTime />,
     end: <IconPreviousTime />,
   };

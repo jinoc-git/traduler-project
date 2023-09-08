@@ -40,9 +40,9 @@ const BookMark: React.FC<BookMarkProps> = ({
   return (
     <button onClick={favoriteHandler} className="w-[30px] h-[30px]">
       {isFavorite ? (
-        <IconFavoriteFill fill="#FFC803" />
+        <IconFavoriteFill w="w-[24px]" h="h-[24px]" fill="#FFC803" />
       ) : (
-        <IconFavoriteDefault fill="#E1E2E3" />
+        <IconFavoriteDefault w="w-[24px]" h="h-[24px]" fill="#E1E2E3" />
       )}
     </button>
   );

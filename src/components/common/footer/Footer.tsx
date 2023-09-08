@@ -52,7 +52,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="w-[24px] h-[18px]"
             >
-              <IconGitHub />
+              <IconGitHub w="w-[40px]" h="h-[40px]" fill="white" />
             </a>
           </div>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type IconType from 'types/icon';
 
-const IconHidden = ({ w, h }: IconType) => {
+const IconHidden = ({ w, h, fill }: IconType) => {
   return (
     <svg
       width="24"

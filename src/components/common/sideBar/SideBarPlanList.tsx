@@ -25,8 +25,8 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
 
   const iconList = {
     bookMark: <IconFavoriteList w="w-[24px]" h="h-[24px]" fill="#6E6F76" />,
-    start: <IconPlannedTime />,
-    end: <IconPreviousTime />,
+    start: <IconPlannedTime w="w-[24px]" h="h-[24px]" />,
+    end: <IconPreviousTime w="w-[24px]" h="h-[25px]" />,
   };
 
   const listName = {

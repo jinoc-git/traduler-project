@@ -42,9 +42,11 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   const planStartDate = new Date(dataPlanDates?.[0]);
   const planEndDate = new Date(dataPlanDates?.[dataPlanDates.length - 1]);
   const [startDate, setStartDate] = useState<Date | null>(
-    planStartDate ?? null,
+    state === 'addPlan' ? null : planStartDate,
   );
-  const [endDate, setEndDate] = useState<Date | null>(planEndDate ?? null);
+  const [endDate, setEndDate] = useState<Date | null>(
+    state === 'addPlan' ? null : planEndDate,
+  );
 
   const StartDateChangeHandler = (date: Date | null) => {
     setRequiredDates('start');
@@ -81,7 +83,12 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   });
 
   useEffect(() => {
-    if (startDate != null && endDate != null) {
+    if (
+      startDate != null &&
+      endDate != null &&
+      dataPinDates !== null &&
+      dataPinDates !== undefined
+    ) {
       const dates = allPlanDates(startDate, endDate);
       const newDates = dates?.filter((date) => !dataPinDates?.includes(date));
       if (newDates.length !== 0 && state !== 'addPlan') {

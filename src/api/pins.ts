@@ -83,8 +83,6 @@ export const newDatePin = async (newPin: PinInsertType) => {
 };
 
 export const getAllPins = async (planId: string, dates: string[]) => {
-  console.log('api', planId);
-  console.log('api', dates);
   const { data, error } = await supabase
     .from('pins')
     .select('contents')

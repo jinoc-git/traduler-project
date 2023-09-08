@@ -98,9 +98,9 @@ const SignInForm = () => {
               className="absolute top-1/2 -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
             >
               {showPassword ? (
-                <IconVisible w="14" h="14" />
+                <IconVisible w="w-[14px]" h="h-[14px]" />
               ) : (
-                <IconHidden w="14" h="14" />
+                <IconHidden w="w-[14px]" h="h-[14px]" />
               )}
             </button>
           </div>

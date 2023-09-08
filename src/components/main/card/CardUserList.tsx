@@ -33,7 +33,7 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
               className={`rounded-full ${gap} border border-[#979797] `}
               key={uuid()}
             >
-              <IconUserDefault w={'20'} h={'20'} />
+              <IconUserDefault w="w-[20px]" h="h-[20px]" />
             </div>
           );
         })}

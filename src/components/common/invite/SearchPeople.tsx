@@ -123,7 +123,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           <label className="text-sm">동행 찾기</label>
           <div className="relative flex items-center ">
             <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
-              <IconVector fill="#ACACAC" />
+              <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
             </span>
             <input
               placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."

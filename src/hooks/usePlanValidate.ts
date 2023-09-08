@@ -23,7 +23,7 @@ const usePlanValidate = (args: UsePlanValidateArgs) => {
     if (addInputSetFocus !== undefined && addInputWatch !== undefined) {
       if (
         addInputWatch('title').length > 10 ||
-        addInputWatch('title').length < 3
+        addInputWatch('title').length < 2
       ) {
         toast.error('제목은 2~10글자로 입력해 주세요.');
         addInputSetFocus('title');
@@ -42,7 +42,7 @@ const usePlanValidate = (args: UsePlanValidateArgs) => {
     if (modifyInputSetFocus !== undefined && modifyInputWatch !== undefined) {
       if (
         modifyInputWatch('title').length > 10 ||
-        modifyInputWatch('title').length < 3
+        modifyInputWatch('title').length < 2
       ) {
         toast.error('제목은 2~10글자로 입력해 주세요.');
         modifyInputSetFocus('title');

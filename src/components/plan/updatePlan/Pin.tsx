@@ -6,7 +6,6 @@ import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
 import PinLayout from '@components/common/layout/PinLayout';
 import { type Identifier } from 'dnd-core';
-// import _ from 'lodash';
 
 interface PinProps {
   id: string;
@@ -15,6 +14,7 @@ interface PinProps {
   handleUpdate: (idx: number) => void;
   handleDelete: (idx: number) => void;
   movePins: (beforeIdx: number, afterIdx: number) => void;
+  changeOrderAtDidDrop: () => void;
 }
 
 interface ItemType {
@@ -23,7 +23,15 @@ interface ItemType {
 }
 
 const Pin = (props: PinProps) => {
-  const { id, pin, idx, handleUpdate, handleDelete, movePins } = props;
+  const {
+    id,
+    pin,
+    idx,
+    handleUpdate,
+    handleDelete,
+    movePins,
+    changeOrderAtDidDrop,
+  } = props;
 
   const dragBoxRef = useRef<HTMLLIElement>(null);
 
@@ -54,7 +62,7 @@ const Pin = (props: PinProps) => {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
       movePins(dragIndex, hoverIndex);
-      // throttleHoverItem(item, hoverIndex, movePins);
+
       item.idx = idx; // 미리 바꿔줌
     },
   });
@@ -69,13 +77,11 @@ const Pin = (props: PinProps) => {
       isDragging: moniter.isDragging(),
     }),
     end: (item, moniter) => {
-      const { idx: afterIndex } = item;
       const didDrop = moniter.didDrop();
 
-      if (!didDrop) {
-        console.log('drop 실행', idx, afterIndex);
+      if (didDrop) {
+        changeOrderAtDidDrop();
       }
-      // movePins(idx, afterIndex);
     },
   });
 

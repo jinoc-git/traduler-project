@@ -97,3 +97,20 @@ export const getAllPins = async (planId: string) => {
   }
   return data;
 };
+
+export const changeOrderPins = async (
+  date: string,
+  planId: string,
+  newOrder: PinContentsType[],
+) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: newOrder as Json[] })
+    .match({ plan_id: planId, date });
+
+  if (error != null) {
+    throw new Error('핀 삭제 오류');
+  }
+
+  return data;
+};

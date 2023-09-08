@@ -56,7 +56,7 @@ export const getPlan = async (planId: string) => {
       .select()
       .eq('id', planId);
     if (error != null) {
-      console.log('에러 발생', error);
+      throw new Error('계획 불러오던 중 오류가 발생했습니다.');
     }
     return data;
   }
@@ -162,7 +162,7 @@ export const getMatesByUserIds = async (matesUserId: string[]) => {
     .from('users')
     .select()
     .in('id', matesUserId);
-  // console.log('MatesData=>', data);
+
   if (error != null) {
     console.log('에러발생', matesUserId);
     throw new Error('getMatesByUserIds 에러발생');

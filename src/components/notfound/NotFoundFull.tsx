@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { NotFoundImg } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
 
 const NotFoundFull = () => {
   const navigate = useNavigate();
+  const setIsNotFoundPage = sideBarStore((set) => set.setIsNotFoundPage);
 
   const goToMain = () => {
     navigate('/welcome');
@@ -14,26 +14,12 @@ const NotFoundFull = () => {
   const goToBack = () => {
     navigate(-1);
   };
-
-  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
-
-  const backgroundStyle: React.CSSProperties = {
-    backgroundImage: `url('${NotFoundImg}')`,
-    backgroundSize: '80%',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-  };
-
   useEffect(() => {
-    setVisibilityIcon(false);
+    setIsNotFoundPage(true);
   }, []);
 
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen"
-      style={backgroundStyle}
-    >
+    <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/108923582/6dfbe6cc-cbf0-4f65-aff8-053421d98a86)] bg-no-repeat bg-center min-h-screen bg-80% flex flex-col items-center justify-center ">
       <div className="mt-[240px]">
         <h1 className="mb-4 font-semibold text-center text-gray_dark_2 text-xlg">
           저런.. 길을 잃으셨군요!

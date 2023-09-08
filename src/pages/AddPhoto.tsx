@@ -23,6 +23,8 @@ import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import ErrorPage from './ErrorPage';
+
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -34,20 +36,22 @@ const AddPhoto = () => {
   const [distancePin, setDistancePin] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
 
-  const { data: plan, isLoading: isPlanLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId),
-  );
+  const {
+    data: plan,
+    isLoading: isPlanLoading,
+    isError: isPlanError,
+  } = useQuery(['plan', planId], async () => await getPlan(planId));
 
   const { data, isLoading, isError } = useQuery(
     ['planCoordinate', planId],
     async () => await getCoordinate(planId),
   );
 
-  const { data: planEnding, isLoading: isPlanEndingLoading } = useQuery(
-    ['planEnding', planId],
-    async () => await getPlanEnding(planId),
-  );
+  const {
+    data: planEnding,
+    isLoading: isPlanEndingLoading,
+    isError: isPlanEndingError,
+  } = useQuery(['planEnding', planId], async () => await getPlanEnding(planId));
 
   const queryClient = useQueryClient();
   const changeMutation = useMutation({
@@ -115,8 +119,8 @@ const AddPhoto = () => {
     return <Loading />;
   }
 
-  if (isError) {
-    return <div>Error occurred while fetching data.</div>;
+  if (isPlanError || isPlanEndingError || isError) {
+    return <ErrorPage />;
   }
 
   return (

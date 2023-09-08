@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import IconEditDefault from '@assets/icons/IconEditDefault';
@@ -18,13 +19,17 @@ const Nav = ({ onClick, isValid, page }: PropsType) => {
     modifyStateStore();
 
   const { confirm } = useConfirm();
+  const { pathname } = useLocation();
 
   const handleButtonClick = () => {
     if (!isValid) {
       toast.error('제목과 예산을 입력해 주세요');
       return;
     }
-    if (!requiredDates.start && !requiredDates.end) {
+    if (
+      (!requiredDates.start || !requiredDates.end) &&
+      pathname === '/addPlan'
+    ) {
       toast.error('시작 날짜와 종료 날짜를 입력해 주세요.');
       return;
     }

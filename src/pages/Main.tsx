@@ -17,16 +17,16 @@ const Main = () => {
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'md:w-[calc(100vw-270px)] md:ml-[270px] sm:ml-[20px]'
+            : 'md:w-[calc(100vw-88px)] md:ml-[88px] sm:ml-[20px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
       <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>
       <Profile />
       <section className="flex main-layout ">
         <button
-          className="group mt-[35px] ml-auto w-[160px] h-[45px] border border-white rounded-[7px] flex items-center justify-center  text-white hover:bg-white hover:text-blue_dark gap-3 fill-white "
+          className="group flex items-center justify-center sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:w-[320px] sm:h-[46px] md:mt-[35px] md:ml-auto md:w-[160px] md:h-[45px] md:border md:border-white rounded-[7px] sm:text-blue_dark sm:bg-white sm:font-bold sm:text-sm md:bg-blue_dark md:text-white hover:bg-white hover:text-blue_dark gap-3 md:fill-white"
           onClick={() => {
             navigate('/addPlan');
           }}

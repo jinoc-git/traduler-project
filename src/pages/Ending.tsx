@@ -12,19 +12,24 @@ import Carousel from '@components/ending/carousel/Carousel';
 import Comments from '@components/ending/comments/Comments';
 import PlaceList from '@components/ending/placeList/PlaceList';
 import TotalPay from '@components/ending/totalPay/TotalPay';
+import Loading from '@components/loading/Loading';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 
+import ErrorPage from './ErrorPage';
+
 const Ending = () => {
+  const [dates, setDates] = useState<string[]>();
+  const [pay, setPay] = useState<number>();
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const { id: planId } = useParams();
-  const { data: plan, isLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId as string),
-  );
-  const [dates, setDates] = useState<string[]>();
-  const [pay, setPay] = useState<number>();
+
+  const {
+    data: plan,
+    isLoading,
+    isError: planError,
+  } = useQuery(['plan', planId], async () => await getPlan(planId as string));
 
   useEffect(() => {
     if (plan !== undefined && plan !== null) {
@@ -34,7 +39,10 @@ const Ending = () => {
   }, [plan]);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <Loading />;
+  }
+  if (planError) {
+    return <ErrorPage />;
   }
 
   return (

@@ -19,6 +19,8 @@ import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import ErrorPage from './ErrorPage';
+
 interface InputType {
   totalCost?: number;
 }
@@ -50,7 +52,7 @@ const Plan = () => {
     mode: 'onChange',
   });
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ['plan', planId],
     async () => await getPlan(planId),
   );
@@ -140,6 +142,9 @@ const Plan = () => {
 
   if (isLoading) {
     return <Loading />;
+  }
+  if (isError) {
+    return <ErrorPage />;
   }
 
   return (

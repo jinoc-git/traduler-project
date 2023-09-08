@@ -61,7 +61,7 @@ const TotalPay = () => {
   return (
     <section className="w-[720px]">
       <div className="flex items-center my-[30px]">
-        <IconPin w="20" h="25" fill="#4E4F54" />
+        <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
         <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
           최종 정산 내역
         </div>

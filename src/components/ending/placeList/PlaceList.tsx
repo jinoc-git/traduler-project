@@ -35,7 +35,7 @@ const PlaceList = () => {
   return (
     <section className="w-[720px]">
       <div className="flex items-center">
-        <IconPin w="20" h="25" fill="#4E4F54" />
+        <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
         <div className="w-full ml-[8px] mx-auto font-bold text-lg text-gray_dark_1 py-[13px]">
           방문한 장소
         </div>

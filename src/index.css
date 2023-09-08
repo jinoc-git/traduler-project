@@ -48,6 +48,12 @@ body {
   width: 800px;
   margin: 0 auto;
 }
+@media all and (max-width: 1110px) {
+  .main-layout {
+    width: 320px;
+    margin: 0 auto;
+  }
+}
 
 .flex-center {
   display: flex;
@@ -89,4 +95,3 @@ h3 {
   font-size: 12px !important;
   text-align: center !important;
 }
-

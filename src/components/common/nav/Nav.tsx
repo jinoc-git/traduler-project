@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import IconEditDefault from '@assets/icons/IconEditDefault';
@@ -19,13 +20,17 @@ const Nav = ({ onClick, isValid, page }: PropsType) => {
     modifyStateStore();
 
   const { confirm } = useConfirm();
+  const { pathname } = useLocation();
 
   const handleButtonClick = () => {
     if (!isValid) {
       toast.error('제목과 예산을 입력해 주세요');
       return;
     }
-    if (!requiredDates.start && !requiredDates.end) {
+    if (
+      (!requiredDates.start || !requiredDates.end) &&
+      pathname === '/addPlan'
+    ) {
       toast.error('시작 날짜와 종료 날짜를 입력해 주세요.');
       return;
     }
@@ -59,7 +64,7 @@ const Nav = ({ onClick, isValid, page }: PropsType) => {
           type="submit"
           onClick={handleButtonClick}
         >
-          <IconEditDefault w="16" h="16" fill="#162F70" />
+          <IconEditDefault w="w-[16px]" h="h-[16px]" fill="#162F70" />
           {modifyState === 'modify' ? `저장하기` : `수정하기`}
         </button>
       </div>

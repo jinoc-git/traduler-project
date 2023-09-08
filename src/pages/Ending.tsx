@@ -53,17 +53,12 @@ const Ending = () => {
 
   useEffect(() => {
     if (planEnding !== undefined && planEnding !== null) {
-      console.log('불러온 날짜', planEnding[0].dates);
       setDates(planEnding[0].dates);
       setPay(planEnding[0].total_cost as number);
       setTitle(planEnding[0].title);
       setDistance(planEnding[0].distance as Json[]);
     }
   }, [planEnding]);
-
-  useEffect(() => {
-    console.log('state dates', dates);
-  }, [dates]);
 
   if (isLoading && planEnding !== undefined) {
     return <Loading />;

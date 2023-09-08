@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unmodified-loop-condition */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getAllPinsDate } from '@api/pins';
+import { getAllPinsDate, newDatePin } from '@api/pins';
 import { getPlan, updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type PinInsertType } from 'types/supabase';
 
 export interface PlanFormData {
   date: string | null;
@@ -17,8 +19,6 @@ interface PropsType {
   state?: string;
 }
 const PostPlan: React.FC<PropsType> = ({ state }) => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const { setDates } = datesStore();
   let dataPinDates: string[] = [];
   let dataPlanDates: string[] = [];
@@ -39,6 +39,12 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       dataPlanDates = plan?.[0].dates as string[];
     }
   }
+  const planStartDate = new Date(dataPlanDates?.[0]);
+  const planEndDate = new Date(dataPlanDates?.[dataPlanDates.length - 1]);
+  const [startDate, setStartDate] = useState<Date | null>(
+    planStartDate ?? null,
+  );
+  const [endDate, setEndDate] = useState<Date | null>(planEndDate ?? null);
 
   const StartDateChangeHandler = (date: Date | null) => {
     setRequiredDates('start');
@@ -79,29 +85,20 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       const dates = allPlanDates(startDate, endDate);
       const newDates = dates?.filter((date) => !dataPinDates?.includes(date));
       if (newDates.length !== 0 && state !== 'addPlan') {
-        console.log('plans dates', dates);
-        console.log('new dates', newDates);
-        // newDates.forEach(async (date) => {
-        //   const newPin: PinInsertType = {
-        //     plan_id: planId,
-        //     contents: [],
-        //     date,
-        //   };
-        //   await newDatePin(newPin);
-        // });
+        newDates.forEach(async (date) => {
+          const newPin: PinInsertType = {
+            plan_id: planId,
+            contents: [],
+            date,
+          };
+          await newDatePin(newPin);
+        });
       }
       if (state !== 'addPlan') {
         mutation.mutate([planId, dates]);
       }
     }
   }, [startDate, endDate]);
-
-  useEffect(() => {
-    if (state !== 'addPlan' && dataPlanDates != null) {
-      setStartDate(new Date(dataPlanDates[0]));
-      setEndDate(new Date(dataPlanDates[dataPlanDates.length - 1]));
-    }
-  }, [dataPlanDates]);
 
   return (
     <>

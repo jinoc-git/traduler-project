@@ -156,7 +156,7 @@ const Card: React.FC<CardProps> = ({
           return (
             <div key={plan.id}>
               <div
-                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] sm:mt-[16px] md:w-[800px] md:h-[150px] md:mt-[15px] shadow-card rounded-[7px] cursor-pointer"
+                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] md:w-[800px] md:h-[150px] shadow-card rounded-[7px] cursor-pointer"
                 onClick={() => {
                   onClickListItem(plan.plan_state, plan.id);
                 }}

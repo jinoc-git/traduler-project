@@ -16,18 +16,21 @@ const Profile = () => {
 
   return (
     <section>
-      <div className="flex items-center gap-[40px] mt=[150px] main-layout">
+      <div className="flex items-center sm:gap-[16px] md:gap-[40px] mt=[150px] main-layout">
         <div
           onClick={onClickOpenModalHandler}
-          className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer hover:opacity-60"
+          className="sm:w-[66px] sm:h-[66px] md:w-[85px] md:h-[85px] rounded-full object-cover cursor-pointer hover:opacity-60"
         >
           {user !== null && typeof profileImg === 'string' ? (
             <img
               src={profileImg}
-              className="w-[85px] h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer "
+              className="sm:w-[66px] sm:h-[66px] md:w-[85px] md:h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer "
             />
           ) : (
-            <IconUserDefault w="w-[85px]" h="h-[85px]" />
+            <IconUserDefault
+              w="sm:w-[66px] md:w-[85px]"
+              h="sm:h-[66px] md:h-[85px]"
+            />
           )}
         </div>
         <p className="text-white text-base sm:text-[16px] md:text-xlg">

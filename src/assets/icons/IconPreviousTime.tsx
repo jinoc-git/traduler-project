@@ -3,7 +3,7 @@
 
 import type IconType from 'types/icon';
 
-const IconFavoriteList = ({ w, h, fill }: IconType) => {
+const IconPreviousTime = ({ w, h, fill }: IconType) => {
   const width = `w-[${w as string}px]`;
   const height = `h-[${h as string}px]`;
   return (
@@ -23,4 +23,4 @@ const IconFavoriteList = ({ w, h, fill }: IconType) => {
   );
 };
 
-export default IconFavoriteList;
+export default IconPreviousTime;

@@ -90,7 +90,7 @@ const Header = () => {
               />
             ) : (
               <div className="rounded-full border border-navy/50 ">
-                <IconUserDefault w={'37'} h={'37'} />
+                <IconUserDefault w="w-[37px]" h="h-[37px]" />
               </div>
             )}
           </div>

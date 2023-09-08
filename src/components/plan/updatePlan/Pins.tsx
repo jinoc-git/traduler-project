@@ -92,7 +92,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     <>
       <div className="flex flex-col justify-center gap-5">
         <div className="flex items-center mt-[36px]">
-          <IconPin w="20" h="25" fill="#4E4F54" />
+          <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
           <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
             방문할 장소
           </div>

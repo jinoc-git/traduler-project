@@ -12,7 +12,7 @@ const EndingPay = ({ pay }: PropsType) => {
   return (
     <PayLayout>
       <div className="flex items-center">
-        <IconWallet w="20" h="18" fill="#4E4F54" />
+        <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
         <p className=" mr-[51px] ml-[8px]">전체 예산</p>
         <p>{formatNumberWithCommas(pay)} 원</p>
       </div>

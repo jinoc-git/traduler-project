@@ -46,7 +46,7 @@ const SideBarETC = () => {
         }`}
       >
         <button className="flex-center w-[40px] h-[40px]">
-          <IconSignOut fill="#162F70" />
+          <IconSignOut w="w-[20px]" h="h-[21px]" fill="#162F70" />
         </button>
         {isSideBarOpen && <span className=" text-navy">로그아웃</span>}
       </div>

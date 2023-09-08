@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';

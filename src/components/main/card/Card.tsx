@@ -32,6 +32,7 @@ interface CardProps {
 }
 
 export interface PlanCountList {
+  bookMark: number;
   planning: number;
   traveling: number;
   end: number;
@@ -49,6 +50,7 @@ const Card: React.FC<CardProps> = ({
   const { selectedPlan } = usePlanStore();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({
+    bookMark: 0,
     planning: 0,
     traveling: 0,
     end: 0,
@@ -101,6 +103,7 @@ const Card: React.FC<CardProps> = ({
   useEffect(() => {
     if (planDataList != null) {
       setPlanCount({
+        bookMark: bookMarkData.length,
         planning: planDataList.filter((plan) => plan.plan_state === 'planning')
           .length,
         traveling: planDataList.filter(
@@ -112,10 +115,10 @@ const Card: React.FC<CardProps> = ({
         ).length,
       });
     }
-  }, [planDataList]);
+  }, [planDataList, bookMarkData]);
 
   return (
-    <div>
+    <div className='flex flex-col gap-[16px]'>
       <CardTabMenu planCount={planCount} />
       {filteredData?.length === 0 ? (
         <CardAddNewPlan />
@@ -135,9 +138,9 @@ const Card: React.FC<CardProps> = ({
           );
 
           return (
-            <div key={plan.id} className="mt-[16px]">
+            <div key={plan.id}>
               <div
-                className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
+                className="flex bg-white w-[800px] h-[150px] mt-[15px] shadow-card rounded-[7px] cursor-pointer"
                 onClick={() => {
                   onClickListItem(plan.plan_state, plan.id);
                 }}

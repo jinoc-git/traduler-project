@@ -24,8 +24,8 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const navigate = useNavigate();
 
   const iconList = {
-    bookMark: <IconFavoriteList />,
-    start: <IconPlannedTime w="w-[24px]" h="h-[25px]" />,
+    bookMark: <IconFavoriteList w="w-[24px]" h="h-[24px]" fill="#6E6F76" />,
+    start: <IconPlannedTime w="w-[24px]" h="h-[24px]" />,
     end: <IconPreviousTime w="w-[24px]" h="h-[25px]" />,
   };
 
@@ -84,7 +84,11 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
             {listName[filter]}
           </span>
           <div className="w-[14px] mr-5">
-            {isOpen ? <IconChevronUp /> : <IconChevronDown />}
+            {isOpen ? (
+              <IconChevronUp w="w-[24px]" h="h-[24px]" />
+            ) : (
+              <IconChevronDown w="w-[24px]" h="h-[24px]" />
+            )}
           </div>
         </div>
       </div>

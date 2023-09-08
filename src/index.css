@@ -48,6 +48,12 @@ body {
   width: 800px;
   margin: 0 auto;
 }
+@media all and (max-width: 1024px) {
+  .main-layout {
+    width: 320px;
+    margin: 0 auto;
+  }
+}
 
 .flex-center {
   display: flex;

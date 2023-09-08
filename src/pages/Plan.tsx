@@ -17,6 +17,7 @@ import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import ErrorPage from './ErrorPage';
@@ -27,6 +28,7 @@ interface InputType {
 
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const user = userStore((state) => state.user);
   const resetDates = datesStore((state) => state.resetDates);
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { id } = useParams();
@@ -105,6 +107,9 @@ const Plan = () => {
     mutationFn: changePlanState,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+      void queryClient.invalidateQueries({
+        queryKey: ['plan_mates', user?.id],
+      });
     },
     onError: (error) => {
       console.error(error);

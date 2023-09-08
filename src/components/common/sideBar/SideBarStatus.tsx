@@ -51,7 +51,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   }, [activePlan]);
 
   return (
-    <div className="flex flex-col items-center h-[202px] border-y-2 py-[20px] border-slate-200">
+    <div className="flex flex-col items-center h-[202px] border-y-2 py-[12px] border-slate-200">
       <div
         className={`flex items-center justify-between mb-[15px] transition-all duration-300 ease-in-out ${
           isOpen ? 'w-[197px]' : 'w-[40px] flex-col'
@@ -68,7 +68,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
       </div>
       <div
         className={`flex flex-col h-[125px] items-center ${
-          isOpen ? 'gap-3' : ''
+          isOpen ? 'gap-2' : ''
         } rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
             ? 'w-[197px] h-[125px] flex-center flex-col'
@@ -82,37 +82,47 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
           </p>
         )}
         {!isOpen && status === '여행 예정' && (
-          <p className="text-sm pt-3">{removeYearOfDate(nextPlan?.dates[0])}</p>
+          <p className="text-xs pt-3">{removeYearOfDate(nextPlan?.dates[0])}</p>
         )}
 
         {/* 여행 중일 때만 진행률 표시 */}
         {status === '여행 중' && (
           <div
             className={`flex ${
-              isOpen ? 'flex-col' : 'flex-row-reverse gap-1'
+              isOpen ? 'flex-col gap-1' : ' flex-col-reverse gap-1'
             } items-center`}
           >
-            <p className=" bg-gradient-to-r from-blue_dark to-blue text-transparent bg-clip-text font-bold text-sm text-4xl">
-              {isOpen && progress + '%'}
-              {!isOpen && (
-                <p className="text-center">
-                  {progress}
-                  <p>%</p>{' '}
-                </p>
-              )}
+            <p
+              className={` bg-gradient-to-r from-blue_dark to-blue text-transparent bg-clip-text font-bold ${
+                isOpen ? 'text-sm ' : 'text-xs'
+              }`}
+            >
+              {progress + '%'}
             </p>
             <SideBarProgressBar percent={progress} isOpen={isOpen} />
+            {isOpen && (
+              <div className="flex justify-between w-[160px]">
+                <span className=" text-sm">
+                  {removeYearOfDate(activePlan?.dates[0])}
+                </span>
+                <span className=" text-sm">
+                  {removeYearOfDate(
+                    activePlan?.dates[activePlan.dates.length - 1],
+                  )}
+                </span>
+              </div>
+            )}
           </div>
         )}
 
         {/* 닫혔을 때만 보여지는 내용 */}
         {!isOpen && status === '여행 예정' && (
-          <p className="text-sm leading-4">
+          <p className="text-sm leading-4 mt-3">
             여<br />행<br />예<br />정
           </p>
         )}
         {!isOpen && status === '여행 없음' && (
-          <p className="text-sm leading-4 mt-6">
+          <p className="text-sm leading-4 mt-8">
             여<br />행<br />없<br />음
           </p>
         )}

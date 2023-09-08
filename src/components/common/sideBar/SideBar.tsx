@@ -77,7 +77,9 @@ const SideBar: React.FC = () => {
     (plan) => plan.plan_state === 'planning',
   );
 
-  const endPlans = sortedData?.filter((plan) => plan.plan_state === 'end');
+  const endPlans = sortedData?.filter(
+    (plan) => plan.plan_state === 'end' || plan.plan_state === 'recording',
+  );
 
   const activePlan = sortedData?.find(
     (plan) => plan.plan_state === 'traveling',

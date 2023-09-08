@@ -10,6 +10,7 @@ import {
   ic_previous_time_1x,
 } from '@assets/icons/1x';
 import { sideBarStore } from '@store/sideBarStore';
+import { usePlanStore } from '@store/usePlanStore';
 import { type PlanType } from 'types/supabase';
 
 interface SideBarPlanListProps {
@@ -23,6 +24,7 @@ interface SideBarPlanListProps {
 const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const { toggleFunc, setFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const setSelectedPlan = usePlanStore((state) => state.setSelectedPlan);
   const navigate = useNavigate();
 
   const iconList = {
@@ -62,6 +64,20 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
     if (state === 'end') navigate(`/ending/${id}`);
   };
 
+  const onClickMoreBtn = () => {
+    if (filter === 'bookMark') {
+      setSelectedPlan('bookMark');
+    }
+    if (filter === 'start') {
+      setSelectedPlan('planning');
+    }
+    if (filter === 'end') {
+      setSelectedPlan('end');
+    }
+    setFunc(false);
+    navigate('/main');
+  };
+
   const isDropDownOpen = isOpen && !isSideBarOpen;
 
   return (
@@ -77,7 +93,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
             setFunc(false);
           }}
           className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
-          ${focusColor[filter]} ${hoverColor[filter]} `}
+          ${isOpen ? focusColor[filter] : ''} ${hoverColor[filter]} `}
         >
           <img src={iconList[filter]} />
         </button>
@@ -122,6 +138,20 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
               )}
             </li>
           ))}
+
+        {isOpen && planList.length > 3 && (
+          <li
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
+            onClick={onClickMoreBtn}
+            style={{ overflow: isDropDownOpen ? 'visible' : '' }}
+            className="w-[175px] mb-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray text-center hover:text-gray_dark_2 cursor-pointer "
+          >
+            <p className="text-[13px]">+ 더보기</p>
+          </li>
+        )}
+
         {isOpen && planList.length === 0 && (
           <li className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer ">
             <p className="text-[13px]">{listName[filter]}이 없습니다</p>

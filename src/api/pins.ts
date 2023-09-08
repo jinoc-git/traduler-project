@@ -11,12 +11,6 @@ export interface PinContentsType {
   distance?: number | undefined;
 }
 
-export interface AddPinType {
-  date: string;
-  planId: string;
-  newContents: PinContentsType;
-}
-
 export const getPin = async (planId: string, currentpage: number) => {
   const { data: dates, error: plansError } = await supabase
     .from('plans')
@@ -87,13 +81,28 @@ export const newDatePin = async (newPin: PinInsertType) => {
   }
 };
 
-export const getAllPins = async (planId: string) => {
+export const getAllPins = async (planId: string, dates: string[]) => {
+  console.log('api', planId);
+  console.log('api', dates);
   const { data, error } = await supabase
     .from('pins')
     .select('contents')
+    .in('date', dates)
     .eq('plan_id', planId);
   if (error !== null) {
     throw new Error('핀 가져오기 에러발생');
   }
   return data;
+};
+
+export const getAllPinsDate = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .select('date')
+    .eq('plan_id', planId);
+  if (error !== null) {
+    throw new Error('핀 날짜 가져오기 에러발생');
+  }
+  const res = data.map((item) => item.date);
+  return res;
 };

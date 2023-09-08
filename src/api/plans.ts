@@ -16,6 +16,7 @@ interface addPlanObj {
 
 export const addPlan = async (addPlanObj: addPlanObj) => {
   const { newPlan, pins, invitedUser } = addPlanObj;
+  console.log('한번 나와야됨', newPlan);
 
   const plan: PlanType = { ...newPlan };
 
@@ -27,6 +28,7 @@ export const addPlan = async (addPlanObj: addPlanObj) => {
       contents: pins[i] as Json[],
       date: newPlan.dates[i],
     });
+    console.log('계획생성', newPlan.dates);
     if (errorPins != null) {
       console.log(`오류발생 ${i}번째 pin`, errorPins);
     }
@@ -197,9 +199,6 @@ export const getPlanIdAndUserIdListByLoginUserId = async (
   if (userPlanAndMateListError !== null) {
     throw new Error('getPlanIdAndUserIdListByLoginUserId 오류');
   }
-
-  // const userIdList = userPlanAndMateList.map((data) => data.users_id);
-  // const planIdList = userPlanAndMateList.map((data) => data.id).flat();
 
   if (userPlanAndMateList !== null) {
     return userPlanAndMateList;

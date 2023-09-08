@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { newDatePin } from '@api/pins';
-import { getPlan, updateDatePlan } from '@api/plans';
+import { getAllPinsDate, newDatePin } from '@api/pins';
+import { updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -25,11 +25,13 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   const { id } = useParams();
   const planId: string = id as string;
   if (state !== 'addPlan') {
-    const { data: plan } = useQuery(
-      ['plan', planId],
-      async () => await getPlan(planId),
-    );
-    dataDates = plan?.[0].dates as string[];
+    if (planId !== undefined) {
+      const { data } = useQuery(
+        ['pinDate', planId],
+        async () => await getAllPinsDate(planId),
+      );
+      dataDates = data as string[];
+    }
   }
 
   const StartDateChangeHandler = (date: Date | null) => {
@@ -59,6 +61,7 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       await updateDatePlan(planId, dates);
     },
     onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['pinDate', planId] });
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
   });

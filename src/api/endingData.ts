@@ -202,10 +202,9 @@ export const getDates = async (planId: string) => {
 };
 
 export const getPlaceWithDate = async (planId: string) => {
-  const placeDataList = await getAllPins(planId);
   const planDateList = await getPlansDate(planId);
+  const placeDataList = await getAllPins(planId, planDateList[0].dates);
   const planDistanceList = await getEndingDistance(planId);
-  console.log(planDistanceList);
 
   const result = placeDataList.map((item, i) => {
     const day = planDateList[0].dates[i];

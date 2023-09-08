@@ -13,21 +13,34 @@ import { type PinContentsType, getAllPins } from '@api/pins';
 import Loading from '@components/loading/Loading';
 import { useQuery } from '@tanstack/react-query';
 
-const EndingMap = () => {
+const EndingMap = ({ dates }: { dates: string[] }) => {
   const { id: planId } = useParams();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['pins', planId],
-    queryFn: async () => await getAllPins(planId as string),
+    queryFn: async () => {
+      if (planId !== undefined && dates !== undefined) {
+        const pinsData = await getAllPins(planId, dates);
+        return pinsData;
+      }
+      return null;
+    },
   });
-  const [pins, SetPins] = useState<PinContentsType[]>();
+  const [pins, setPins] = useState<PinContentsType[]>([]);
 
   useEffect(() => {
-    if (data !== undefined) {
+    if (data !== undefined && data !== null) {
       const res = data.map((item) => item.contents);
       const flattenedRes = res.flatMap((innerRes) => innerRes);
-      SetPins(flattenedRes as PinContentsType[]);
+      setPins(flattenedRes as PinContentsType[]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (planId !== undefined && dates !== undefined) {
+      setPins([]);
+      void refetch();
+    }
+  }, [planId, dates]);
 
   if (isLoading) {
     return <Loading />;

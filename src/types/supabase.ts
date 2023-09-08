@@ -264,4 +264,4 @@ export type PlanMatesType =
   Database['public']['Tables']['plan_mates']['Insert'];
 export type CommentsType = Database['public']['Tables']['comments']['Insert'];
 export type PlansEndingType =
-  Database['public']['Tables']['plans_ending']['Insert'];
+  Database['public']['Tables']['plans_ending']['Row'];

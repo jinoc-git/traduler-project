@@ -61,7 +61,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 mr-[20px] flex items-center justify-center font-Regular text-gray-300"
           >
             <div className="flex items-center">
-              <IconUploadPicture fill="#4E4F54" />
+              <IconUploadPicture w="w-[24px]" h="h-[24px]" fill="#4E4F54" />
               <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
                 사진업로드
               </div>

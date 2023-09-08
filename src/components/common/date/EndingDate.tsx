@@ -20,7 +20,7 @@ const EndingDate = ({ planDates }: PropsType) => {
   return (
     <PayLayout>
       <div className="flex items-center ">
-        <IconCalendarDefault w="20" h="20" fill="#4E4F54" />
+        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
         <p className="ml-2 font-semiBold text-gray_dark_1">여행 일정</p>
         <div className="font-semibold text-normal ml-[50px]">
           {startDate[0]}년 {startDate[1]}월 {startDate[2]}일 ({startDay})~{' '}

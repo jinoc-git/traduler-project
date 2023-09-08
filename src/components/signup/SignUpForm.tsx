@@ -200,9 +200,9 @@ const SignUpForm = () => {
             className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
           >
             {showPassword ? (
-              <IconVisible w="14" h="14" />
+              <IconVisible w="w-[14px]" h="h-[14px]" />
             ) : (
-              <IconHidden w="14" h="14" />
+              <IconHidden w="w-[14px]" h="h-[14px]" />
             )}
           </button>
           <p className="h-[20px] pt-1.5 text-center text-sm">

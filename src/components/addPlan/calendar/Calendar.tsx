@@ -33,7 +33,7 @@ const Calendar: React.FC<CalendarProps> = ({
   return (
     <div className="relative z-10 flex items-center py-[10px] pr-[62px] w-[638px]">
       <div className="flex items-center mr-[46px] gap-2 text-normal font-semibold text-gray_dark_1">
-        <IconCalendarDefault w="20" h="20" fill="#4E4F54" />
+        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
         <label className="text-normal">여행 시작일</label>
       </div>
       <DatePicker
@@ -56,7 +56,7 @@ const Calendar: React.FC<CalendarProps> = ({
         required
       />
       <div className="flex items-center mr-[46px] gap-2 text-normal font-semibold text-gray_dark_1">
-        <IconCalendarDefault w="20" h="20" fill="#4E4F54" />
+        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
         <label>여행 종료일</label>
       </div>
       <DatePicker

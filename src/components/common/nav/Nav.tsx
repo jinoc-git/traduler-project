@@ -63,7 +63,7 @@ const Nav = ({ onClick, isValid, page }: PropsType) => {
           type="submit"
           onClick={handleButtonClick}
         >
-          <IconEditDefault w="16" h="16" fill="#162F70" />
+          <IconEditDefault w="w-[16px]" h="h-[16px]" fill="#162F70" />
           {modifyState === 'modify' ? `저장하기` : `수정하기`}
         </button>
       </div>

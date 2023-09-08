@@ -207,7 +207,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           type="button"
           onClick={onClickCloseModalHandler}
         >
-          <IconClose />
+          <IconClose w="w-[17px]" h="h-[17px]" />
         </button>
         <div className="flex items-center gap-3 w-[408px]">
           <img
@@ -226,7 +226,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             />
 
             <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
-              <IconCamera fill="gray" w="21" h="18" />
+              <IconCamera w="w-[21px]" h="h-[18px]" fill="gray" />
             </div>
           </label>
         </div>

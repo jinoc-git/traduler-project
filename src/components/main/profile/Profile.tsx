@@ -27,7 +27,7 @@ const Profile = () => {
               className="w-[85px] h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer "
             />
           ) : (
-            <IconUserDefault w="85" h="85" />
+            <IconUserDefault w="w-[85px]" h="h-[85px]" />
           )}
         </div>
         <p className="text-white text-base sm:text-[16px] md:text-xlg">

@@ -5,8 +5,6 @@ import React from 'react';
 import type IconType from 'types/icon';
 
 const IconUserDefault = ({ w, h }: IconType) => {
-  const width = `w-[${w as string}px]`;
-  const height = `h-[${h as string}px]`;
   return (
     <svg
       width="100"
@@ -14,7 +12,7 @@ const IconUserDefault = ({ w, h }: IconType) => {
       viewBox="0 0 100 100"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
+      className={`${w} ${h}`}
     >
       <circle
         cx="50"

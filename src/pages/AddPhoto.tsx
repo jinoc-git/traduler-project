@@ -143,7 +143,7 @@ const AddPhoto = () => {
           </div>
           <EndingMap dates={dates as string[]} />
           <div className="flex items-center">
-            <IconCamera w="20" h="25" fill="#4E4F54" />
+            <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
               추억할 사진 올리기
             </div>

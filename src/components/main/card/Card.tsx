@@ -195,7 +195,11 @@ const Card: React.FC<CardProps> = ({
                       handleDeletePlan(plan.id);
                     }}
                   >
-                    <IconDeleteDefault fill="#E1E2E3" />
+                    <IconDeleteDefault
+                      w="w-[24px]"
+                      h="h-[24px]"
+                      fill="#E1E2E3"
+                    />
                   </button>
                 </div>
               </div>

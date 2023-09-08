@@ -2,6 +2,7 @@
 // import Carousel from '@components/carousel/Carousel';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import { getPlanEnding } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
@@ -26,11 +27,23 @@ const Ending = () => {
     ['planEnding', planId],
     async () => await getPlanEnding(planId as string),
   );
+  const navigate = useNavigate();
 
   const [dates, setDates] = useState<string[]>();
   const [pay, setPay] = useState<number>();
   const [title, setTitle] = useState<string>();
   const [distance, setDistance] = useState<Json[]>();
+
+  useEffect(() => {
+    window.addEventListener('popstate', () => {
+      navigate('/main');
+    });
+    return () => {
+      window.removeEventListener('popstate', () => {
+        navigate('/main');
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (planEnding !== undefined && planEnding !== null) {

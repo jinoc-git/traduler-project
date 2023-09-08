@@ -65,7 +65,6 @@ const PlaceList = ({ distance }: { distance: Json[] }) => {
               if (distanceLength > 0) {
                 distance = distanceList[j - 1];
               }
-
               return (
                 <PinLayout
                   key={uuid()}

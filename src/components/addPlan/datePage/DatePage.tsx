@@ -25,7 +25,7 @@ const DatePage = ({
             disabled={currentPage === 0}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
           >
-            <IconChevronLeft />
+            <IconChevronLeft w="w-[14px]" h="h-[22px]" />
           </button>
           <h1>{dates[currentPage]}</h1>
           <button
@@ -33,7 +33,7 @@ const DatePage = ({
             disabled={currentPage === dates.length - 1}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
           >
-            <IconChevronRight />
+            <IconChevronRight w="w-[14px]" h="h-[22px]" />
           </button>
         </>
       ) : (

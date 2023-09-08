@@ -86,7 +86,7 @@ const Comments = () => {
   return (
     <section className="w-[720px]">
       <div className="flex items-center my-[30px]">
-        <IconCommentory w="20" h="25" fill="#4E4F54" />
+        <IconCommentory w="w-[25px]" h="h-[25px]" fill="#4E4F54" />
         <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
           한줄 코멘트
         </div>

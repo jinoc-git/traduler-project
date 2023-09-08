@@ -5,10 +5,10 @@ import { sideBarStore } from '@store/sideBarStore';
 
 const NotFoundFull = () => {
   const navigate = useNavigate();
-  const setIsNotFoundPage = sideBarStore((set) => set.setIsNotFoundPage);
+  const setIsNotFoundPage = sideBarStore((state) => state.setIsNotFoundPage);
 
   const goToMain = () => {
-    navigate('/welcome');
+    navigate('/main');
   };
 
   const goToBack = () => {
@@ -16,6 +16,9 @@ const NotFoundFull = () => {
   };
   useEffect(() => {
     setIsNotFoundPage(true);
+    return () => {
+      setIsNotFoundPage(false);
+    };
   }, []);
 
   return (

@@ -125,7 +125,7 @@ const SignUpForm = () => {
             htmlFor="nickname"
             className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
           >
-            <IconName w="12" h="12" />
+            <IconName w="w-[12px]" h="h-[12px]"/>
           </label>
           <input
             type="text"
@@ -155,7 +155,7 @@ const SignUpForm = () => {
             htmlFor="email"
             className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
           >
-            <IconMessage w="12" h="12" />
+            <IconMessage w="w-[12px]" h="h-[12px]" />
           </label>
           <input
             type="text"
@@ -186,7 +186,7 @@ const SignUpForm = () => {
             htmlFor="password"
             className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
           >
-            <IconLocked w="12" h="12" />
+            <IconLocked w="w-[12px]" h="h-[12px]" />
           </label>
           <input
             type={showPassword ? 'text' : 'password'}
@@ -214,7 +214,7 @@ const SignUpForm = () => {
             htmlFor="confirmPassword"
             className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
           >
-            <IconLocked w="12" h="12" />
+            <IconLocked w="w-[12px]" h="h-[12px]" />
           </label>
           <input
             type={showCheckPassword ? 'text' : 'password'}
@@ -231,9 +231,9 @@ const SignUpForm = () => {
             className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
           >
             {showCheckPassword ? (
-              <IconVisible w="14" h="14" />
+              <IconVisible w="w-[14px]" h="h-[14px]" />
             ) : (
-              <IconHidden w="14" h="14" />
+              <IconHidden w="w-[14px]" h="h-[14px]" />
             )}
           </button>
           <p className="h-[20px] pt-1.5 text-center text-sm">

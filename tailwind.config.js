@@ -2,6 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
+    screens: {
+      sm: '360px',
+      md: '1110px',
+      lg: '1440px',
+    },
     fontSize: {
       xs: '12px',
       sm: '14px',

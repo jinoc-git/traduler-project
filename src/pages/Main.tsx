@@ -31,7 +31,7 @@ const Main = () => {
             navigate('/addPlan');
           }}
         >
-          <IconAdd w="16" h="16" fill="#1A68DB" />
+          <IconAdd w="w-[16px]" h="h-[16px]" fill="#1A68DB" />
           여행 생성하기
         </button>
       </section>

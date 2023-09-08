@@ -41,7 +41,7 @@ const Carousel = () => {
   return photoData.length > 3 ? (
     <section className="w-[720px]">
       <div className="flex items-center my-[30px]">
-        <IconCamera fill="#4E4F54" />
+        <IconCamera w="w-[21px]" h="h-[18px]" fill="#4E4F54" />
         <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
           사진첩
         </div>

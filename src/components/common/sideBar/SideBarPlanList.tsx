@@ -84,7 +84,11 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
             {listName[filter]}
           </span>
           <div className="w-[14px] mr-5">
-            {isOpen ? <IconChevronUp /> : <IconChevronDown />}
+            {isOpen ? (
+              <IconChevronUp w="w-[24px]" h="h-[24px]" />
+            ) : (
+              <IconChevronDown w="w-[24px]" h="h-[24px]" />
+            )}
           </div>
         </div>
       </div>

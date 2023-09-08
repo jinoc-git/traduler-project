@@ -41,7 +41,7 @@ const CardAddNewPlan = () => {
             navigate('/addPlan');
           }}
         >
-          <IconAdd w="16" h="16" />
+          <IconAdd w="w-[16px]" h="h-[16px]" />
           여행 생성하기
         </button>
       </div>

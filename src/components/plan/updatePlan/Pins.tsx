@@ -10,7 +10,7 @@ import MapModal from '@components/plan/updatePlan/MapModal';
 import useBooleanState from '@hooks/useBooleanState';
 import usePinMutation from '@hooks/usePinMutation';
 import { updatePinStore } from '@store/updatePinStore';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import update from 'immutability-helper';
 
 import Pin from './Pin';
@@ -43,26 +43,10 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     staleTime: 60 * 1000,
   });
 
-  const queryClient = useQueryClient();
   const { deleteMutation, debounceNewOrderMutaion } = usePinMutation(
     planId,
     currentPage,
   );
-
-  // const deletemutation = useMutation({
-  //   mutationFn: async ([date, planId, deletedPin]: [
-  //     string,
-  //     string,
-  //     PinContentsType[],
-  //   ]) => {
-  //     await deletePin(date, planId, deletedPin);
-  //   },
-  //   onSuccess: () => {
-  //     void queryClient.invalidateQueries({
-  //       queryKey: ['pin', planId, currentPage],
-  //     });
-  //   },
-  // });
 
   const handleUpdate = (idx: number) => {
     const updatePin = pinArr[idx];

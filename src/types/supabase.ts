@@ -204,31 +204,31 @@ export interface Database {
       };
       plans_ending: {
         Row: {
-          dates: string[]
-          dates_cost: number[] | null
-          distance: Json[] | null
-          id: string
-          pictures: string[]
-          title: string
-          total_cost: number | null
+          dates: string[];
+          dates_cost: number[] | null;
+          distance: Json[] | null;
+          id: string;
+          pictures: string[];
+          title: string;
+          total_cost: number | null;
         };
         Insert: {
-          dates?: string[]
-          dates_cost?: number[] | null
-          distance?: Json[] | null
-          id: string
-          pictures?: string[]
-          title?: string
-          total_cost?: number | null
+          dates?: string[];
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id: string;
+          pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
         };
         Update: {
-          dates?: string[]
-          dates_cost?: number[] | null
-          distance?: Json[] | null
-          id?: string
-          pictures?: string[]
-          title?: string
-          total_cost?: number | null
+          dates?: string[];
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id?: string;
+          pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
         };
         Relationships: [
           {

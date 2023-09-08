@@ -22,7 +22,7 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
           setSelectedPlan('bookMark');
         }}
       >
-        즐겨찾기 ({planCount.traveling})
+        즐겨찾기 ({planCount.bookMark})
       </p>
       <span className="text-white"> | </span>
       <p

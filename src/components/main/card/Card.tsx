@@ -64,9 +64,13 @@ const Card: React.FC<CardProps> = ({
       toast.error('계획 삭제 중 오류가 발생했습니다.');
     },
   });
+  const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
     ?.filter((plan) => {
+      if (selectedPlan === 'bookMark') {
+        return bookMarkPlanIdList.find((id) => id === plan.id);
+      }
       if (selectedPlan === 'end') {
         return (
           (plan.plan_state === selectedPlan && !plan.isDeleted) ||
@@ -75,9 +79,21 @@ const Card: React.FC<CardProps> = ({
       }
       return plan.plan_state === selectedPlan && !plan.isDeleted;
     })
-    ?.sort(
-      (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
-    );
+    ?.sort((a, b) => {
+      if (selectedPlan === 'bookMark') {
+        const bookMarkA = bookMarkData.find(
+          (bookMark) => bookMark.plan_id === a.id,
+        )!;
+        const bookMarkB = bookMarkData.find(
+          (bookMark) => bookMark.plan_id === b.id,
+        )!;
+        return (
+          new Date(bookMarkA.created_at!).getTime() -
+          new Date(bookMarkB.created_at!).getTime()
+        );
+      }
+      return new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime();
+    });
 
   const { confirm } = useConfirm();
 
@@ -118,7 +134,7 @@ const Card: React.FC<CardProps> = ({
   }, [planDataList, bookMarkData]);
 
   return (
-    <div className='flex flex-col gap-[16px]'>
+    <div className="flex flex-col gap-[16px]">
       <CardTabMenu planCount={planCount} />
       {filteredData?.length === 0 ? (
         <CardAddNewPlan />

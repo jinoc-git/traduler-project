@@ -1,14 +1,8 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
-
 import { useState } from 'react';
 
 import type IconType from 'types/icon';
 
 const IconDeleteDefault = ({ w, h, fill }: IconType) => {
-  const width = `w-[${w as string}px]`;
-  const height = `h-[${h as string}px]`;
-
   const [isHovered, setIsHovered] = useState(false);
 
   // 밖 컬러
@@ -18,12 +12,12 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
 
   return (
     <svg
-      width={w || '24'}
-      height={h || '24'}
-      viewBox={`0 0 ${w || '24'} ${h || '24'}`}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24 "
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={w !== undefined && h !== undefined ? `${width} ${height}` : ''}
+      className={`${w} ${h}`}
       // 밖컬러 변경
       onMouseEnter={() => {
         setIsHovered(true);
@@ -34,12 +28,12 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
     >
       <path
         d="M10 8V20H8V8H10Z"
-        fill={fill || 'black'}
+        fill={fill ?? 'black'}
         stroke={outerStrokeColor}
       />
       <path
         d="M14 8V20H12V8H14Z"
-        fill={fill || 'black'}
+        fill={fill ?? 'black'}
         stroke={outerStrokeColor}
       />
       {/* 전체컬러 */}

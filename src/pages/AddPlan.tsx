@@ -22,9 +22,9 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type PlanType, type UserType } from 'types/supabase';
 
-interface InputType {
-  title?: string;
-  totalCost?: number;
+export interface InputType {
+  title: string;
+  totalCost: number;
 }
 
 const AddPlan = () => {
@@ -41,7 +41,12 @@ const AddPlan = () => {
     setFocus,
     watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<InputType>({ mode: 'onChange' });
+  } = useForm<InputType>({
+    mode: 'onChange',
+    defaultValues: {
+      totalCost: 0,
+    },
+  });
 
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
   const queryClient = useQueryClient();
@@ -60,8 +65,8 @@ const AddPlan = () => {
       const newPlan: PlanType = {
         id: uuid(),
         users_id: userId as string,
-        title: watch('title') as string,
-        total_cost: watch('totalCost') as number,
+        title: watch('title'),
+        total_cost: watch('totalCost'),
         isDeleted: false,
         dates,
         plan_state: 'planning',
@@ -76,6 +81,7 @@ const AddPlan = () => {
       navigate('/main');
     }
   };
+
   const buttonDisabled =
     isSubmitting ||
     watch('totalCost') === undefined ||
@@ -118,6 +124,8 @@ const AddPlan = () => {
         page={'addPlan'}
         onClick={handleSubmit(submitPlan)}
         buttonDisabled={buttonDisabled}
+        addInputSetFocus={setFocus}
+        addInputWatch={watch}
       />
       <PlanLayout>
         <input
@@ -129,6 +137,10 @@ const AddPlan = () => {
             minLength: {
               value: 2,
               message: '제목은 2글자 이상이어야 합니다.',
+            },
+            maxLength: {
+              value: 10,
+              message: '제목은 10글자 이하여야 합니다.',
             },
           })}
           className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"

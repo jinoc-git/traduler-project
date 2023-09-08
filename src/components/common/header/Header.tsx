@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ic_profile_3x } from '@assets/icons/3x';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
@@ -84,7 +83,7 @@ const Header = () => {
           <div className="flex-center w-[70px] h-[50px]">
             {user.profileImg != null ? (
               <img
-                src={user.profileImg !== null ? user.profileImg : ic_profile_3x}
+                src={user.profileImg}
                 alt="프로필 이미지"
                 className=" w-[37px] h-[37px] object-cover rounded-full border border-navy/50 "
               />

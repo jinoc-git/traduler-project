@@ -1,14 +1,13 @@
-// 질문
 import React from 'react';
 
 import type IconType from 'types/icon';
 
 const IconAdd = ({ w, h, fill }: IconType) => {
-  // const hoverColor = {
-  //   fill: 'group-hover:fill-[#1A68DB]',
-  //   default: 'group-hover:fill-white',
-  // };
-  // const fillValue = fill ?? 'black';
+  const hoverColor = {
+    fill: 'group-hover:fill-[#1A68DB]',
+    default: 'group-hover:fill-white',
+  };
+  const fillValue: string = fill ?? 'black';
 
   return (
     <svg
@@ -19,11 +18,11 @@ const IconAdd = ({ w, h, fill }: IconType) => {
       xmlns="http://www.w3.org/2000/svg"
       className={`${w} ${h}`}
     >
-      {/* <path
+      <path
         d="M14 0H10V10H0V14H10V24H14V14H24V10H14V0Z"
         fill={fillValue === '#1A68DB' ? 'white' : fillValue}
-        className={fill ? hoverColor.fill : hoverColor.default}
-      /> */}
+        className={fill != null ? hoverColor.fill : hoverColor.default}
+      />
     </svg>
   );
 };

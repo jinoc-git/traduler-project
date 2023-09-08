@@ -33,7 +33,7 @@ const SideBarETC = () => {
         }`}
       >
         <button className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy">
-          <IconAdd fill="#FFF" />
+          <IconAdd w="w-[16px]" h="h-[16px]" fill="#FFF" />
         </button>
         {isSideBarOpen && (
           <span className=" text-white">새 여행 계획 만들기</span>

@@ -198,9 +198,6 @@ export const getPlanIdAndUserIdListByLoginUserId = async (
     throw new Error('getPlanIdAndUserIdListByLoginUserId 오류');
   }
 
-  // const userIdList = userPlanAndMateList.map((data) => data.users_id);
-  // const planIdList = userPlanAndMateList.map((data) => data.id).flat();
-
   if (userPlanAndMateList !== null) {
     return userPlanAndMateList;
   }

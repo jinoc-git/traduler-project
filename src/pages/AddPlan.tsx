@@ -70,7 +70,6 @@ const AddPlan = () => {
         invitedUser,
       };
       mutation.mutate(addPlanObj);
-      await addPlan(addPlanObj);
       toast.success('저장되었습니다.');
       navigate('/main');
     }

@@ -25,8 +25,6 @@ import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PlansEndingType } from 'types/supabase';
 
-import ErrorPage from './ErrorPage';
-
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
   const user = userStore((state) => state.user);
@@ -118,7 +116,8 @@ const AddPhoto = () => {
   }
 
   if (isPlanError || isError) {
-    return <ErrorPage />;
+    navigate('/error');
+    return;
   }
 
   return (

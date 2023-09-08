@@ -19,8 +19,6 @@ import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type Json } from 'types/supabase';
 
-import ErrorPage from './ErrorPage';
-
 const Ending = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
@@ -65,7 +63,8 @@ const Ending = () => {
   }
 
   if (isError) {
-    return <ErrorPage />;
+    navigate('/error');
+    return;
   }
 
   return (

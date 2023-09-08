@@ -10,6 +10,7 @@ import IconLocked from '@assets/icons/IconLocked';
 import IconMessage from '@assets/icons/IconMessage';
 import IconVisible from '@assets/icons/IconVisible';
 import useFormValidator from '@hooks/useFormValidator';
+import { sideBarStore } from '@store/sideBarStore';
 import { AuthError } from '@supabase/supabase-js';
 
 interface UserSignInForm {
@@ -21,6 +22,7 @@ interface UserSignInForm {
 const SignInForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
 
   const {
     register,
@@ -39,6 +41,7 @@ const SignInForm = () => {
       return false;
     }
 
+    setVisibilityIcon(true);
     reset();
     toast.success('로그인에 성공하였습니다.');
     navigate('/main');
@@ -68,7 +71,7 @@ const SignInForm = () => {
               htmlFor="signin-email"
               className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
             >
-              <IconMessage w="12" h="12" />
+              <IconMessage w="w-[12px]" h="h-[12px]" />
             </label>
             <input
               type="text"
@@ -83,7 +86,7 @@ const SignInForm = () => {
               htmlFor="signin-password"
               className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
             >
-              <IconLocked w="12" h="12" />
+              <IconLocked w="w-[12px]" h="h-[12px]" />
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
@@ -106,7 +109,12 @@ const SignInForm = () => {
           </div>
           <div className="flex justify-between">
             <label className="text-sm text-slate-400 cursor-pointer flex items-center">
-              <input type="checkbox" name="keep" className="mr-2" defaultChecked />
+              <input
+                type="checkbox"
+                name="keep"
+                className="mr-2"
+                defaultChecked
+              />
               로그인 상태 유지
             </label>
             <span className="text-sm underline cursor-pointer text-orange font-semibold">

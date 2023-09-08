@@ -19,8 +19,6 @@ import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import ErrorPage from './ErrorPage';
-
 interface InputType {
   totalCost?: number;
 }
@@ -102,7 +100,7 @@ const Plan = () => {
       toast.error('계획 수정하기 오류 발생');
     },
   });
-  
+
   const changeMutation = useMutation({
     mutationFn: changePlanState,
     onSuccess: () => {
@@ -149,7 +147,8 @@ const Plan = () => {
     return <Loading />;
   }
   if (isError) {
-    return <ErrorPage />;
+    navigate('/error');
+    return;
   }
 
   return (

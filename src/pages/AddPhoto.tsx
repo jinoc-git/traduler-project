@@ -21,6 +21,7 @@ import EndingPay from '@components/common/pay/EndingPay';
 import Loading from '@components/loading/Loading';
 import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PlansEndingType } from 'types/supabase';
 
@@ -28,6 +29,7 @@ import ErrorPage from './ErrorPage';
 
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
+  const user = userStore((state) => state.user);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dates, setDates] = useState<string[]>();
   const [pay, setPay] = useState<number>();
@@ -53,6 +55,9 @@ const AddPhoto = () => {
     mutationFn: changePlanState,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+      void queryClient.invalidateQueries({
+        queryKey: ['plan_mates', user?.id],
+      });
     },
     onError: (error) => {
       console.log(error);

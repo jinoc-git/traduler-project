@@ -102,6 +102,7 @@ const Plan = () => {
       toast.error('계획 수정하기 오류 발생');
     },
   });
+  
   const changeMutation = useMutation({
     mutationFn: changePlanState,
     onSuccess: () => {

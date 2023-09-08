@@ -24,6 +24,8 @@ import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PlansEndingType } from 'types/supabase';
 
+import ErrorPage from './ErrorPage';
+
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -35,10 +37,11 @@ const AddPhoto = () => {
   const [distancePin, setDistancePin] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
 
-  const { data: plan, isLoading: isPlanLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId),
-  );
+  const {
+    data: plan,
+    isLoading: isPlanLoading,
+    isError: isPlanError,
+  } = useQuery(['plan', planId], async () => await getPlan(planId));
 
   const { data, isLoading, isError } = useQuery(
     ['planCoordinate', planId],
@@ -109,8 +112,8 @@ const AddPhoto = () => {
     return <Loading />;
   }
 
-  if (isError) {
-    return <div>Error occurred while fetching data.</div>;
+  if (isPlanError || isError) {
+    return <ErrorPage />;
   }
 
   return (

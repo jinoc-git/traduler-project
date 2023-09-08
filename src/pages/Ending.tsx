@@ -19,11 +19,17 @@ import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
 import { type Json } from 'types/supabase';
 
+import ErrorPage from './ErrorPage';
+
 const Ending = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const { id: planId } = useParams();
-  const { data: planEnding, isLoading } = useQuery(
+  const {
+    data: planEnding,
+    isLoading,
+    isError,
+  } = useQuery(
     ['planEnding', planId],
     async () => await getPlanEnding(planId as string),
   );
@@ -61,6 +67,10 @@ const Ending = () => {
 
   if (isLoading && planEnding !== undefined) {
     return <Loading />;
+  }
+
+  if (isError) {
+    return <ErrorPage />;
   }
 
   return (

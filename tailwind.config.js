@@ -2,6 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
+    screens: {
+      sm: '360px',
+      md: '1110px',
+      lg: '1440px',
+    },
     fontSize: {
       xs: '12px',
       sm: '14px',
@@ -14,6 +19,14 @@ module.exports = {
       Regular: ['Pretendard-Regular'],
       SemiBold: ['Pretendard-SemiBold'],
       Bold: ['Pretendard-Bold'],
+    },
+    backgroundSize: {
+      auto: 'auto',
+      cover: 'cover',
+      contain: 'contain',
+      '80%': '80%',
+      '50%': '50%',
+      16: '4rem',
     },
     extend: {
       colors: {

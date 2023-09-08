@@ -11,14 +11,12 @@ import {
   signInWithGoogle,
   signUpWithSB,
 } from '@api/supabaseAuth';
-import {
-  ic_google_1x,
-  ic_locked_default_1x,
-  ic_message_default_1x,
-  ic_name_1x,
-  ic_visible_default_1x,
-  ic_visible_solid_1x,
-} from '@assets/icons/1x';
+import { ic_google_1x } from '@assets/icons/1x';
+import IconHidden from '@assets/icons/IconHidden';
+import IconLocked from '@assets/icons/IconLocked';
+import IconMessage from '@assets/icons/IconMessage';
+import IconName from '@assets/icons/IconName';
+import IconVisible from '@assets/icons/IconVisible';
 import useBooleanState from '@hooks/useBooleanState';
 import useFormValidator from '@hooks/useFormValidator';
 import { AuthError } from '@supabase/supabase-js';
@@ -123,12 +121,11 @@ const SignUpForm = () => {
           회원가입
         </h2>
         <div className="relative">
-          <label htmlFor="nickname">
-            <img
-              src={ic_name_1x}
-              alt="닉네임 아이콘"
-              className="absolute top-[15px] left-[10px] w-[12px] h-[12px] cursor-pointer"
-            />
+          <label
+            htmlFor="nickname"
+            className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+          >
+            <IconName w="12" h="12" />
           </label>
           <input
             type="text"
@@ -154,12 +151,11 @@ const SignUpForm = () => {
           </p>
         </div>
         <div className="relative">
-          <label htmlFor="email">
-            <img
-              src={ic_message_default_1x}
-              alt="이메일 아이콘"
-              className="absolute top-[15px] left-[10px] w-[12px] h-[12px] cursor-pointer"
-            />
+          <label
+            htmlFor="email"
+            className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+          >
+            <IconMessage w="12" h="12" />
           </label>
           <input
             type="text"
@@ -186,12 +182,11 @@ const SignUpForm = () => {
           </p>
         </div>
         <div className="relative">
-          <label htmlFor="password">
-            <img
-              src={ic_locked_default_1x}
-              alt="비밀번호 아이콘"
-              className="absolute top-[15px] left-[10px] w-[12px] h-[12px] cursor-pointer"
-            />
+          <label
+            htmlFor="password"
+            className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+          >
+            <IconLocked w="12" h="12" />
           </label>
           <input
             type={showPassword ? 'text' : 'password'}
@@ -200,23 +195,26 @@ const SignUpForm = () => {
             placeholder="최소 6자리를 입력하세요"
             className="w-full h-[42px] px-8 rounded"
           />
-          <img
-            src={showPassword ? ic_visible_solid_1x : ic_visible_default_1x}
-            alt="비밀번호 보기 아이콘"
+          <button
             onClick={onClickShowPassword}
-            className="absolute top-[15px] right-[10px] w-[14px] h-[14px] cursor-pointer"
-          />
+            className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
+          >
+            {showPassword ? (
+              <IconVisible w="14" h="14" />
+            ) : (
+              <IconHidden w="14" h="14" />
+            )}
+          </button>
           <p className="h-[20px] pt-1.5 text-center text-sm">
             {errors?.password?.message}
           </p>
         </div>
         <div className="relative">
-          <label htmlFor="confirmPassword">
-            <img
-              src={ic_locked_default_1x}
-              alt="비밀번호 확인 아이콘"
-              className="absolute top-[15px] left-[10px] w-[12px] h-[12px] cursor-pointer"
-            />
+          <label
+            htmlFor="confirmPassword"
+            className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+          >
+            <IconLocked w="12" h="12" />
           </label>
           <input
             type={showCheckPassword ? 'text' : 'password'}
@@ -228,14 +226,16 @@ const SignUpForm = () => {
             placeholder="비밀번호를 다시 입력하세요"
             className="w-full h-[42px] px-8 rounded"
           />
-          <img
-            src={
-              showCheckPassword ? ic_visible_solid_1x : ic_visible_default_1x
-            }
-            alt="비밀번호 보기 아이콘"
+          <button
             onClick={onClickShowCheckPassword}
-            className="absolute top-[15px] right-[10px] w-[14px] h-[14px] cursor-pointer"
-          />
+            className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
+          >
+            {showCheckPassword ? (
+              <IconVisible w="14" h="14" />
+            ) : (
+              <IconHidden w="14" h="14" />
+            )}
+          </button>
           <p className="h-[20px] pt-1.5 text-center text-sm">
             {errors.confirmPassword !== undefined && '비밀번호를 확인해 주세요'}
           </p>

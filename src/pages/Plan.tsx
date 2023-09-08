@@ -19,6 +19,8 @@ import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import ErrorPage from './ErrorPage';
+
 interface InputType {
   totalCost?: number;
 }
@@ -45,12 +47,12 @@ const Plan = () => {
     register,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<InputType>({
     mode: 'onChange',
   });
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     ['plan', planId],
     async () => await getPlan(planId),
   );
@@ -141,6 +143,9 @@ const Plan = () => {
   if (isLoading) {
     return <Loading />;
   }
+  if (isError) {
+    return <ErrorPage />;
+  }
 
   return (
     <main
@@ -150,7 +155,7 @@ const Plan = () => {
           : 'w-[calc(100vw-88px)] ml-[88px]'
       }`}
     >
-      <Nav page={'plan'} onClick={handleSubmitButton} />
+      <Nav isValid={isValid} page={'plan'} onClick={handleSubmitButton} />
       <PlanLayout>
         <input
           value={title}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 
 import IconCalendarDefault from '@assets/icons/IconCalendarDefault';
@@ -21,8 +21,13 @@ const Calendar: React.FC<CalendarProps> = ({
   StartDateChangeHandler,
   EndDateChangeHandler,
 }) => {
-  const modifyState = modifyStateStore((state) => state.modifyState);
-  // const today = new Date();
+  const { modifyState, clearRequiredDates } = modifyStateStore();
+
+  useEffect(() => {
+    return () => {
+      clearRequiredDates();
+    };
+  }, []);
 
   return (
     <div className="relative z-10 flex items-center py-[10px] pr-[62px] w-[638px]">
@@ -47,6 +52,7 @@ const Calendar: React.FC<CalendarProps> = ({
         className="text-center w-[118px] react-datepicker read-only:cursor-default mr-[46px]"
         readOnly={modifyState === 'readOnly'}
         placeholderText="YYYY / MM / DD"
+        required
       />
       <div className="flex items-center mr-[46px] gap-2 text-normal font-semibold text-gray_dark_1">
         <IconCalendarDefault w="20" h="20" fill="#4E4F54" />
@@ -66,6 +72,7 @@ const Calendar: React.FC<CalendarProps> = ({
         className="text-center w-[120px] react-datepicker read-only:cursor-default"
         readOnly={modifyState === 'readOnly'}
         placeholderText="YYYY / MM / DD"
+        required
       />
     </div>
   );

@@ -65,6 +65,12 @@ const Card: React.FC<CardProps> = ({
 
   const filteredData = planDataList
     ?.filter((plan) => {
+      if (selectedPlan === 'end') {
+        return (
+          (plan.plan_state === selectedPlan && !plan.isDeleted) ||
+          (plan.plan_state === 'recording' && !plan.isDeleted)
+        );
+      }
       return plan.plan_state === selectedPlan && !plan.isDeleted;
     })
     ?.sort(
@@ -131,12 +137,12 @@ const Card: React.FC<CardProps> = ({
           return (
             <div key={plan.id} className="mt-[16px]">
               <div
-                className="flex bg-white mb-4  w-[800px] h-[150px] mt-[24px] shadow-card rounded-[7px] cursor-pointer"
+                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] sm:mt-[16px] md:w-[800px] md:h-[150px] md:mt-[24px] shadow-card rounded-[7px] cursor-pointer"
                 onClick={() => {
                   onClickListItem(plan.plan_state, plan.id);
                 }}
               >
-                <div className="w-1/5 h-[16px] mt-[22px] ml-[28px]">
+                <div className="md:w-1/5 md:h-[16px] md:mt-[22px] md:ml-[28px]">
                   <BookMark
                     isFavorite={Boolean(isFavorite)}
                     planId={plan.id}
@@ -146,33 +152,33 @@ const Card: React.FC<CardProps> = ({
                   />
                   <div className="mt-[8px]">
                     {plan.plan_state === 'end' ? null : (
-                      <span className="text-yellow">
+                      <span className="text-yellow sm:text-[10px] md:text-[18px]">
                         {calculateDday(new Date(plan.dates[0]))}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="w-3/5 h-[16px]">
-                  <div className="flex items-center mt-[22px]">
-                    <p className="text-gray_dark_1 text-xlg mr-[16px]">
+                <div className="sm:w-[282px] sm:h-[52px] md:w-3/5 md:h-[16px]">
+                  <div className="flex items-center sm:mt-[24px] md:mt-[22px]">
+                    <p className="text-gray_dark_1 sm:text-sm md:text-xlg md:font-bold mr-[16px]">
                       {plan.title}
                     </p>
                     {plan.plan_state === 'planning' ? (
-                      <div className="bg-yellow rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ">
+                      <div className="bg-yellow rounded-3xl sm:w-[50px] sm:h-[16px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white ">
                         예정된 여행
                       </div>
                     ) : plan.plan_state === 'traveling' ? (
-                      <div className="bg-blue rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                      <div className="bg-blue rounded-3xl sm:w-[50px] sm:h-[16.8px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white">
                         여행중
                       </div>
                     ) : (
-                      <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
+                      <div className="bg-orange rounded-3xl sm:w-[50px] sm:h-[16.8px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white">
                         다녀온 여행
                       </div>
                     )}
                   </div>
-                  <div className="text-gray_dark_1 text-lg mt-[8px]">
+                  <div className="text-gray_dark_1 sm:text-[10px] sm:mt-[4px] md:text-lg md:mt-[8px]">
                     {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                     {plan.dates.length}일
                   </div>

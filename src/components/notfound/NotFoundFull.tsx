@@ -19,7 +19,7 @@ const NotFoundFull = () => {
   }, []);
 
   return (
-    <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/108923582/6dfbe6cc-cbf0-4f65-aff8-053421d98a86)] bg-no-repeat bg-center min-h-screen bg-80% flex flex-col items-center justify-center ">
+    <div className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/108923582/6d291f12-a1df-4505-b3e1-4cb7b14baa51)] bg-no-repeat bg-center min-h-screen bg-80% flex flex-col items-center justify-center ">
       <div className="mt-[240px]">
         <h1 className="mb-4 font-semibold text-center text-gray_dark_2 text-xlg">
           저런.. 길을 잃으셨군요!

@@ -74,6 +74,7 @@ export const updatePin = async (newPin: PinType) => {
 };
 
 export const newDatePin = async (newPin: PinInsertType) => {
+  console.log('api', newPin);
   const { error } = await supabase.from('pins').insert(newPin);
 
   if (error !== null) {
@@ -89,6 +90,7 @@ export const getAllPins = async (planId: string, dates: string[]) => {
     .select('contents')
     .in('date', dates)
     .eq('plan_id', planId);
+
   if (error !== null) {
     throw new Error('핀 가져오기 에러발생');
   }

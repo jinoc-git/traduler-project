@@ -2,12 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getAllPinsDate, newDatePin } from '@api/pins';
+import { getAllPinsDate } from '@api/pins';
 import { getPlan, updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { type PinInsertType } from 'types/supabase';
 
 export interface PlanFormData {
   date: string | null;
@@ -77,14 +76,16 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       const dates = allPlanDates(startDate, endDate);
       const newDates = dates?.filter((date) => !dataPinDates?.includes(date));
       if (newDates.length !== 0 && state !== 'addPlan') {
-        newDates.forEach((date) => {
-          const newPin: PinInsertType = {
-            plan_id: planId,
-            contents: [],
-            date,
-          };
-          void newDatePin(newPin);
-        });
+        console.log('plans dates', dates);
+        console.log('new dates', newDates);
+        // newDates.forEach(async (date) => {
+        //   const newPin: PinInsertType = {
+        //     plan_id: planId,
+        //     contents: [],
+        //     date,
+        //   };
+        //   await newDatePin(newPin);
+        // });
       }
       if (state !== 'addPlan') {
         mutation.mutate([planId, dates]);

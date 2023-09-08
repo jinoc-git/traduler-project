@@ -16,7 +16,6 @@ interface addPlanObj {
 
 export const addPlan = async (addPlanObj: addPlanObj) => {
   const { newPlan, pins, invitedUser } = addPlanObj;
-  console.log('한번 나와야됨', newPlan);
 
   const plan: PlanType = { ...newPlan };
 
@@ -28,7 +27,6 @@ export const addPlan = async (addPlanObj: addPlanObj) => {
       contents: pins[i] as Json[],
       date: newPlan.dates[i],
     });
-    console.log('계획생성', newPlan.dates);
     if (errorPins != null) {
       console.log(`오류발생 ${i}번째 pin`, errorPins);
     }

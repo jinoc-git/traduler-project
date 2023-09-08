@@ -4,13 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { signInWithGoogle, signInWithSB } from '@api/supabaseAuth';
-import {
-  ic_google_1x,
-  ic_locked_default_1x,
-  ic_message_default_1x,
-  ic_visible_default_1x,
-  ic_visible_solid_1x,
-} from '@assets/icons/1x';
+import { ic_google_1x } from '@assets/icons/1x';
+import IconHidden from '@assets/icons/IconHidden';
+import IconLocked from '@assets/icons/IconLocked';
+import IconMessage from '@assets/icons/IconMessage';
+import IconVisible from '@assets/icons/IconVisible';
 import useFormValidator from '@hooks/useFormValidator';
 import { AuthError } from '@supabase/supabase-js';
 
@@ -66,12 +64,11 @@ const SignInForm = () => {
             로그인
           </h2>
           <div className="relative">
-            <label htmlFor="signin-email">
-              <img
-                src={ic_message_default_1x}
-                alt="이메일 아이콘"
-                className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
-              />
+            <label
+              htmlFor="signin-email"
+              className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+            >
+              <IconMessage w="12" h="12" />
             </label>
             <input
               type="text"
@@ -82,12 +79,11 @@ const SignInForm = () => {
             />
           </div>
           <div className="relative">
-            <label htmlFor="signin-password">
-              <img
-                src={ic_locked_default_1x}
-                alt="비밀번호 아이콘"
-                className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
-              />
+            <label
+              htmlFor="signin-password"
+              className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+            >
+              <IconLocked w="12" h="12" />
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
@@ -96,12 +92,17 @@ const SignInForm = () => {
               className="w-full h-[42px] px-8 rounded"
               placeholder="비밀번호를 입력하세요"
             />
-            <img
-              src={showPassword ? ic_visible_solid_1x : ic_visible_default_1x}
-              alt="비밀번호 보기 아이콘"
+            <button
+              type="button"
               onClick={onClickShowPassword}
-              className="absolute top-1/2 -translate-y-1/2 right-[10px] w-[14px] h-[14px] cursor-pointer"
-            />
+              className="absolute top-1/2 -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
+            >
+              {showPassword ? (
+                <IconVisible w="14" h="14" />
+              ) : (
+                <IconHidden w="14" h="14" />
+              )}
+            </button>
           </div>
           <div className="flex justify-between">
             <label className="text-sm text-slate-400 cursor-pointer flex items-center">

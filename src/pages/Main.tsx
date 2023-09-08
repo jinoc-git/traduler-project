@@ -17,9 +17,9 @@ const Main = () => {
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'md:w-[calc(100vw-270px)] md:ml-[270px] sm:ml-[20px]'
+            : 'md:w-[calc(100vw-88px)] md:ml-[88px] sm:ml-[20px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
       <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>

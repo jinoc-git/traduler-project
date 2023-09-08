@@ -6,6 +6,7 @@ import { newDatePin } from '@api/pins';
 import { getPlan, updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
+import { modifyStateStore } from '@store/modifyStateStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PinInsertType } from 'types/supabase';
 
@@ -16,11 +17,11 @@ export interface PlanFormData {
 interface PropsType {
   state?: string;
 }
-
 const PostPlan: React.FC<PropsType> = ({ state }) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const { setDates } = datesStore();
+  const setRequiredDates = modifyStateStore((state) => state.setRequiredDates);
   let dataDates: string[] = [];
   const { id } = useParams();
   const planId: string = id as string;
@@ -33,9 +34,11 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
   }
 
   const StartDateChangeHandler = (date: Date | null) => {
+    setRequiredDates('start');
     setStartDate(date);
   };
   const EndDateChangeHandler = (date: Date | null) => {
+    setRequiredDates('end');
     setEndDate(date);
   };
 

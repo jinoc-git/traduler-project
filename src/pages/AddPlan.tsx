@@ -37,8 +37,9 @@ const AddPlan = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<InputType>({ mode: 'onChange' });
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
   const queryClient = useQueryClient();
@@ -84,6 +85,7 @@ const AddPlan = () => {
     useHandlePage();
 
   useEffect(() => {
+    setFocus('title');
     return () => {
       resetDates();
     };
@@ -111,6 +113,7 @@ const AddPlan = () => {
       }`}
     >
       <Nav
+        isValid={isValid}
         page={'addPlan'}
         onClick={handleSubmit(submitPlan)}
         buttonDisabled={buttonDisabled}

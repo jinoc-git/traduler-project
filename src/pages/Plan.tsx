@@ -47,7 +47,7 @@ const Plan = () => {
     register,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<InputType>({
     mode: 'onChange',
   });
@@ -155,7 +155,7 @@ const Plan = () => {
           : 'w-[calc(100vw-88px)] ml-[88px]'
       }`}
     >
-      <Nav page={'plan'} onClick={handleSubmitButton} />
+      <Nav isValid={isValid} page={'plan'} onClick={handleSubmitButton} />
       <PlanLayout>
         <input
           value={title}

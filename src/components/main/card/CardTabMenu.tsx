@@ -37,7 +37,7 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
       </p>
       <span className="text-white"> | </span>
       <p
-        className={`cursor-pointer ml-[25px] text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
+        className={`cursor-pointer text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
           selectedPlan === 'planning' ? 'text-yellow_light_2' : 'text-white'
         }`}
         onClick={() => {

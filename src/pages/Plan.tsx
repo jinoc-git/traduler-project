@@ -19,24 +19,30 @@ import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-interface InputType {
-  totalCost?: number;
+export interface ModifyInputType {
+  title: string;
+  totalCost: number;
 }
 
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const user = userStore((state) => state.user);
   const resetDates = datesStore((state) => state.resetDates);
+
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
-  const { id } = useParams();
   const { confirm } = useConfirm();
+
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [title, setTitle] = useState<string>('');
+
   const [planState, setPlanState] = useState<string>();
   const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
   const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
+
   const isModifying = modifyState === 'modify';
-  const planId: string = id as string;
+
+  const planId = id as string;
+
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -44,11 +50,15 @@ const Plan = () => {
 
   const {
     register,
+    setFocus,
     watch,
     setValue,
     formState: { errors, isValid },
-  } = useForm<InputType>({
+  } = useForm<ModifyInputType>({
     mode: 'onChange',
+    defaultValues: {
+      'totalCost': 0
+    }
   });
 
   const { data, isLoading, isError } = useQuery(
@@ -62,7 +72,7 @@ const Plan = () => {
     } else {
       setModify();
     }
-    mutation.mutate([planId, title, watch('totalCost') as number]);
+    mutation.mutate([planId, watch('title'), watch('totalCost')]);
   };
 
   const handleChangePlanState = () => {
@@ -117,7 +127,7 @@ const Plan = () => {
 
   useEffect(() => {
     if (data?.[0] !== undefined) {
-      setTitle(data?.[0].title);
+      setValue('title', data?.[0].title);
       setValue('totalCost', data?.[0].total_cost);
       setPlanState(data[0].plan_state);
     }
@@ -159,13 +169,28 @@ const Plan = () => {
           : 'w-[calc(100vw-88px)] ml-[88px]'
       }`}
     >
-      <Nav isValid={isValid} page={'plan'} onClick={handleSubmitButton} />
+      <Nav
+        isValid={isValid}
+        page={'plan'}
+        onClick={handleSubmitButton}
+        modifyInputSetFocus={setFocus}
+        modifyInputWatch={watch}
+      />
       <PlanLayout>
         <input
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
+          id="title"
+          type="text"
+          {...register('title', {
+            required: '제목은 필수입니다.',
+            minLength: {
+              value: 2,
+              message: '제목은 2글자 이상이어야 합니다.',
+            },
+            maxLength: {
+              value: 10,
+              message: '제목은 10글자 이하여야 합니다.',
+            },
+          })}
           readOnly={modifyState === 'readOnly'}
           className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
         />

@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect } from 'react';
+import { type UseFormWatch, type UseFormSetFocus } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import IconEditDefault from '@assets/icons/IconEditDefault';
 import useConfirm from '@hooks/useConfirm';
+import usePlanValidate from '@hooks/usePlanValidate';
+import { type InputType } from '@pages/AddPlan';
+import { type ModifyInputType } from '@pages/Plan';
 import { modifyStateStore } from '@store/modifyStateStore';
 
 interface PropsType {
@@ -13,20 +17,39 @@ interface PropsType {
   page?: string;
   setIsModified?: React.Dispatch<React.SetStateAction<boolean>>;
   isValid: boolean;
+  addInputSetFocus?: UseFormSetFocus<InputType>;
+  addInputWatch?: UseFormWatch<InputType>;
+  modifyInputSetFocus?: UseFormSetFocus<ModifyInputType>;
+  modifyInputWatch?: UseFormWatch<ModifyInputType>;
 }
 
-const Nav = ({ onClick, isValid, page }: PropsType) => {
+const Nav: React.FC<PropsType> = (props) => {
+  const {
+    onClick,
+    page,
+    addInputSetFocus,
+    addInputWatch,
+    modifyInputSetFocus,
+    modifyInputWatch,
+  } = props;
+
   const { modifyState, setModify, setReadOnly, requiredDates } =
     modifyStateStore();
+
+  const { checkTitleAndCost } = usePlanValidate({
+    addInputSetFocus,
+    addInputWatch,
+    modifyInputSetFocus,
+    modifyInputWatch,
+  });
 
   const { confirm } = useConfirm();
   const { pathname } = useLocation();
 
   const handleButtonClick = () => {
-    if (!isValid) {
-      toast.error('제목과 예산을 입력해 주세요');
-      return;
-    }
+    const isTitleAndCostValid = checkTitleAndCost();
+    if (!isTitleAndCostValid) return;
+
     if (
       (!requiredDates.start || !requiredDates.end) &&
       pathname === '/addPlan'

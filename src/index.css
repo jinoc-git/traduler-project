@@ -48,7 +48,7 @@ body {
   width: 800px;
   margin: 0 auto;
 }
-@media all and (max-width: 1024px) {
+@media all and (max-width: 1110px) {
   .main-layout {
     width: 320px;
     margin: 0 auto;

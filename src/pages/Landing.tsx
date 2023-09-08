@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import IconMapDefault from '@assets/icons/IconMapDefault';
+import Footer from '@components/common/footer/Footer';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ const Landing = () => {
       >
         로그인하고 사용해보기
       </div>
+      <Footer />
     </div>
   );
 };

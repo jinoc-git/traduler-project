@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
+  CustomOverlayMap,
   Map,
   MapMarker,
   MapTypeControl,
@@ -82,20 +83,32 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                     onClick={() => {
                       toggleMarkerInfo(idx);
                     }}
-                    // onCreate={(target) => {
-                    //   console.log(target);
-                    //   target.
-                    // }}
-                  >
-                    {infoStates[idx] && (
-                      <div className="flex flex-col justify-center text-center text-gray_dark_1 translate-x-[44px]">
-                        <div>{pin?.placeName}</div>
+                  />
+                  {infoStates[idx] && (
+                    <CustomOverlayMap
+                      position={{
+                        lat: pin?.lat as number,
+                        lng: pin?.lng as number,
+                      }}
+                    >
+                      <div className="flex flex-col  text-gray_dark_1 bg-white w-[130px] p-2 rounded-lg border border-gray_dark_1 translate-y-[-72px]">
+                        <div className="flex items-center justify-between font-bold">
+                          <div className="w-[85px] truncate">
+                            {pin?.placeName}
+                          </div>
+                          <div
+                            onClick={() => toggleMarkerInfo(idx)}
+                            className="font-bold cursor-pointer "
+                          >
+                            X
+                          </div>
+                        </div>
                         <div>
                           <a
                             href={`https://map.kakao.com/link/map/${
                               pin?.placeName as string
                             },${pin?.lat as number},${pin?.lng as number}`}
-                            className="underline text-blue_dark underline-offset-1"
+                            className="text-left underline text-navy underline-offset-1"
                             target="_blank"
                             rel="noreferrer"
                           >
@@ -103,19 +116,8 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                           </a>
                         </div>
                       </div>
-                      // <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
-                      //   // 커스텀 오버레이가 표시될 위치입니다
-                      //   position={{
-                      //     lat: pin?.lat as number,
-                      //     lng: pin?.lng as number,
-                      //   }}
-                      //   onCreate={(target) => {
-                      //     const overlay = `<p>타이틀</p>`;
-                      //     console.log(target.setContent(overlay));
-                      //   }}
-                      // ></CustomOverlayMap>
-                    )}
-                  </MapMarker>
+                    </CustomOverlayMap>
+                  )}
                 </div>
               );
             })}

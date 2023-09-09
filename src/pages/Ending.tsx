@@ -93,7 +93,7 @@ const Ending = () => {
         </div>
         <EndingMap dates={dates as string[]} />
         <Carousel />
-        <PlaceList distance={distance as Json[]} />
+        <PlaceList />
         <TotalPay />
         <Comments />
       </div>

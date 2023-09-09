@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import {
+  DndProvider,
+  TouchTransition,
+  MouseTransition,
+} from 'react-dnd-multi-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
@@ -14,6 +19,23 @@ import { useQuery } from '@tanstack/react-query';
 import update from 'immutability-helper';
 
 import Pin from './Pin';
+
+const HTML5toTouch = {
+  backends: [
+    {
+      id: 'html5',
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      id: 'touch',
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 interface PropsType {
   currentPage: number;
@@ -91,7 +113,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           </div>
         </div>
       </div>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider options={HTML5toTouch}>
         <ul className="flex flex-col ">
           {pinArr.map((pin, idx) => {
             return (

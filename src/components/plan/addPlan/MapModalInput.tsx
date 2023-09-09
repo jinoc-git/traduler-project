@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-  type SubmitHandler,
-  type FieldErrors,
-  type UseFormRegister,
-} from 'react-hook-form';
+import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
+
+import _ from 'lodash';
 
 interface InputType {
   address?: string;
@@ -14,10 +12,12 @@ interface InputType {
 interface PropsType {
   register: UseFormRegister<InputType>;
   errors: FieldErrors<InputType>;
-  debouncedFunc: _.DebouncedFunc<SubmitHandler<InputType>>;
+  searchMap: (address: string) => void;
 }
 
-const MapModalInput = ({ register, errors, debouncedFunc }: PropsType) => {
+const MapModalInput = ({ register, errors, searchMap }: PropsType) => {
+  const debouncedSearchMap = _.debounce(searchMap, 500);
+
   return (
     <>
       <div className="text-[20px] font-bold mb-[-8px]">방문할 장소</div>
@@ -61,7 +61,9 @@ const MapModalInput = ({ register, errors, debouncedFunc }: PropsType) => {
               message: '모음, 자음 안됨',
             },
           })}
-          onChange={(e) => debouncedFunc({ address: e.target.value })}
+          onChange={(e) => {
+            debouncedSearchMap(e.target.value);
+          }}
           className="input-border"
         />
         <p>{errors?.address?.message}</p>

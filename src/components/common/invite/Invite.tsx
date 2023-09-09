@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import uuid from 'react-uuid';
 
 import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
@@ -62,33 +63,33 @@ const Invite = () => {
         </label>
         <div className="flex font-semibold text-normal text-gray-dark-1 space-x-3">
           {isOldInvitedUser ? (
-            oldInvitedUser.length > 0 ? (
+            oldInvitedUser.length > 0 && (
               <div className="flex space-x-1">
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                  <img
-                    key={user.id}
-                    src={
-                      user.avatar_url != null
-                        ? user.avatar_url
-                        : defaultImageGray
-                    }
-                    alt={`Avatar for ${user.nickname}`}
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                ))}
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
+                  return (
+                    <img
+                      key={uuid()}
+                      src={
+                        user.avatar_url != null
+                          ? user.avatar_url
+                          : defaultImageGray
+                      }
+                      alt="userAvatar"
+                      className="object-cover w-6 h-6 rounded-full"
+                    />
+                  );
+                })}
               </div>
-            ) : (
-              <div className="w-6 h-6 rounded-full bg-gray-light-3" />
             )
           ) : (
-            <>로딩중...</>
+            <div className="w-6 h-6 rounded-full bg-gray-light-3" />
           )}
-          {isOldInvitedUser &&
-            (oldInvitedUser.length > maxDisplayCount ? (
+          {isOldInvitedUser ? (
+            oldInvitedUser.length > maxDisplayCount ? (
               <>
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user, index) => (
                   <div
-                    key={user.id}
+                    key={uuid()}
                     className={`mr-${index === 0 ? '0' : '2'}px`}
                   >
                     {user.nickname}
@@ -105,7 +106,10 @@ const Invite = () => {
                   {user.nickname}&nbsp;
                 </div>
               ))
-            ))}
+            )
+          ) : (
+            <>로딩중...</>
+          )}
         </div>
         {modifyState === 'modify' && (
           <button

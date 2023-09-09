@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import uuid from 'react-uuid';
 
 import { findUsers, updateMates } from '@api/planMates';
 import IconVector from '@assets/icons/IconVector';
@@ -25,8 +27,9 @@ interface PropsType {
 const SearchPeople = ({ closeModal }: PropsType) => {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm<InputType>();
+  } = useForm<InputType>({ mode: 'onChange' });
   const [people, setPeople] = useState<UserType[]>([]);
   const { id: planId } = useParams();
   // 반응형 확인
@@ -34,6 +37,10 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   console.log(screenSize);
   // 유저 검색
   const searchUser: SubmitHandler<InputType> = async (data) => {
+    if (data.userInfo === '') {
+      setPeople([]);
+      return;
+    }
     const res = await findUsers(data.userInfo);
     if (res.nickname != null && res.email != null) {
       const searchedPeople: UserType[] = [];
@@ -43,6 +50,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           (user, idx) => searchedPeople[idx]?.id !== user?.id,
         ),
       );
+      console.log(searchedPeople);
       setPeople(searchedPeople);
     }
   };
@@ -106,52 +114,58 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
       <div className="p-6 mx-auto rounded-lg gap-10 w-modal h-modal_2 bg-gray_light_2 shadow-card ">
         <div className="flex flex-col items-start justify-end gap-2">
-          <p className="text-[gray_dark_1] text-xl  ">동행 초대하기</p>
+          <p className="text-lg font-bold text-navy">동행 초대하기</p>
           <p className="text-[gray] text-xl  ">
             이 여행에 함께할 친구를 초대해 보세요!
           </p>
         </div>
-        <label className="text-sm">초대된 사람</label>
-        <div className="overflow-scroll w-auth h-[126px] bg-white rounded-lg flex flex-col items-start space-y-2">
-          {invitedUser.length !== 0 &&
-            invitedUser.map((person, idx) => {
-              return (
-                <div key={person.email}>
-                  <UserList person={person} idx={idx} deleteUser={deleteUser} />
-                </div>
-              );
-            })}
+        <div>
+          <label className="text-sm">초대된 사람</label>
+          <div className="flex flex-col items-center overflow-scroll w-[450px] h-[126px] bg-white rounded-lg mt-3">
+            {invitedUser.length !== 0 &&
+              invitedUser.map((person, idx) => {
+                return (
+                  <div key={uuid()} className="w-[430px]">
+                    <UserList
+                      person={person}
+                      idx={idx}
+                      deleteUser={deleteUser}
+                    />
+                  </div>
+                );
+              })}
+          </div>
         </div>
         <div className="flex flex-col">
           <label className="text-sm">동행 찾기</label>
-          <div className="relative flex items-center">
-            <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
-              <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
-            </span>
-            <input
-              placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."
-              {...register('userInfo', {
-                required: '필수 입력값입니다.',
-                minLength: {
-                  value: 2,
-                  message: '2글자 이상 입력하세요.',
-                },
-                pattern: {
-                  value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                  message: '모음, 자음 안됨',
-                },
-              })}
-              onChange={(e) =>
-                debouncedSearchUser({ userInfo: e.target.value })
-              }
-              className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth"
-            />
-          </div>
-          <p>{errors?.userInfo?.message}</p>
+          <form onSubmit={handleSubmit(debouncedSearchUser)}>
+            <div className="relative flex items-center ">
+              <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
+                <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
+              </span>
+              <input
+                placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."
+                {...register('userInfo', {
+                  pattern: {
+                    value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                    message: '모음, 자음 안됨',
+                  },
+                })}
+                onChange={(e) => {
+                  const inputValue = e.target.value.trim();
+                  debouncedSearchUser({ userInfo: inputValue });
+                }}
+                className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth "
+              />
+            </div>
+            <p>{errors?.userInfo?.message}</p>
+          </form>
         </div>
-        <div className="overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3 flex flex-col gap-4">
+        <div className="flex flex-col items-center overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3">
           {people?.length === 0 && (
-            <div className="text-center">검색 결과가 없습니다.</div>
+            <div className="flex items-center justify-center text-center mt-[110px]">
+              검색 결과가 없습니다.
+            </div>
           )}
           {people
             .filter(
@@ -161,7 +175,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
             )
             .map((person: UserType, idx) => {
               return (
-                <div key={person.id}>
+                <div key={uuid()} className="w-[430px]">
                   <UserList
                     person={person}
                     idx={idx}

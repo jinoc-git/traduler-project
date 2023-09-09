@@ -11,14 +11,18 @@ import SideBarPlanList from '@components/common/sideBar/SideBarPlanList';
 import SideBarStatus from '@components/common/sideBar/SideBarStatus';
 import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
+import { screenStore } from '@store/screenStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
-  const { isSideBarOpen, isVisibleSideBar, toggleMenu } = sideBarStore();
+  const { isSideBarOpen, isVisibleSideBar, isVisibleIcon, toggleMenu } =
+    sideBarStore();
   const user = userStore((state) => state.user);
+  const screenSize = screenStore((state) => state.screenSize);
+  console.log(screenSize)
 
   const {
     value: bookMarkPlansOpen,
@@ -89,15 +93,17 @@ const SideBar: React.FC = () => {
 
   return (
     <>
-      <button
-        onClick={toggleSideBar}
-        className=" fixed top-[15px] left-[24px] flex-center w-[39px] h-[40px] z-[32]"
-      >
-        <img src={ic_new_menu_1x} alt="Menu Icon" />
-      </button>
+      {isVisibleIcon && (
+        <button
+          onClick={toggleSideBar}
+          className=" fixed top-[15px] left-[24px] flex-center w-[39px] h-[40px] z-[32]"
+        >
+          <img src={ic_new_menu_1x} alt="Menu Icon" />
+        </button>
+      )}
       {isVisibleSideBar ? (
         <aside
-          className={`hidden md:block fixed h-[100vh] w-[270px] border-r border-slate-300 rounded-r-[12px] md:px-[24px] z-[31] overflow-hidden bg-white transition-all duration-300 ease-in-out  ${
+          className={`fixed h-[100vh] w-[270px] border-r border-slate-300 rounded-r-[12px] md:px-[24px] z-[31] overflow-hidden bg-white transition-all duration-300 ease-in-out  ${
             isSideBarOpen ? 'w-[270px] ' : 'md:w-[88px] sm:w-[0px] sm:px-0'
           }`}
         >

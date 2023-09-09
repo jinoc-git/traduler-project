@@ -62,16 +62,28 @@ const AddPlanContents = ({
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+      <div
+        className="flex flex-col justify-center gap-5 
+        sm:w-[286px]
+        md:w-[700px]"
+      >
+        <div
+          className="flex items-center font-semibold text-gray_dark_1 gap-[8px]
+        sm:text-sm
+        md:text-normal md:my-[10px] "
+        >
           <IconLocationDefault w="20" h="20" />
-          <label>여행지역</label>
+          <label>여행 지역</label>
         </div>
         <MapPoly pins={pins[currentPage]} />
         <div className="flex flex-col justify-center">
-          <div className="flex items-center">
+          <div className="flex items-center  sm:mb-[30px]">
             <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
-            <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+            <div
+              className="w-full font-bold ml-[8px] mx-auto text-gray_dark_1 
+            sm:text-sm sm:py-0
+            md:text-normal md:py-[13px]"
+            >
               방문할 장소
             </div>
           </div>
@@ -89,12 +101,23 @@ const AddPlanContents = ({
             );
           })}
           {dates.length !== 0 && (
-            <div className="flex items-center justify-between my-[8px]">
-              <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
+            <div
+              className="flex items-center justify-between
+            sm:w-[286px]
+            md:w-[651px] md:mx-[25px] md:my-[8px]"
+            >
+              {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
+              <p
+                className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100% font-semibold text-white border-[5px] border-white 
+              sm:w-[30px] sm:h-[30px]
+              md:w-[35px] md:h-[35px]"
+              ></p>
               <button
                 type="button"
                 onClick={openModal}
-                className="w-pin_card h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1 hover:bg-navy_light_1 duration-200"
+                className="border border-dashed rounded-lg font-bold  text-gray_dark_1 hover:bg-navy_light_1 duration-200
+                sm:w-[240px] sm:h-[65px] sm:mr-[2px] sm:text-[11px]
+                md:w-pin_card md:h-pin_card md:text-[18px]"
               >
                 장소 추가하기
               </button>

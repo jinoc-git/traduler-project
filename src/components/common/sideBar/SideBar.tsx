@@ -11,7 +11,6 @@ import SideBarPlanList from '@components/common/sideBar/SideBarPlanList';
 import SideBarStatus from '@components/common/sideBar/SideBarStatus';
 import Loading from '@components/loading/Loading';
 import useBooleanState from '@hooks/useBooleanState';
-import { screenStore } from '@store/screenStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
@@ -21,8 +20,6 @@ const SideBar: React.FC = () => {
   const { isSideBarOpen, isVisibleSideBar, isVisibleIcon, toggleMenu } =
     sideBarStore();
   const user = userStore((state) => state.user);
-  const screenSize = screenStore((state) => state.screenSize);
-  console.log(screenSize)
 
   const {
     value: bookMarkPlansOpen,

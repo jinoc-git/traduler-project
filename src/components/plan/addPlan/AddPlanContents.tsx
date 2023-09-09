@@ -64,7 +64,11 @@ const AddPlanContents = ({
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-5">
+      <div
+        className="flex flex-col justify-center gap-5 
+      sm:w-[310px]
+      md:w-[700px]"
+      >
         <div
           className="flex items-center font-semibold text-gray_dark_1 gap-[8px]
         sm:text-sm sm:m

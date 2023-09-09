@@ -57,7 +57,7 @@ const SignInForm = () => {
 
   return (
     <main className="flex relative w-screen h-screen">
-      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/127144e1-d63a-44e5-8622-5d429cb86586)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
+      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/f89f7efe-d6da-45fb-b469-3c96f8ce5840)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
       <div className="flex items-center justify-center flex-grow">
         <form
           onSubmit={handleSubmit(onSubmitSignInHandler)}
@@ -147,7 +147,7 @@ const SignInForm = () => {
               <span>구글 계정으로 로그인 하기</span>
             </div>
           </button>
-          <p className="absolute bottom-[15px] left-1/2 -translate-x-1/2 text-sm ">
+          <p className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 text-sm ">
             처음이신가요?
             <span
               onClick={goToSignUp}

@@ -147,7 +147,7 @@ const SignInForm = () => {
               <span>구글 계정으로 로그인 하기</span>
             </div>
           </button>
-          <p className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 text-sm ">
+          <p className="absolute bottom-[15px] left-1/2 -translate-x-1/2 text-sm ">
             처음이신가요?
             <span
               onClick={goToSignUp}

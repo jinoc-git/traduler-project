@@ -19,12 +19,16 @@ interface PropsType {
   state?: string;
 }
 const PostPlan: React.FC<PropsType> = ({ state }) => {
+  const { id } = useParams();
+
   const { setDates } = datesStore();
+  const setRequiredDates = modifyStateStore((state) => state.setRequiredDates);
+  
   let dataPinDates: string[] = [];
   let dataPlanDates: string[] = [];
-  const setRequiredDates = modifyStateStore((state) => state.setRequiredDates);
-  const { id } = useParams();
   const planId: string = id as string;
+  
+
   if (state !== 'addPlan') {
     if (planId !== undefined) {
       const { data } = useQuery(
@@ -39,6 +43,7 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       dataPlanDates = plan?.[0].dates as string[];
     }
   }
+  
   const planStartDate = new Date(dataPlanDates?.[0]);
   const planEndDate = new Date(dataPlanDates?.[dataPlanDates.length - 1]);
   const [startDate, setStartDate] = useState<Date | null>(

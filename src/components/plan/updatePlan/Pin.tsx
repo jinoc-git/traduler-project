@@ -100,7 +100,11 @@ const Pin = (props: PinProps) => {
         isEnding={false}
       >
         <button ref={dragRef} className="flex-center w-[50px] m-3">
+          {/* {isDragging ? ( */}
+          {/* <IconDrag w="w-[25px]" h="h-[29px]" /> */}
+          {/* ) : ( */}
           <IconSixDots w="w-[25px]" h="h-[29px]" fill="orange" />
+          {/* )} */}
         </button>
       </PinLayout>
     </li>

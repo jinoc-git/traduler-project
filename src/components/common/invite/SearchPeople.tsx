@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import uuid from 'react-uuid';
 
 import { findUsers, updateMates } from '@api/planMates';
 import IconVector from '@assets/icons/IconVector';
@@ -113,7 +114,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           {invitedUser.length !== 0 &&
             invitedUser.map((person, idx) => {
               return (
-                <div key={person.email}>
+                <div key={uuid()}>
                   <UserList person={person} idx={idx} deleteUser={deleteUser} />
                 </div>
               );
@@ -158,7 +159,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
             )
             .map((person: UserType, idx) => {
               return (
-                <div key={person.id}>
+                <div key={uuid()}>
                   <UserList
                     person={person}
                     idx={idx}

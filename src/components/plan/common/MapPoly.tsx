@@ -27,7 +27,7 @@ const MapPoly = ({ pins }: PropsType) => {
               ? (pins[0].lng as number)
               : 126.978652258309,
         }}
-        level={3}
+        level={4}
         style={{
           width: '95vw',
           height: '400px',

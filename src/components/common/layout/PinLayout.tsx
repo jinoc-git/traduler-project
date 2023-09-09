@@ -4,7 +4,6 @@ import React, { type ReactNode } from 'react';
 import { type PinContentsType } from '@api/pins';
 import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
-import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
   pin: PinContentsType | [];
@@ -72,14 +71,17 @@ const PinLayout = ({
           {pin !== null && typeof pin === 'object' && 'placeName' in pin && (
             <span className="font-bold">{pin.placeName}</span>
           )}
-          {pin !== null && typeof pin === 'object' && 'cost' in pin && (
+          {pin !== null && typeof pin === 'object' && 'address' in pin && (
+            <span>{pin.address}</span>
+          )}
+          {/* {pin !== null && typeof pin === 'object' && 'cost' in pin && (
             <span>
               ￦
               {pin.cost !== null && pin.cost !== undefined
                 ? formatNumberWithCommas(pin.cost)
                 : ''}
             </span>
-          )}
+          )} */}
         </div>
         {!isEnding && updatePin && deletePin && (
           <DropDown>

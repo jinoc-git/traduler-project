@@ -6,6 +6,7 @@ import {
   Polyline,
   ZoomControl,
 } from 'react-kakao-maps-sdk';
+import uuid from 'react-uuid';
 
 import { type PinContentsType } from '@api/pins';
 import { screenStore } from '@store/screenStore';
@@ -59,13 +60,13 @@ const MapPoly = ({ pins }: PropsType) => {
               ? (pins[0].lng as number)
               : 126.978652258309,
         }}
-        level={3}
+        level={4}
         style={style}
       >
         {pins?.map((pin) => {
           return (
             <MapMarker
-              key={pin.lng}
+              key={uuid()}
               position={{
                 lat: pin?.lat as number,
                 lng: pin?.lng as number,

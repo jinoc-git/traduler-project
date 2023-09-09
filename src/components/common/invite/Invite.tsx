@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import uuid from 'react-uuid';
 
 import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
@@ -76,11 +77,11 @@ const Invite = () => {
         </div>
         {isOldInvitedUser ? (
           oldInvitedUser.length > 0 && (
-            <div className="flex mr-3 ">
+            <div className="flex mr-3">
               {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                 return (
                   <img
-                    key={user.id}
+                    key={uuid()}
                     src={
                       user.avatar_url != null
                         ? user.avatar_url
@@ -88,7 +89,7 @@ const Invite = () => {
                     }
                     className="object-cover rounded-full
                       sm:w-[16px] sm:h-[16px]
-                      md:w-6 md:h-6 "
+                      md:w-6 md:h-6"
                   />
                 );
               })}
@@ -101,7 +102,11 @@ const Invite = () => {
           oldInvitedUser.length > maxDisplayCount ? (
             <>
               {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                <div key={user.id} className="mr-[2px]">
+                <div
+                  key={uuid()}
+                  className="mr-[2px] 
+                  sm:text-sm sm:font-semibold sm:text-gray_dark_1"
+                >
                   {user.nickname}
                 </div>
               ))}
@@ -109,10 +114,7 @@ const Invite = () => {
             </>
           ) : (
             oldInvitedUser.map((user) => (
-              <div
-                key={user.id}
-                className="mr-[2px] sm:text-sm sm:font-semibold sm:text-gray_dark_1"
-              >
+              <div key={user.id} className="mr-[2px]">
                 {user.nickname}&nbsp;
               </div>
             ))
@@ -125,8 +127,8 @@ const Invite = () => {
         <div className="sm:flex sm:justify-end sm:h-[30px]">
           {modifyState === 'modify' && (
             <button
-              className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 hover:bg-navy_dark hover:text-white duration-200
-          sm:w-[40px] sm:h-[28px]
+              className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200
+            sm:w-[40px] sm:h-[28px]
             md:w-[45px] md:h-[30px]"
               onClick={switchModal}
             >

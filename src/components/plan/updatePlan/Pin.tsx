@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
 import React, { useRef } from 'react';
-import { type XYCoord, useDrag, useDrop } from 'react-dnd';
+import { type XYCoord, useDrop, useDrag } from 'react-dnd';
 
 import { type PinContentsType } from '@api/pins';
 import IconSixDots from '@assets/icons/IconSixDots';
@@ -63,14 +63,13 @@ const Pin = (props: PinProps) => {
 
       movePins(dragIndex, hoverIndex);
 
-      item.idx = idx; // 미리 바꿔줌
+      item.idx = idx;
     },
   });
 
   const [{ isDragging }, dragRef, previewRef] = useDrag({
     type: 'pin',
     item: () => {
-      console.log('item =>', id, idx);
       return { id, idx };
     },
     collect: (moniter) => ({
@@ -86,11 +85,12 @@ const Pin = (props: PinProps) => {
   });
 
   drop(previewRef(dragBoxRef));
+
   return (
     <li
       ref={dragBoxRef}
       data-handler-id={handlerId}
-      className={`transition-all ${isDragging ? 'opacity-0' : 'opacity-100'}`}
+      className={`transition-all ${isDragging ? 'opacity-30' : 'opacity-100'}`}
     >
       <PinLayout
         pin={pin}

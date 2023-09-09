@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
@@ -9,7 +8,6 @@ import MapModalLayout from '@components/plan/addPlan/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-import _ from 'lodash';
 
 interface InputType {
   address?: string;
@@ -29,24 +27,19 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
     lat: pin !== null ? (pin.lat as number) : 0,
     lng: pin !== null ? (pin.lng as number) : 0,
   });
+  const [address, setAddress] = useState<string>('');
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({
+    mode: 'onChange',
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
       cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
-
-  const onSubmit: SubmitHandler<InputType> = (data) => {
-    if (data.address != null) {
-      searchMap(data.address);
-    }
-  };
-  const debouncedSearchMap = _.debounce(onSubmit, 300);
 
   const { confirm } = useConfirm();
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
@@ -56,6 +49,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       lng: position.lng,
       placeName: data.placeName as string,
       cost: data.cost as number,
+      address,
     };
     // 수정하기 시
     if (pin !== null) {
@@ -135,13 +129,14 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
       <MapModalInput
         register={register}
         errors={errors}
-        debouncedFunc={debouncedSearchMap}
+        searchMap={searchMap}
       />
       <MapNonePoly
         pin={pin}
         setMap={setMap}
         position={position}
         setPosition={setPosition}
+        setAddress={setAddress}
       />
       <form
         onSubmit={handleSubmit(onSubmitPlaceName)}

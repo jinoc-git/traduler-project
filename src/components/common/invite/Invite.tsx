@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import uuid from 'react-uuid';
 
 import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
@@ -69,7 +70,7 @@ const Invite = () => {
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                   return (
                     <img
-                      key={user.id}
+                      key={uuid()}
                       src={
                         user.avatar_url != null
                           ? user.avatar_url
@@ -88,7 +89,7 @@ const Invite = () => {
             oldInvitedUser.length > maxDisplayCount ? (
               <>
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                  <div key={user.id} className="mr-[2px]">
+                  <div key={uuid()} className="mr-[2px]">
                     {user.nickname}
                   </div>
                 ))}

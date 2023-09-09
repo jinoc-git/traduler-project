@@ -18,14 +18,14 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
       <div className="flex items-center justify-start gap-3 my-2 ml-5">
         {typeof person.avatar_url === 'string' ? (
           <img
-            className="object-cover rounded-full w-9 h-9"
+            className="object-cover rounded-full w-[45px] h-[45px]"
             src={person.avatar_url}
             alt={`Avatar for ${person.nickname}`}
           />
         ) : (
           <img
             src={defaultImageGray}
-            className="object-cover rounded-full w-9 h-9"
+            className="object-cover rounded-full w-[45px] h-[45px]"
           />
         )}
         <div>
@@ -35,7 +35,7 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
       </div>
       {user?.id !== person.id && (
         <button
-          className="w-12 border rounded-lg cursor-pointer h-7 text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white"
+          className="w-[45px] h-[30px] border rounded-lg cursor-pointer text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white text-xs font-semibold"
           onClick={
             handleInvite != null
               ? async () => {

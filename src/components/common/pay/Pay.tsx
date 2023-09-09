@@ -19,13 +19,15 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
 
   return (
     <PayLayout>
-      <div className="flex items-center">
+      <div className="flex items-center sm:h-[27px]">
         <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
-        <p className=" mr-[51px] ml-[8px]">전체 예산</p>
+        <p className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] md:mr-[51px] md:ml-[8px]">
+          전체 예산
+        </p>
         {modifyState === 'readOnly' ? (
           <p
             id="totalCost"
-            className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
+            className="text-[14px] font-bold border rounded-lg px-[16px] outline-none w-[150px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
           >
             {total_Cost !== undefined
               ? formatNumberWithCommas(total_Cost) + ' 원'

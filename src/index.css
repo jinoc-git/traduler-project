@@ -61,6 +61,20 @@ body {
     width: 320px;
     margin: 0 auto;
   }
+  .sidebar-open {
+    width: calc(100vw-270px);
+    margin-left: 270px;
+  }
+
+  .sidebar-close {
+    /* width: calc(100vw-88px); */
+    margin-left: 25px;
+  }
+
+  .sidebar-none {
+    width: 100vw;
+    margin-left: 25px;
+  }
 }
 
 .flex-center {
@@ -88,6 +102,20 @@ body {
 .sidebar-none {
   width: 100vw;
   margin-left: 0;
+}
+@media all and (max-width: 1110px) {
+  .sidebar-open {
+    width: calc(100vw-270px);
+    margin-left: 270px;
+  }
+
+  .sidebar-close {
+    margin-left: 25px;
+  }
+
+  .sidebar-none {
+    margin-left: 25px;
+  }
 }
 
 h2 {

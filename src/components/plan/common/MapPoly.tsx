@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Map,
   MapMarker,
@@ -9,14 +9,46 @@ import {
 import uuid from 'react-uuid';
 
 import { type PinContentsType } from '@api/pins';
+import { screenStore } from '@store/screenStore';
 
 interface PropsType {
   pins: PinContentsType[];
 }
 
 const MapPoly = ({ pins }: PropsType) => {
+  const screenSize = screenStore((state) => state.screenSize);
+  const [style, setStyle] = useState({
+    width: '95vw',
+    height: '400px',
+    borderRadius: '8px',
+  });
+
+  useEffect(() => {
+    if (screenSize === 'sm') {
+      setStyle({
+        width: '263px',
+        height: '227px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'md') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'lg') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+  }, [screenSize]);
+
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center sm:w-[310px] sm:ml-0 md:w-[650px] md:ml-[25px]">
       <Map
         center={{
           lat:
@@ -29,11 +61,7 @@ const MapPoly = ({ pins }: PropsType) => {
               : 126.978652258309,
         }}
         level={4}
-        style={{
-          width: '95vw',
-          height: '400px',
-          borderRadius: '8px',
-        }}
+        style={style}
       >
         {pins?.map((pin) => {
           return (

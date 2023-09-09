@@ -55,59 +55,61 @@ const Invite = () => {
 
   return (
     <>
-      <div className="flex items-center h-[30px] my-[10px]">
-        <div className="flex items-center gap-2">
-          <IconFriends w="20" h="15" fill="#4E4F54" />
-          <label className="font-semibold text-normal text-gray_dark_1 mr-[80px]">
-            동행
-          </label>
-        </div>
-        <div className="flex font-semibold text-normal text-gray_dark_1">
+      <div className="flex items-center space-x-2 h-[30px] my-[10px]">
+        <IconFriends w="w-[20px]" h="h-[15px]" fill="#4E4F54" />
+        <label className="font-semibold text-normal text-gray-dark-1">
+          동행
+        </label>
+        <div className="flex font-semibold text-normal text-gray-dark-1 space-x-3">
           {isOldInvitedUser ? (
-            oldInvitedUser.length > 0 && (
-              <div className="flex mr-3">
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
-                  return (
-                    <img
-                      key={user.id}
-                      src={
-                        user.avatar_url != null
-                          ? user.avatar_url
-                          : defaultImageGray
-                      }
-                      className="object-cover w-6 h-6 rounded-full"
-                    />
-                  );
-                })}
+            oldInvitedUser.length > 0 ? (
+              <div className="flex space-x-1">
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
+                  <img
+                    key={user.id}
+                    src={
+                      user.avatar_url != null
+                        ? user.avatar_url
+                        : defaultImageGray
+                    }
+                    alt={`Avatar for ${user.nickname}`}
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                ))}
               </div>
+            ) : (
+              <div className="w-6 h-6 rounded-full bg-gray-light-3" />
             )
           ) : (
-            <div className="w-6 h-6 mr-5 rounded-full bg-gray_light_3" />
+            <>로딩중...</>
           )}
-          {isOldInvitedUser ? (
-            oldInvitedUser.length > maxDisplayCount ? (
+          {isOldInvitedUser &&
+            (oldInvitedUser.length > maxDisplayCount ? (
               <>
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                  <div key={user.id} className="mr-[2px]">
+                {oldInvitedUser.slice(0, maxDisplayCount).map((user, index) => (
+                  <div
+                    key={user.id}
+                    className={`mr-${index === 0 ? '0' : '2'}px`}
+                  >
                     {user.nickname}
                   </div>
                 ))}
                 외 {oldInvitedUser.length - maxDisplayCount}명
               </>
             ) : (
-              oldInvitedUser.map((user) => (
-                <div key={user.id} className="mr-[2px]">
+              oldInvitedUser.map((user, index) => (
+                <div
+                  key={user.id}
+                  className={`mr-${index === 0 ? '0' : '2'}px`}
+                >
                   {user.nickname}&nbsp;
                 </div>
               ))
-            )
-          ) : (
-            <>로딩중...</>
-          )}
+            ))}
         </div>
         {modifyState === 'modify' && (
           <button
-            className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200"
+            className="border border-gray rounded-md text-xs p-1 ml-2 font-bold text-gray-dark-1 w-20 h-10 hover:bg-navy-dark hover:text-white duration-200"
             onClick={switchModal}
           >
             추가
@@ -115,7 +117,7 @@ const Invite = () => {
         )}
       </div>
       {isOpen && (
-        <div className="absolute inset-0 z-40 w-full h-full bg-black/20">
+        <div className="fixed inset-0 z-40 h-screen bg-black/20">
           <SearchPeople closeModal={closeModal} />
         </div>
       )}

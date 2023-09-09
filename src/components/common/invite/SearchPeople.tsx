@@ -9,6 +9,7 @@ import IconVector from '@assets/icons/IconVector';
 import UserList from '@components/common/invite/UserList';
 import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
+import { screenStore } from '@store/screenStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
@@ -28,7 +29,9 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   } = useForm<InputType>();
   const [people, setPeople] = useState<UserType[]>([]);
   const { id: planId } = useParams();
-
+  // 반응형 확인
+  const screenSize = screenStore((state) => state.screenSize);
+  console.log(screenSize);
   // 유저 검색
   const searchUser: SubmitHandler<InputType> = async (data) => {
     const res = await findUsers(data.userInfo);
@@ -101,7 +104,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
 
   return (
     <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
-      <div className="p-6 mx-auto rounded-lg w-modal h-modal_2 bg-gray_light_2 shadow-card">
+      <div className="p-6 mx-auto rounded-lg gap-10 w-modal h-modal_2 bg-gray_light_2 shadow-card ">
         <div className="flex flex-col items-start justify-end gap-2">
           <p className="text-[gray_dark_1] text-xl  ">동행 초대하기</p>
           <p className="text-[gray] text-xl  ">
@@ -109,7 +112,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           </p>
         </div>
         <label className="text-sm">초대된 사람</label>
-        <div className="overflow-scroll w-auth h-[120px] bg-white rounded-lg ">
+        <div className="overflow-scroll w-auth h-[126px] bg-white rounded-lg flex flex-col items-start space-y-2">
           {invitedUser.length !== 0 &&
             invitedUser.map((person, idx) => {
               return (
@@ -121,7 +124,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
         </div>
         <div className="flex flex-col">
           <label className="text-sm">동행 찾기</label>
-          <div className="relative flex items-center ">
+          <div className="relative flex items-center">
             <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
               <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
             </span>
@@ -141,12 +144,12 @@ const SearchPeople = ({ closeModal }: PropsType) => {
               onChange={(e) =>
                 debouncedSearchUser({ userInfo: e.target.value })
               }
-              className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth "
+              className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth"
             />
           </div>
           <p>{errors?.userInfo?.message}</p>
         </div>
-        <div className="overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3">
+        <div className="overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3 flex flex-col gap-4">
           {people?.length === 0 && (
             <div className="text-center">검색 결과가 없습니다.</div>
           )}
@@ -168,7 +171,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
               );
             })}
         </div>
-        <div className="flex items-center justify-center mt-10 space-x-4">
+        <div className="flex items-center justify-center mt-auto space-x-4">
           <button
             onClick={closeModal}
             className="w-[12.5rem] h-[2.75rem] border-navy rounded-lg bg-white text-navy hover:bg-navy_light_1 hover:text-black hover:border-navy_light_3"

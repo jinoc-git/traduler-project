@@ -10,7 +10,7 @@ const IconCalendarDefault = ({ w, h, fill }: IconType) => {
       viewBox={`0 0 24 24`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${w} ${h}`}
+      className={`sm:w-[18px] sm:h-[18px] md:${w} md:${h}`}
     >
       <path
         d="M8 0V2H16V0H18V2H24V24H0V2H6V0H8ZM22 8H2V22H22V8ZM18 4H16V6H18V4ZM8 4H6V6H8V4Z"

@@ -72,8 +72,8 @@ const Ending = () => {
       className={`transition-all duration-300 ease-in-out pt-[50px] flex-col flex-center ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
+            ? 'sidebar-open'
+            : 'sidebar-close'
           : 'w-[calc(100vw)] ml-0'
       }`}
     >

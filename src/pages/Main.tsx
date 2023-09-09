@@ -17,8 +17,8 @@ const Main = () => {
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'md:w-[calc(100vw-270px)] md:ml-[270px] sm:ml-[20px]'
-            : 'md:w-[calc(100vw-88px)] md:ml-[88px] sm:ml-[20px]'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[20px]'
           : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >

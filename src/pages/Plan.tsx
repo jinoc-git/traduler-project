@@ -57,8 +57,8 @@ const Plan = () => {
   } = useForm<ModifyInputType>({
     mode: 'onChange',
     defaultValues: {
-      'totalCost': 0
-    }
+      totalCost: 0,
+    },
   });
 
   const { data, isLoading, isError } = useQuery(
@@ -164,9 +164,7 @@ const Plan = () => {
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
-        isSideBarOpen
-          ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-88px)] ml-[88px]'
+        isSideBarOpen ? 'sidebar-open ml-[270px]' : 'sidebar-close ml-[88px]'
       }`}
     >
       <Nav

@@ -57,7 +57,7 @@ const Invite = () => {
     <>
       <div
         className="flex items-center justify-between
-      sm:w-[286px] sm:h-[17px] sm:mx-[6px]
+      sm:w-[286px] sm:mx-[6px]
       md:h-[30px] md:my-[10px]"
       >
         <div
@@ -68,8 +68,8 @@ const Invite = () => {
           <IconFriends w="20" h="15" fill="#4E4F54" />
           <label
             className="font-semibold  text-gray_dark_1 
-          sm:text-sm sm:w-[24px]
-          md:text-normal md:mr-[80px]"
+          sm:w-[24px] sm:text-sm
+          md:w-[30px] md:text-normal md:mr-[80px]"
           >
             동행
           </label>

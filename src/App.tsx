@@ -23,9 +23,9 @@ const App = () => {
         document.documentElement.clientWidth ||
         document.body.clientWidth;
 
-      if (screenWidth > 1440) setScreenSize('lg');
-      if (screenWidth > 1100) setScreenSize('md');
       if (screenWidth > 360) setScreenSize('sm');
+      if (screenWidth > 1100) setScreenSize('md');
+      if (screenWidth > 1440) setScreenSize('lg');
     }, 500);
 
     window.addEventListener('resize', resize);

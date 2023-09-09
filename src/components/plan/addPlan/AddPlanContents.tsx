@@ -65,9 +65,13 @@ const AddPlanContents = ({
   return (
     <>
       <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+        <div
+          className="flex items-center font-semibold text-gray_dark_1 gap-[8px]
+        sm:text-sm sm:m
+        md:text-normal md:my-[10px] "
+        >
           <IconLocationDefault w="20" h="20" />
-          <label>여행지역</label>
+          <label>여행 지역</label>
         </div>
         <MapPoly pins={pins[currentPage]} />
         <div className="flex flex-col justify-center">

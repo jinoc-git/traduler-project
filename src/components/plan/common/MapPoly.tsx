@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Map,
   MapMarker,
@@ -8,12 +8,44 @@ import {
 } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
+import { screenStore } from '@store/screenStore';
 
 interface PropsType {
   pins: PinContentsType[];
 }
 
 const MapPoly = ({ pins }: PropsType) => {
+  const screenSize = screenStore((state) => state.screenSize);
+  const [style, setStyle] = useState({
+    width: '95vw',
+    height: '400px',
+    borderRadius: '8px',
+  });
+
+  useEffect(() => {
+    if (screenSize === 'sm') {
+      setStyle({
+        width: '263px',
+        height: '227px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'md') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'lg') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+  }, [screenSize]);
+
   return (
     <div className="flex justify-center">
       <Map
@@ -28,11 +60,7 @@ const MapPoly = ({ pins }: PropsType) => {
               : 126.978652258309,
         }}
         level={3}
-        style={{
-          width: '95vw',
-          height: '400px',
-          borderRadius: '8px',
-        }}
+        style={style}
       >
         {pins?.map((pin) => {
           return (

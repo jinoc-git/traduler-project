@@ -36,10 +36,10 @@ const Calendar: React.FC<CalendarProps> = ({
     sm:w-[286px] sm:block sm:pt-[15px]
     md:w-[638px] md:py-[10px] md:pr-[62px] md:flex"
     >
-      <div className="sm:flex sm:mx-[6px] md:w-[280px]">
+      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
         <div
           className="flex items-center font-semibold text-gray_dark_1
-        sm:gap-[7px] sm:mr-[92px] sm:mb-[16px]
+        sm:gap-[7px] sm:mb-[16px]
         md:gap-2 md:mr-[46px]"
         >
           <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
@@ -69,10 +69,10 @@ const Calendar: React.FC<CalendarProps> = ({
           required
         />
       </div>
-      <div className="sm:flex sm:mx-[6px] md:w-[280px]">
+      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
         <div
           className="flex items-center font-semibold text-gray_dark_1
-        sm:gap-[7px] sm:mr-[92px] sm:mb-[16px]
+        sm:gap-[7px] sm:mb-[16px]
         md:gap-2 md:mr-[46px]"
         >
           <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />

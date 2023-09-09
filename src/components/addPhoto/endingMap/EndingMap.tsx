@@ -98,7 +98,7 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                           </div>
                           <div
                             onClick={() => toggleMarkerInfo(idx)}
-                            className="font-bold cursor-pointer "
+                            className="pl-3 font-bold cursor-pointer text-navy"
                           >
                             X
                           </div>

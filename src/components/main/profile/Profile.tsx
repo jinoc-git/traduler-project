@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import IconEditDefault from '@assets/icons/IconEditDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import EditProfileModal from '@components/main/profile/EditProfileModal';
 import { userStore } from '@store/userStore';
@@ -19,7 +20,7 @@ const Profile = () => {
       <div className="flex items-center gap-[40px] mt=[150px] main-layout">
         <div
           onClick={onClickOpenModalHandler}
-          className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer hover:opacity-60"
+          className=" relative w-[85px] h-[85px] rounded-full object-cover cursor-pointer hover:brightness-75"
         >
           {user !== null && typeof profileImg === 'string' ? (
             <img
@@ -29,6 +30,9 @@ const Profile = () => {
           ) : (
             <IconUserDefault w="w-[85px]" h="h-[85px]" />
           )}
+          <div className="absolute flex items-center justify-center top-[60px]  left-[60px]  w-[24px] h-[24px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
+            <IconEditDefault w="w-[14px]" h="h-[12px]" fill="gray" />
+          </div>
         </div>
         <p className="text-white text-base sm:text-[16px] md:text-xlg">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>

@@ -30,7 +30,6 @@ const MapNonePoly = ({
 }: PropsType) => {
   const geocoder = new kakao.maps.services.Geocoder();
   const searchAddr = (position: kakao.maps.LatLng) => {
-    console.log(position);
     const callback = (result: any) => {
       const RoadAddress = result[0]?.road_address?.address_name;
       const Address = result[0]?.address?.address_name;

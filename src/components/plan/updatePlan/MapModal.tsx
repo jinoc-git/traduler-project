@@ -101,7 +101,6 @@ const MapModal = ({
           updateMutation.mutate(newPin);
           openModal();
           resetPin();
-          console.log(newContents);
         }
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -120,7 +119,6 @@ const MapModal = ({
           };
           addMutation.mutate(newPin);
           openModal();
-          console.log(newContents);
         }
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -156,10 +154,6 @@ const MapModal = ({
     }
     return false;
   };
-
-  useEffect(() => {
-    console.log('address state', address);
-  }, [address]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';

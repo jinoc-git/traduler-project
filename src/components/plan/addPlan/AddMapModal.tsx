@@ -68,7 +68,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         });
         setIsOpenModal(false);
         resetPin();
-        console.log(newContents);
       };
       confirm.default(confTitle, confDesc, confFunc);
     }
@@ -87,7 +86,6 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         });
         setIsOpenModal(false);
         resetPin();
-        console.log(newContents);
       };
       confirm.default(confTitle, confDesc, confFunc);
     }

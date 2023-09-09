@@ -126,10 +126,7 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                   lng: pin.lng as number,
                 };
               })}
-              strokeWeight={5}
-              strokeColor={'#162F70'}
-              strokeOpacity={0.7}
-              strokeStyle={'solid'}
+              strokeOpacity={0}
               onCreate={(target) => {
                 const polyLength = target.getLength();
                 if (polyLength > 30000) {

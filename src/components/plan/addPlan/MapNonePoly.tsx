@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
@@ -19,6 +20,18 @@ interface PropsType {
 }
 
 const MapNonePoly = ({ pin, setMap, position, setPosition }: PropsType) => {
+  const [marker, setMarker] = useState<kakao.maps.Marker>();
+  const geocoder = new kakao.maps.services.Geocoder();
+  const searchAddr = (marker: kakao.maps.LatLng) => {
+    const callback = (result: any) => {
+      const RoadAddress = result[0]?.road_address?.address_name;
+      const Address = result[0]?.address?.address_name;
+      console.log(RoadAddress);
+      console.log(Address);
+    };
+    geocoder.coord2Address(marker.getLng(), marker.getLat(), callback);
+  };
+
   return (
     <div className="flex justify-center">
       <Map
@@ -38,6 +51,10 @@ const MapNonePoly = ({ pin, setMap, position, setPosition }: PropsType) => {
               lat: marker.getPosition().getLat(),
               lng: marker.getPosition().getLng(),
             });
+          }}
+          onCreate={(target) => {
+            setMarker(target);
+            searchAddr(target.getPosition());
           }}
         />
       </Map>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 /* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
@@ -102,6 +103,17 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                           </a>
                         </div>
                       </div>
+                      // <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
+                      //   // 커스텀 오버레이가 표시될 위치입니다
+                      //   position={{
+                      //     lat: pin?.lat as number,
+                      //     lng: pin?.lng as number,
+                      //   }}
+                      //   onCreate={(target) => {
+                      //     const overlay = `<p>타이틀</p>`;
+                      //     console.log(target.setContent(overlay));
+                      //   }}
+                      // ></CustomOverlayMap>
                     )}
                   </MapMarker>
                 </div>

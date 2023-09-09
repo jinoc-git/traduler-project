@@ -11,7 +11,6 @@ import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import _ from 'lodash';
 import { type PinInsertType, type Json } from 'types/supabase';
 
 interface InputType {
@@ -42,6 +41,7 @@ const MapModal = ({
     lat: pin !== null ? (pin.lat as number) : 0,
     lng: pin !== null ? (pin.lng as number) : 0,
   });
+  const [address, setAddress] = useState<string>('');
   const [map, setMap] = useState<any>();
   const {
     register,
@@ -70,14 +70,6 @@ const MapModal = ({
     });
   };
 
-  const onSubmit: SubmitHandler<InputType> = (data) => {
-    if (data.address != null) {
-      searchMap(data.address);
-    }
-  };
-
-  const debouncedSearchMap = _.debounce(onSubmit, 300);
-
   // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newObj: PinContentsType = {
@@ -86,6 +78,7 @@ const MapModal = ({
       lng: position.lng,
       placeName: data.placeName as string,
       cost: data.cost as number,
+      address,
     };
     // 수정하기 시
     if (pin !== null) {
@@ -108,6 +101,7 @@ const MapModal = ({
           updateMutation.mutate(newPin);
           openModal();
           resetPin();
+          console.log(newContents);
         }
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -126,6 +120,7 @@ const MapModal = ({
           };
           addMutation.mutate(newPin);
           openModal();
+          console.log(newContents);
         }
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -163,6 +158,10 @@ const MapModal = ({
   };
 
   useEffect(() => {
+    console.log('address state', address);
+  }, [address]);
+
+  useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = 'auto';
@@ -174,13 +173,14 @@ const MapModal = ({
       <MapModalInput
         register={register}
         errors={errors}
-        debouncedFunc={debouncedSearchMap}
+        searchMap={searchMap}
       />
       <MapNonePoly
         pin={pin}
         setMap={setMap}
         position={position}
         setPosition={setPosition}
+        setAddress={setAddress}
       />
       <form
         onSubmit={handleSubmit(onSubmitPlaceName)}

@@ -139,8 +139,8 @@ const AddPlan = () => {
               message: '제목은 2글자 이상이어야 합니다.',
             },
             maxLength: {
-              value: 10,
-              message: '제목은 10글자 이하여야 합니다.',
+              value: 12,
+              message: '제목은 12글자 이하여야 합니다.',
             },
           })}
           className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { getPlanEnding } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
-import Abcd from '@components/addPhoto/endingMap/Abcd';
 import EndingMap from '@components/addPhoto/endingMap/EndingMap';
 import EndingDate from '@components/common/date/EndingDate';
 import Invite from '@components/common/invite/Invite';
@@ -97,7 +96,6 @@ const Ending = () => {
         <PlaceList distance={distance as Json[]} />
         <TotalPay />
         <Comments />
-        <Abcd />
       </div>
     </main>
   );

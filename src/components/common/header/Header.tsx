@@ -15,7 +15,7 @@ const Header = () => {
   const user = userStore((state) => state.user);
   const isLogin = localStorage.getItem('isLogin');
 
-  const { isVisibleSideBar,setVisibilityIcon, isSideBarOpen, setMenuIsOpen, isNotFoundPage } =
+  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen, isNotFoundPage } =
     sideBarStore();
 
   const goToMain = () => {
@@ -25,7 +25,7 @@ const Header = () => {
       navigate('/');
     }
   };
-  console.log(isVisibleSideBar)
+
   useEffect(() => {
     authObserver();
     if (isLogin === 'false') {

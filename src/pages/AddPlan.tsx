@@ -114,7 +114,9 @@ const AddPlan = () => {
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
-        isSideBarOpen ? 'sidebar-open' : 'sidebar-close'
+        isSideBarOpen
+          ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+          : 'sidebar-close sm:ml-[20px]'
       }`}
     >
       <Nav

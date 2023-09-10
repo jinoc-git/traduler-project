@@ -77,7 +77,7 @@ const AddPlanContents = ({
         </div>
         <MapPoly pins={pins[currentPage]} />
         <div className="flex flex-col justify-center">
-          <div className="flex items-center  sm:mb-[30px]">
+          <div className="flex items-center sm:mt-[28px] sm:mb-[30px]">
             <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div
               className="w-full font-bold ml-[8px] mx-auto text-gray_dark_1 

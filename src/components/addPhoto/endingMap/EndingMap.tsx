@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getAllPins } from '@api/pins';
 import Loading from '@components/loading/Loading';
+import { screenStore } from '@store/screenStore';
 import { useQuery } from '@tanstack/react-query';
 
 const EndingMap = ({ dates }: { dates: string[] }) => {
@@ -28,6 +29,12 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
       return null;
     },
   });
+  const screenSize = screenStore((state) => state.screenSize);
+  const [style, setStyle] = useState({
+    width: '95vw',
+    height: '400px',
+    borderRadius: '8px',
+  });
   const [pins, setPins] = useState<PinContentsType[]>([]);
   const [infoStates, setInfoStates] = useState<boolean[]>([]);
   const [level, setLevel] = useState<number>(4);
@@ -37,6 +44,30 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
     newInfoStates[index] = !newInfoStates[index];
     setInfoStates(newInfoStates);
   };
+
+  useEffect(() => {
+    if (screenSize === 'sm') {
+      setStyle({
+        width: '263px',
+        height: '227px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'md') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+    if (screenSize === 'lg') {
+      setStyle({
+        width: '95vw',
+        height: '400px',
+        borderRadius: '8px',
+      });
+    }
+  }, [screenSize]);
 
   useEffect(() => {
     if (data !== undefined && data !== null) {
@@ -60,7 +91,11 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
   }
 
   return (
-    <div className="w-[720px] flex-center">
+    <div
+      className="flex justify-center 
+      sm:w-[263px] sm:ml-[23px]
+      md:w-[650px] md:ml-[25px]"
+    >
       {pins?.length !== 0 && (
         <>
           <Map
@@ -69,7 +104,7 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
               lng: pins?.[0].lng !== undefined ? pins[0].lng : 126.978652258309,
             }}
             level={level}
-            className="w-[95vw] h-[400px] rounded-lg"
+            className="w-[95vw] sm:h-[227px] md:h-[400px] rounded-lg"
           >
             {pins?.map((pin, idx) => {
               return (

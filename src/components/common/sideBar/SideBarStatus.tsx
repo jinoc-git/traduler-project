@@ -51,28 +51,36 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   }, [activePlan]);
 
   return (
-    <div className="flex flex-col items-center h-[202px] border-y-2 py-[12px] border-slate-200">
+    <div
+      className="flex flex-col items-center border-slate-200
+    sm:h-[234] sm:border-t-2 sm:py-[35px]
+    md:h-[202px] md:border-y-2 md:py-[12px] "
+    >
       <div
-        className={`flex items-center justify-between mb-[15px] transition-all duration-300 ease-in-out ${
-          isOpen ? 'w-[197px]' : 'w-[40px] flex-col'
+        className={`flex items-center justify-between transition-all duration-300 ease-in-out ${
+          isOpen
+            ? 'sm:w-[309px] sm:mb-[15px] md:w-[197px] md:mb-[15px]'
+            : ' md:w-[40px] md:mb-[15px] md:flex-col '
         }`}
       >
-        <span className=" text-sm">STATUS</span>
+        <span className=" text-xs">STATUS</span>
         <div
-          className={`flex-center rounded-[30px] text-sm text-white ${
-            isOpen ? 'w-[72.5px] h-[22px]' : 'w-[38px] h-[10px]'
+          className={`flex-center rounded-[30px] text-xs text-white ${
+            isOpen
+              ? 'sm:w-[72.5px] sm:h-[22px] md:w-[72.5px] h-[22px]'
+              : 'md:w-[38px] md:h-[10px]'
           } ${chipClassName[status]}`}
         >
           {isOpen && status}
         </div>
       </div>
       <div
-        className={`flex flex-col h-[125px] items-center ${
+        className={`flex flex-col items-center ${
           isOpen ? 'gap-2' : ''
         } rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'w-[197px] h-[125px] flex-center flex-col'
-            : 'w-[40px] h-[125px]'
+            ? 'flex-center flex-col sm:w-[308px] sm:h-[125px] md:w-[197px] md:h-[125px]'
+            : 'md:w-[40px] md:h-[125px]'
         } ${infoClassName[status]}`}
       >
         {/* 닫혔을 때 여행 중, 예정일 때 날짜 표시 */}
@@ -89,7 +97,9 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
         {status === '여행 중' && (
           <div
             className={`flex ${
-              isOpen ? 'flex-col gap-1' : ' flex-col-reverse gap-1'
+              isOpen
+                ? 'flex-col sm:gap- md:gap-1'
+                : ' md:flex-col-reverse gap-1'
             } items-center`}
           >
             <p

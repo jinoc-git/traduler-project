@@ -35,11 +35,15 @@ const Profile = () => {
               h="sm:h-[66px] md:h-[85px]"
             />
           )}
-          <div className="absolute flex items-center justify-center top-[60px]  left-[60px]  w-[24px] h-[24px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
+          <div
+            className="absolute flex items-center justify-center  rounded-full bg-white  border-gray cursor-pointer
+          sm:w-[20px] sm:h-[20px] sm:top-[46px] sm:left-[46px] sm:border-[1.5px]
+          md:w-[24px] md:h-[24px] md:top-[60px] md:left-[60px] md:border-[2px]"
+          >
             <IconEditDefault w="w-[14px]" h="h-[12px]" fill="gray" />
           </div>
         </div>
-        <p className="text-white text-base sm:text-[16px] md:text-xlg">
+        <p className="text-white text-base font-Regular sm:text-[16px] md:text-xlg">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>
             {user?.nickname}
           </span>

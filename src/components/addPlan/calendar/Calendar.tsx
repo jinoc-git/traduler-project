@@ -3,6 +3,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 
 import IconCalendarDefault from '@assets/icons/IconCalendarDefault';
 import { modifyStateStore } from '@store/modifyStateStore';
+import { screenStore } from '@store/screenStore';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -23,7 +24,7 @@ const Calendar: React.FC<CalendarProps> = ({
 }) => {
   const { modifyState, clearRequiredDates } = modifyStateStore();
   const today = new Date();
-
+  const screenSize = screenStore((state) => state.screenSize);
   useEffect(() => {
     return () => {
       clearRequiredDates();
@@ -67,6 +68,8 @@ const Calendar: React.FC<CalendarProps> = ({
           readOnly={modifyState === 'readOnly'}
           placeholderText="YYYY / MM / DD"
           required
+          withPortal={screenSize === 'sm'}
+          portalId="datepiker-portal"
         />
       </div>
       <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
@@ -97,6 +100,8 @@ const Calendar: React.FC<CalendarProps> = ({
           readOnly={modifyState === 'readOnly'}
           placeholderText="YYYY / MM / DD"
           required
+          withPortal={screenSize === 'sm'}
+          portalId="datepiker-portal"
         />
       </div>
     </div>

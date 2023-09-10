@@ -16,7 +16,7 @@ const IconChevronDown = ({ w, h, fill }: IconType) => {
         fillRule="evenodd"
         clipRule="evenodd"
         d="M12 14.615L20.8021 5L23 6.98416L12 19L1 6.98416L3.19786 5L12 14.615Z"
-        fill="black"
+        fill={fill ?? 'black'}
         stroke={fill ?? 'black'}
       />
     </svg>

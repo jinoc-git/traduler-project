@@ -53,17 +53,17 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   return (
     <div
       className="flex flex-col items-center border-slate-200
-    sm:h-[234] sm:border-t-2 sm:py-[35px]
+    sm:h-[234] sm:border-t-2 sm:py-[30px]
     md:h-[202px] md:border-y-2 md:py-[12px] "
     >
       <div
-        className={`flex items-center justify-between transition-all duration-300 ease-in-out ${
+        className={`flex items-center justify-between mb-[15px] transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'sm:w-[309px] sm:mb-[15px] md:w-[197px] md:mb-[15px]'
-            : ' md:w-[40px] md:mb-[15px] md:flex-col '
+            ? 'sm:w-[309px] md:w-[197px] '
+            : ' md:w-[40px] md:flex-col '
         }`}
       >
-        <span className=" text-xs">STATUS</span>
+        <span className="font-semibold text-xs text-gray_dark_1">STATUS</span>
         <div
           className={`flex-center rounded-[30px] text-xs text-white ${
             isOpen
@@ -79,8 +79,8 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
           isOpen ? 'gap-2' : ''
         } rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'flex-center flex-col sm:w-[308px] sm:h-[125px] md:w-[197px] md:h-[125px]'
-            : 'md:w-[40px] md:h-[125px]'
+            ? 'flex-center flex-col sm:w-[308px] sm:h-[125px] md:w-[197px] h-[125px]'
+            : 'md:w-[40px] h-[125px]'
         } ${infoClassName[status]}`}
       >
         {/* 닫혔을 때 여행 중, 예정일 때 날짜 표시 */}

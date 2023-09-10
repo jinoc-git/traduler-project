@@ -49,7 +49,10 @@ const Header = () => {
 
   return (
     <header
-      className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
+      className={`flex justify-between items-center fixed w-screen pr-3 z-30
+      sm: h-[89px] 
+      md:h-[70px]
+      ${
         pathname !== '/' && pathname !== '/signin' && pathname !== '/signup'
           ? user !== null
             ? 'bg-transparent'
@@ -57,12 +60,12 @@ const Header = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="flex items-center">
+      <div className="flex items-center ">
         <h1
           onClick={goToMain}
-          className=" ml-[88px] cursor-pointer 
-          sm:mt-[36px] 
-          md:mt-[0px]"
+          className=" cursor-pointer 
+          sm:mt-[0px] sm:ml-[20px]
+          md:mt-[0px] md:ml-[88px]"
         >
           {pathname === '/main' ? (
             isSideBarOpen ? (
@@ -72,20 +75,27 @@ const Header = () => {
                 className=" w-[134px] ml-[10px] "
               />
             ) : (
-              <img
-                src={logoWhite}
-                alt="로고"
-                className=" w-[134px] ml-[10px]"
-              />
+              <img src={logoWhite} alt="로고" className="w-[134px] ml-[10px]" />
             )
           ) : (
-            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+            <img
+              src={logoColor}
+              alt="로고"
+              className=" 
+            sm:w-[134px] sm:ml-[48px] 
+            md:w-[134px] md:ml-[10px]
+            "
+            />
           )}
         </h1>
       </div>
       {user !== null ? (
         pathname !== '/main' ? (
-          <div className="flex-center w-[70px] h-[50px]">
+          <div
+            className="flex-center w-[70px] h-[50px]
+          sm:mr-[16px] 
+          md:mr-0"
+          >
             {user.profileImg != null ? (
               <img
                 src={user.profileImg}
@@ -100,7 +110,11 @@ const Header = () => {
           </div>
         ) : null
       ) : pathname === '/' ? (
-        <div>
+        <div
+          className="flex 
+        sm:w-[147px] 
+        md:w-[300px]"
+        >
           <button
             onClick={() => {
               navigate('/signin');
@@ -113,7 +127,10 @@ const Header = () => {
             onClick={() => {
               navigate('/signup');
             }}
-            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            // className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''} ${
+              pathname === '/' ? 'sm:hidden md:block md:w-[147px]' : ''
+            }`}
           >
             회원가입
           </button>
@@ -123,7 +140,7 @@ const Header = () => {
           onClick={() => {
             navigate('/signup');
           }}
-          className="w-[147px]"
+          className="w-[147px] "
         >
           회원가입
         </button>

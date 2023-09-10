@@ -138,7 +138,7 @@ const Invite = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="absolute inset-0 z-40 w-full h-full bg-black/20">
+        <div className="fixed inset-0 z-40 w-screen h-screen bg-black/20">
           <SearchPeople closeModal={closeModal} />
         </div>
       )}

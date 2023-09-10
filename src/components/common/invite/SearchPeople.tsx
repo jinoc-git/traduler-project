@@ -111,8 +111,18 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   });
 
   return (
-    <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
-      <div className="p-6 mx-auto md:static sm:fixed sm:bottom-0  md:rounded-lg sm:rounded-t-lg md:w-modal sm:w-[360px] h-modal_2 md:bg-gray_light_2 sm:bg-bg_white md:shadow-card ">
+    <div
+      className="fixed top-0 left-0 z-50  w-screen h-screen
+    md:flex-center
+    sm:flex sm:items-end
+    "
+    >
+      <div
+        className="p-6 mx-auto  h-modal_2
+        md:rounded-lg md:w-modal md:bg-gray_light_2 md:shadow-card
+        sm:bottom-0 sm:rounded-t-lg  sm:w-[360px]  sm:bg-bg_white  
+        "
+      >
         <div className="flex flex-col items-start justify-end gap-2">
           <p className="text-lg font-bold text-navy">동행 초대하기</p>
           <p className="text-[gray] text-normal  ">

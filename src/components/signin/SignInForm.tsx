@@ -57,11 +57,17 @@ const SignInForm = () => {
 
   return (
     <main className="flex relative w-screen h-screen">
-      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/f89f7efe-d6da-45fb-b469-3c96f8ce5840)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
+      <div
+        className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/f89f7efe-d6da-45fb-b469-3c96f8ce5840)] bg-left bg-cover bg-no-repeat 
+        md:w-[880px]"
+      />
       <div className="flex items-center justify-center flex-grow">
         <form
           onSubmit={handleSubmit(onSubmitSignInHandler)}
-          className="relative flex flex-col w-[450px] h-[410px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
+          className="relative flex flex-col   gap-y-2.5 rounded-xl bg-[#F9F9FB]
+            md:w-[450px] md:h-[410px] md:px-[50px] md:py-[37px]
+            sm:px-[30px] sm:py-[22px]
+          "
         >
           <h2 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">
             로그인
@@ -147,11 +153,16 @@ const SignInForm = () => {
               <span>구글 계정으로 로그인 하기</span>
             </div>
           </button>
-          <p className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 text-sm ">
+          <p
+            className="absolute left-1/2 -translate-x-1/2 w-[190px] text-sm p-2 rounded-lg font-semibold text-gray_dark_1
+            md:bottom-[-50px] md:bg-white/20
+            sm:bottom-[-60px] sm:bg-white/50
+          "
+          >
             처음이신가요?
             <span
               onClick={goToSignUp}
-              className="ml-2 font-semibold underline cursor-pointer"
+              className="ml-2 underline text-black cursor-pointer "
             >
               지금 등록하세요!
             </span>

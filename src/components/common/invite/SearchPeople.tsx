@@ -112,92 +112,106 @@ const SearchPeople = ({ closeModal }: PropsType) => {
 
   return (
     <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full">
-      <div className="p-6 mx-auto rounded-lg gap-10 w-modal h-modal_2 bg-gray_light_2 shadow-card ">
+      <div className="p-6 mx-auto md:static sm:fixed sm:bottom-0  md:rounded-lg sm:rounded-t-lg md:w-modal sm:w-[360px] h-modal_2 md:bg-gray_light_2 sm:bg-white md:shadow-card ">
         <div className="flex flex-col items-start justify-end gap-2">
           <p className="text-lg font-bold text-navy">동행 초대하기</p>
-          <p className="text-[gray] text-xl  ">
+          <p className="text-[gray] text-normal  ">
             이 여행에 함께할 친구를 초대해 보세요!
           </p>
         </div>
-        <div>
-          <label className="text-sm">초대된 사람</label>
-          <div className="flex flex-col items-center overflow-scroll w-[450px] h-[126px] bg-white rounded-lg mt-3">
-            {invitedUser.length !== 0 &&
-              invitedUser.map((person, idx) => {
+        <div className="flex flex-col md:gap-[10px] sm:gap-[28px]">
+          {/* 초대한 사람 */}
+          <div>
+            <label className="text-gray-dark-1 font-inter font-bold md:text-xs sm:sm leading-[24px]">
+              초대한 사람 보기
+            </label>
+            <div className="flex flex-col items-center overflow-scroll md:w-[450px] sm:w-full h-[126px] bg-white rounded-lg ">
+              {invitedUser.length !== 0 &&
+                invitedUser.map((person, idx) => {
+                  return (
+                    <div key={uuid()} className="w-full ">
+                      <UserList
+                        person={person}
+                        idx={idx}
+                        deleteUser={deleteUser}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+          {/* 동행찾기 */}
+          <div className="flex flex-col">
+            <label className="text-gray-dark-1 font-inter font-bold md:text-xs sm:sm leading-[24px]">
+              동행 찾기
+            </label>
+            <form onSubmit={handleSubmit(debouncedSearchUser)}>
+              <div className="relative flex items-center ">
+                <span className="absolute ml-3 text-gray-400 focus-within:text-gray ">
+                  {screenSize === 'md' ? (
+                    <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
+                  ) : (
+                    <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
+                  )}
+                </span>
+                <input
+                  placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."
+                  {...register('userInfo', {
+                    pattern: {
+                      value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
+                      message: '모음, 자음 안됨',
+                    },
+                  })}
+                  onChange={(e) => {
+                    const inputValue = e.target.value.trim();
+                    debouncedSearchUser({ userInfo: inputValue });
+                  }}
+                  className="h-10 pl-10 pr-3 border border-none rounded-3xl w-auth md:text-sm sm:text-xs "
+                />
+              </div>
+              <p>{errors?.userInfo?.message}</p>
+            </form>
+          </div>
+          {/* 검색결과 */}
+          <div className="flex flex-col items-center overflow-scroll w-full md:h-[240px] sm:h-[240px] bg-white rounded-lg md:mt-3 sm:mt-0">
+            {people?.length === 0 && (
+              <div className="flex items-center justify-center text-center mt-[110px] md:text-normal sm:text-sm">
+                검색 결과가 없습니다.
+              </div>
+            )}
+            {people
+              .filter(
+                (person) =>
+                  invitedUser.filter((user) => user.id === person.id).length ===
+                  0,
+              )
+              .map((person: UserType, idx) => {
                 return (
-                  <div key={uuid()} className="w-[430px]">
+                  <div key={uuid()} className="w-full">
                     <UserList
                       person={person}
                       idx={idx}
-                      deleteUser={deleteUser}
+                      handleInvite={handleInvite}
                     />
                   </div>
                 );
               })}
           </div>
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm">동행 찾기</label>
-          <form onSubmit={handleSubmit(debouncedSearchUser)}>
-            <div className="relative flex items-center ">
-              <span className="absolute ml-3 text-gray-400 focus-within:text-gray">
-                <IconVector w="w-[20px]" h="h-[20px]" fill="#ACACAC" />
-              </span>
-              <input
-                placeholder="닉네임 또는 이메일 주소로 초대할 사람을 검색하세요."
-                {...register('userInfo', {
-                  pattern: {
-                    value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                    message: '모음, 자음 안됨',
-                  },
-                })}
-                onChange={(e) => {
-                  const inputValue = e.target.value.trim();
-                  debouncedSearchUser({ userInfo: inputValue });
-                }}
-                className="h-10 pl-10 pr-3 border border-none rounded-lg w-auth "
-              />
-            </div>
-            <p>{errors?.userInfo?.message}</p>
-          </form>
-        </div>
-        <div className="flex flex-col items-center overflow-scroll w-[450px] h-[240px] bg-white rounded-lg mt-3">
-          {people?.length === 0 && (
-            <div className="flex items-center justify-center text-center mt-[110px]">
-              검색 결과가 없습니다.
-            </div>
-          )}
-          {people
-            .filter(
-              (person) =>
-                invitedUser.filter((user) => user.id === person.id).length ===
-                0,
-            )
-            .map((person: UserType, idx) => {
-              return (
-                <div key={uuid()} className="w-[430px]">
-                  <UserList
-                    person={person}
-                    idx={idx}
-                    handleInvite={handleInvite}
-                  />
-                </div>
-              );
-            })}
-        </div>
-        <div className="flex items-center justify-center mt-auto space-x-4">
-          <button
-            onClick={closeModal}
-            className="w-[12.5rem] h-[2.75rem] border-navy rounded-lg bg-white text-navy hover:bg-navy_light_1 hover:text-black hover:border-navy_light_3"
-          >
-            취소
-          </button>
-          <button
-            onClick={inviteData}
-            className="bottom-0 mx-auto w-[12.5rem] h-[2.75rem] rounded-lg border-navy  bg-navy text-white hover:bg-navy_light_3 hover:gray_light_1"
-          >
-            저장
-          </button>
+          {/* 버튼 */}
+          <div className="flex items-center justify-center mt-auto space-x-4">
+            <button
+              onClick={closeModal}
+              className="md:w-[12.5rem] md:h-[2.75rem] sm:w-[150px] sm:h-[40px] rounded-lg border border-navy bg-white text-navy  hover:bg-navy_light_1 hover:text-navy_dark hover:border-navy_light_3"
+            >
+              취소
+            </button>
+            <button
+              onClick={inviteData}
+              className="md:w-[12.5rem] md:h-[2.75rem] sm:w-[150px] sm:h-[40px] bottom-0 mx-auto  rounded-lg border border-navy bg-navy text-white  hover:bg-navy_light_3 hover:border-bg-navy_light_3"
+            >
+              저장
+            </button>
+          </div>
         </div>
       </div>
     </div>

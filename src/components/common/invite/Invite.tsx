@@ -113,7 +113,7 @@ const Invite = () => {
         </div>
         {modifyState === 'modify' && (
           <button
-            className="border border-gray rounded-md text-xs p-1 ml-2 font-bold text-gray-dark-1 w-20 h-10 hover:bg-navy-dark hover:text-white duration-200"
+            className="border border-gray rounded-md text-xs p-1 ml-2 font-bold text-gray-dark-1 w-20 h-10 hover:bg-navy hover:text-white hover:border-navy_dark duration-200"
             onClick={switchModal}
           >
             추가

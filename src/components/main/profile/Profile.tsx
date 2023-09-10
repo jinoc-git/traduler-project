@@ -17,7 +17,11 @@ const Profile = () => {
 
   return (
     <section>
-      <div className="flex items-center sm:gap-[16px] md:gap-[40px] mt=[150px] main-layout">
+      <div
+        className="flex items-center main-layout mt=[150px]
+      sm:gap-[16px] 
+      md:gap-[40px]"
+      >
         <div
           onClick={onClickOpenModalHandler}
           className="relative rounded-full object-cover cursor-pointer hover:opacity-75
@@ -27,7 +31,9 @@ const Profile = () => {
           {user !== null && typeof profileImg === 'string' ? (
             <img
               src={profileImg}
-              className="sm:w-[66px] sm:h-[66px] md:w-[85px] md:h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer "
+              className="rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer
+              sm:w-[66px] sm:h-[66px]
+              md:w-[85px] md:h-[85px]"
             />
           ) : (
             <IconUserDefault

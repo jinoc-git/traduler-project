@@ -7,7 +7,7 @@ const IconAdd = ({ w, h, fill }: IconType) => {
     fill: 'group-hover:fill-[#1A68DB]',
     default: 'group-hover:fill-white',
   };
-  const fillValue: string = fill ?? 'black';
+  const fillValue: string = fill ?? '#969696';
 
   return (
     <svg

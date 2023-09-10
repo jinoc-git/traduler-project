@@ -13,10 +13,19 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
   const { selectedPlan, setSelectedPlan } = usePlanStore();
 
   return (
-    <div className="flex flex-center sm:gap-[10px] justify-center sm:w-[320px] md:w-[800px]">
+    <div
+      className="flex flex-center justify-center 
+    sm:gap-[10px] sm:w-[320px] 
+    md:w-[800px]"
+    >
       <p
-        className={`cursor-pointer  text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
-          selectedPlan === 'bookMark' ? 'text-yellow_light_2' : 'text-white'
+        className={`cursor-pointer text-white hover:text-yellow_light_2 
+        sm:text-[11px]
+        md:text-[16px]
+        ${
+          selectedPlan === 'bookMark'
+            ? 'text-yellow_light_2 font-SemiBold'
+            : 'text-white'
         }`}
         onClick={() => {
           setSelectedPlan('bookMark');
@@ -26,8 +35,13 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
       </p>
       <span className="text-white"> | </span>
       <p
-        className={`cursor-pointer text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
-          selectedPlan === 'traveling' ? 'text-yellow_light_2' : 'text-white'
+        className={`cursor-pointer text-white hover:text-yellow_light_2 
+        sm:text-[11px] 
+        md:text-[16px]
+        ${
+          selectedPlan === 'traveling'
+            ? 'text-yellow_light_2 font-SemiBold'
+            : 'text-white'
         }`}
         onClick={() => {
           setSelectedPlan('traveling');
@@ -37,8 +51,13 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
       </p>
       <span className="text-white"> | </span>
       <p
-        className={`cursor-pointer text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
-          selectedPlan === 'planning' ? 'text-yellow_light_2' : 'text-white'
+        className={`cursor-pointer text-white hover:text-yellow_light_2 
+        sm:text-[11px] 
+        md:text-[16px]
+        ${
+          selectedPlan === 'planning'
+            ? 'text-yellow_light_2 font-SemiBold'
+            : 'text-white'
         }`}
         onClick={() => {
           setSelectedPlan('planning');
@@ -48,8 +67,13 @@ const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
       </p>
       <span className="text-white"> | </span>
       <p
-        className={`cursor-pointer text-white sm:text-[11px] md:text-[16px] hover:text-yellow_light_2 ${
-          selectedPlan === 'end' ? 'text-yellow_light_2' : 'text-white'
+        className={`cursor-pointer text-white hover:text-yellow_light_2 
+        sm:text-[11px] 
+        md:text-[16px]
+        ${
+          selectedPlan === 'end'
+            ? 'text-yellow_light_2 font-SemiBold'
+            : 'text-white'
         }`}
         onClick={() => {
           setSelectedPlan('end');

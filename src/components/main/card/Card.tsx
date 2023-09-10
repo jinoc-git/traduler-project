@@ -156,12 +156,18 @@ const Card: React.FC<CardProps> = ({
           return (
             <div key={plan.id}>
               <div
-                className="flex bg-white mb-4  sm:w-[320px] sm:h-[100px] sm:mt-[16px] md:w-[800px] md:h-[150px] md:mt-[15px] shadow-card rounded-[7px] cursor-pointer"
+                className="flex bg-white mb-4 shadow-card rounded-[7px] cursor-pointer
+                sm:w-[318px] sm:h-[80px] sm:mx-[1px]
+                md:w-[800px] md:h-[150px] "
                 onClick={() => {
                   onClickListItem(plan.plan_state, plan.id);
                 }}
               >
-                <div className="md:w-1/5 md:h-[16px] md:mt-[22px] md:ml-[28px]">
+                <div
+                  className="
+                  sm:w-[20px] sm:mt-[20px] sm:ml-[15px] 
+                md:w-1/5 md:h-[16px] md:mt-[22px] md:ml-[28px]"
+                >
                   <BookMark
                     isFavorite={Boolean(isFavorite)}
                     planId={plan.id}
@@ -169,35 +175,62 @@ const Card: React.FC<CardProps> = ({
                       isFavorite?.id !== undefined ? isFavorite.id : ''
                     }
                   />
-                  <div className="mt-[8px]">
+                  <div className="mt-[7px] h-[12px]">
                     {plan.plan_state === 'end' ? null : (
-                      <span className="text-yellow sm:text-[10px] md:text-[18px]">
+                      <p
+                        className="text-yellow text-center font-bold
+                        sm:text-[10px] 
+                      md:text-[18px]"
+                      >
                         {calculateDday(new Date(plan.dates[0]))}
-                      </span>
+                      </p>
                     )}
                   </div>
                 </div>
 
-                <div className="sm:w-[282px] sm:h-[52px] md:w-3/5 md:h-[16px]">
-                  <div className="flex items-center sm:mt-[24px] md:mt-[22px]">
-                    <p className="text-gray_dark_1 sm:text-sm md:text-xlg md:font-bold mr-[16px]">
+                <div
+                  className="sm:w-[2100px] sm:h-2/3 sm:mx-[15px]
+                md:w-3/5 md:h-[16px]"
+                >
+                  <div
+                    className="flex items-center 
+                  sm:mt-[12px] 
+                  md:mt-[22px]"
+                  >
+                    <p className="text-gray_dark_1 sm:text-sm md:text-xlg font-bold mr-[16px]">
                       {plan.title}
                     </p>
                     {plan.plan_state === 'planning' ? (
-                      <div className="bg-yellow rounded-3xl sm:w-[50px] sm:h-[16px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white ">
+                      <div
+                        className="flex-center text-white bg-yellow rounded-3xl 
+                      sm:w-[50px] sm:h-[16px] sm:text-[8px] 
+                      md:w-[72px] md:h-[26px] md:text-[12px]"
+                      >
                         예정된 여행
                       </div>
                     ) : plan.plan_state === 'traveling' ? (
-                      <div className="bg-blue rounded-3xl sm:w-[50px] sm:h-[16.8px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white">
+                      <div
+                        className="flex-center font-normal text-white bg-blue rounded-3xl 
+                      sm:w-[50px] sm:h-[16.8px] sm:text-[8px] 
+                      md:w-[72px] md:h-[26px] md:text-[12px]"
+                      >
                         여행중
                       </div>
                     ) : (
-                      <div className="bg-orange rounded-3xl sm:w-[50px] sm:h-[16.8px] sm:text-[8px] md:w-[72px] md:h-[26px] md:text-[12px] flex-center font-normal text-white">
+                      <div
+                        className="flex-center font-normal text-white bg-orange rounded-3xl 
+                      sm:w-[50px] sm:h-[16.8px] sm:text-[8px] 
+                      md:w-[72px] md:h-[26px] md:text-[12px] "
+                      >
                         다녀온 여행
                       </div>
                     )}
                   </div>
-                  <div className="text-gray_dark_1 sm:text-[10px] sm:mt-[4px] md:text-lg md:mt-[8px]">
+                  <div
+                    className="text-gray_dark_1 font-semibold
+                  sm:text-[10px] sm:mt-[0px] 
+                  md:text-lg md:mt-[8px]"
+                  >
                     {startDate}~{endDate} {plan.dates.length - 1}박{' '}
                     {plan.dates.length}일
                   </div>
@@ -207,7 +240,11 @@ const Card: React.FC<CardProps> = ({
                   />
                 </div>
 
-                <div className="w-1/5 h-[16px] flex item-center justify-end mr-[25px] mt-[22px]">
+                <div
+                  className="flex h-[16px]
+                sm:w-[15px] sm:mr-[18px] sm:mt-[14px] 
+                md:w-1/5 md:mr-[25px] md:mt-[22px]"
+                >
                   <button
                     onClick={(e) => {
                       e.stopPropagation();

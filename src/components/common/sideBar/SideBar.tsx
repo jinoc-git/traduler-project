@@ -21,6 +21,7 @@ const SideBar: React.FC = () => {
   const { isSideBarOpen, isVisibleSideBar, isVisibleIcon, toggleMenu } =
     sideBarStore();
   const user = userStore((state) => state.user);
+
   const screenSize = screenStore((state) => state.screenSize);
   console.log(screenSize);
 

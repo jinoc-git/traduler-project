@@ -8,6 +8,7 @@ export interface PinContentsType {
   lng?: number;
   placeName?: string;
   cost?: number | null;
+  address?: string;
   distance?: number | undefined;
 }
 

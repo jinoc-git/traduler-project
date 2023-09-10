@@ -17,8 +17,8 @@ const Main = () => {
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'md:w-[calc(100vw-270px)] md:ml-[270px] sm:ml-[20px]'
-            : 'md:w-[calc(100vw-88px)] md:ml-[88px] sm:ml-[20px]'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[20px]'
           : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
@@ -26,7 +26,9 @@ const Main = () => {
       <Profile />
       <section className="flex main-layout ">
         <button
-          className="group flex items-center justify-center sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:w-[320px] sm:h-[46px] md:mt-[35px] md:ml-auto md:w-[160px] md:h-[45px] md:border md:border-white rounded-[7px] sm:text-blue_dark sm:bg-white sm:font-bold sm:text-sm md:bg-blue_dark md:text-white hover:bg-white hover:text-blue_dark gap-3 md:fill-white"
+          className="group flex items-center font-Bold justify-center rounded-[7px] hover:text-blue_dark gap-3 hover:bg-white
+          sm:w-[320px] sm:h-[46px] sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:font-bold sm:text-sm sm:text-blue_dark  sm:bg-white 
+          md:md:w-[160px] md:h-[45px] mt-[35px] md:ml-auto md:border md:border-white md:text-white md:bg-blue_dark md:fill-white"
           onClick={() => {
             navigate('/addPlan');
           }}

@@ -31,50 +31,74 @@ const Calendar: React.FC<CalendarProps> = ({
   }, []);
 
   return (
-    <div className="relative z-10 flex items-center py-[10px] pr-[62px] w-[638px]">
-      <div className="flex items-center mr-[46px] gap-2 text-normal font-semibold text-gray_dark_1">
-        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
-        <label className="text-normal">여행 시작일</label>
+    <div
+      className="relative z-10 flex items-center 
+    sm:w-[286px] sm:block sm:pt-[15px]
+    md:w-[638px] md:py-[10px] md:pr-[62px] md:flex"
+    >
+      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
+        <div
+          className="flex items-center font-semibold text-gray_dark_1
+        sm:gap-[7px] sm:mb-[16px]
+        md:gap-2 md:mr-[46px]"
+        >
+          <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
+          <label className="sm:text-sm sm:w-[63px] md:w-[80px] md:text-normal">
+            여행 시작일
+          </label>
+        </div>
+        <DatePicker
+          dateFormat="yyyy년 MM월 dd일"
+          shouldCloseOnSelect
+          showIcon
+          selected={startDate}
+          onChange={(date) => {
+            StartDateChangeHandler(date);
+          }}
+          minDate={today}
+          maxDate={endDate}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          locale="ko"
+          className="text-center react-datepicker read-only:cursor-default
+          sm:w-[132px] sm:h-[28px]
+          md:w-[120px] md:mr-[46px]"
+          readOnly={modifyState === 'readOnly'}
+          placeholderText="YYYY / MM / DD"
+          required
+        />
       </div>
-      <DatePicker
-        dateFormat="yyyy년 MM월 dd일"
-        shouldCloseOnSelect
-        showIcon
-        selected={startDate}
-        onChange={(date) => {
-          StartDateChangeHandler(date);
-        }}
-        minDate={today}
-        maxDate={endDate}
-        selectsStart
-        startDate={startDate}
-        endDate={endDate}
-        locale="ko"
-        className="text-center w-[118px] react-datepicker read-only:cursor-default mr-[46px]"
-        readOnly={modifyState === 'readOnly'}
-        placeholderText="YYYY / MM / DD"
-        required
-      />
-      <div className="flex items-center mr-[46px] gap-2 text-normal font-semibold text-gray_dark_1">
-        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
-        <label>여행 종료일</label>
+      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
+        <div
+          className="flex items-center font-semibold text-gray_dark_1
+        sm:gap-[7px] sm:mb-[16px]
+        md:gap-2 md:mr-[46px]"
+        >
+          <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
+          <label className="sm:text-sm sm:w-[63px] md:w-[80px] md:text-normal">
+            여행 종료일
+          </label>
+        </div>
+        <DatePicker
+          dateFormat="yyyy년 MM월 dd일"
+          shouldCloseOnSelect
+          showIcon
+          selected={endDate}
+          onChange={EndDateChangeHandler}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+          locale="ko"
+          className="text-center react-datepicker read-only:cursor-default
+        sm:w-[132px] sm:h-[28px]
+        md:w-[120px]"
+          readOnly={modifyState === 'readOnly'}
+          placeholderText="YYYY / MM / DD"
+          required
+        />
       </div>
-      <DatePicker
-        dateFormat="yyyy년 MM월 dd일"
-        shouldCloseOnSelect
-        showIcon
-        selected={endDate}
-        onChange={EndDateChangeHandler}
-        selectsEnd
-        startDate={startDate}
-        endDate={endDate}
-        minDate={startDate}
-        locale="ko"
-        className="text-center w-[120px] react-datepicker read-only:cursor-default"
-        readOnly={modifyState === 'readOnly'}
-        placeholderText="YYYY / MM / DD"
-        required
-      />
     </div>
   );
 };

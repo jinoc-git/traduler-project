@@ -57,8 +57,8 @@ const Plan = () => {
   } = useForm<ModifyInputType>({
     mode: 'onChange',
     defaultValues: {
-      'totalCost': 0
-    }
+      totalCost: 0,
+    },
   });
 
   const { data, isLoading, isError } = useQuery(
@@ -164,9 +164,7 @@ const Plan = () => {
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
-        isSideBarOpen
-          ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-88px)] ml-[88px]'
+        isSideBarOpen ? 'sidebar-open ml-[270px]' : 'sidebar-close ml-[88px]'
       }`}
     >
       <Nav
@@ -187,8 +185,8 @@ const Plan = () => {
               message: '제목은 2글자 이상이어야 합니다.',
             },
             maxLength: {
-              value: 10,
-              message: '제목은 10글자 이하여야 합니다.',
+              value: 12,
+              message: '제목은 12글자 이하여야 합니다.',
             },
           })}
           readOnly={modifyState === 'readOnly'}

@@ -22,10 +22,10 @@ const usePlanValidate = (args: UsePlanValidateArgs) => {
   const checkTitleAndCost = () => {
     if (addInputSetFocus !== undefined && addInputWatch !== undefined) {
       if (
-        addInputWatch('title').length > 10 ||
+        addInputWatch('title').length > 12 ||
         addInputWatch('title').length < 2
       ) {
-        toast.error('제목은 2~10글자로 입력해 주세요.');
+        toast.error('제목은 2~12글자로 입력해 주세요.');
         addInputSetFocus('title');
         return false;
       }
@@ -41,10 +41,10 @@ const usePlanValidate = (args: UsePlanValidateArgs) => {
 
     if (modifyInputSetFocus !== undefined && modifyInputWatch !== undefined) {
       if (
-        modifyInputWatch('title').length > 10 ||
+        modifyInputWatch('title').length > 12 ||
         modifyInputWatch('title').length < 2
       ) {
-        toast.error('제목은 2~10글자로 입력해 주세요.');
+        toast.error('제목은 2~12글자로 입력해 주세요.');
         modifyInputSetFocus('title');
         return false;
       }

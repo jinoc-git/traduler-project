@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/return-await */
 import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 
@@ -12,7 +10,7 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 import { type Json } from 'types/supabase';
 
-const PlaceList = ({ distance }: { distance: Json[] }) => {
+const PlaceList = () => {
   const navigate = useNavigate();
   const { id: planId } = useParams();
 

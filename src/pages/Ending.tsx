@@ -72,8 +72,8 @@ const Ending = () => {
       className={`transition-all duration-300 ease-in-out pt-[50px] flex-col flex-center ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
+            ? 'sidebar-open'
+            : 'sidebar-close'
           : 'w-[calc(100vw)] ml-0'
       }`}
     >
@@ -89,11 +89,11 @@ const Ending = () => {
         <EndingPay pay={pay as number} />
         <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
           <IconLocationDefault w="20" h="20" />
-          <label>여행지역</label>
+          <label>여행 지역</label>
         </div>
         <EndingMap dates={dates as string[]} />
         <Carousel />
-        <PlaceList distance={distance as Json[]} />
+        <PlaceList />
         <TotalPay />
         <Comments />
       </div>

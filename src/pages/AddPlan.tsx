@@ -114,9 +114,7 @@ const AddPlan = () => {
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
-        isSideBarOpen
-          ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-88px)] ml-[88px]'
+        isSideBarOpen ? 'sidebar-open' : 'sidebar-close'
       }`}
     >
       <Nav
@@ -139,13 +137,19 @@ const AddPlan = () => {
               message: '제목은 2글자 이상이어야 합니다.',
             },
             maxLength: {
-              value: 10,
-              message: '제목은 10글자 이하여야 합니다.',
+              value: 12,
+              message: '제목은 12글자 이하여야 합니다.',
             },
           })}
-          className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
+          className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-black
+          sm:text-[20px]
+          md:text-[24px]"
         />
-        <p className="h-[15px] text-xs font-bold text-red-600">
+        <p
+          className="text-xs font-bold text-red-600
+        sm:h-[8px] sm:w-[297px]
+        md:h-[15px]"
+        >
           {errors?.title?.message}
         </p>
         <div className="flex flex-col mx-auto w-[700px]">

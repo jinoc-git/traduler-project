@@ -22,7 +22,8 @@ const App = () => {
         window.innerWidth ||
         document.documentElement.clientWidth ||
         document.body.clientWidth;
-      if (screenWidth >= 360 && screenWidth < 1100) setScreenSize('sm');
+
+      if (screenWidth >= 360 && screenWidth < 1110) setScreenSize('sm');
       if (screenWidth >= 1110 && screenWidth < 1440) setScreenSize('md');
       if (screenWidth >= 1440) setScreenSize('lg');
     }, 250);

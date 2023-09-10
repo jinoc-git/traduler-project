@@ -17,7 +17,7 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
       viewBox="0 0 24 24 "
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${w} ${h}`}
+      className={`sm:w-[15px] sm:h-[15px] md:${w} md:${h}`}
       // 밖컬러 변경
       onMouseEnter={() => {
         setIsHovered(true);

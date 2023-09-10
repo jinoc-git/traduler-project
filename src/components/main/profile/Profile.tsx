@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import IconEditDefault from '@assets/icons/IconEditDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import EditProfileModal from '@components/main/profile/EditProfileModal';
 import { userStore } from '@store/userStore';
@@ -16,21 +17,39 @@ const Profile = () => {
 
   return (
     <section>
-      <div className="flex items-center gap-[40px] mt=[150px] main-layout">
+      <div
+        className="flex items-center main-layout mt=[150px]
+      sm:gap-[16px] 
+      md:gap-[40px]"
+      >
         <div
           onClick={onClickOpenModalHandler}
-          className="w-[85px] h-[85px] rounded-full object-cover cursor-pointer hover:opacity-60"
+          className="relative rounded-full object-cover cursor-pointer hover:opacity-75
+          sm:w-[66px] sm:h-[66px] 
+          md:w-[85px] md:h-[85px]"
         >
           {user !== null && typeof profileImg === 'string' ? (
             <img
               src={profileImg}
-              className="w-[85px] h-[85px] rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer "
+              className="rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer
+              sm:w-[66px] sm:h-[66px]
+              md:w-[85px] md:h-[85px]"
             />
           ) : (
-            <IconUserDefault w="w-[85px]" h="h-[85px]" />
+            <IconUserDefault
+              w="sm:w-[66px] md:w-[85px]"
+              h="sm:h-[66px] md:h-[85px]"
+            />
           )}
+          <div
+            className="absolute flex items-center justify-center  rounded-full bg-white  border-gray cursor-pointer
+          sm:w-[20px] sm:h-[20px] sm:top-[46px] sm:left-[46px] sm:border-[1.5px]
+          md:w-[24px] md:h-[24px] md:top-[60px] md:left-[60px] md:border-[2px]"
+          >
+            <IconEditDefault w="w-[14px]" h="h-[12px]" fill="gray" />
+          </div>
         </div>
-        <p className="text-white text-base sm:text-[16px] md:text-xlg">
+        <p className="text-white text-base font-Regular sm:text-[16px] md:text-xlg">
           <span className="cursor-pointer" onClick={onClickOpenModalHandler}>
             {user?.nickname}
           </span>

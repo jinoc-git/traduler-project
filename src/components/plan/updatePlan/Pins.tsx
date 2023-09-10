@@ -106,7 +106,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   return (
     <>
       <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center mt-[36px]">
+        <div className="flex items-center mt-[36px] mb-[32px]">
           <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
           <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
             방문할 장소
@@ -132,12 +132,22 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           })}
         </ul>
       </DndProvider>
-      <div className="flex items-center justify-between my-[8px]">
-        <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
+      <div
+        className="flex items-center justify-between
+            sm:w-[286px]
+            md:w-[651px] md:mx-[25px] md:my-[8px]"
+      >
+        <p
+          className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white
+        sm:w-[30px] sm:h-[30px]
+        md:w-[35px] md:h-[35px]"
+        ></p>
         <button
           type="button"
           onClick={openModal}
-          className="w-pin_card hover:bg-navy_light_1 duration-200 h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1"
+          className=" hover:bg-navy_light_1 duration-200  border border-dashed rounded-lg font-bold  text-gray_dark_1
+          sm:w-[240px] sm:h-[65px] sm:mr-[2px] sm:text-[11px]
+          md:w-pin_card md:h-pin_card md:text-[18px]"
         >
           장소 추가하기
         </button>

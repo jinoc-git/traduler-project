@@ -190,7 +190,9 @@ const Plan = () => {
             },
           })}
           readOnly={modifyState === 'readOnly'}
-          className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
+          className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
+          sm:text-[20px]
+          md:text-[24px]"
         />
         <div
           className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white mt-[16px]`}
@@ -205,10 +207,22 @@ const Plan = () => {
           errors={errors}
         />
         <UpdatePlan />
-        <div className="flex items-center justify-end gap-5 mt-16">
+        <div
+          className="flex items-centergap-5 mt-16
+        sm:justify-normal
+        md:justify-end"
+        >
           {planState === 'planning' ? (
-            <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>
+            <div
+              className="flex items-center gap-5
+            sm:mt-[18px] sm:w-[286px] sm:justify-normal
+            md:my-[100px] md:w-[400px] md:justify-end"
+            >
+              <p
+                className="text-gray_dark_1 font-Regular 
+              sm:w-[170px] sm:text-sm
+              md:w-[200px] md:text-noraml"
+              >
                 {isPossibleStart
                   ? isModifying
                     ? '상단의 저장 버튼을 눌러주세요.'
@@ -218,14 +232,24 @@ const Plan = () => {
               <button
                 disabled={!isPossibleStart || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
+                className="p-3 border rounded-lg font-semibold border-blue text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[113px] sm:text-sm
+                md:w-[130px] md:text-normal"
               >
                 여행 시작
               </button>
             </div>
           ) : (
-            <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>
+            <div
+              className="flex my-[100px] items-center justify-end gap-5
+            sm:mt-[18px] sm:w-[286px] sm:justify-normal
+            md:my-[100px] md:w-[400px] md:justify-end"
+            >
+              <p
+                className="text-gray_dark_1 font-Regular 
+              sm:w-[170px] sm:text-sm
+              md:w-[200px] md:text-noraml"
+              >
                 {isPossibleEnd
                   ? isModifying
                     ? '상단의 저장 버튼을 눌러주세요.'
@@ -235,7 +259,9 @@ const Plan = () => {
               <button
                 disabled={!isPossibleEnd || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
+                className="p-3 border rounded-lg font-semibold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[113px] sm:text-sm
+                md:w-[130px] md:text-normal"
               >
                 여행 완료
               </button>

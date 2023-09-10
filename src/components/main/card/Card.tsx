@@ -156,7 +156,7 @@ const Card: React.FC<CardProps> = ({
           return (
             <div key={plan.id}>
               <div
-                className="flex bg-white mb-4 shadow-card rounded-[7px] cursor-pointer
+                className="flex bg-white shadow-card rounded-[7px] cursor-pointer
                 sm:w-[318px] sm:h-[80px] sm:mx-[1px]
                 md:w-[800px] md:h-[150px] "
                 onClick={() => {

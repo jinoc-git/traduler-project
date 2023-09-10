@@ -164,7 +164,9 @@ const Plan = () => {
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
-        isSideBarOpen ? 'sidebar-open ml-[270px]' : 'sidebar-close ml-[88px]'
+        isSideBarOpen
+          ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+          : 'sidebar-close sm:ml-0 md:ml-[88px]'
       }`}
     >
       <Nav
@@ -175,29 +177,33 @@ const Plan = () => {
         modifyInputWatch={watch}
       />
       <PlanLayout>
-        <input
-          id="title"
-          type="text"
-          {...register('title', {
-            required: '제목은 필수입니다.',
-            minLength: {
-              value: 2,
-              message: '제목은 2글자 이상이어야 합니다.',
-            },
-            maxLength: {
-              value: 12,
-              message: '제목은 12글자 이하여야 합니다.',
-            },
-          })}
-          readOnly={modifyState === 'readOnly'}
-          className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
-          sm:text-[20px]
-          md:text-[24px]"
-        />
-        <div
-          className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white mt-[16px]`}
-        >
-          {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+        <div className="flex items-center ">
+          <input
+            id="title"
+            type="text"
+            {...register('title', {
+              required: '제목은 필수입니다.',
+              minLength: {
+                value: 2,
+                message: '제목은 2글자 이상이어야 합니다.',
+              },
+              maxLength: {
+                value: 12,
+                message: '제목은 12글자 이하여야 합니다.',
+              },
+            })}
+            readOnly={modifyState === 'readOnly'}
+            className="w-[235px] border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
+          sm:text-[20px] sm:read-only:border-b-0
+          md:text-[24px] md:read-only:border-b-0"
+          />
+          <div
+            className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] flex items-center flex-center font-normal text-white
+          sm:flex sm:text-[10px]
+          md:flex md:text-[12px]`}
+          >
+            {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+          </div>
         </div>
         <PostPlan />
         <Invite />

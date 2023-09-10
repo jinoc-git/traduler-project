@@ -17,9 +17,13 @@ const DatePage = ({
   currentPage,
 }: PropsType) => {
   return (
-    <div className="flex-center gap-[190px] mt-[24px] mb-[10px] text-sm font-semibold text-gray_dark_1 ">
+    <div
+      className="flex-center mb-[10px] text-sm font-semibold text-gray_dark_1
+    sm:w-[310px] sm:mt-[36px] sm:mb-[31px]
+    md:w-[700px] md:mt-[24px] md:gap-[190px]"
+    >
       {dates.length !== 0 ? (
-        <>
+        <div className="sm:flex sm:justify-center sm:w-[310px] sm:gap-[14px]">
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 0}
@@ -35,7 +39,7 @@ const DatePage = ({
           >
             <IconChevronRight w="w-[14px]" h="h-[22px]" />
           </button>
-        </>
+        </div>
       ) : (
         <div>날짜를 선택하세요</div>
       )}

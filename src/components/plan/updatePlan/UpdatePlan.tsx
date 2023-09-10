@@ -61,7 +61,7 @@ const UpdatePlan = () => {
       <div className="flex flex-col justify-center gap-5">
         <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
           <IconLocationDefault w="20" h="20" />
-          <label>여행지역</label>
+          <label>여행 지역</label>
         </div>
         <MapPoly pins={pinArr} />
       </div>

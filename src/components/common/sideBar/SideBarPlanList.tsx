@@ -81,9 +81,12 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   return (
     <div className=" relative">
       <div
-        className={`flex w-[222px] justify-between items-center cursor-pointer rounded-lg ${
-          isSideBarOpen ? hoverColor[filter] : ''
-        } ${isSideBarOpen && isOpen ? activeColor[filter] : ''} `}
+        className={`flex justify-between items-center cursor-pointer rounded-lg 
+        sm:w-[308px] 
+        md:w-[222px]
+        ${isSideBarOpen ? hoverColor[filter] : ''} ${
+          isSideBarOpen && isOpen ? activeColor[filter] : ''
+        } `}
         onClick={toggleFunc}
       >
         <button
@@ -96,7 +99,12 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           {iconList[filter]}
         </button>
         <div className="flex items-center">
-          <span className="w-[110px] font-bold text-sm text-gray_dark_1">
+          <span
+            className="font-bold text-sm text-gray_dark_1
+          sm:w-[198px]  
+          md:w-[110px]
+          "
+          >
             {listName[filter]}
           </span>
           <div className="w-[14px] mr-5">
@@ -110,10 +118,10 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
       </div>
       <ul
         style={{ overflow: isDropDownOpen ? 'visible' : '' }}
-        className={` flex flex-col  w-[200px] ${
+        className={` flex flex-col w-[200px] ${
           isDropDownOpen
             ? ' fixed flex-center ml-[68px] mt-[-40px] w-[190px] border border-gray_light_3 rounded-lg  bg-white'
-            : 'items-end ml-[22px]'
+            : 'items-end sm:ml-[25px] md:ml-[22px]'
         } `}
       >
         {isOpen &&
@@ -127,7 +135,10 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
                 onClickListItem(plan.plan_state, plan.id);
               }}
               style={{ overflow: isDropDownOpen ? 'visible' : '' }}
-              className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
+              className="my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
+              sm:w-[178px]
+              md:w-[175px]
+              "
               key={plan.id}
             >
               <p className="text-[13px]">{plan.title}</p>
@@ -153,7 +164,11 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
         )}
 
         {isOpen && planList.length === 0 && (
-          <li className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer ">
+          <li
+            className="my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
+              sm:w-[178px]
+              md:w-[175px]"
+          >
             <p className="text-[13px]">{listName[filter]}이 없습니다</p>
           </li>
         )}

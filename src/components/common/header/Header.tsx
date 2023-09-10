@@ -57,14 +57,19 @@ const Header = () => {
           : 'bg-transparent'
       }`}
     >
-      <div className="flex items-center ">
-        <h1 onClick={goToMain} className=" ml-[88px] cursor-pointer">
+      <div className="flex items-center">
+        <h1
+          onClick={goToMain}
+          className=" ml-[88px] cursor-pointer 
+          sm:mt-[36px] 
+          md:mt-[0px]"
+        >
           {pathname === '/main' ? (
             isSideBarOpen ? (
               <img
                 src={logoColor}
                 alt="로고"
-                className=" w-[134px] ml-[10px]"
+                className=" w-[134px] ml-[10px] "
               />
             ) : (
               <img

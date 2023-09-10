@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <header
       className={`flex justify-between items-center fixed w-screen pr-3 z-30
-      sm: h-[89px] 
+      sm:h-[89px]
       md:h-[70px]
       ${
         pathname !== '/' && pathname !== '/signin' && pathname !== '/signup'
@@ -61,10 +61,20 @@ const Header = () => {
       }`}
     >
       <div className="flex items-center ">
+        {pathname !== '/' &&
+          pathname !== '/signin' &&
+          pathname !== '/signup' && (
+            <div
+              className="
+              sm:flex-grow sm:w-[108px] 
+              md:w-[0px]
+              "
+            ></div>
+          )}
         <h1
           onClick={goToMain}
           className=" cursor-pointer 
-          sm:mt-[0px] sm:ml-[20px]
+          sm:mt-[24px] 
           md:mt-[0px] md:ml-[88px]"
         >
           {pathname === '/main' ? (
@@ -78,14 +88,7 @@ const Header = () => {
               <img src={logoWhite} alt="로고" className="w-[134px] ml-[10px]" />
             )
           ) : (
-            <img
-              src={logoColor}
-              alt="로고"
-              className=" 
-            sm:w-[134px] sm:ml-[48px] 
-            md:w-[134px] md:ml-[10px]
-            "
-            />
+            <img src={logoColor} alt="로고" className="w-[134px] ml-[10px]" />
           )}
         </h1>
       </div>
@@ -93,17 +96,24 @@ const Header = () => {
         pathname !== '/main' ? (
           <div
             className="flex-center w-[70px] h-[50px]
-          sm:mr-[16px] 
-          md:mr-0"
+            sm:mr-[16px] sm:mt-[16px]
+            md:mr-0 md:mt-[0ox]"
           >
             {user.profileImg != null ? (
               <img
                 src={user.profileImg}
                 alt="프로필 이미지"
-                className=" w-[37px] h-[37px] object-cover rounded-full border border-navy/50 "
+                className="object-cover rounded-full border border-navy/50 
+                sm:w-[37px] sm:h-[37px] 
+                md:w-[37px] md:h-[37px] "
               />
             ) : (
-              <div className="rounded-full border border-navy/50 ">
+              <div
+                className="rounded-full border border-navy/50 
+              sm:mt-[5px]
+              md:mt-[0px]
+              "
+              >
                 <IconUserDefault w="w-[37px]" h="h-[37px]" />
               </div>
             )}
@@ -119,7 +129,9 @@ const Header = () => {
             onClick={() => {
               navigate('/signin');
             }}
-            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            className={`
+            sm:w-[147px] sm:mt-[40px]
+            md:w-[147px] md:mt-[24px] ${pathname === '/' ? 'text-white' : ''}`}
           >
             로그인
           </button>
@@ -129,7 +141,9 @@ const Header = () => {
             }}
             // className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
             className={`w-[147px] ${pathname === '/' ? 'text-white' : ''} ${
-              pathname === '/' ? 'sm:hidden md:block md:w-[147px]' : ''
+              pathname === '/'
+                ? 'sm:hidden md:block md:w-[147px] md:mt-[24px] '
+                : ''
             }`}
           >
             회원가입
@@ -140,7 +154,9 @@ const Header = () => {
           onClick={() => {
             navigate('/signup');
           }}
-          className="w-[147px] "
+          className="
+          sm:w-[147px] sm:mt-[40px] sm:text-white
+          md:w-[147px] md:text-black"
         >
           회원가입
         </button>
@@ -149,7 +165,9 @@ const Header = () => {
           onClick={() => {
             navigate('/signin');
           }}
-          className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+          className={`
+          sm:w-[147px] sm:mt-[40px] sm:text-white
+          md:w-[147px] md:text-black ${pathname === '/' ? 'text-white' : ''}`}
         >
           로그인
         </button>

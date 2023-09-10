@@ -18,7 +18,7 @@ const EndingDate = ({ planDates }: PropsType) => {
   const days = planDates?.length;
   return (
     <div>
-      <div className="flex h-[60px] mx-[6px] mb-[17px]">
+      <div className="flex mx-[6px] mb-[17px]">
         <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
         <p
           className="ml-2 font-SemiBold text-gray_dark_1
@@ -29,13 +29,22 @@ const EndingDate = ({ planDates }: PropsType) => {
         </p>
         <div
           className="font-semibold ml-[50px] text-right text-gray_dark_1
-        sm:text-[12px]
-        md:text-normal"
+        sm:text-[12px] sm:block
+        md:text-normal md:hidden"
         >
           시작일:{startDate[0]}년 {startDate[1]}월 {startDate[2]}일 ({startDay})
           <br />
           종료일:{endDate[0]}년 {endDate[1]}월 {endDate[2]}일 ({endDay})<br />
           {nights}박 {days}일
+        </div>
+        <div
+          className="font-semibold ml-[50px] text-right text-gray_dark_1
+        sm:text-[12px] sm:hidden
+        md:text-normal md:block"
+        >
+          {startDate[0]}년 {startDate[1]}월 {startDate[2]}일 ({startDay}) -{' '}
+          {endDate[0]}년 {endDate[1]}월 {endDate[2]}일 ({endDay}), {nights}박{' '}
+          {days}일
         </div>
       </div>
     </div>

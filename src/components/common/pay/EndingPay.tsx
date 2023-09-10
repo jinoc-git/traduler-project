@@ -11,7 +11,7 @@ interface PropsType {
 const EndingPay = ({ pay }: PropsType) => {
   return (
     <PayLayout>
-      <div className="flex items-center sm:h-[27px]">
+      <div className="flex items-center sm:h-[27px] ">
         <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
         <p
           className="sm:mr-[30px] sm:ml-[8px]

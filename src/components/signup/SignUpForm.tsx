@@ -112,10 +112,16 @@ const SignUpForm = () => {
 
   return (
     <main className="flex-center w-screen h-screen">
-      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/fd90f3f8-15f5-458c-8e4e-c5b35e781f10)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
+      <div
+        className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/fd90f3f8-15f5-458c-8e4e-c5b35e781f10)] bg-left bg-cover bg-no-repeat 
+        md:w-[880px]"
+      />
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
-        className="relative flex flex-col w-[450px] h-[540px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
+        className="relative flex flex-col   rounded-xl bg-[#F9F9FB]
+          md:w-[450px] md:h-[540px] md:px-[50px] md:py-[37px] md:gap-y-2.5
+          sm:px-[30px] sm:py-[22px] sm:gap-y-2
+        "
       >
         <h2 className="text-blue border-blue border-b-2 w-[64px] text-lg font-semibold	">
           회원가입
@@ -125,7 +131,7 @@ const SignUpForm = () => {
             htmlFor="nickname"
             className="absolute top-[21px] -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
           >
-            <IconName w="w-[12px]" h="h-[12px]"/>
+            <IconName w="w-[12px]" h="h-[12px]" />
           </label>
           <input
             type="text"
@@ -146,7 +152,7 @@ const SignUpForm = () => {
           >
             중복확인
           </button>
-          <p className="h-[20px] pt-1.5 text-center text-sm">
+          <p className="h-[20px] pt-1.5 text-center text-sm text-red-400">
             {errors?.nickname?.message}
           </p>
         </div>
@@ -176,7 +182,7 @@ const SignUpForm = () => {
           >
             중복확인
           </button>
-          <p className="h-[20px] pt-1.5 text-center text-sm">
+          <p className="h-[20px] pt-1.5 text-center text-sm text-red-400">
             {/* {showNicknameWarning} */}
             {errors?.email?.message}
           </p>
@@ -205,7 +211,7 @@ const SignUpForm = () => {
               <IconHidden w="w-[14px]" h="h-[14px]" />
             )}
           </button>
-          <p className="h-[20px] pt-1.5 text-center text-sm">
+          <p className="h-[20px] pt-1.5 text-center text-sm text-red-400">
             {errors?.password?.message}
           </p>
         </div>
@@ -236,7 +242,7 @@ const SignUpForm = () => {
               <IconHidden w="w-[14px]" h="h-[14px]" />
             )}
           </button>
-          <p className="h-[20px] pt-1.5 text-center text-sm">
+          <p className="h-[20px] pt-1.5 text-center text-sm text-red-400">
             {errors.confirmPassword !== undefined && '비밀번호를 확인해 주세요'}
           </p>
         </div>
@@ -267,11 +273,16 @@ const SignUpForm = () => {
             <span>구글 계정으로 로그인 하기</span>
           </div>
         </button>
-        <p className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 w-[260px] text-sm ">
+        <p
+          className="absolute left-1/2 -translate-x-1/2 w-[235px] text-sm p-2 rounded-lg font-semibold text-gray_dark_1 
+          md:bottom-[-50px] md:bg-white/20
+          sm:bottom-[-50px] sm:bg-white/50
+        "
+        >
           이미 계정이 있나요?
           <span
             onClick={goToSignIn}
-            className="ml-2 font-semibold underline cursor-pointer"
+            className="ml-2 underline text-black cursor-pointer"
           >
             지금 로그인하세요!
           </span>

@@ -63,7 +63,7 @@ const Invite = () => {
       >
         <div
           className="flex items-center 
-        sm:gap-[8px]
+        sm:gap-[8px] 
         md:gap-2"
         >
           <IconFriends w="20" h="15" fill="#4E4F54" />
@@ -105,7 +105,7 @@ const Invite = () => {
                 <div
                   key={uuid()}
                   className="mr-[2px] 
-                  sm:text-sm sm:font-semibold sm:text-gray_dark_1"
+                  sm:text-xs sm:font-semibold sm:text-gray_dark_1"
                 >
                   {user.nickname}
                 </div>
@@ -117,7 +117,7 @@ const Invite = () => {
               <div
                 key={user.id}
                 className="mr-[2px]
-              sm:text-sm sm:font-semibold sm:text-gray_dark_1"
+              sm:text-xs sm:font-semibold sm:text-gray_dark_1"
               >
                 {user.nickname}&nbsp;
               </div>

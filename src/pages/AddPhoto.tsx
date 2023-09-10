@@ -125,15 +125,25 @@ const AddPhoto = () => {
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'sidebar-open'
-            : 'sidebar-close'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[20px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
-      <section className="main-layout ">
+      <section className="main-layout">
         <div className="flex flex-col w-plan mt-[76px]">
-          <div className="flex items-center mb-[18px]">
-            <h3 className="font-bold text-gray_dark_1">{plan?.[0].title}</h3>
+          <div
+            className="flex items-center 
+          sm:mb-[35px]
+          md:mb-[18px]"
+          >
+            <h3
+              className="font-bold text-gray_dark_1
+            sm:text-[20px]
+            md:text-[24px]"
+            >
+              {plan?.[0].title}
+            </h3>
             <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
               완료된 여행
             </div>
@@ -141,12 +151,16 @@ const AddPhoto = () => {
           <EndingDate planDates={dates as string[]} />
           <Invite />
           <EndingPay pay={pay as number} />
-          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+          <div
+            className="flex items-center font-semibold text-normal text-gray_dark_1 gap-[8px] mx-[6px]
+          sm:my-[35px] sm:text-sm
+          md:my-[10px] md:text-normal"
+          >
             <IconLocationDefault w="20" h="20" />
             <label>여행 지역</label>
           </div>
           <EndingMap dates={dates as string[]} />
-          <div className="flex items-center">
+          <div className="flex items-center mt-[20px]">
             <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
               추억할 사진 올리기

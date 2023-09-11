@@ -27,6 +27,7 @@ interface PropsType {
   currentPage: number;
   openModal: () => void;
   closeModal: () => void;
+  value: boolean;
 }
 
 const MapModal = ({
@@ -34,6 +35,7 @@ const MapModal = ({
   openModal,
   currentPage,
   closeModal,
+  value,
 }: PropsType) => {
   const { id } = useParams();
   const planId: string = id as string;
@@ -164,7 +166,7 @@ const MapModal = ({
   });
 
   return (
-    <MapModalLayout>
+    <MapModalLayout value={value}>
       <MapModalInput
         register={register}
         errors={errors}

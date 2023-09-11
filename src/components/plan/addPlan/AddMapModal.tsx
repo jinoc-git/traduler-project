@@ -21,9 +21,15 @@ interface PropsType {
   setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
   closeModal: () => void;
   currentPage: number;
+  value: boolean;
 }
 
-const AddMapModal = ({ setPins, closeModal, currentPage }: PropsType) => {
+const AddMapModal = ({
+  setPins,
+  closeModal,
+  currentPage,
+  value,
+}: PropsType) => {
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
     lat: pin !== null ? (pin.lat as number) : 0,
@@ -127,7 +133,7 @@ const AddMapModal = ({ setPins, closeModal, currentPage }: PropsType) => {
   });
 
   return (
-    <MapModalLayout>
+    <MapModalLayout value={value}>
       <MapModalInput
         register={register}
         errors={errors}

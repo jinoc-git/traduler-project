@@ -43,14 +43,18 @@ interface PropsType {
 }
 
 const Pins = ({ currentPage, dates }: PropsType) => {
-  const {
-    value: isOpenModal,
-    toggleValue: openModal,
-    setNeedValue,
-  } = useBooleanState(false);
+  const { value: isOpenModal, setNeedValue } = useBooleanState(false);
 
+  const { value, setNeedValue: setValue } = useBooleanState(true);
+  const openModal = () => {
+    setValue(true);
+    setNeedValue(true);
+  };
   const closeModal = () => {
-    setNeedValue(false);
+    setValue(false);
+    setTimeout(() => {
+      setNeedValue(false);
+    }, 400);
   };
 
   const { id } = useParams();
@@ -158,6 +162,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           openModal={openModal}
           closeModal={closeModal}
           currentPage={currentPage}
+          value={value}
         />
       )}
     </>

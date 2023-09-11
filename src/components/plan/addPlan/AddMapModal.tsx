@@ -5,11 +5,13 @@ import { type PinContentsType } from '@api/pins';
 import MapModalInput from '@components/plan/addPlan/MapModalInput';
 import MapNonePoly from '@components/plan/addPlan/MapNonePoly';
 import MapModalLayout from '@components/plan/addPlan/ModalLayout';
+import MapModalButton from '@components/plan/common/MapModalButton';
+import MapModalPay from '@components/plan/updatePlan/MapModalPay';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
-interface InputType {
+export interface InputType {
   address?: string;
   placeName?: string;
   cost?: number;
@@ -17,11 +19,11 @@ interface InputType {
 
 interface PropsType {
   setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
-  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
   currentPage: number;
 }
 
-const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
+const AddMapModal = ({ setPins, closeModal, currentPage }: PropsType) => {
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
     lat: pin !== null ? (pin.lat as number) : 0,
@@ -65,7 +67,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             return item;
           });
         });
-        setIsOpenModal(false);
+        closeModal();
         resetPin();
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -83,7 +85,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             return item;
           });
         });
-        setIsOpenModal(false);
+        closeModal();
         resetPin();
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -151,45 +153,15 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         setPosition={setPosition}
         setAddress={setAddress}
       />
-      <div className="flex flex-col">
-        <label htmlFor="cost" className="mb-2 text-sm font-semibold">
-          지출 비용
-        </label>
-        <input
-          id="cost"
-          type="number"
-          placeholder="지출 비용을 입력해주세요."
-          {...register('cost', {
-            valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
-          })}
-          className="input-border
-          sm:h-[44px] sm:text-sm sm:font-medium"
-        />
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmitPlaceName)}
-        className="flex gap-[8px] h-[44px] items-center"
-      >
-        <button
-          className="border border-navy text-navy rounded-lg px-[20px] py-[8px] w-[100%] mr-[8px] hover:bg-navy_light_1 duration-200"
-          onClick={() => {
-            setIsOpenModal(false);
-            resetPin();
-          }}
-        >
-          취소
-        </button>
-        <button
-          type="submit"
-          disabled={disabledSubmit()}
-          className="bg-navy text-white rounded-lg hover:bg-navy_light_3 px-[20px] py-[8px] disabled:bg-gray w-[100%] duration-200"
-          onSubmit={() => {
-            handleSubmit(onSubmitPlaceName);
-          }}
-        >
-          {pin !== null ? '수정하기' : '새 장소 추가'}
-        </button>
-      </form>
+      <MapModalPay register={register} />
+      <MapModalButton
+        handleSubmit={handleSubmit}
+        onSubmitPlaceName={onSubmitPlaceName}
+        closeModal={closeModal}
+        resetPin={resetPin}
+        disabledSubmit={disabledSubmit}
+        pin={pin}
+      />
     </MapModalLayout>
   );
 };

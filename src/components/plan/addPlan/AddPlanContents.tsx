@@ -26,6 +26,9 @@ const AddPlanContents = ({
   const openModal = () => {
     setIsOpenModal(!isOpenModal);
   };
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
   const { oldDates, dates } = datesStore();
 
   // pin 수정 버튼
@@ -128,7 +131,7 @@ const AddPlanContents = ({
       {isOpenModal && (
         <AddMapModal
           setPins={setPins}
-          setIsOpenModal={setIsOpenModal}
+          closeModal={closeModal}
           currentPage={currentPage}
         />
       )}

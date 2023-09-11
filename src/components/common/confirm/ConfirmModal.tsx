@@ -1,7 +1,8 @@
 import React from 'react';
 
-import ModalLayout from '@components/plan/addPlan/ModalLayout';
 import { confirmStore } from '@store/confirmStore';
+
+import ComfirmModalLayout from './ComfirmModalLayout';
 
 enum ButtonText {
   modify = '수정하기',
@@ -29,16 +30,9 @@ const ConfirmModal = () => {
   };
 
   return (
-    <ModalLayout>
+    <ComfirmModalLayout>
       <div className="text-lg font-bold text-navy_dark">{title}</div>
-      <div
-        className=" text-gray_dark_1
-      md:mb-6
-      sm:mb-3
-      "
-      >
-        {desc}
-      </div>
+      <div className=" text-gray_dark_1 md:mb-6 sm:mb-3">{desc}</div>
       <div className="flex justify-center">
         <button
           onClick={closeConfirm}
@@ -59,7 +53,7 @@ const ConfirmModal = () => {
           {button()}
         </button>
       </div>
-    </ModalLayout>
+    </ComfirmModalLayout>
   );
 };
 

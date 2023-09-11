@@ -22,7 +22,11 @@ const Main = () => {
           : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
-      <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>
+      <div
+        className="absolute top-0 left-0 w-[100vw] bg-blue_dark z-[-1]
+      sm:h-[313px]
+      md:h-[363px]"
+      ></div>
       <Profile />
       <section className="flex main-layout ">
         <button

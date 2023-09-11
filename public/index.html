@@ -23,15 +23,36 @@
       property="og:description"
       content="다 같이 여행을 떠날 때 저희 서비스와 함께해요!"
     />
+    <meta
+      name="description"
+      content="다 같이 여행을 떠날 때 저희 서비스와 함께해요!"
+    />
+    <link rel="icon" sizes="144x144" href="icon-144x144.png" />
+    <link rel="icon" sizes="152x152" href="icon-152x152.png" />
+    <link rel="icon" sizes="256x256" href="icon-256x256.png" />
+    <link rel="icon" sizes="512x512" href="icon-512x512.png" />
+
     <script
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_JAVASCRIPT_KEY%&libraries=services,clusterer"
     ></script>
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <title>Traduler</title>
+
+    <!--서비스 워커 실행이 가능할때 서비스 워커 실행-->
+    <!-- <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script> -->
+
+    <script type="module">
+      import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+      const el = document.createElement('pwa-update');
+      document.body.appendChild(el);
+    </script>
   </head>
 
   <body>

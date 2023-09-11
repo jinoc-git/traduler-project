@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 
 import { type PinContentsType } from '@api/pins';
@@ -6,6 +7,7 @@ import IconPin from '@assets/icons/IconPin';
 import PinLayout from '@components/common/layout/PinLayout';
 import AddMapModal from '@components/plan/addPlan/AddMapModal';
 import MapPoly from '@components/plan/common/MapPoly';
+import useBooleanState from '@hooks/useBooleanState';
 import { datesStore } from '@store/datesStore';
 import { updatePinStore } from '@store/updatePinStore';
 
@@ -23,8 +25,16 @@ const AddPlanContents = ({
   setCurrentPage,
 }: PropsType) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { value, setNeedValue } = useBooleanState(true);
   const openModal = () => {
+    setNeedValue(true);
     setIsOpenModal(!isOpenModal);
+  };
+  const closeModal = () => {
+    setNeedValue(false);
+    setTimeout(() => {
+      setIsOpenModal(false);
+    }, 400);
   };
   const { oldDates, dates } = datesStore();
 
@@ -128,8 +138,9 @@ const AddPlanContents = ({
       {isOpenModal && (
         <AddMapModal
           setPins={setPins}
-          setIsOpenModal={setIsOpenModal}
+          closeModal={closeModal}
           currentPage={currentPage}
+          value={value}
         />
       )}
     </>

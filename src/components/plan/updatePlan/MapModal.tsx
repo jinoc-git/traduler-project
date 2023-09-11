@@ -1,12 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
-import MapModalInput from '@components/plan/addPlan/MapModalInput';
-import MapNonePoly from '@components/plan/addPlan/MapNonePoly';
-import MapModalLayout from '@components/plan/addPlan/ModalLayout';
+import MapModalButton from '@components/plan/common/MapModalButton';
+import MapModalInput from '@components/plan/common/MapModalInput';
+import MapModalPay from '@components/plan/common/MapModalPay';
+import MapNonePoly from '@components/plan/common/MapNonePoly';
+import MapModalLayout from '@components/plan/common/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
@@ -26,6 +27,7 @@ interface PropsType {
   currentPage: number;
   openModal: () => void;
   closeModal: () => void;
+  value: boolean;
 }
 
 const MapModal = ({
@@ -33,6 +35,7 @@ const MapModal = ({
   openModal,
   currentPage,
   closeModal,
+  value,
 }: PropsType) => {
   const { id } = useParams();
   const planId: string = id as string;
@@ -163,7 +166,7 @@ const MapModal = ({
   });
 
   return (
-    <MapModalLayout>
+    <MapModalLayout value={value}>
       <MapModalInput
         register={register}
         errors={errors}
@@ -176,30 +179,15 @@ const MapModal = ({
         setPosition={setPosition}
         setAddress={setAddress}
       />
-      <form
-        onSubmit={handleSubmit(onSubmitPlaceName)}
-        className="flex gap-[16px]"
-      >
-        <button
-          className="border border-navy text-navy rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px] hover:bg-navy_light_1 duration-200"
-          onClick={() => {
-            closeModal();
-            resetPin();
-          }}
-        >
-          취소
-        </button>
-        <button
-          type="submit"
-          disabled={disabledSubmit()}
-          className="bg-navy text-white rounded-lg hover:bg-navy_light_3  px-[20px] py-[14px] disabled:bg-gray w-[210px] duration-200"
-          onClick={() => {
-            handleSubmit(onSubmitPlaceName);
-          }}
-        >
-          {pin !== null ? '수정하기' : '새 장소 추가'}
-        </button>
-      </form>
+      <MapModalPay register={register} />
+      <MapModalButton
+        handleSubmit={handleSubmit}
+        onSubmitPlaceName={onSubmitPlaceName}
+        closeModal={closeModal}
+        resetPin={resetPin}
+        disabledSubmit={disabledSubmit}
+        pin={pin}
+      />
     </MapModalLayout>
   );
 };

@@ -145,7 +145,7 @@ const AddPlan = () => {
           })}
           className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-black
           sm:text-[20px]
-          md:text-[24px]"
+          md:text-[24px] "
         />
         <p
           className="text-xs font-bold text-red-600

@@ -52,6 +52,7 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
                 setValueAs(value) {
                   return value === '' ? 0 : parseInt(value);
                 },
+                valueAsNumber: true,
               })}
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             />

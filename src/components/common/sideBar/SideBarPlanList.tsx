@@ -136,7 +136,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
                 onClickListItem(plan.plan_state, plan.id);
               }}
               style={{ overflow: isDropDownOpen ? 'visible' : '' }}
-              className="flex justify-between p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
+              className="flex  p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
               md:w-[175px] md:my-[5px]
               sm:w-[234px] sm:mt-[5px]
               "
@@ -144,13 +144,13 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
             >
               <p
                 className={`text-[13px]   ${
-                  isDropDownOpen ? '' : 'md:w-[100px] truncate'
+                  isDropDownOpen ? '' : 'md:max-w-[100px] truncate'
                 }`}
               >
                 {plan.title}
               </p>
               {!isDropDownOpen && (
-                <span className="text-[13px]">
+                <span className="text-[13px] ml-[4px]">
                   ({changeSideBarFormat(plan.dates[0])})
                 </span>
               )}

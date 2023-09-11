@@ -41,8 +41,8 @@ const BookMark: React.FC<BookMarkProps> = ({
     <button
       onClick={favoriteHandler}
       className="flex justify-center 
-      sm:w-[21px] sm:h-[21px] 
-      md:w-[30px] md:h-[30px] md:ml-[57px]"
+      sm:w-[21px] sm:h-[21px] sm:ml-[11px] 
+      md:w-[30px] md:h-[30px] md:ml-[20px]"
     >
       {isFavorite ? (
         <IconFavoriteFill w="w-[24px]" h="h-[24px]" fill="#FFC803" />

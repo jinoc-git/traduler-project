@@ -91,9 +91,9 @@ const Comments = () => {
     "
     >
       <div
-        className="flex items-center my-[30px]
-      sm:w-[116px]
-      md:w-[116px]"
+        className="flex items-center 
+      sm:w-[116px] sm:mb-[20px] mt-[30px]
+      md:w-[116px] md:my-[30px]"
       >
         <IconCommentory
           w="sm:w-[18px] md:w-[25px]"
@@ -136,8 +136,8 @@ const Comments = () => {
               <img
                 src={isUserImg != null ? isUserImg : defaultImageGray}
                 className="object-cover rounded-full
-                sm:w-[18px] sm:h-[18px]
-                md:w-6 md:h-6
+                sm:hidden
+                md:w-6 md:h-6 md:block
                 "
               />
               <p
@@ -168,7 +168,7 @@ const Comments = () => {
       )}
       <div
         className="text-gray_dark_1 leading-6 tracking-tighter 
-        sm:text-sm sm:font-semibold sm:ml-[27px]
+        sm:text-sm sm:font-semibold sm:ml-[0px]
         md:hidden"
       >
         소감 작성
@@ -188,7 +188,7 @@ const Comments = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div
             className="flex items-center 
-          sm:w-[310px] sm:h-[28px] sm:gap-5
+          sm:w-[310px] sm:h-[28px] sm:gap-3
           md:w-[478px] md:h-[30px] md:gap-3
           "
           >
@@ -200,7 +200,7 @@ const Comments = () => {
                 required: true,
               })}
               className="outline-none input-border 
-              sm:w-[208px] sm:h-[28px] sm:ml-[33px]
+              sm:w-[255px] sm:h-[28px] sm:ml-[0px]
               md:w-[360px] md:h-[30px] md:ml-[0px]"
             />
             <p className="h-[20px] pt-1.5 text-sm">
@@ -208,7 +208,7 @@ const Comments = () => {
             </p>
             <button
               className="flex justify-center items-center border border-gray rounded-lg text-gray_dark_1 leading-6 tracking-tighter
-              sm:w-[29px] sm:h-[25px] sm:text-[11px]
+              sm:w-[32px] sm:h-[25px] sm:text-[11px]
               md:w-[45px] md:h-[30px] md:text-xs
               "
               type="submit"

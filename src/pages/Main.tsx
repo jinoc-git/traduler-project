@@ -18,8 +18,8 @@ const Main = () => {
         isVisibleSideBar
           ? isSideBarOpen
             ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[20px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
+            : 'sidebar-close sm:ml-[0px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
       <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>

@@ -11,7 +11,7 @@ const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const screenSize = screenStore((state) => state.screenSize)
-  console.log(screenSize)
+
   const navigate = useNavigate();
 
   return (

@@ -165,7 +165,7 @@ const Card: React.FC<CardProps> = ({
               >
                 <div
                   className="
-                  sm:w-[55px] sm:mt-[23px] 
+                  sm:w-[45px] sm:mt-[23px] 
                 md:w-[80px] md:h-[16px] md:mt-[25px] md:ml-[28px]"
                 >
                   <BookMark
@@ -189,7 +189,7 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
                 <div
-                  className="sm:w-[283px] sm:h-2/3 sm:ml-[5px]
+                  className="sm:w-[238px] sm:h-2/3 sm:ml-[5px]
                 md:w-4/5 md:h-[16px] md:items-center "
                 >
                   <div

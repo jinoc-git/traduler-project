@@ -20,7 +20,7 @@ const CardAddNewPlan = () => {
           src={defaultMainPlan}
           alt="여행 사진"
           className="sm:w-[100px] sm:h-[80px] sm:my-[15px]
-           md:w-[125px] md:h-[100px]"
+          md:w-[125px] md:h-[100px]"
         />
       </div>
       {selectedPlan === 'planning' ? (

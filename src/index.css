@@ -131,3 +131,11 @@ h3 {
   font-size: 12px !important;
   text-align: center !important;
 }
+
+.slick-slider.slick-initialized {
+  position: relative;
+}
+
+.slick-center.slick-current > div > div {
+  filter: brightness(1);
+}

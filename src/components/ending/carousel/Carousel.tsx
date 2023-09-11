@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
@@ -7,17 +7,30 @@ import IconCamera from '@assets/icons/IconCamera';
 import Loading from '@components/loading/Loading';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import CarouselLeftArrow from './CarouselLeftArrow';
+import CarouselRightArrow from './CarouselRightArrow';
 
 const Carousel = () => {
   const [photoData, setPhotoData] = useState<string[]>([]);
   const { id: planId } = useParams<{ id: string }>();
+  const carouselRef = useRef<Slider>(null);
+  console.log(carouselRef)
 
   const { data, isLoading } = useQuery({
     queryKey: ['ending_photo', planId],
     queryFn: async () => await getPhoto(planId as string),
   });
+
+  const onClickRightArrow = useCallback(() => {
+    console.log('right');
+  }, [])
+
+  const onClickLeftArrow = useCallback(() => {
+    console.log('left');
+  }, [])
 
   useEffect(() => {
     if (data !== null && data !== undefined) {
@@ -56,6 +69,8 @@ const Carousel = () => {
           centerMode
           initialSlide={0}
           touchMove
+          nextArrow={<CarouselRightArrow onClick={onClickRightArrow} />}
+          prevArrow={<CarouselLeftArrow onClick={onClickLeftArrow} />}
           slidesToShow={3}
           slidesToScroll={1}
           speed={500}

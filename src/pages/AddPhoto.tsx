@@ -122,7 +122,7 @@ const AddPhoto = () => {
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out pt-[108px]  ${
+      className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
             ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'

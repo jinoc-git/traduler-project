@@ -50,7 +50,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
     md:w-full md:justify-normal"
     >
       {limit !== imgSrcList?.length ? (
-        <div className="sm:mx-auto">
+        <div className="sm:mx-auto md:mx-0">
           <input
             accept=".jpg, .jpeg, .png"
             ref={fileRef}
@@ -62,7 +62,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             onClick={() => {
               fileRef?.current?.click();
             }}
-            className="cursor-pointer border-dashed text-[40px]  border border-gray-200 mt-5 flex items-center justify-center font-Regular text-gray-300
+            className="cursor-pointer border-dashed text-[40px] border border-gray-200 mt-5 flex items-center justify-center font-Regular text-gray-300
             sm:w-[268px] sm:h-[56px] sm:rounded-lg sm:mr-[0px]
             md:w-[200px] md:h-[200px] md:mr-[20px]"
           >

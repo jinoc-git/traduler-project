@@ -28,8 +28,18 @@ const Carousel = () => {
     queryFn: async () => await getPhoto(planId as string),
   });
 
-  const onClickImage = (url: string) => {
-    setImageModal({ url, isOpen: true });
+  const onClickImage = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    url: string,
+  ) => {
+    const target = e.currentTarget;
+    const wrapperClassName = target.parentNode?.parentElement
+      ?.getAttribute('class')
+      ?.split(' ');
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (wrapperClassName?.includes('slick-center')) {
+      setImageModal({ url, isOpen: true });
+    }
   };
   const onClickCloseModal = () => {
     setImageModal({ url: '', isOpen: false });
@@ -81,8 +91,8 @@ const Carousel = () => {
           {photoData.map((url: string, index: number) => (
             <div
               key={uuid()}
-              onClick={() => {
-                onClickImage(url);
+              onClick={(e) => {
+                onClickImage(e, url);
               }}
               className=" w-[230px] h-[230px] p-[10px] cursor-pointer brightness-[0.8] hover:brightness-100 transition-filter duration-400"
             >

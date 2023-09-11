@@ -41,12 +41,11 @@
 
     <title>Traduler</title>
 
-    <!--서비스 워커 실행이 가능할때 서비스 워커 실행-->
-    <!-- <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script> -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+      }
+    </script>
 
     <script type="module">
       import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';

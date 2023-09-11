@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Header from '@components/common/header/Header';
 import ProtectRoute from '@components/common/protectRoute/ProtectRoute';
+import ScrollToTop from '@components/common/scrollToTop/ScrollToTop';
 import SideBar from '@components/common/sideBar/SideBar';
 import AddPhoto from '@pages/AddPhoto';
 import AddPlan from '@pages/AddPlan';
@@ -21,6 +22,7 @@ const Router = () => {
       <ProtectRoute />
       <Header />
       <SideBar />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/main" element={<Main />} />

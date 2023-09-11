@@ -126,8 +126,8 @@ const AddPhoto = () => {
         isVisibleSideBar
           ? isSideBarOpen
             ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[20px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
+            : 'sidebar-close sm:ml-[0px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">

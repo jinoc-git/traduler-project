@@ -84,15 +84,38 @@ const Comments = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="w-[720px]">
-      <div className="flex items-center my-[30px]">
-        <IconCommentory w="w-[25px]" h="h-[25px]" fill="#4E4F54" />
-        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
+    <section
+      className="items-center m-auto justify-center
+    sm:w-[310px] sm:h-[320px]
+    md:w-[720px]
+    "
+    >
+      <div
+        className="flex items-center 
+      sm:w-[116px] sm:mb-[20px] mt-[30px]
+      md:w-[116px] md:my-[30px]"
+      >
+        <IconCommentory
+          w="sm:w-[18px] md:w-[25px]"
+          h="sm:h-[18px] md:h-[25px]"
+          fill="#4E4F54"
+        />
+        <div
+          className="ml-[8px] font-bold text-gray_dark_1
+        sm:w-[66px] sm:text-sm
+        md:w-[84px] md:text-lg
+        "
+        >
           한줄 코멘트
         </div>
       </div>
       {data === null || data === undefined || data.length === 0 ? (
-        <div className="my-[30px] ml-[20px] text-normal text-gray_dark_1 leading-6 tracking-tighter">
+        <div
+          className="my-[30px] ml-[20px] text-gray_dark_1 leading-6 tracking-tighter
+        sm:text-sm
+        md:text-normal
+        "
+        >
           첫 코멘트를 입력해보세요!
         </div>
       ) : (
@@ -106,17 +129,32 @@ const Comments = () => {
           return (
             <div
               key={comment.id}
-              className="flex gap-5 my-[10px] ml-[20px] text-sm text-gray_dark_1 leading-6 tracking-tighter"
+              className="flex items-center my-[10px] text-sm text-gray_dark_1 leading-6 tracking-tighter
+              sm:gap-2
+              md:gap-5"
             >
               <img
                 src={isUserImg != null ? isUserImg : defaultImageGray}
-                className="object-cover w-6 h-6 rounded-full"
+                className="object-cover rounded-full
+                sm:hidden
+                md:w-6 md:h-6 md:block
+                "
               />
-              <p>{userNickname}</p>
+              <p
+                className="
+                sm:text-[11px] w-[60px] sm:font-semibold
+                md:text-sm md:font-semibold
+              "
+              >
+                {userNickname}
+              </p>
               <p className="w-[365px]">{comment.content}</p>
               {comment.user_id === user?.id && (
                 <button
-                  className="flex justify-center items-center w-[45px] h-[30px] border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter"
+                  className="flex justify-center items-center border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter
+                  sm:w-[50px] sm:h-[25px]
+                  md:w-[45px] md:h-[30px]
+                  "
                   onClick={() => {
                     handleDelete(comment.id);
                   }}
@@ -128,12 +166,32 @@ const Comments = () => {
           );
         })
       )}
-      <div className="flex items-center gap-5 mt-[20px] ">
-        <div className="ml-[20px] text-sm text-gray_dark_1 leading-6 tracking-tighter">
-          소감
+      <div
+        className="text-gray_dark_1 leading-6 tracking-tighter 
+        sm:text-sm sm:font-semibold sm:ml-[0px]
+        md:hidden"
+      >
+        소감 작성
+      </div>
+      <div
+        className="flex items-center gap-5 
+      sm:sm:w-[263px] sm:mt-[5px] 
+      md:w-[720px] md:mt-[20px]"
+      >
+        <div
+          className="ml-[45px] text-gray_dark_1 leading-6 tracking-tighter 
+        sm:hidden 
+        md:w-[60px] md:h-auto md:text-sm md:font-semibold md:block"
+        >
+          소 감
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center 
+          sm:w-[310px] sm:h-[28px] sm:gap-3
+          md:w-[478px] md:h-[30px] md:gap-3
+          "
+          >
             <input
               id="comments"
               type="text"
@@ -141,13 +199,18 @@ const Comments = () => {
               {...register('comments', {
                 required: true,
               })}
-              className="outline-none input-border w-[410px] h-[30px]"
+              className="outline-none input-border 
+              sm:w-[255px] sm:h-[28px] sm:ml-[0px]
+              md:w-[360px] md:h-[30px] md:ml-[0px]"
             />
             <p className="h-[20px] pt-1.5 text-sm">
               {errors?.comments?.message}
             </p>
             <button
-              className="flex justify-center items-center w-[45px] h-[30px] border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter"
+              className="flex justify-center items-center border border-gray rounded-lg text-gray_dark_1 leading-6 tracking-tighter
+              sm:w-[32px] sm:h-[25px] sm:text-[11px]
+              md:w-[45px] md:h-[30px] md:text-xs
+              "
               type="submit"
               disabled={isSubmitting}
             >
@@ -156,13 +219,28 @@ const Comments = () => {
           </div>
         </form>
       </div>
-      <div className="flex my-[100px] items-center justify-end gap-5">
-        <p>다른 여행 일정도 둘러보세요!</p>
+      <div
+        className="flex items-center justify-end gap-5 
+       sm:my-[60px]
+       md:my-[100px]
+      "
+      >
+        <p
+          className="
+        sm:text-sm
+        md:text-normal
+        "
+        >
+          다른 여행 일정도 둘러보세요!
+        </p>
         <button
           onClick={() => {
             navigate('/main');
           }}
-          className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200"
+          className="p-3 border rounded-lg font-bold border-blue text-blue hover:bg-blue_light_1 duration-200
+          sm:w-[114px] sm:h-[41px] sm:text-sm
+          md:w-[130px] md:h-[43px] md:text-normal
+          "
         >
           목록으로
         </button>

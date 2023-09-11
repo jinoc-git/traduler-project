@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
-import MapModalInput from '@components/plan/addPlan/MapModalInput';
-import MapNonePoly from '@components/plan/addPlan/MapNonePoly';
-import MapModalLayout from '@components/plan/addPlan/ModalLayout';
+import MapModalButton from '@components/plan/common/MapModalButton';
+import MapModalInput from '@components/plan/common/MapModalInput';
+import MapModalPay from '@components/plan/common/MapModalPay';
+import MapNonePoly from '@components/plan/common/MapNonePoly';
+import MapModalLayout from '@components/plan/common/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
-interface InputType {
+export interface InputType {
   address?: string;
   placeName?: string;
   cost?: number;
@@ -17,11 +19,17 @@ interface InputType {
 
 interface PropsType {
   setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
-  setIsOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  closeModal: () => void;
   currentPage: number;
+  value: boolean;
 }
 
-const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
+const AddMapModal = ({
+  setPins,
+  closeModal,
+  currentPage,
+  value,
+}: PropsType) => {
   const { pin, idx, resetPin } = updatePinStore();
   const [position, setPosition] = useState({
     lat: pin !== null ? (pin.lat as number) : 0,
@@ -65,7 +73,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             return item;
           });
         });
-        setIsOpenModal(false);
+        closeModal();
         resetPin();
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -83,7 +91,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
             return item;
           });
         });
-        setIsOpenModal(false);
+        closeModal();
         resetPin();
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -125,7 +133,7 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
   });
 
   return (
-    <MapModalLayout>
+    <MapModalLayout value={value}>
       <MapModalInput
         register={register}
         errors={errors}
@@ -138,30 +146,15 @@ const AddMapModal = ({ setPins, setIsOpenModal, currentPage }: PropsType) => {
         setPosition={setPosition}
         setAddress={setAddress}
       />
-      <form
-        onSubmit={handleSubmit(onSubmitPlaceName)}
-        className="flex  gap-[16px]"
-      >
-        <button
-          className="border border-navy text-navy rounded-lg px-[20px] py-[14px] w-[210px] mr-[24px] hover:bg-navy_light_1 duration-200"
-          onClick={() => {
-            setIsOpenModal(false);
-            resetPin();
-          }}
-        >
-          취소
-        </button>
-        <button
-          type="submit"
-          disabled={disabledSubmit()}
-          className="bg-navy text-white rounded-lg hover:bg-navy_light_3  px-[20px] py-[14px] disabled:bg-gray w-[210px] duration-200"
-          onSubmit={() => {
-            handleSubmit(onSubmitPlaceName);
-          }}
-        >
-          {pin !== null ? '수정하기' : '새 장소 추가'}
-        </button>
-      </form>
+      <MapModalPay register={register} />
+      <MapModalButton
+        handleSubmit={handleSubmit}
+        onSubmitPlaceName={onSubmitPlaceName}
+        closeModal={closeModal}
+        resetPin={resetPin}
+        disabledSubmit={disabledSubmit}
+        pin={pin}
+      />
     </MapModalLayout>
   );
 };

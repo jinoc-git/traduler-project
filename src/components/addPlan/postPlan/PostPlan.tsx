@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unmodified-loop-condition */
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { newDatePin } from '@api/pins';
+import { getAllPinsDate, newDatePin } from '@api/pins';
 import { getPlan, updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
+import { modifyStateStore } from '@store/modifyStateStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PinInsertType } from 'types/supabase';
 
@@ -16,33 +18,47 @@ export interface PlanFormData {
 interface PropsType {
   state?: string;
 }
-
 const PostPlan: React.FC<PropsType> = ({ state }) => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const { setDates } = datesStore();
-  let dataDates: string[] = [];
   const { id } = useParams();
-  const planId: string = id as string;
-  if (state !== 'addPlan') {
-    const { data: plan } = useQuery(
-      ['plan', planId],
-      async () => await getPlan(planId),
-    );
-    dataDates = plan?.[0].dates as string[];
-  }
 
-  useEffect(() => {
-    if (state !== 'addPlan' && dataDates != null) {
-      setStartDate(new Date(dataDates[0]));
-      setEndDate(new Date(dataDates[dataDates.length - 1]));
+  const { setDates } = datesStore();
+  const setRequiredDates = modifyStateStore((state) => state.setRequiredDates);
+  
+  let dataPinDates: string[] = [];
+  let dataPlanDates: string[] = [];
+  const planId: string = id as string;
+  
+
+  if (state !== 'addPlan') {
+    if (planId !== undefined) {
+      const { data } = useQuery(
+        ['pinDate', planId],
+        async () => await getAllPinsDate(planId),
+      );
+      dataPinDates = data as string[];
+      const { data: plan } = useQuery(
+        ['plan', planId],
+        async () => await getPlan(planId),
+      );
+      dataPlanDates = plan?.[0].dates as string[];
     }
-  }, [dataDates]);
+  }
+  
+  const planStartDate = new Date(dataPlanDates?.[0]);
+  const planEndDate = new Date(dataPlanDates?.[dataPlanDates.length - 1]);
+  const [startDate, setStartDate] = useState<Date | null>(
+    state === 'addPlan' ? null : planStartDate,
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    state === 'addPlan' ? null : planEndDate,
+  );
 
   const StartDateChangeHandler = (date: Date | null) => {
+    setRequiredDates('start');
     setStartDate(date);
   };
   const EndDateChangeHandler = (date: Date | null) => {
+    setRequiredDates('end');
     setEndDate(date);
   };
 
@@ -66,22 +82,28 @@ const PostPlan: React.FC<PropsType> = ({ state }) => {
       await updateDatePlan(planId, dates);
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['plan'] });
+      void queryClient.invalidateQueries({ queryKey: ['pinDate', planId] });
+      void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
   });
 
   useEffect(() => {
-    if (startDate != null && endDate != null) {
+    if (
+      startDate != null &&
+      endDate != null &&
+      dataPinDates !== null &&
+      dataPinDates !== undefined
+    ) {
       const dates = allPlanDates(startDate, endDate);
-      const newDates = dates?.filter((date) => !dataDates?.includes(date));
+      const newDates = dates?.filter((date) => !dataPinDates?.includes(date));
       if (newDates.length !== 0 && state !== 'addPlan') {
-        newDates.forEach((date) => {
+        newDates.forEach(async (date) => {
           const newPin: PinInsertType = {
             plan_id: planId,
             contents: [],
             date,
           };
-          void newDatePin(newPin);
+          await newDatePin(newPin);
         });
       }
       if (state !== 'addPlan') {

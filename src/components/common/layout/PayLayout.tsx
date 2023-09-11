@@ -2,7 +2,11 @@ import React, { type ReactNode } from 'react';
 
 const PayLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex items-center h-[50px] py-[10px] text-[16px] font-semibold text-gray_dark_1">
+    <div
+      className="flex items-center font-semibold text-gray_dark_1
+    sm:w-[286px] sm:h-[27px] sm:text-sm sm:mx-[6px] sm:mt-[16px]
+    md:w-[720px] md:text-[16px]  md:mb-[15px]"
+    >
       {children}
     </div>
   );

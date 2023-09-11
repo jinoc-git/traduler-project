@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { getBookMark } from '@api/bookMarks';
-import { getPlansWithMates } from '@api/plans';
+import { getPlanListAndMateList } from '@api/plans';
 import Loading from '@components/loading/Loading';
 import Card from '@components/main/card/Card';
 import { userStore } from '@store/userStore';
@@ -16,7 +16,7 @@ const CardSection = () => {
     isError: matesError,
   } = useQuery(
     ['plan_mates', user?.id],
-    async () => await getPlansWithMates(user?.id),
+    async () => await getPlanListAndMateList(user?.id),
     { enabled: user !== null },
   );
 
@@ -41,18 +41,15 @@ const CardSection = () => {
     return <div>데이터 없음</div>;
   }
 
-  const { plansData, usersDataList } = matesData;
+  const { planDataList, usersDataList } = matesData;
 
   return (
     <section className="main-layout">
-      <div></div>
-      <div>
-        <Card
-          plansData={plansData}
-          usersDataList={usersDataList}
-          bookMarkData={bookMarkData}
-        />
-      </div>
+      <Card
+        planDataList={planDataList}
+        usersDataList={usersDataList}
+        bookMarkData={bookMarkData}
+      />
     </section>
   );
 };

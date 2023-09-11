@@ -29,8 +29,8 @@ export const removeYearOfDate = (date: string | undefined) => {
   let month = dateArr[1];
   let day = dateArr[2];
 
-  if (month.length > 1) month = month[1];
-  if (day.length > 1) day = day[1];
+  if (+month < 10) month = month[1];
+  if (+day < 10) day = day[1];
 
   return month + '/' + day;
 };

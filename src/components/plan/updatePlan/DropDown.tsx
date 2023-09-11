@@ -17,9 +17,9 @@ const DropDown = ({ children }: DropDownProps) => {
         onBlur={() => {
           setNeedValue(false);
         }}
-        className='p-3'
+        className="md:p-3 sm:p-1"
       >
-        <IconMicroMenu />
+        <IconMicroMenu w="w-[24px]" h="h-[24px]" />
       </button>
       {value && children}
     </div>

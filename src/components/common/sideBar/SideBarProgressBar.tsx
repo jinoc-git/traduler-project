@@ -6,12 +6,12 @@ interface SideBarProgressBarProps {
 }
 
 const SideBarProgressBar = ({ percent, isOpen }: SideBarProgressBarProps) => {
-  const progressLength = (((isOpen ? 160 : 80) / 100) * +percent).toFixed();
+  const progressLength = (((isOpen ? 160 : 72) / 100) * +percent).toFixed();
 
   const isOpenContainerClassName =
     'relative w-[160px] h-[8px] rounded bg-[#EEF1F4]';
   const isCloseContainerClassName =
-    'relative w-[8px] h-[80px] rounded bg-[#EEF1F4]';
+    'relative w-[8px] h-[72px] rounded bg-[#EEF1F4]';
 
   const isOpenProgressBarClassName = {
     width: progressLength + 'px',

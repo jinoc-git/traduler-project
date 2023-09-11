@@ -2,6 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
+    screens: {
+      sm: '360px',
+      md: '1110px',
+      lg: '1440px',
+    },
     fontSize: {
       xs: '12px',
       sm: '14px',
@@ -14,6 +19,14 @@ module.exports = {
       Regular: ['Pretendard-Regular'],
       SemiBold: ['Pretendard-SemiBold'],
       Bold: ['Pretendard-Bold'],
+    },
+    backgroundSize: {
+      auto: 'auto',
+      cover: 'cover',
+      contain: 'contain',
+      '80%': '80%',
+      '50%': '50%',
+      16: '4rem',
     },
     extend: {
       colors: {
@@ -81,10 +94,20 @@ module.exports = {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        slideDown: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 0.2s forwards',
         fadeOut: 'fadeOut 0.2s forwards',
+        slideUp: 'slideUp 0.4s forwards',
+        slideDown: 'slideDown 0.4s forwards',
       },
     },
   },

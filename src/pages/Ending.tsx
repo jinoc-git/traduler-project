@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import Carousel from '@components/carousel/Carousel';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
-import { getPlan } from '@api/plans';
+import { getPlanEnding } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import EndingMap from '@components/addPhoto/endingMap/EndingMap';
 import EndingDate from '@components/common/date/EndingDate';
@@ -12,56 +14,99 @@ import Carousel from '@components/ending/carousel/Carousel';
 import Comments from '@components/ending/comments/Comments';
 import PlaceList from '@components/ending/placeList/PlaceList';
 import TotalPay from '@components/ending/totalPay/TotalPay';
+import Loading from '@components/loading/Loading';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
+import { type Json } from 'types/supabase';
 
 const Ending = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const { id: planId } = useParams();
-  const { data: plan, isLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId as string),
+  const {
+    data: planEnding,
+    isLoading,
+    isError,
+  } = useQuery(
+    ['planEnding', planId],
+    async () => await getPlanEnding(planId as string),
   );
+  const navigate = useNavigate();
+
   const [dates, setDates] = useState<string[]>();
   const [pay, setPay] = useState<number>();
+  const [title, setTitle] = useState<string>();
+  const [distance, setDistance] = useState<Json[]>();
 
   useEffect(() => {
-    if (plan !== undefined && plan !== null) {
-      setDates(plan[0].dates);
-      setPay(plan[0].total_cost);
-    }
-  }, [plan]);
+    window.addEventListener('popstate', () => {
+      navigate('/main');
+    });
+    return () => {
+      window.removeEventListener('popstate', () => {
+        navigate('/main');
+      });
+    };
+  }, []);
 
-  if (isLoading) {
-    return <div>로딩중...</div>;
+  useEffect(() => {
+    if (planEnding !== undefined && planEnding !== null) {
+      setDates(planEnding[0].dates);
+      setPay(planEnding[0].total_cost as number);
+      setTitle(planEnding[0].title);
+      setDistance(planEnding[0].distance as Json[]);
+    }
+  }, [planEnding]);
+
+  if (isLoading && planEnding !== undefined) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    navigate('/error');
+    return;
   }
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out pt-[50px] flex-col flex-center ${
+      className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[0px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
-      <div className="flex flex-col w-plan mt-[76px]">
-        <div className="flex items-center mb-[18px]">
-          <h3 className="font-bold text-gray_dark_1">{plan?.[0].title}</h3>
-          <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
-            완료된 여행
+      <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
+        <section>
+          <div
+            className="flex items-center 
+          sm:mb-[35px]
+          md:mb-[18px]"
+          >
+            <h3
+              className="font-bold text-gray_dark_1
+            sm:text-[20px]
+            md:text-[24px]"
+            >
+              {title}
+            </h3>
+            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
+              완료된 여행
+            </div>
           </div>
-        </div>
-        <EndingDate planDates={dates as string[]} />
-        <Invite />
-        <EndingPay pay={pay as number} />
-        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
-          <IconLocationDefault w="20" h="20" />
-          <label>여행지역</label>
-        </div>
-        <EndingMap />
+          <EndingDate planDates={dates as string[]} />
+          <Invite />
+          <EndingPay pay={pay as number} />
+        </section>
+        <section>
+          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+            <IconLocationDefault w="20" h="20" />
+            <label>여행 지역</label>
+          </div>
+          <EndingMap dates={dates as string[]} />
+        </section>
+
         <Carousel />
         <PlaceList />
         <TotalPay />

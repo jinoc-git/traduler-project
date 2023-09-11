@@ -13,6 +13,7 @@ import Invite from '@components/common/invite/Invite';
 import Nav from '@components/common/nav/Nav';
 import Pay from '@components/common/pay/Pay';
 import AddPlanContents from '@components/plan/addPlan/AddPlanContents';
+import useHandlePage from '@hooks/useHandlePage';
 import { datesStore } from '@store/datesStore';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { sideBarStore } from '@store/sideBarStore';
@@ -21,9 +22,9 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type PlanType, type UserType } from 'types/supabase';
 
-interface InputType {
-  title?: string;
-  totalCost?: number;
+export interface InputType {
+  title: string;
+  totalCost: number;
 }
 
 const AddPlan = () => {
@@ -33,12 +34,20 @@ const AddPlan = () => {
   const { dates, resetDates } = datesStore();
   const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    setFocus,
     watch,
-    formState: { errors, isSubmitting },
-  } = useForm<InputType>({ mode: 'onChange' });
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<InputType>({
+    mode: 'onChange',
+    defaultValues: {
+      totalCost: 0,
+    },
+  });
+
   const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -56,8 +65,8 @@ const AddPlan = () => {
       const newPlan: PlanType = {
         id: uuid(),
         users_id: userId as string,
-        title: watch('title') as string,
-        total_cost: watch('totalCost') as number,
+        title: watch('title'),
+        total_cost: watch('totalCost'),
         isDeleted: false,
         dates,
         plan_state: 'planning',
@@ -68,26 +77,22 @@ const AddPlan = () => {
         invitedUser,
       };
       mutation.mutate(addPlanObj);
-      await addPlan(addPlanObj);
       toast.success('저장되었습니다.');
       navigate('/main');
     }
   };
+
   const buttonDisabled =
     isSubmitting ||
     watch('totalCost') === undefined ||
     watch('title')?.length === 0 ||
     dates.length === 0;
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
+  const { currentPage, handleNextPage, handlePreviousPage, setCurrentPage } =
+    useHandlePage();
 
   useEffect(() => {
+    setFocus('title');
     return () => {
       resetDates();
     };
@@ -110,14 +115,17 @@ const AddPlan = () => {
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
         isSideBarOpen
-          ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-88px)] ml-[88px]'
+          ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+          : 'sidebar-close sm:ml-0 md:ml-[88px]'
       }`}
     >
       <Nav
+        isValid={isValid}
         page={'addPlan'}
         onClick={handleSubmit(submitPlan)}
         buttonDisabled={buttonDisabled}
+        addInputSetFocus={setFocus}
+        addInputWatch={watch}
       />
       <PlanLayout>
         <input
@@ -130,10 +138,20 @@ const AddPlan = () => {
               value: 2,
               message: '제목은 2글자 이상이어야 합니다.',
             },
+            maxLength: {
+              value: 12,
+              message: '제목은 12글자 이하여야 합니다.',
+            },
           })}
-          className="border-b-[1px] border-gray w-full outline-none text-[24px] font-bold placeholder:text-gray  text-black"
+          className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-black
+          sm:text-[20px]
+          md:text-[24px] "
         />
-        <p className="h-[15px] text-xs font-bold text-red-600">
+        <p
+          className="text-xs font-bold text-red-600
+        sm:h-[8px] sm:w-[297px]
+        md:h-[15px]"
+        >
           {errors?.title?.message}
         </p>
         <div className="flex flex-col mx-auto w-[700px]">

@@ -2,14 +2,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  ic_chevron_down_1x,
-  ic_chevron_up_1x,
-  ic_favorite_list_1x,
-  ic_planned_time_1x,
-  ic_previous_time_1x,
-} from '@assets/icons/1x';
+import IconChevronDown from '@assets/icons/IconChevronDown';
+import IconChevronUp from '@assets/icons/IconChevronUp';
+import IconFavoriteList from '@assets/icons/IconFavoriteList';
+import IconPlannedTime from '@assets/icons/IconPlannedTime';
+import IconPreviousTime from '@assets/icons/IconPreviousTime';
 import { sideBarStore } from '@store/sideBarStore';
+import { usePlanStore } from '@store/usePlanStore';
 import { type PlanType } from 'types/supabase';
 
 interface SideBarPlanListProps {
@@ -23,12 +22,13 @@ interface SideBarPlanListProps {
 const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const { toggleFunc, setFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const setSelectedPlan = usePlanStore((state) => state.setSelectedPlan);
   const navigate = useNavigate();
 
   const iconList = {
-    bookMark: ic_favorite_list_1x,
-    start: ic_planned_time_1x,
-    end: ic_previous_time_1x,
+    bookMark: <IconFavoriteList w="w-[24px]" h="h-[24px]" fill="#6E6F76" />,
+    start: <IconPlannedTime w="w-[24px]" h="h-[24px]" />,
+    end: <IconPreviousTime w="w-[22px]" h="h-[23px]" />,
   };
 
   const listName = {
@@ -38,9 +38,9 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   };
 
   const hoverColor = {
-    bookMark: 'hover:bg-red_light_1',
-    start: 'hover:bg-yellow_light_1',
-    end: 'hover:bg-orange_light_1',
+    bookMark: 'md:hover:bg-red_light_1',
+    start: 'md:hover:bg-yellow_light_1',
+    end: 'md:hover:bg-orange_light_1',
   };
 
   const focusColor = {
@@ -62,39 +62,63 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
     if (state === 'end') navigate(`/ending/${id}`);
   };
 
+  const onClickMoreBtn = () => {
+    if (filter === 'bookMark') {
+      setSelectedPlan('bookMark');
+    }
+    if (filter === 'start') {
+      setSelectedPlan('planning');
+    }
+    if (filter === 'end') {
+      setSelectedPlan('end');
+    }
+    setFunc(false);
+    navigate('/main');
+  };
+
   const isDropDownOpen = isOpen && !isSideBarOpen;
 
   return (
     <div className=" relative">
       <div
-        className={`flex w-[222px] justify-between items-center cursor-pointer rounded-lg ${
-          isSideBarOpen ? hoverColor[filter] : ''
-        } ${isSideBarOpen && isOpen ? activeColor[filter] : ''} `}
+        className={`flex justify-between items-center cursor-pointer rounded-lg 
+        sm:w-[308px] 
+        md:w-[222px]
+        ${isSideBarOpen ? hoverColor[filter] : ''} ${
+          isSideBarOpen && isOpen ? activeColor[filter] : ''
+        } `}
         onClick={toggleFunc}
       >
         <button
           onBlur={() => {
             setFunc(false);
           }}
-          className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
-          ${focusColor[filter]} ${hoverColor[filter]} `}
+          className={`flex-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
+          ${isOpen ? focusColor[filter] : ''} ${hoverColor[filter]} `}
         >
-          <img src={iconList[filter]} />
+          {iconList[filter]}
         </button>
         <div className="flex items-center">
-          <span className="w-[110px] font-bold text-sm text-gray_dark_1">
+          <span
+            className="font-bold text-sm text-gray_dark_1
+          sm:w-[198px]  
+          md:w-[110px]
+          "
+          >
             {listName[filter]}
           </span>
-          <img
-            src={isOpen ? ic_chevron_up_1x : ic_chevron_down_1x}
-            alt="다운버튼"
-            className="w-[14px] mr-5"
-          />
+          <div className="w-[14px] mr-5">
+            {isOpen ? (
+              <IconChevronUp w="w-[14px]" h="h-[14px]" fill="#4E4F54" />
+            ) : (
+              <IconChevronDown w="w-[14px]" h="h-[14px]" fill="#4E4F54" />
+            )}
+          </div>
         </div>
       </div>
       <ul
         style={{ overflow: isDropDownOpen ? 'visible' : '' }}
-        className={` flex flex-col  w-[200px] ${
+        className={` flex flex-col md:w-[200px] sm:w-[285px] ${
           isDropDownOpen
             ? ' fixed flex-center ml-[68px] mt-[-40px] w-[190px] border border-gray_light_3 rounded-lg  bg-white'
             : 'items-end ml-[22px]'
@@ -111,7 +135,10 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
                 onClickListItem(plan.plan_state, plan.id);
               }}
               style={{ overflow: isDropDownOpen ? 'visible' : '' }}
-              className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer "
+              className=" p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
+              md:w-[175px] md:my-[5px]
+              sm:w-[234px] sm:mt-[5px]
+              "
               key={plan.id}
             >
               <p className="text-[13px]">{plan.title}</p>
@@ -122,8 +149,27 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
               )}
             </li>
           ))}
+
+        {isOpen && planList.length > 3 && (
+          <li
+            onMouseDown={(e) => {
+              e.preventDefault();
+            }}
+            onClick={onClickMoreBtn}
+            style={{ overflow: isDropDownOpen ? 'visible' : '' }}
+            className="md:w-[175px] sm:w-[234px] mb-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray text-center hover:text-gray_dark_2 cursor-pointer "
+          >
+            <p className="text-[13px]">+ 더보기</p>
+          </li>
+        )}
+
         {isOpen && planList.length === 0 && (
-          <li className="w-[175px] my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer ">
+          <li
+            className="my-[5px] p-2 rounded-lg hover:bg-[#F6F6F6] text-gray hover:text-gray_dark_2 cursor-pointer 
+            md:w-[175px]
+            sm:w-[234px]
+            "
+          >
             <p className="text-[13px]">{listName[filter]}이 없습니다</p>
           </li>
         )}

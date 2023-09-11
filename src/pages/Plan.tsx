@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { changePlanState, getPlan, updatePlan } from '@api/plans';
 import PlanLayout from '@components/addPlan/planLayout/PlanLayout';
@@ -16,52 +16,65 @@ import useConfirm from '@hooks/useConfirm';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-interface InputType {
-  totalCost?: number;
+export interface ModifyInputType {
+  title: string;
+  totalCost: number;
 }
 
 const Plan = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const user = userStore((state) => state.user);
   const resetDates = datesStore((state) => state.resetDates);
-  // const dates = datesStore((state) => state.dates);
+
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
+  const { confirm } = useConfirm();
+
   const { id } = useParams();
-  const planId: string = id as string;
-  const { data, isLoading } = useQuery(
+  const navigate = useNavigate();
+
+  const [planState, setPlanState] = useState<string>();
+  const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
+  const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
+
+  const isModifying = modifyState === 'modify';
+
+  const planId = id as string;
+
+  const scrollTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
+
+  const {
+    register,
+    setFocus,
+    watch,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm<ModifyInputType>({
+    mode: 'onChange',
+    defaultValues: {
+      totalCost: 0,
+    },
+  });
+
+  const { data, isLoading, isError } = useQuery(
     ['plan', planId],
     async () => await getPlan(planId),
   );
 
-  const [title, setTitle] = useState<string>('');
-  const [planState, setPlanState] = useState<string>();
-  const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
-  const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
-  const isModifying = modifyState === 'modify';
-  const {
-    register,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<InputType>({
-    mode: 'onChange',
-  });
-
-  const handleSubmitButton = () => {
+  const handleSubmitOrStateChangeBtn = () => {
     if (modifyState === 'modify') {
+      mutation.mutate([planId, watch('title'), watch('totalCost')]);
       setReadOnly();
     } else {
       setModify();
     }
-    mutation.mutate([planId, title, watch('totalCost') as number]);
   };
 
-  const { confirm } = useConfirm();
-  const navigate = useNavigate();
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
   const handleChangePlanState = () => {
     if (planState === 'planning') {
       const confTitle = '여행 중으로 변경';
@@ -93,21 +106,28 @@ const Plan = () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
+      toast.error('계획 수정하기 오류 발생');
     },
   });
+
   const changeMutation = useMutation({
     mutationFn: changePlanState,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+      void queryClient.invalidateQueries({
+        queryKey: ['plan_mates', user?.id],
+      });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
+      toast.error('오류 발생');
     },
   });
+
   useEffect(() => {
     if (data?.[0] !== undefined) {
-      setTitle(data?.[0].title);
+      setValue('title', data?.[0].title);
       setValue('totalCost', data?.[0].total_cost);
       setPlanState(data[0].plan_state);
     }
@@ -136,31 +156,54 @@ const Plan = () => {
   if (isLoading) {
     return <Loading />;
   }
-
-  const planStateColor = planState === 'planning' ? 'bg-yellow' : 'bg-blue';
+  if (isError) {
+    navigate('/error');
+    return;
+  }
 
   return (
     <main
       className={`transition-all duration-300  ease-in-out py-[60px] ${
         isSideBarOpen
-          ? 'w-[calc(100vw-270px)] ml-[270px]'
-          : 'w-[calc(100vw-88px)] ml-[88px]'
+          ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+          : 'sidebar-close sm:ml-0 md:ml-[88px]'
       }`}
     >
-      <Nav page={'plan'} onClick={handleSubmitButton} />
+      <Nav
+        isValid={isValid}
+        page={'plan'}
+        onClick={handleSubmitOrStateChangeBtn}
+        modifyInputSetFocus={setFocus}
+        modifyInputWatch={watch}
+      />
       <PlanLayout>
-        <input
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-          readOnly={modifyState === 'readOnly'}
-          className="border-b-[1px] border-gray w-full outline-none text-xlg font-bold placeholder:text-gray  text-black read-only:cursor-default"
-        />
-        <div
-          className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white mt-[16px]`}
-        >
-          {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+        <div className="flex items-center ">
+          <input
+            id="title"
+            type="text"
+            {...register('title', {
+              required: '제목은 필수입니다.',
+              minLength: {
+                value: 2,
+                message: '제목은 2글자 이상이어야 합니다.',
+              },
+              maxLength: {
+                value: 12,
+                message: '제목은 12글자 이하여야 합니다.',
+              },
+            })}
+            readOnly={modifyState === 'readOnly'}
+            className=" border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
+            sm:w-[235px] sm:text-[20px] sm:read-only:border-b-0
+            md:w-[260px] md:text-[24px] md:read-only:border-b-0"
+          />
+          <div
+            className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] flex items-center flex-center font-normal text-white
+          sm:flex sm:text-[10px]
+          md:flex md:text-[12px]`}
+          >
+            {planState === 'planning' ? '여행 계획 중' : '여행 중'}
+          </div>
         </div>
         <PostPlan />
         <Invite />
@@ -170,10 +213,22 @@ const Plan = () => {
           errors={errors}
         />
         <UpdatePlan />
-        <div className="flex items-center justify-end gap-5 mt-16">
+        <div
+          className="flex items-centergap-5 mt-16
+        sm:justify-normal
+        md:justify-end"
+        >
           {planState === 'planning' ? (
-            <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>
+            <div
+              className="flex items-center gap-5
+            sm:mt-[18px] sm:w-[286px] sm:justify-normal
+            md:my-[100px] md:w-[400px] md:justify-end"
+            >
+              <p
+                className="text-gray_dark_1 font-Regular 
+              sm:w-[170px] sm:text-sm
+              md:w-[200px] md:text-noraml"
+              >
                 {isPossibleStart
                   ? isModifying
                     ? '상단의 저장 버튼을 눌러주세요.'
@@ -183,14 +238,24 @@ const Plan = () => {
               <button
                 disabled={!isPossibleStart || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
+                className="p-3 border rounded-lg font-semibold border-blue text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[113px] sm:text-sm
+                md:w-[130px] md:text-normal"
               >
                 여행 시작
               </button>
             </div>
           ) : (
-            <div className="flex my-[100px] items-center justify-end gap-5">
-              <p>
+            <div
+              className="flex my-[100px] items-center justify-end gap-5
+            sm:mt-[18px] sm:w-[286px] sm:justify-normal
+            md:my-[100px] md:w-[400px] md:justify-end"
+            >
+              <p
+                className="text-gray_dark_1 font-Regular 
+              sm:w-[170px] sm:text-sm
+              md:w-[200px] md:text-noraml"
+              >
                 {isPossibleEnd
                   ? isModifying
                     ? '상단의 저장 버튼을 눌러주세요.'
@@ -200,7 +265,9 @@ const Plan = () => {
               <button
                 disabled={!isPossibleEnd || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-bold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1"
+                className="p-3 border rounded-lg font-semibold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[113px] sm:text-sm
+                md:w-[130px] md:text-normal"
               >
                 여행 완료
               </button>

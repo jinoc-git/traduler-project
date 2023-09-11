@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ic_profile_3x } from '@assets/icons/3x';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
@@ -16,7 +15,8 @@ const Header = () => {
   const user = userStore((state) => state.user);
   const isLogin = localStorage.getItem('isLogin');
 
-  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen } = sideBarStore();
+  const { setVisibilityIcon, isSideBarOpen, setMenuIsOpen, isNotFoundPage } =
+    sideBarStore();
 
   const goToMain = () => {
     if (user !== null) {
@@ -31,21 +31,28 @@ const Header = () => {
     if (isLogin === 'false') {
       setVisibilityIcon(false);
     } else {
+      setMenuIsOpen(true);
+      setVisibilityIcon(true);
+
       if (pathname === '/') {
         setVisibilityIcon(false);
+      } else if (pathname === '/error') {
+        setVisibilityIcon(false);
       } else {
-        setMenuIsOpen(true);
-        setVisibilityIcon(true);
+        setVisibilityIcon(!isNotFoundPage);
       }
       if (pathname === '/signin' || pathname === '/signup') {
         navigate('/main');
       }
     }
-  }, [user, pathname, isLogin]);
+  }, [user, pathname, isLogin, isNotFoundPage]);
 
   return (
     <header
-      className={`flex justify-between items-center fixed w-screen h-[70px] pr-3 z-30 ${
+      className={`flex justify-between items-center fixed w-screen pr-3 z-30
+      sm:h-[89px]
+      md:h-[70px]
+      ${
         pathname !== '/' && pathname !== '/signin' && pathname !== '/signup'
           ? user !== null
             ? 'bg-transparent'
@@ -54,49 +61,77 @@ const Header = () => {
       }`}
     >
       <div className="flex items-center ">
-        <h1 onClick={goToMain} className=" ml-[88px] cursor-pointer">
+        {pathname !== '/' &&
+          pathname !== '/signin' &&
+          pathname !== '/signup' && (
+            <div
+              className="
+              sm:flex-grow sm:w-[108px] 
+              md:w-[0px]
+              "
+            ></div>
+          )}
+        <h1
+          onClick={goToMain}
+          className=" cursor-pointer 
+          sm:mt-[24px] 
+          md:mt-[0px] md:ml-[88px]"
+        >
           {pathname === '/main' ? (
             isSideBarOpen ? (
               <img
                 src={logoColor}
                 alt="로고"
-                className=" w-[134px] ml-[10px]"
+                className=" w-[134px] ml-[10px] "
               />
             ) : (
-              <img
-                src={logoWhite}
-                alt="로고"
-                className=" w-[134px] ml-[10px]"
-              />
+              <img src={logoWhite} alt="로고" className="w-[134px] ml-[10px]" />
             )
           ) : (
-            <img src={logoColor} alt="로고" className=" w-[134px] ml-[10px]" />
+            <img src={logoColor} alt="로고" className="w-[134px] ml-[10px]" />
           )}
         </h1>
       </div>
       {user !== null ? (
         pathname !== '/main' ? (
-          <div className="flex-center w-[70px] h-[50px]">
+          <div
+            className="flex-center w-[70px] h-[50px]
+            sm:mr-[16px] sm:mt-[16px]
+            md:mr-0 md:mt-[0ox]"
+          >
             {user.profileImg != null ? (
               <img
-                src={user.profileImg !== null ? user.profileImg : ic_profile_3x}
+                src={user.profileImg}
                 alt="프로필 이미지"
-                className=" w-[37px] h-[37px] object-cover rounded-full border border-navy/50 "
+                className="object-cover rounded-full border border-navy/50 
+                sm:w-[37px] sm:h-[37px] 
+                md:w-[37px] md:h-[37px] "
               />
             ) : (
-              <div className="rounded-full border border-navy/50 ">
-                <IconUserDefault w={'37'} h={'37'} />
+              <div
+                className="rounded-full border border-navy/50 
+              sm:mt-[5px]
+              md:mt-[0px]
+              "
+              >
+                <IconUserDefault w="w-[37px]" h="h-[37px]" />
               </div>
             )}
           </div>
         ) : null
       ) : pathname === '/' ? (
-        <div>
+        <div
+          className="flex 
+        sm:w-[147px] 
+        md:w-[300px]"
+        >
           <button
             onClick={() => {
               navigate('/signin');
             }}
-            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            className={`
+            sm:w-[147px] sm:mt-[40px]
+            md:w-[147px] md:mt-[24px] ${pathname === '/' ? 'text-white' : ''}`}
           >
             로그인
           </button>
@@ -104,7 +139,12 @@ const Header = () => {
             onClick={() => {
               navigate('/signup');
             }}
-            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            // className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+            className={`w-[147px] ${pathname === '/' ? 'text-white' : ''} ${
+              pathname === '/'
+                ? 'sm:hidden md:block md:w-[147px] md:mt-[24px] '
+                : ''
+            }`}
           >
             회원가입
           </button>
@@ -114,7 +154,9 @@ const Header = () => {
           onClick={() => {
             navigate('/signup');
           }}
-          className="w-[147px]"
+          className="
+          sm:w-[147px] sm:mt-[40px] sm:text-white
+          md:w-[147px] md:text-black"
         >
           회원가입
         </button>
@@ -123,7 +165,9 @@ const Header = () => {
           onClick={() => {
             navigate('/signin');
           }}
-          className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
+          className={`
+          sm:w-[147px] sm:mt-[40px] sm:text-white
+          md:w-[147px] md:text-black ${pathname === '/' ? 'text-white' : ''}`}
         >
           로그인
         </button>

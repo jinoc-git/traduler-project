@@ -204,22 +204,31 @@ export interface Database {
       };
       plans_ending: {
         Row: {
+          dates: string[];
           dates_cost: number[] | null;
           distance: Json[] | null;
           id: string;
           pictures: string[];
+          title: string;
+          total_cost: number | null;
         };
         Insert: {
+          dates?: string[];
           dates_cost?: number[] | null;
           distance?: Json[] | null;
           id: string;
           pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
         };
         Update: {
+          dates?: string[];
           dates_cost?: number[] | null;
           distance?: Json[] | null;
           id?: string;
           pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
         };
         Relationships: [
           {
@@ -254,3 +263,5 @@ export type BookMarkType = Database['public']['Tables']['book_mark']['Insert'];
 export type PlanMatesType =
   Database['public']['Tables']['plan_mates']['Insert'];
 export type CommentsType = Database['public']['Tables']['comments']['Insert'];
+export type PlansEndingType =
+  Database['public']['Tables']['plans_ending']['Row'];

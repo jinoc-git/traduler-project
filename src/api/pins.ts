@@ -1,4 +1,4 @@
-import { type Json, type PinInsertType } from 'types/supabase';
+import { type PinType, type Json, type PinInsertType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
@@ -8,13 +8,8 @@ export interface PinContentsType {
   lng?: number;
   placeName?: string;
   cost?: number | null;
+  address?: string;
   distance?: number | undefined;
-}
-
-export interface AddPinType {
-  date: string;
-  planId: string;
-  newContents: PinContentsType;
 }
 
 export const getPin = async (planId: string, currentpage: number) => {
@@ -29,7 +24,7 @@ export const getPin = async (planId: string, currentpage: number) => {
   if (dates !== null) {
     const { data, error } = await supabase
       .from('pins')
-      .select('contents')
+      .select()
       .match({ plan_id: planId, date: dates[0].dates[currentpage] });
     if (error !== null) {
       throw new Error('핀 콘텐츠 불러오기 오류');
@@ -38,28 +33,13 @@ export const getPin = async (planId: string, currentpage: number) => {
   }
 };
 
-export const addPin = async (
-  date: string,
-  planId: string,
-  newContents: PinContentsType,
-) => {
-  const { data: oldContents, error: olderror } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
-
-  const Arr = [];
-  if (oldContents != null) {
-    Arr.push(...oldContents[0].contents, newContents);
-  }
-
+export const addPin = async (newPin: PinType) => {
   const { error } = await supabase
     .from('pins')
-    .update({ contents: Arr as Json[] })
-    .match({ plan_id: planId, date })
-    .select();
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
 
-  if (error != null || olderror != null) {
+  if (error != null) {
     throw new Error('핀 추가 오류');
   }
 };
@@ -81,34 +61,13 @@ export const deletePin = async (
   return data;
 };
 
-export const updatePin = async (
-  idx: number,
-  date: string,
-  planId: string,
-  newContents: PinContentsType,
-) => {
-  const { data: oldContents, error: olderror } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
-
-  let Arr: Array<Json | PinContentsType> = [];
-  if (oldContents != null) {
-    Arr = oldContents[0].contents.map((content, i) => {
-      if (i === idx) {
-        return newContents;
-      }
-      return content;
-    });
-  }
-
+export const updatePin = async (newPin: PinType) => {
   const { data, error } = await supabase
     .from('pins')
-    .update({ contents: Arr as Json[] })
-    .match({ plan_id: planId, date })
-    .select();
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
 
-  if (error != null || olderror != null) {
+  if (error != null) {
     throw new Error('핀 업데이트 오류');
   }
 
@@ -116,6 +75,7 @@ export const updatePin = async (
 };
 
 export const newDatePin = async (newPin: PinInsertType) => {
+  console.log('api', newPin);
   const { error } = await supabase.from('pins').insert(newPin);
 
   if (error !== null) {
@@ -123,13 +83,45 @@ export const newDatePin = async (newPin: PinInsertType) => {
   }
 };
 
-export const getAllPins = async (planId: string) => {
+export const getAllPins = async (planId: string, dates: string[]) => {
   const { data, error } = await supabase
     .from('pins')
     .select('contents')
+    .in('date', dates)
     .eq('plan_id', planId);
+
   if (error !== null) {
     throw new Error('핀 가져오기 에러발생');
   }
   return data;
+};
+
+export const changeOrderPins = async (
+  date: string,
+  planId: string,
+  newOrder: PinContentsType[],
+) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: newOrder as Json[] })
+    .match({ plan_id: planId, date });
+
+  if (error != null) {
+    throw new Error('핀 삭제 오류');
+  }
+
+  return data;
+};
+
+export const getAllPinsDate = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .select('date')
+    .eq('plan_id', planId);
+
+  if (error !== null) {
+    throw new Error('핀 날짜 가져오기 에러발생');
+  }
+  const res = data.map((item) => item.date);
+  return res;
 };

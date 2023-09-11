@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from '@api/endingData';
 import { addPicture } from '@api/picture';
 import { type PinContentsType } from '@api/pins';
-import { changePlanState, getPlan, getPlanEnding } from '@api/plans';
+import { changePlanState, getPlan } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import AddPicture from '@components/addPhoto/addPicture/AddPicture';
@@ -21,10 +21,13 @@ import EndingPay from '@components/common/pay/EndingPay';
 import Loading from '@components/loading/Loading';
 import useConfirm from '@hooks/useConfirm';
 import { sideBarStore } from '@store/sideBarStore';
+import { userStore } from '@store/userStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type PlansEndingType } from 'types/supabase';
 
 const AddPhoto = () => {
   const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
+  const user = userStore((state) => state.user);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dates, setDates] = useState<string[]>();
   const [pay, setPay] = useState<number>();
@@ -34,19 +37,15 @@ const AddPhoto = () => {
   const [distancePin, setDistancePin] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
 
-  const { data: plan, isLoading: isPlanLoading } = useQuery(
-    ['plan', planId],
-    async () => await getPlan(planId),
-  );
+  const {
+    data: plan,
+    isLoading: isPlanLoading,
+    isError: isPlanError,
+  } = useQuery(['plan', planId], async () => await getPlan(planId));
 
   const { data, isLoading, isError } = useQuery(
     ['planCoordinate', planId],
     async () => await getCoordinate(planId),
-  );
-
-  const { data: planEnding, isLoading: isPlanEndingLoading } = useQuery(
-    ['planEnding', planId],
-    async () => await getPlanEnding(planId),
   );
 
   const queryClient = useQueryClient();
@@ -54,6 +53,9 @@ const AddPhoto = () => {
     mutationFn: changePlanState,
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
+      void queryClient.invalidateQueries({
+        queryKey: ['plan_mates', user?.id],
+      });
     },
     onError: (error) => {
       console.log(error);
@@ -67,12 +69,16 @@ const AddPhoto = () => {
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
     if (datesCostList !== undefined) {
       const pictures = await addPicture(uploadedFiles, planId);
-      await insertPlanEnding({
+      const planEnding: PlansEndingType = {
         id: planId,
         distance: distanceDataList,
         dates_cost: datesCostList,
         pictures,
-      });
+        title: plan?.[0].title as string,
+        total_cost: plan?.[0].total_cost as number,
+        dates: plan?.[0].dates as string[],
+      };
+      await insertPlanEnding(planEnding);
       changeMutation.mutate([planId, 'end']);
       navigate(`/ending/${planId}`);
     }
@@ -88,12 +94,6 @@ const AddPhoto = () => {
     };
     confirm.default(confTitle, confDesc, confFunc);
   };
-
-  useLayoutEffect(() => {
-    if (planEnding !== undefined && planEnding.length !== 0) {
-      navigate('/main');
-    }
-  }, [planEnding]);
 
   useEffect(() => {
     if (
@@ -111,28 +111,39 @@ const AddPhoto = () => {
     }
   }, [data, plan]);
 
-  if (isPlanLoading || isLoading || isPlanEndingLoading) {
+  if (isPlanLoading || isLoading) {
     return <Loading />;
   }
 
-  if (isError) {
-    return <div>Error occurred while fetching data.</div>;
+  if (isPlanError || isError) {
+    navigate('/error');
+    return;
   }
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out pt-[108px]  ${
+      className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'w-[calc(100vw-270px)] ml-[270px]'
-            : 'w-[calc(100vw-88px)] ml-[88px]'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[0px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
-      <section className="main-layout ">
-        <div className="flex flex-col w-plan mt-[76px]">
-          <div className="flex items-center mb-[18px]">
-            <h3 className="font-bold text-gray_dark_1">{plan?.[0].title}</h3>
+      <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
+        <section>
+          <div
+            className="flex items-center 
+          sm:mb-[35px]
+          md:mb-[18px]"
+          >
+            <h3
+              className="font-bold text-gray_dark_1
+            sm:text-[20px]
+            md:text-[24px]"
+            >
+              {plan?.[0].title}
+            </h3>
             <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
               완료된 여행
             </div>
@@ -140,31 +151,63 @@ const AddPhoto = () => {
           <EndingDate planDates={dates as string[]} />
           <Invite />
           <EndingPay pay={pay as number} />
-          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+        </section>
+        <section>
+          <div
+            className="flex items-center font-semibold text-normal text-gray_dark_1 gap-[8px] mx-[6px]
+          sm:my-[35px] sm:text-sm
+          md:my-[10px] md:text-normal"
+          >
             <IconLocationDefault w="20" h="20" />
-            <label>여행지역</label>
+            <label>여행 지역</label>
           </div>
-          <EndingMap />
-          <div className="flex items-center">
-            <IconCamera w="20" h="25" fill="#4E4F54" />
-            <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
+          <EndingMap dates={dates as string[]} />
+        </section>
+        <section>
+          <div className="flex items-center mt-[20px] gap-[8px] mx-[6px]">
+            <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
+            <div
+              className="w-full mx-auto font-bold  text-gray_dark_1 py-[13px]
+            sm:text-sm
+            md:text-normal"
+            >
               추억할 사진 올리기
             </div>
           </div>
-          <p className="text-gray">10개 까지 추가 가능합니다.</p>
+          <p
+            className="text-gray sm:ml-[12px]
+            sm:text-sm
+            md:text-normal"
+          >
+            10개 까지 추가 가능합니다.
+          </p>
           <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
-          <div className="flex my-[100px] items-center justify-end gap-5">
-            <span>여행 잘 다녀오셨나요?</span>
+        </section>
+        <section>
+          <div
+            className="flex items-center justify-end gap-5
+          sm:my-[55px] sm:w-[286px] sm:justify-normal
+          md:my-[100px] md:w-[720px] md:justify-end"
+          >
+            <span
+              className="text-gray_dark_1 font-Regular 
+              sm:w-[170px] sm:text-sm
+              md:w-[200px] md:text-noraml"
+            >
+              여행 잘 다녀오셨나요?
+            </span>
             <button
               disabled={isSubmiting}
               onClick={handleSubmitButton}
-              className="w-[130px] p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1 hover:bg-blue_light_1 duration-200"
+              className="p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1 hover:bg-blue_light_1 duration-200
+              sm:w-[113px] sm:text-sm
+              md:w-[130px] md:text-normal"
             >
               {isSubmiting ? '저장 중' : '여행 저장'}
             </button>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 };

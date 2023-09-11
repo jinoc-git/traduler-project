@@ -1,20 +1,41 @@
-/* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import {
+  DndProvider,
+  TouchTransition,
+  MouseTransition,
+} from 'react-dnd-multi-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import { useParams } from 'react-router-dom';
 
-import { calcPath } from '@api/path';
-import { type PinContentsType, getPin, deletePin } from '@api/pins';
-import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import { type PinContentsType, getPin } from '@api/pins';
 import IconPin from '@assets/icons/IconPin';
 import MapModal from '@components/plan/updatePlan/MapModal';
+import useBooleanState from '@hooks/useBooleanState';
+import usePinMutation from '@hooks/usePinMutation';
 import { updatePinStore } from '@store/updatePinStore';
-import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import update from 'immutability-helper';
 
 import Pin from './Pin';
+
+const HTML5toTouch = {
+  backends: [
+    {
+      id: 'html5',
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      id: 'touch',
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 interface PropsType {
   currentPage: number;
@@ -22,43 +43,36 @@ interface PropsType {
 }
 
 const Pins = ({ currentPage, dates }: PropsType) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [distanceData, setDistanceData] = useState<string[]>([]);
+  const { value: isOpenModal, setNeedValue } = useBooleanState(false);
 
+  const { value, setNeedValue: setValue } = useBooleanState(true);
   const openModal = () => {
-    setIsOpenModal(!isOpenModal);
+    setValue(true);
+    setNeedValue(true);
   };
   const closeModal = () => {
-    setIsOpenModal(false);
+    setValue(false);
+    setTimeout(() => {
+      setNeedValue(false);
+    }, 400);
   };
 
   const { id } = useParams();
   const planId: string = id as string;
+  const { updateClick } = updatePinStore();
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
 
-  const queryClient = useQueryClient();
-
-  const { data: pin } = useQuery(
-    ['pin', planId, currentPage],
-    async () => await getPin(planId, currentPage),
-  );
-
-  const deletemutation = useMutation({
-    mutationFn: async ([date, planId, deletedPin]: [
-      string,
-      string,
-      PinContentsType[],
-    ]) => {
-      await deletePin(date, planId, deletedPin);
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: ['pin', planId, currentPage],
-      });
-    },
+  const { data: pin } = useQuery({
+    queryKey: ['pin', planId, currentPage],
+    queryFn: async () => await getPin(planId, currentPage),
+    // cacheTime: 600000,
+    staleTime: 60 * 1000,
   });
 
-  const { updateClick } = updatePinStore();
+  const { deleteMutation, debounceNewOrderMutaion } = usePinMutation(
+    planId,
+    currentPage,
+  );
 
   const handleUpdate = (idx: number) => {
     const updatePin = pinArr[idx];
@@ -67,41 +81,45 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   };
   const handleDelete = (idx: number) => {
     const deletedPin = pinArr.filter((pin, i) => i !== idx);
-    deletemutation.mutate([dates[currentPage], planId, deletedPin]);
+    deleteMutation([dates[currentPage], planId, deletedPin]);
   };
 
   // drang drop
   const movePins = useCallback((beforeIdx: number, afterIdx: number) => {
     if (beforeIdx === afterIdx) return;
-    setPinArr((prev) => {
-      const newPinArr = [...prev];
-      const item = newPinArr.splice(beforeIdx, 1);
-      newPinArr.splice(afterIdx, 0, ...item);
-      return newPinArr;
-    });
+    setPinArr((prev) =>
+      update(prev, {
+        $splice: [
+          [beforeIdx, 1],
+          [afterIdx, 0, prev[beforeIdx]],
+        ],
+      }),
+    );
   }, []);
+
+  const changeOrderAtDidDrop = () => {
+    debounceNewOrderMutaion([dates[currentPage], planId, pinArr]);
+  };
 
   useEffect(() => {
     if (pin != null && pin.length !== 0) {
-      setPinArr(pin?.[0].contents as []);
+      setPinArr(pin[0].contents as []);
     }
   }, [pin]);
 
   return (
     <>
       <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center mt-[36px]">
-          <IconPin w="20" h="25" fill="#4E4F54" />
+        <div className="flex items-center mt-[36px] mb-[32px]">
+          <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
           <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
             방문할 장소
           </div>
         </div>
       </div>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider options={HTML5toTouch}>
         <ul className="flex flex-col ">
           {pinArr.map((pin, idx) => {
-            // const betweenDistanceData = distanceData[idx] ?? '';
-            // const pinArrLength = pinArr.length;
             return (
               <Pin
                 key={pin.id}
@@ -109,33 +127,41 @@ const Pins = ({ currentPage, dates }: PropsType) => {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 id={pin.id!}
                 idx={idx}
-                // betweenDistanceData={betweenDistanceData}
-                // pinArrLength={pinArrLength}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
                 movePins={movePins}
+                changeOrderAtDidDrop={changeOrderAtDidDrop}
               />
             );
           })}
         </ul>
       </DndProvider>
-      <div className="flex items-center justify-between my-[8px]">
-        {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
-        <p className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white"></p>
+      <div
+        className="flex items-center justify-between
+            sm:w-[286px]
+            md:w-[651px] md:mx-[25px] md:my-[8px]"
+      >
+        <p
+          className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white
+        sm:w-[30px] sm:h-[30px]
+        md:w-[35px] md:h-[35px]"
+        ></p>
         <button
           type="button"
           onClick={openModal}
-          className="w-pin_card hover:bg-navy_light_1 duration-200 h-pin_card border border-dashed rounded-lg font-bold text-[18px] text-gray_dark_1"
+          className=" hover:bg-navy_light_1 duration-200  border border-dashed rounded-lg font-bold  text-gray_dark_1
+          sm:w-[240px] sm:h-[65px] sm:mr-[2px] sm:text-[11px]
+          md:w-pin_card md:h-pin_card md:text-[18px]"
         >
           장소 추가하기
         </button>
       </div>
       {isOpenModal && (
         <MapModal
-          openModal={openModal}
+          pinQuery={pin?.[0]}
           closeModal={closeModal}
-          date={dates[currentPage]}
           currentPage={currentPage}
+          value={value}
         />
       )}
     </>

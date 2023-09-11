@@ -4,14 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { signInWithGoogle, signInWithSB } from '@api/supabaseAuth';
-import {
-  ic_google_1x,
-  ic_locked_default_1x,
-  ic_message_default_1x,
-  ic_visible_default_1x,
-  ic_visible_solid_1x,
-} from '@assets/icons/1x';
+import { ic_google_1x } from '@assets/icons/1x';
+import IconHidden from '@assets/icons/IconHidden';
+import IconLocked from '@assets/icons/IconLocked';
+import IconMessage from '@assets/icons/IconMessage';
+import IconVisible from '@assets/icons/IconVisible';
 import useFormValidator from '@hooks/useFormValidator';
+import { sideBarStore } from '@store/sideBarStore';
 import { AuthError } from '@supabase/supabase-js';
 
 interface UserSignInForm {
@@ -23,6 +22,7 @@ interface UserSignInForm {
 const SignInForm = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const setVisibilityIcon = sideBarStore((state) => state.setVisibilityIcon);
 
   const {
     register,
@@ -41,6 +41,7 @@ const SignInForm = () => {
       return false;
     }
 
+    setVisibilityIcon(true);
     reset();
     toast.success('로그인에 성공하였습니다.');
     navigate('/main');
@@ -56,22 +57,27 @@ const SignInForm = () => {
 
   return (
     <main className="flex relative w-screen h-screen">
-      <div className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/127144e1-d63a-44e5-8622-5d429cb86586)] bg-left bg-cover bg-no-repeat w-[880px]"></div>
+      <div
+        className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/f89f7efe-d6da-45fb-b469-3c96f8ce5840)] bg-left bg-cover bg-no-repeat 
+        md:w-[880px]"
+      />
       <div className="flex items-center justify-center flex-grow">
         <form
           onSubmit={handleSubmit(onSubmitSignInHandler)}
-          className="relative flex flex-col w-[450px] h-[410px] px-[50px] py-[37px] gap-y-2.5 rounded-xl bg-[#F9F9FB]"
+          className="relative flex flex-col   gap-y-2.5 rounded-xl bg-[#F9F9FB]
+            md:w-[450px] md:h-[410px] md:px-[50px] md:py-[37px]
+            sm:px-[30px] sm:py-[22px]
+          "
         >
           <h2 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">
             로그인
           </h2>
           <div className="relative">
-            <label htmlFor="signin-email">
-              <img
-                src={ic_message_default_1x}
-                alt="이메일 아이콘"
-                className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
-              />
+            <label
+              htmlFor="signin-email"
+              className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+            >
+              <IconMessage w="w-[12px]" h="h-[12px]" />
             </label>
             <input
               type="text"
@@ -82,12 +88,11 @@ const SignInForm = () => {
             />
           </div>
           <div className="relative">
-            <label htmlFor="signin-password">
-              <img
-                src={ic_locked_default_1x}
-                alt="비밀번호 아이콘"
-                className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
-              />
+            <label
+              htmlFor="signin-password"
+              className="absolute top-1/2 -translate-y-1/2 left-[5px] w-[24px] h-[24px] flex-center cursor-pointer"
+            >
+              <IconLocked w="w-[12px]" h="h-[12px]" />
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
@@ -96,16 +101,26 @@ const SignInForm = () => {
               className="w-full h-[42px] px-8 rounded"
               placeholder="비밀번호를 입력하세요"
             />
-            <img
-              src={showPassword ? ic_visible_solid_1x : ic_visible_default_1x}
-              alt="비밀번호 보기 아이콘"
+            <button
+              type="button"
               onClick={onClickShowPassword}
-              className="absolute top-1/2 -translate-y-1/2 right-[10px] w-[14px] h-[14px] cursor-pointer"
-            />
+              className="absolute top-1/2 -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
+            >
+              {showPassword ? (
+                <IconVisible w="w-[14px]" h="h-[14px]" />
+              ) : (
+                <IconHidden w="w-[14px]" h="h-[14px]" />
+              )}
+            </button>
           </div>
           <div className="flex justify-between">
             <label className="text-sm text-slate-400 cursor-pointer flex items-center">
-              <input type="checkbox" name="keep" className="mr-2" checked />
+              <input
+                type="checkbox"
+                name="keep"
+                className="mr-2"
+                defaultChecked
+              />
               로그인 상태 유지
             </label>
             <span className="text-sm underline cursor-pointer text-orange font-semibold">
@@ -138,11 +153,16 @@ const SignInForm = () => {
               <span>구글 계정으로 로그인 하기</span>
             </div>
           </button>
-          <p className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 text-sm ">
+          <p
+            className="absolute left-1/2 -translate-x-1/2 w-[190px] text-sm p-2 rounded-lg font-semibold text-gray_dark_1
+            md:bottom-[-50px] md:bg-white/20
+            sm:bottom-[-60px] sm:bg-white/50
+          "
+          >
             처음이신가요?
             <span
               onClick={goToSignUp}
-              className="ml-2 font-semibold underline cursor-pointer"
+              className="ml-2 underline text-black cursor-pointer "
             >
               지금 등록하세요!
             </span>

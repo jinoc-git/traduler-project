@@ -44,9 +44,13 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
   };
 
   return (
-    <div className="flex w-full overflow-auto scrollbar-hide flex-wrap">
+    <div
+      className="flex flex-wrap
+    sm:w-[267px] sm:gap-[6px]
+    md:w-full md:justify-normal"
+    >
       {limit !== imgSrcList?.length ? (
-        <div>
+        <div className="sm:mx-auto md:mx-0">
           <input
             accept=".jpg, .jpeg, .png"
             ref={fileRef}
@@ -58,10 +62,12 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             onClick={() => {
               fileRef?.current?.click();
             }}
-            className="cursor-pointer border-dashed text-[40px] w-[200px] h-[200px] border border-gray-200 mt-5 mr-[20px] flex items-center justify-center font-Regular text-gray-300"
+            className="cursor-pointer border-dashed text-[40px] border border-gray-200 mt-5 flex items-center justify-center font-Regular text-gray-300
+            sm:w-[268px] sm:h-[56px] sm:rounded-lg sm:mr-[0px]
+            md:w-[200px] md:h-[200px] md:mr-[20px]"
           >
             <div className="flex items-center">
-              <IconUploadPicture fill="#4E4F54" />
+              <IconUploadPicture w="w-[24px]" h="h-[24px]" fill="#4E4F54" />
               <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
                 사진업로드
               </div>
@@ -73,7 +79,9 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
         return (
           <div
             key={i}
-            className="relative w-[33.33%] min-w-[200px] max-w-[200px] min-h-[200px] max-h-[200px] bg-black mt-5 mr-5 flex items-center justify-center"
+            className="relative w-[33.33%] bg-black  flex items-center justify-center
+            sm:w-[128px] sm:h-[128px] sm:mt-0 sm:mr-0
+            md:w-[200px] md:h-[200px] md:mt-5 md:mr-5"
           >
             <button
               className="absolute top-0 right-0 bg-[#444040b8] text-white w-8 h-8 flex justify-center items-center"
@@ -86,7 +94,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             <img
               alt={'이미지'}
               src={el}
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover "
             />
           </div>
         );

@@ -1,6 +1,7 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import uuid from 'react-uuid';
 
 import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
@@ -34,16 +35,7 @@ const Invite = () => {
 
   const isOldInvitedUser =
     oldInvitedUser.length !== 0 && oldInvitedUser !== null;
-  const maxDisplayCount = 4;
-
-  const modalRef = useRef<HTMLDivElement>(null);
-  const modalOutSideClick = (
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) => {
-    if (modalRef.current === e.target) {
-      closeModal();
-    }
-  };
+  const maxDisplayCount = 3;
 
   useEffect(() => {
     return () => {
@@ -64,73 +56,93 @@ const Invite = () => {
 
   return (
     <>
-      <div className="flex items-center h-[30px] my-[10px]">
-        <div className="flex items-center gap-2">
+      <div
+        className="flex items-center 
+      sm:w-[286px] sm:mx-[6px] sm:justify-normal
+      md:w-[650px] md:h-[30px] md:my-[10px] md:justify-normal"
+      >
+        <div
+          className="flex items-center 
+        sm:gap-[8px] 
+        md:gap-2"
+        >
           <IconFriends w="20" h="15" fill="#4E4F54" />
-          <label className="font-semibold text-normal text-gray_dark_1 mr-[80px]">
+          <label
+            className="font-semibold  text-gray_dark_1 
+          sm:w-[24px] sm:text-sm sm:mr-[15px]
+          md:w-[30px] md:text-normal md:mr-[80px]"
+          >
             동행
           </label>
         </div>
-        <div className="flex font-semibold text-normal text-gray_dark_1">
-          {isOldInvitedUser ? (
-            oldInvitedUser.length > 0 && (
-              <div className="flex mr-3">
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
-                  return (
-                    <img
-                      key={user.id}
-                      src={
-                        user.avatar_url != null
-                          ? user.avatar_url
-                          : defaultImageGray
-                      }
-                      className="object-cover w-6 h-6 rounded-full"
-                    />
-                  );
-                })}
-              </div>
-            )
-          ) : (
-            <div className="w-6 h-6 mr-5 rounded-full bg-gray_light_3" />
-          )}
-          {isOldInvitedUser ? (
-            oldInvitedUser.length > maxDisplayCount ? (
-              <>
-                {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                  <div key={user.id} className="mr-[2px]">
-                    {user.nickname}
-                  </div>
-                ))}
-                외 {oldInvitedUser.length - maxDisplayCount}명
-              </>
-            ) : (
-              oldInvitedUser.map((user) => (
-                <div key={user.id} className="mr-[2px]">
+        {isOldInvitedUser ? (
+          oldInvitedUser.length > 0 && (
+            <div className="flex mr-3">
+              {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
+                return (
+                  <img
+                    key={uuid()}
+                    src={
+                      user.avatar_url != null
+                        ? user.avatar_url
+                        : defaultImageGray
+                    }
+                    className="object-cover rounded-full
+                      sm:w-[16px] sm:h-[16px]
+                      md:w-6 md:h-6"
+                  />
+                );
+              })}
+            </div>
+          )
+        ) : (
+          <div className="w-6 h-6 mr-5 rounded-full bg-gray_light_3" />
+        )}
+        {isOldInvitedUser ? (
+          oldInvitedUser.length > maxDisplayCount ? (
+            <div
+              className="flex items-center text-gray_dark_1
+            sm:text-xs sm:font-semibold 
+            md:text-sm md:font-semibold"
+            >
+              {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
+                <div key={uuid()} className="mr-[2px]">
                   {user.nickname}
                 </div>
-              ))
-            )
+              ))}
+              외 {oldInvitedUser.length - maxDisplayCount}명
+            </div>
           ) : (
-            <>로딩중...</>
+            oldInvitedUser.map((user) => (
+              <div
+                key={user.id}
+                className="mr-[2px]
+              sm:text-xs sm:font-semibold sm:text-gray_dark_1"
+              >
+                {user.nickname}&nbsp;
+              </div>
+            ))
+          )
+        ) : (
+          <div className="sm:w-[50px] sm:h-[21px] sm:text-sm sm:font-semibold sm:text-gray_dark_1">
+            로딩중...
+          </div>
+        )}
+        <div className="sm:flex sm:justify-end sm:h-[30px]">
+          {modifyState === 'modify' && (
+            <button
+              className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200
+            sm:w-[40px] sm:h-[28px]
+            md:w-[45px] md:h-[30px]"
+              onClick={switchModal}
+            >
+              추가
+            </button>
           )}
         </div>
-        {modifyState === 'modify' && (
-          <button
-            className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200"
-            onClick={switchModal}
-          >
-            추가
-          </button>
-        )}
       </div>
       {isOpen && (
-        <div
-          ref={modalRef}
-          className="absolute inset-0 z-40 w-full h-full bg-black/20"
-          onClick={(e) => {
-            modalOutSideClick(e);
-          }}
-        >
+        <div className="fixed inset-0 z-40 w-screen h-screen bg-black/20">
           <SearchPeople closeModal={closeModal} />
         </div>
       )}

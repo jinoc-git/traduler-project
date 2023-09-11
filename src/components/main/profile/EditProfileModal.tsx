@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { getPlansWithMates } from '@api/plans';
+import { getPlanListAndMateList } from '@api/plans';
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
 import IconCamera from '@assets/icons/IconCamera';
@@ -81,7 +81,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
     }
   };
 
-  const userMutation = useMutation(getPlansWithMates, {
+  const userMutation = useMutation(getPlanListAndMateList, {
     onSuccess: async () => {
       if (user !== null) {
         await queryClient.invalidateQueries(['plan_mates', user.id]);
@@ -159,7 +159,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
 
   useEffect(() => {
     setShouldBlockSubmitBtn((prev) => {
-      console.log(nickname);
       if (nickname === '' && prev.isChanged) {
         prev.isDuplicate = false;
         prev.result = false;
@@ -208,7 +207,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           type="button"
           onClick={onClickCloseModalHandler}
         >
-          <IconClose />
+          <IconClose w="w-[17px]" h="h-[17px]" />
         </button>
         <div className="flex items-center gap-3 w-[408px]">
           <img
@@ -227,7 +226,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
             />
 
             <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
-              <IconCamera fill="gray" w="21" h="18" />
+              <IconCamera w="w-[21px]" h="h-[18px]" fill="gray" />
             </div>
           </label>
         </div>

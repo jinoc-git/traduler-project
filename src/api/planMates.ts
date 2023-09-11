@@ -62,6 +62,5 @@ export const updateMates = async (newMates: string[], planId: string) => {
   if (error != null) {
     console.log('친구 초대 오류 발생', error);
   }
-  console.log('들어온 새 data', newMates);
   console.log('planMates update api', data);
 };

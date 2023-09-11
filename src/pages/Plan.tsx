@@ -163,7 +163,7 @@ const Plan = () => {
 
   return (
     <main
-      className={`transition-all duration-300  ease-in-out py-[60px] ${
+      className={`transition-all duration-300 ease-in-out sm:pt-[125px] md:pt-[60px] ${
         isSideBarOpen
           ? 'sidebar-open sm:ml-0 md:ml-[270px]'
           : 'sidebar-close sm:ml-0 md:ml-[88px]'

@@ -25,13 +25,13 @@ const SideBarETC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-[20px]">
+    <div className="flex flex-col gap-2 mt-[20px] ">
       <div
         onClick={onClickAddPlan}
         className={`group/side flex items-center gap-4 rounded-[8px] hover:bg-navy_dark  cursor-pointer 
           md:w-[222px] 
           sm:w-[310px]
-        ${isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white w-[40px]'}`}
+        ${isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white md:w-[40px]'}`}
       >
         <button className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy group-hover/side:bg-navy_dark ">
           <IconAdd w="w-[16px]" h="h-[16px]" fill="#FFF" />
@@ -45,7 +45,7 @@ const SideBarETC = () => {
         className={`flex items-center gap-4  w-[222px] rounded-[8px] cursor-pointer hover:bg-[#F6F6F6] 
           md:w-[222px] 
           sm:w-[310px]
-        ${isSideBarOpen ? 'w-[222px]' : 'w-[40px]'}`}
+        ${isSideBarOpen ? 'w-[222px]' : 'md:w-[40px]'}`}
       >
         <button className="flex-center w-[40px] h-[40px]">
           <IconSignOut w="w-[20px]" h="h-[21px]" fill="#162F70" />

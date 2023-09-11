@@ -7,7 +7,6 @@ const IconAdd = ({ w, h, fill }: IconType) => {
     fill: 'group-hover:fill-[#1A68DB]',
     default: 'group-hover:fill-white',
   };
-  const fillValue: string = fill ?? '#969696';
 
   return (
     <svg
@@ -16,12 +15,12 @@ const IconAdd = ({ w, h, fill }: IconType) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`${w} ${h}`}
+      className={`${w} ${h} `}
     >
       <path
         d="M14 0H10V10H0V14H10V24H14V14H24V10H14V0Z"
-        fill={fillValue === '#1A68DB' ? 'white' : fillValue}
-        className={fill != null ? hoverColor.fill : hoverColor.default}
+        fill={`${fill ?? '#969696' } `}
+        className={`${fill != null ? hoverColor.fill : hoverColor.default} ${fill != null ? fill : ''}`}
       />
     </svg>
   );

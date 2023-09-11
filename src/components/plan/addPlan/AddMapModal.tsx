@@ -118,24 +118,11 @@ const AddMapModal = ({ setPins, closeModal, currentPage }: PropsType) => {
   };
 
   const [map, setMap] = useState<any>();
-  // const scrollPosition = window.scrollY;
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
-    setScrollPosition(window.scrollY);
     document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
     return () => {
       document.body.style.overflow = 'auto';
-      document.body.style.removeProperty('position');
-      document.body.style.removeProperty('top');
-      document.body.style.removeProperty('left');
-      document.body.style.removeProperty('right');
-
-      window.scrollTo(0, scrollPosition);
     };
   });
 

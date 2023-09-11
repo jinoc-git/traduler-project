@@ -58,7 +58,7 @@ body {
 }
 @media all and (max-width: 1110px) {
   .main-layout {
-    width: 320px;
+    width: 310px;
     margin: 0 auto;
   }
   .sidebar-open {
@@ -130,4 +130,12 @@ h3 {
   padding: 5px 10px !important;
   font-size: 12px !important;
   text-align: center !important;
+}
+
+.slick-slider.slick-initialized {
+  position: relative;
+}
+
+.slick-center.slick-current > div > div {
+  filter: brightness(1);
 }

@@ -62,8 +62,8 @@ const TotalPay = () => {
   return (
     <section
       className="
-    md:w-[720px] md:mx-auto md:mt-[35px] md:mb-[46px]
-    sm:w-[310px] sm:h-[382px] sm:mx-[5px] sm:mt-[30px] sm:mb-[32px]
+      sm:w-[310px] sm:h-[382px] sm:mx-[5px] sm:mt-[30px] sm:mb-[32px]
+    md:w-[720px] md:h-[420px] md:mx-auto md:mt-[35px] md:mb-[46px]
     "
     >
       <div

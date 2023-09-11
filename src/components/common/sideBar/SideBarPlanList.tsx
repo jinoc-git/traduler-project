@@ -28,7 +28,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   const iconList = {
     bookMark: <IconFavoriteList w="w-[24px]" h="h-[24px]" fill="#6E6F76" />,
     start: <IconPlannedTime w="w-[24px]" h="h-[24px]" />,
-    end: <IconPreviousTime w="w-[24px]" h="h-[25px]" />,
+    end: <IconPreviousTime w="w-[22px]" h="h-[23px]" />,
   };
 
   const listName = {
@@ -93,7 +93,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           onBlur={() => {
             setFunc(false);
           }}
-          className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
+          className={`flex-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
           ${isOpen ? focusColor[filter] : ''} ${hoverColor[filter]} `}
         >
           {iconList[filter]}

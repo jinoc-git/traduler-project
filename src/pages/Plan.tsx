@@ -193,9 +193,9 @@ const Plan = () => {
               },
             })}
             readOnly={modifyState === 'readOnly'}
-            className="w-[235px] border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
-          sm:text-[20px] sm:read-only:border-b-0
-          md:text-[24px] md:read-only:border-b-0"
+            className=" border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
+            sm:w-[235px] sm:text-[20px] sm:read-only:border-b-0
+            md:w-[260px] md:text-[24px] md:read-only:border-b-0"
           />
           <div
             className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] flex items-center flex-center font-normal text-white

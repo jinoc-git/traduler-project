@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
-import MapModalInput from '@components/plan/addPlan/MapModalInput';
-import MapNonePoly from '@components/plan/addPlan/MapNonePoly';
-import MapModalLayout from '@components/plan/addPlan/ModalLayout';
 import MapModalButton from '@components/plan/common/MapModalButton';
-import MapModalPay from '@components/plan/updatePlan/MapModalPay';
+import MapModalInput from '@components/plan/common/MapModalInput';
+import MapModalPay from '@components/plan/common/MapModalPay';
+import MapNonePoly from '@components/plan/common/MapNonePoly';
+import MapModalLayout from '@components/plan/common/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';

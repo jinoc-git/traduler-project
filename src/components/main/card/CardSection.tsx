@@ -44,7 +44,11 @@ const CardSection = () => {
   const { planDataList, usersDataList } = matesData;
 
   return (
-    <section className="main-layout">
+    <section
+      className="mx-auto my-0
+    sm:w-[320px] 
+    md:w-[800px]"
+    >
       <Card
         planDataList={planDataList}
         usersDataList={usersDataList}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
@@ -11,26 +11,29 @@ import { useQuery } from '@tanstack/react-query';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CarouselLeftArrow from './CarouselLeftArrow';
+import CarouselModal from './CarouselModal';
 import CarouselRightArrow from './CarouselRightArrow';
 
 const Carousel = () => {
   const [photoData, setPhotoData] = useState<string[]>([]);
+  const [imageModal, setImageModal] = useState({
+    url: '',
+    isOpen: false,
+  });
+
   const { id: planId } = useParams<{ id: string }>();
-  const carouselRef = useRef<Slider>(null);
-  console.log(carouselRef)
 
   const { data, isLoading } = useQuery({
     queryKey: ['ending_photo', planId],
     queryFn: async () => await getPhoto(planId as string),
   });
 
-  const onClickRightArrow = useCallback(() => {
-    console.log('right');
-  }, [])
-
-  const onClickLeftArrow = useCallback(() => {
-    console.log('left');
-  }, [])
+  const onClickImage = (url: string) => {
+    setImageModal({ url, isOpen: true });
+  };
+  const onClickCloseModal = () => {
+    setImageModal({ url: '', isOpen: false });
+  };
 
   useEffect(() => {
     if (data !== null && data !== undefined) {
@@ -69,8 +72,8 @@ const Carousel = () => {
           centerMode
           initialSlide={0}
           touchMove
-          nextArrow={<CarouselRightArrow onClick={onClickRightArrow} />}
-          prevArrow={<CarouselLeftArrow onClick={onClickLeftArrow} />}
+          nextArrow={<CarouselRightArrow />}
+          prevArrow={<CarouselLeftArrow />}
           slidesToShow={3}
           slidesToScroll={1}
           speed={500}
@@ -78,6 +81,9 @@ const Carousel = () => {
           {photoData.map((url: string, index: number) => (
             <div
               key={uuid()}
+              onClick={() => {
+                onClickImage(url);
+              }}
               className=" w-[230px] h-[230px] p-[10px] cursor-pointer brightness-[0.8] hover:brightness-100 transition-filter duration-400"
             >
               <img
@@ -89,6 +95,9 @@ const Carousel = () => {
           ))}
         </Slider>
       </div>
+      {imageModal.isOpen && (
+        <CarouselModal url={imageModal.url} closeFunc={onClickCloseModal} />
+      )}
     </section>
   ) : null;
 };

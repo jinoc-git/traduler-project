@@ -95,9 +95,9 @@ const Header = () => {
       {user !== null ? (
         pathname !== '/main' ? (
           <div
-            className="flex-center w-[70px] h-[50px]
-            sm:mr-[16px] sm:mt-[16px]
-            md:mr-0 md:mt-[0ox]"
+            className="flex-center
+            sm:mr-[16px] sm:mt-[16px] sm:w-[37px] sm:h-[37px]
+            md:mr-[33px] md:mt-[0ox] md:w-[77px] md:h-[61px]"
           >
             {user.profileImg != null ? (
               <img

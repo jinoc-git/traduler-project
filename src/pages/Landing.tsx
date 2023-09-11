@@ -14,7 +14,7 @@ const Landing = () => {
     <>
       <main className="flex flex-col justify-center">
         <section
-          className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/6902748c-7ce5-49e4-acf2-68938fbd7809)] bg-cover bg-no-repeat flex-center
+          className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/d337df61-48ee-42e3-9cd8-e99d478a8d4f)] bg-cover bg-no-repeat flex-center
         md:h-[100vh]
         sm:w-[100vw] sm:h-[70vh] 
         "
@@ -55,23 +55,23 @@ const Landing = () => {
             단체 여행 깔끔하게 진행시키는 우리만의 여행 전용 비서
           </p>
           <div
-            className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/0e1b3853-feb7-45bb-b861-8cbcfd4505f3)] bg-contain bg-no-repeat 
+            className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/c63d4042-bd64-4a5a-8513-c6ece6648ab6)] bg-contain bg-no-repeat
             md:w-[926px] md:h-[557px] sm:w-[238px] sm:h-[138px]"
           >
-            <div
+            {/* <div
               className="bg-[url(https://github.com/jinoc-git/traduler-project/assets/92218638/31c7fba6-a39c-48dc-9cde-42d8fb4518e7)] bg-contain bg-no-repeat relative 
             lg:top-[300px] lg:right-[-560px]
             md:top-[350px] md:right-[-475px] md:w-[552px] md:h-[334px] 
             sm:top-[90px] sm:right-[-130px] sm:w-[143px] sm:h-[89px]
             "
-            />
+            /> */}
           </div>
         </section>
         <section className="flex flex-col mx-auto">
           <p className="md:block  text-[36px] font-semibold mt-[180px] sm:hidden ">
             가족여행, 엠티, 수련회, 우정여행, 효도여행..
           </p>
-          <p className="md:block font-normal text-center text-xlg sm:hidden ">
+          <p className="font-normal text-center md:block text-xlg sm:hidden ">
             단체 여행 깔끔하게 진행시키는 우리만의 여행 전용 비서
           </p>
         </section>
@@ -79,7 +79,7 @@ const Landing = () => {
           className="md:flex md:flex-row md:justify-center md:mr-[150px]
         "
         >
-          <p className="md:hidden text-[16px] font-semibold text-gray_dark_1 mt-[55px] text-center">
+          <p className="md:hidden text-[16px] font-semibold mt-[55px] text-center">
             다녀온 후에도 모두가 오래오래 추억할 수 있게
           </p>
 

@@ -64,14 +64,14 @@ const Carousel = () => {
   }
 
   return photoData.length > 3 ? (
-    <section className="w-[720px]">
+    <section className="md:w-[720px] sm:w-[286px]">
       <div className="flex items-center mt-[30px]">
         <IconCamera w="w-[21px]" h="h-[18px]" fill="#4E4F54" />
         <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
           사진첩
         </div>
       </div>
-      <div className="w-[720px] p-[10px] ">
+      <div className="p-[10px] md:w-[720px] sm:w-[286px]">
         <Slider
           focusOnSelect
           infinite
@@ -94,7 +94,10 @@ const Carousel = () => {
               onClick={(e) => {
                 onClickImage(e, url);
               }}
-              className=" w-[230px] h-[230px] p-[10px] cursor-pointer brightness-[0.8] hover:brightness-100 transition-filter duration-400"
+              className=" cursor-pointer brightness-[0.8] hover:brightness-100 transition-filter duration-400
+                md:w-[230px] md:h-[230px] md:p-[10px]
+                sm:w-[90px] sm:h-[90px] sm:p-[5px]
+              "
             >
               <img
                 src={url}

@@ -58,7 +58,7 @@ body {
 }
 @media all and (max-width: 1110px) {
   .main-layout {
-    width: 320px;
+    width: 310px;
     margin: 0 auto;
   }
   .sidebar-open {

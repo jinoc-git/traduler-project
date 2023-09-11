@@ -77,8 +77,8 @@ const Ending = () => {
           : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
-      <section className="main-layout">
-        <div className="flex flex-col w-plan mt-[76px]">
+      <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
+        <section>
           <div
             className="flex items-center 
           sm:mb-[35px]
@@ -98,17 +98,20 @@ const Ending = () => {
           <EndingDate planDates={dates as string[]} />
           <Invite />
           <EndingPay pay={pay as number} />
+        </section>
+        <section>
           <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
             <IconLocationDefault w="20" h="20" />
             <label>여행 지역</label>
           </div>
           <EndingMap dates={dates as string[]} />
-          <Carousel />
-          <PlaceList />
-          <TotalPay />
-          <Comments />
-        </div>
-      </section>
+        </section>
+
+        <Carousel />
+        <PlaceList />
+        <TotalPay />
+        <Comments />
+      </div>
     </main>
   );
 };

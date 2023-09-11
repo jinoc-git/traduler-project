@@ -8,9 +8,9 @@ const CarouselRightArrow = ({ onClick }: { onClick?: () => void }) => {
       onClick={onClick}
       className="flex-center rounded-full bg-orange absolute top-1/2 -translate-y-1/2 hover:bg-orange_dark
       md:right-[-60px] md:w-[46px] md:h-[46px] 
-      sm:right-[-60px] sm:w-[24px] sm:h-[24px]"
+      sm:right-[-15px] sm:w-[16px] sm:h-[16px]"
     >
-      <IconChevronRight w={'w-[16px]'} h={'h-[16px]'} fill="#fff" />
+      <IconChevronRight w={'md:w-[16px] sm:w-[12px]'} h={'md:h-[16px] sm:h-[12px]'} fill="#fff" />
     </button>
   );
 };

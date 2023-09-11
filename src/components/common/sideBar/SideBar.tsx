@@ -98,7 +98,7 @@ const SideBar: React.FC = () => {
         <button
           onClick={toggleSideBar}
           className=" fixed left-[24px] flex-center z-[32]
-          sm:w-[34px] sm:h-[34px] sm:top-[40px] 
+          sm:w-[34px] sm:h-[34px] sm:top-[36px] 
           md:w-[39px] md:h-[40px] md:top-[15px]"
         >
           <IconMenu
@@ -123,8 +123,8 @@ const SideBar: React.FC = () => {
         >
           <div
             className={`flex items-center bg-white
+            sm:w-[310px] sm:h-[65px] sm:gap-[58px] sm:mt-[12px]
             md:w-[222px] md:h-[70px] md:gap-[34px]
-            sm:w-[310px] sm:h-[66px] sm:gap-[58px] sm:mt-[24px]
             ${isSideBarOpen ? ' md:mt-0' : 'md:mt-0'}`}
           >
             <div
@@ -136,7 +136,10 @@ const SideBar: React.FC = () => {
               src={logoColor}
               alt="로고"
               onClick={onClickLogo}
-              className="cursor-pointer w-[134px]"
+              className="cursor-pointer w-[134px]
+              sm:mt-[12px]
+              md:mt-[0px]
+              "
             />
           </div>
 

@@ -53,10 +53,11 @@ const Header = () => {
       sm:h-[89px]
       md:h-[70px]
       ${
-        pathname !== '/' && pathname !== '/signin' && pathname !== '/signup'
-          ? user !== null
-            ? 'bg-transparent'
-            : 'bg-bg_white'
+        pathname !== '/' &&
+        pathname !== '/signin' &&
+        pathname !== '/signup' &&
+        pathname !== '/main'
+          ? 'bg-bg_white'
           : 'bg-transparent'
       }`}
     >
@@ -66,7 +67,7 @@ const Header = () => {
           pathname !== '/signup' && (
             <div
               className="
-              sm:flex-grow sm:w-[108px] 
+              sm:flex-grow sm:w-[100px] 
               md:w-[0px]
               "
             ></div>
@@ -74,7 +75,7 @@ const Header = () => {
         <h1
           onClick={goToMain}
           className=" cursor-pointer 
-          sm:mt-[24px] 
+          sm:mt-[13px]
           md:mt-[0px] md:ml-[88px]"
         >
           {pathname === '/main' ? (
@@ -87,8 +88,20 @@ const Header = () => {
             ) : (
               <img src={logoWhite} alt="로고" className="w-[134px] ml-[10px]" />
             )
+          ) : pathname === '/' ||
+            pathname === '/signin' ||
+            pathname === '/signup' ? (
+            <img
+              src={logoColor}
+              alt="로고"
+              className="w-[134px] sm:ml-[20px] md:ml-[10px] "
+            />
           ) : (
-            <img src={logoColor} alt="로고" className="w-[134px] ml-[10px]" />
+            <img
+              src={logoColor}
+              alt="로고"
+              className="w-[134px] md:ml-[10px] "
+            />
           )}
         </h1>
       </div>
@@ -96,7 +109,7 @@ const Header = () => {
         pathname !== '/main' ? (
           <div
             className="flex-center
-            sm:mr-[16px] sm:mt-[16px] sm:w-[37px] sm:h-[37px]
+            sm:mr-[25px] sm:mt-[16px] sm:w-[37px] sm:h-[37px]
             md:mr-[33px] md:mt-[0ox] md:w-[77px] md:h-[61px]"
           >
             {user.profileImg != null ? (
@@ -130,7 +143,7 @@ const Header = () => {
               navigate('/signin');
             }}
             className={`
-            sm:w-[147px] sm:mt-[40px]
+            sm:w-[147px] sm:mt-[20px]
             md:w-[147px] md:mt-[24px] ${pathname === '/' ? 'text-white' : ''}`}
           >
             로그인
@@ -155,7 +168,7 @@ const Header = () => {
             navigate('/signup');
           }}
           className="
-          sm:w-[147px] sm:mt-[40px] sm:text-white
+          sm:w-[87px] sm:mt-[20px] sm:text-white
           md:w-[147px] md:text-black"
         >
           회원가입
@@ -166,7 +179,7 @@ const Header = () => {
             navigate('/signin');
           }}
           className={`
-          sm:w-[147px] sm:mt-[40px] sm:text-white
+          sm:w-[87px] sm:mt-[20px] sm:text-white
           md:w-[147px] md:text-black ${pathname === '/' ? 'text-white' : ''}`}
         >
           로그인

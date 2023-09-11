@@ -40,3 +40,12 @@ export const changeDotFormatOfDate = (date: string | undefined) => {
 
   return date.replaceAll('-', '.');
 };
+
+export const changeSideBarFormat = (date: string | undefined) => {
+  if (date === undefined) return '';
+
+  const dateArr = date.split('-');
+  dateArr.pop();
+
+  return dateArr.join('.');
+};

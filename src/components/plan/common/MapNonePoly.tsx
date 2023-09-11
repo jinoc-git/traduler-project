@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import { type PinContentsType } from '@api/pins';
-import _ from 'lodash';
 
 interface PropsType {
   pin: PinContentsType | null;
@@ -37,13 +36,12 @@ const MapNonePoly = ({
     };
     geocoder.coord2Address(position.getLng(), position.getLat(), callback);
   };
-  const debouncedSearchAddr = _.debounce(searchAddr, 500);
 
   const [marker, setMarker] = useState<kakao.maps.Marker>();
 
   useEffect(() => {
     if (marker !== undefined) {
-      debouncedSearchAddr(marker.getPosition());
+      searchAddr(marker.getPosition());
     }
   }, [marker?.getPosition()]);
 

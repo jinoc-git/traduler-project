@@ -81,24 +81,26 @@ const Nav: React.FC<PropsType> = (props) => {
 
   return (
     <nav
-      className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center
-    sm:mt-[35px]
-    md:mt-0"
+      className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center bg-white z-30
+      sm:fixed sm:w-[100vw] sm:mt-0 sm:top-[89px]
+      md:static md:w-full md:mt-0"
     >
       <div
-        className="ml-[20px] text-navy_dark font-semibold
-      sm:text-sm
-      md:text-normal"
+        className="text-navy_dark font-semibold
+      sm:text-sm sm:ml-[25px]
+      md:text-normal md:ml-[80px]"
       >
         여행 계획 시작
       </div>
       <div
-        className="flex items-center font-semibold
+        className="flex items-center font-semibold ml-[25px]
       sm:text-sm
       md:text-normal"
       >
         <button
-          className="mr-[80px] text-navy_dark flex items-center gap-2"
+          className="text-navy_dark flex items-center gap-2
+          sm:mr-[25px] 
+          md:mr-[80px] "
           type="submit"
           onClick={handleButtonClick}
         >

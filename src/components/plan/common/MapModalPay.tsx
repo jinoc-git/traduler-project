@@ -19,9 +19,15 @@ const MapModalPay = ({
       <input
         id="cost"
         type="number"
+        step={'10000'}
+        min={0}
+        max={10000000}
         placeholder="지출 비용을 입력해주세요."
         {...register('cost', {
-          valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
+          setValueAs(value) {
+            return value === '' ? 0 : parseInt(value);
+          },
+          valueAsNumber: true,
         })}
         className="input-border
           sm:h-[44px] sm:text-sm sm:font-medium"

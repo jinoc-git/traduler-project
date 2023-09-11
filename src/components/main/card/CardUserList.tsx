@@ -16,7 +16,7 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
     <div
       className="gap-3 font-Regular text-gray_dark_1 
     sm:mt-[4px] sm:hidden
-    md:mt-[8px] md:block md:flex"
+    md:mt-[8px] md:flex"
     >
       <div className="flex">
         {participantsAvatarList.map((avatar, i) => {

@@ -178,7 +178,7 @@ const SideBar: React.FC = () => {
               />
             </div>
           </div>
-          <div className={`flex justify-center`}>
+          <div >
             <SideBarETC />
           </div>
         </aside>

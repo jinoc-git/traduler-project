@@ -254,7 +254,7 @@ const Card: React.FC<CardProps> = ({
                     <IconDeleteDefault
                       w="w-[24px]"
                       h="h-[24px]"
-                      fill="#E1E2E3"
+                      fill="#FFB979"
                     />
                   </button>
                 </div>

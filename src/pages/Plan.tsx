@@ -193,9 +193,9 @@ const Plan = () => {
               },
             })}
             readOnly={modifyState === 'readOnly'}
-            className="w-[235px] border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
-          sm:text-[20px] sm:read-only:border-b-0
-          md:text-[24px] md:read-only:border-b-0"
+            className=" border-b-[1px] border-gray outline-none font-bold placeholder:text-gray  text-#484848 read-only:cursor-default
+            sm:w-[235px] sm:text-[20px] sm:read-only:border-b-0
+            md:w-[260px] md:text-[24px] md:read-only:border-b-0"
           />
           <div
             className={` ${planStateColor} rounded-3xl w-[65px] h-[20px] flex items-center flex-center font-normal text-white
@@ -214,19 +214,20 @@ const Plan = () => {
         />
         <UpdatePlan />
         <div
-          className="flex items-centergap-5 mt-16
-        sm:justify-normal
-        md:justify-end"
+          className="flex 
+        md:justify-end md:mt-[100px]  md:mr-[30px]
+        sm:justify-start sm:mt-[82px] sm:ml-[4px]
+        "
         >
           {planState === 'planning' ? (
             <div
-              className="flex items-center gap-5
-            sm:mt-[18px] sm:w-[286px] sm:justify-normal
-            md:my-[100px] md:w-[400px] md:justify-end"
+              className="flex items-center gap-5 
+            sm:w-[286px]  sm:h-[41px] sm:justify-normal
+            md:w-[300px] md:h-[43px] md:justify-end"
             >
               <p
                 className="text-gray_dark_1 font-Regular 
-              sm:w-[170px] sm:text-sm
+              sm:w-[200px] sm:text-sm
               md:w-[200px] md:text-noraml"
               >
                 {isPossibleStart
@@ -238,23 +239,23 @@ const Plan = () => {
               <button
                 disabled={!isPossibleStart || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-semibold border-blue text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
-                sm:w-[113px] sm:text-sm
-                md:w-[130px] md:text-normal"
+                className="flex-center p-3 border rounded-lg font-semibold border-blue text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[114px] sm:h-[41px] sm:text-sm
+                md:w-[130px] md:h-[43px] md:text-normal"
               >
                 여행 시작
               </button>
             </div>
           ) : (
             <div
-              className="flex my-[100px] items-center justify-end gap-5
-            sm:mt-[18px] sm:w-[286px] sm:justify-normal
-            md:my-[100px] md:w-[400px] md:justify-end"
+              className="flex items-center gap-5
+              sm:w-[286px]  sm:h-[41px] sm:justify-normal
+              md:w-[300px] md:h-[43px] md:justify-end"
             >
               <p
                 className="text-gray_dark_1 font-Regular 
-              sm:w-[170px] sm:text-sm
-              md:w-[200px] md:text-noraml"
+              sm:w-[200px] sm:text-sm
+              md:w-[200px] md:text-normal"
               >
                 {isPossibleEnd
                   ? isModifying
@@ -265,9 +266,9 @@ const Plan = () => {
               <button
                 disabled={!isPossibleEnd || isModifying}
                 onClick={handleChangePlanState}
-                className="p-3 border rounded-lg font-semibold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
-                sm:w-[113px] sm:text-sm
-                md:w-[130px] md:text-normal"
+                className="flex-center p-3 border rounded-lg font-semibold border-blue w-[130px] text-blue hover:bg-blue_light_1 duration-200 disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1
+                sm:w-[114px] sm:h-[41px] sm:text-sm
+                md:w-[130px] md:h-[43px] md:text-normal"
               >
                 여행 완료
               </button>

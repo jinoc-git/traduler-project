@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 import { getPlanListAndMateList } from '@api/plans';
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
 import { ic_name_1x } from '@assets/icons/1x';
-import IconCamera from '@assets/icons/IconCamera';
 import IconClose from '@assets/icons/IconClose';
+import IconProfileCamera from '@assets/icons/IconProfileCamera';
 import { profileDefaultBlack, defaultImageGray } from '@assets/index';
 import MapModalLayout from '@components/plan/common/ModalLayout';
 import useFormValidator from '@hooks/useFormValidator';
@@ -200,37 +200,56 @@ const EditProfileModal = ({
   return (
     <MapModalLayout value={animate}>
       <form
-        className="relative  flex flex-col p-10 items-center justify-between align-middle h-[575px] rounded-xl"
+        className="relative  flex flex-col  items-center  align-middle  rounded-xl
+        md:h-[575px] md:w-[396px] md:justify-between md:gap-0
+        sm:h-[404px] sm:w-[310px] sm:gap-[15px]
+        "
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}
       >
         <button
-          className="absolute w-6 h-6 top-2 right-2"
+          className="absolute w-6 h-6 md:top-2 md:right-2 sm:top-0 sm:right-0"
           type="button"
           onClick={onClickCloseModalHandler}
         >
           <IconClose w="w-[17px]" h="h-[17px]" />
         </button>
-        <div className="flex items-center gap-3 w-[408px]">
+
+        <div className="md:flex items-center gap-3 md:w-[408px] sm:w-[310px]">
           <img
             src={profileDefaultBlack}
             alt="프로필 아이콘"
-            className="w-[30px] h-[30px]"
+            className="w-[30px] h-[30px] md:block sm:hidden"
           />
-          <p className="font-semibold text-xlg">프로필 편집</p>
+          <p className="font-semibold md:text-xlg sm:text-[18px]">
+            프로필 편집
+          </p>
+          <p className="md:hidden text-[16px]">
+            프로필 사진과 닉네임을 변경하세요{' '}
+          </p>
         </div>
-        <div className="relative">
+
+        <div className="relative hover:brightness-75">
           <label htmlFor="avatar">
             <img
               src={previewImg === '' ? defaultImageGray : previewImg}
               alt="프로필이미지"
-              className="w-[200px] h-[200px] rounded-full border-[2.5px] border-gray object-cover cursor-pointer"
+              className="rounded-full border-[2.5px] border-gray object-cover cursor-pointer
+              md:w-[200px] md:h-[200px]
+              sm:w-[150px] sm:h-[150px]
+              "
             />
 
-            <div className="absolute flex items-center justify-center top-3/4  left-[140px]  w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer">
-              <IconCamera w="w-[21px]" h="h-[18px]" fill="gray" />
+            <div
+              className="absolute flex items-center justify-center w-[42px] h-[42px] rounded-full bg-white border-[2px] border-gray cursor-pointer
+              md:top-3/4 md:left-[140px]
+              sm:top-3/4 sm:left-[110px]
+              "
+            >
+              <IconProfileCamera w="w-[21px]" h="h-[16px]" fill="#6E6F76" />
             </div>
           </label>
         </div>
+
         <input
           id="avatar"
           type="file"
@@ -239,17 +258,18 @@ const EditProfileModal = ({
           className="hidden border"
         />
 
-        <p className="text-center">
+        <p className="text-center md:text-[16px] sm:text-[12px]">
           프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
           정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
         </p>
+
         <div>
-          <div className="flex justify-between w-[370px]">
+          <div className="flex justify-between md:w-[370px] sm:w-[310px]">
             <div className="relative">
               <label htmlFor="edit-nickname">
                 <img
                   src={ic_name_1x}
-                  alt="이메일 아이콘"
+                  alt="닉네임 아이콘"
                   className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
                 />
               </label>
@@ -260,30 +280,42 @@ const EditProfileModal = ({
                   ...nicknameValidator,
                   required: false,
                 })}
-                className=" w-[275px] h-[40px] px-8 rounded-md border"
+                className="md:w-[275px] h-[40px] px-8 rounded-md border sm:w-[310px]"
                 placeholder={user?.nickname}
               />
+              <button
+                type="button"
+                disabled={!isValid || nickname === ''}
+                onClick={checkNicknameDuplication}
+                className="md:hidden absolute top-[3px] right-[3px] w-[68px] h-[33px] rounded-md bg-blue border text-white text-[14px] disabled:bg-gray_light_3"
+              >
+                중복확인
+              </button>
             </div>
             <button
               type="button"
               disabled={!isValid || nickname === ''}
               onClick={checkNicknameDuplication}
-              className="w-[87px] h-[40px] rounded-md bg-blue border text-white  disabled:bg-gray_light_3"
+              className="md:block sm:hidden  w-[87px] h-[40px] rounded-md bg-blue border text-white  disabled:bg-gray_light_3"
             >
               중복확인
             </button>
           </div>
           {errors.nickname !== null && (
-            <p className="mt-3 h-[18px] text-center">
+            <p className=" h-[18px] text-center text-red-400 md:text-[16px] md:mt-3 sm:text-[14px] sm:mt-2">
               {errors.nickname?.message}
             </p>
           )}
         </div>
-        <div className="flex justify-between w-[408px]">
+
+        <div className="flex justify-between md:w-[408px] sm:w-[310px]">
           <button
             type="button"
             onClick={removeAvatarBtnHandler}
-            className="w-[200px] h-[45px] border border-navy rounded-lg text-navy hover:bg-navy_light_1  disabled:bg-gray_light_3"
+            className="border border-navy rounded-lg text-navy hover:bg-navy_light_1  disabled:bg-gray_light_3 
+              md:w-[200px] md:h-[45px]
+              sm:w-[150px] sm:h-[41px]
+              "
             disabled={previewImg === ''}
           >
             사진 제거
@@ -291,7 +323,10 @@ const EditProfileModal = ({
           <button
             disabled={shouldBlockSubmitBtn.result}
             type="submit"
-            className="w-[200px] h-[45px] border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3"
+            className="border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3
+              md:w-[200px] md:h-[45px]
+              sm:w-[150px] sm:h-[41px]
+              "
           >
             프로필 변경 {isSubmitting && '제출중'}
           </button>

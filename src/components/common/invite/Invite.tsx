@@ -35,7 +35,7 @@ const Invite = () => {
 
   const isOldInvitedUser =
     oldInvitedUser.length !== 0 && oldInvitedUser !== null;
-  const maxDisplayCount = 4;
+  const maxDisplayCount = 3;
 
   useEffect(() => {
     return () => {
@@ -58,7 +58,7 @@ const Invite = () => {
     <>
       <div
         className="flex items-center 
-      sm:w-[286px] sm:mx-[6px] sm:justify-between
+      sm:w-[286px] sm:mx-[6px] sm:justify-normal
       md:w-[650px] md:h-[30px] md:my-[10px] md:justify-normal"
       >
         <div
@@ -69,7 +69,7 @@ const Invite = () => {
           <IconFriends w="20" h="15" fill="#4E4F54" />
           <label
             className="font-semibold  text-gray_dark_1 
-          sm:w-[24px] sm:text-sm
+          sm:w-[24px] sm:text-sm sm:mr-[15px]
           md:w-[30px] md:text-normal md:mr-[80px]"
           >
             동행
@@ -100,18 +100,18 @@ const Invite = () => {
         )}
         {isOldInvitedUser ? (
           oldInvitedUser.length > maxDisplayCount ? (
-            <>
+            <div
+              className="flex items-center text-gray_dark_1
+            sm:text-xs sm:font-semibold 
+            md:text-sm md:font-semibold"
+            >
               {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
-                <div
-                  key={uuid()}
-                  className="mr-[2px] 
-                  sm:text-xs sm:font-semibold sm:text-gray_dark_1"
-                >
+                <div key={uuid()} className="mr-[2px]">
                   {user.nickname}
                 </div>
               ))}
               외 {oldInvitedUser.length - maxDisplayCount}명
-            </>
+            </div>
           ) : (
             oldInvitedUser.map((user) => (
               <div

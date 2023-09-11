@@ -80,9 +80,23 @@ const Nav: React.FC<PropsType> = (props) => {
   }, []);
 
   return (
-    <nav className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center">
-      <div className="ml-[20px] text-navy_dark">여행 계획 시작</div>
-      <div className="flex items-center">
+    <nav
+      className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center
+    sm:mt-[35px]
+    md:mt-0"
+    >
+      <div
+        className="ml-[20px] text-navy_dark font-semibold
+      sm:text-sm
+      md:text-normal"
+      >
+        여행 계획 시작
+      </div>
+      <div
+        className="flex items-center font-semibold
+      sm:text-sm
+      md:text-normal"
+      >
         <button
           className="mr-[80px] text-navy_dark flex items-center gap-2"
           type="submit"

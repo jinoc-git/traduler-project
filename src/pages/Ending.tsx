@@ -69,34 +69,46 @@ const Ending = () => {
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out pt-[50px] flex-col flex-center ${
+      className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'sidebar-open'
-            : 'sidebar-close'
-          : 'w-[calc(100vw)] ml-0'
+            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
+            : 'sidebar-close sm:ml-[20px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
-      <div className="flex flex-col w-plan mt-[76px]">
-        <div className="flex items-center mb-[18px]">
-          <h3 className="font-bold text-gray_dark_1">{title}</h3>
-          <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
-            완료된 여행
+      <section className="main-layout">
+        <div className="flex flex-col w-plan mt-[76px]">
+          <div
+            className="flex items-center 
+          sm:mb-[35px]
+          md:mb-[18px]"
+          >
+            <h3
+              className="font-bold text-gray_dark_1
+            sm:text-[20px]
+            md:text-[24px]"
+            >
+              {title}
+            </h3>
+            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
+              완료된 여행
+            </div>
           </div>
+          <EndingDate planDates={dates as string[]} />
+          <Invite />
+          <EndingPay pay={pay as number} />
+          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+            <IconLocationDefault w="20" h="20" />
+            <label>여행 지역</label>
+          </div>
+          <EndingMap dates={dates as string[]} />
+          <Carousel />
+          <PlaceList />
+          <TotalPay />
+          <Comments />
         </div>
-        <EndingDate planDates={dates as string[]} />
-        <Invite />
-        <EndingPay pay={pay as number} />
-        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
-          <IconLocationDefault w="20" h="20" />
-          <label>여행 지역</label>
-        </div>
-        <EndingMap dates={dates as string[]} />
-        <Carousel />
-        <PlaceList />
-        <TotalPay />
-        <Comments />
-      </div>
+      </section>
     </main>
   );
 };

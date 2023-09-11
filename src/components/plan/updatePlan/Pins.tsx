@@ -159,7 +159,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       {isOpenModal && (
         <MapModal
           pinQuery={pin?.[0]}
-          openModal={openModal}
           closeModal={closeModal}
           currentPage={currentPage}
           value={value}

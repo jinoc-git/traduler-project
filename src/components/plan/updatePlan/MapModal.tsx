@@ -25,18 +25,11 @@ interface PropsType {
     | { contents: Json[]; date: string; id: string; plan_id: string }
     | undefined;
   currentPage: number;
-  openModal: () => void;
   closeModal: () => void;
   value: boolean;
 }
 
-const MapModal = ({
-  pinQuery,
-  openModal,
-  currentPage,
-  closeModal,
-  value,
-}: PropsType) => {
+const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
   const { id } = useParams();
   const planId: string = id as string;
   const { pin, idx, resetPin } = updatePinStore();
@@ -102,7 +95,7 @@ const MapModal = ({
             plan_id: pinQuery.plan_id,
           };
           updateMutation.mutate(newPin);
-          openModal();
+          closeModal();
           resetPin();
         }
       };
@@ -121,7 +114,7 @@ const MapModal = ({
             plan_id: pinQuery.plan_id,
           };
           addMutation.mutate(newPin);
-          openModal();
+          closeModal();
         }
       };
       confirm.default(confTitle, confDesc, confFunc);

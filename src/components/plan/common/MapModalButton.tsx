@@ -27,6 +27,7 @@ const MapModalButton = ({
       className="flex gap-[8px] h-[44px] items-center"
     >
       <button
+        type="button"
         className="border border-navy text-navy rounded-lg px-[20px] py-[8px] w-[100%] mr-[8px] hover:bg-navy_light_1 duration-200"
         onClick={() => {
           closeModal();

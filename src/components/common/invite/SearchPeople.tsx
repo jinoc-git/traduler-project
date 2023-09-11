@@ -111,12 +111,7 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   });
 
   return (
-    <div
-      className="fixed top-0 left-0 z-50  w-screen h-screen
-    md:flex-center
-    sm:flex sm:items-end
-    "
-    >
+    <div className="fixed top-0 left-0 z-50 w-screen h-screen md:flex-center md:items-center sm:flex sm:items-end ">
       <div
         className="p-6 mx-auto  h-modal_2
         md:rounded-lg md:w-modal md:bg-gray_light_2 md:shadow-card

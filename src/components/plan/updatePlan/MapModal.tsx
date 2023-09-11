@@ -176,6 +176,20 @@ const MapModal = ({
         setPosition={setPosition}
         setAddress={setAddress}
       />
+      <div className="flex flex-col">
+        <label htmlFor="cost" className="mb-2">
+          지출 비용
+        </label>
+        <input
+          id="cost"
+          type="number"
+          placeholder="지출 비용을 입력해주세요."
+          {...register('cost', {
+            valueAsNumber: true, // 이 부분 추가하여 문자열이 아닌 숫자 값으로 등록
+          })}
+          className="input-border"
+        />
+      </div>
       <form
         onSubmit={handleSubmit(onSubmitPlaceName)}
         className="flex gap-[16px]"

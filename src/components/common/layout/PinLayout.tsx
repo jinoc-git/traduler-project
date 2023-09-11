@@ -60,11 +60,13 @@ const PinLayout = ({
         </p>
       </div>
       {isEnding && children}
+
       <div
         className="relative flex items-center justify-between border rounded-lg border-gray_dark_1 
       sm:w-[239px] sm:h-[80px] sm:mb-0 sm:mr-[2px] sm:px-0 sm:py-[17px] 
       md:w-pin_card md:h-pin_card md:mb-[10px] md:px-[15px] md:py-[8px]"
       >
+        <div className="w-[20px] md:hidden"></div>
         {!isEnding && children}
         <div
           className={`flex flex-col text-left  text-gray_dark_1 w-[400px] gap-y-[2px]

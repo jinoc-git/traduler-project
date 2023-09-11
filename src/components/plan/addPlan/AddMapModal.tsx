@@ -14,7 +14,7 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 export interface InputType {
   address?: string;
   placeName?: string;
-  cost?: number;
+  cost: number;
 }
 
 interface PropsType {
@@ -56,7 +56,7 @@ const AddMapModal = ({
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
-      cost: data.cost as number,
+      cost: data.cost,
       address,
     };
     // 수정하기 시

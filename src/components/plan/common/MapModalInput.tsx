@@ -6,7 +6,7 @@ import _ from 'lodash';
 interface InputType {
   address?: string;
   placeName?: string;
-  cost?: number;
+  cost: number;
 }
 
 interface PropsType {

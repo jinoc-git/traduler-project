@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { type PinContentsType, addPin, updatePin } from '@api/pins';
 import MapModalButton from '@components/plan/common/MapModalButton';
@@ -17,7 +18,7 @@ import { type PinInsertType, type Json } from 'types/supabase';
 interface InputType {
   address?: string;
   placeName?: string;
-  cost?: number;
+  cost: number;
 }
 
 interface PropsType {
@@ -73,11 +74,16 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
       lat: position.lat,
       lng: position.lng,
       placeName: data.placeName as string,
-      cost: data.cost as number,
+      cost: data.cost,
       address,
     };
     // 수정하기 시
     if (pin !== null) {
+      if (watch('cost') > 10000000) {
+        toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+        return;
+      }
+
       const confTitle = '장소 수정';
       const confDesc = '이대로 수정하시겠습니까?';
       const confFunc = () => {

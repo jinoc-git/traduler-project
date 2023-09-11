@@ -2,6 +2,8 @@
 import React, { type ReactNode } from 'react';
 
 import { type PinContentsType } from '@api/pins';
+import IconDeleteSolid from '@assets/icons/IconDeleteSolid';
+import IconEditSolid from '@assets/icons/IconEditSolid';
 import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
 import { formatNumberWithCommas } from '@utils/calcDutchPay';
@@ -60,12 +62,12 @@ const PinLayout = ({
       {isEnding && children}
       <div
         className="relative flex items-center justify-between border rounded-lg border-gray_dark_1 
-      sm:w-[239px] sm:h-[65px] sm:mb-0 sm:mr-[2px] sm:px-0 sm:py-[17px] 
+      sm:w-[239px] sm:h-[80px] sm:mb-0 sm:mr-[2px] sm:px-0 sm:py-[17px] 
       md:w-pin_card md:h-pin_card md:mb-[10px] md:px-[15px] md:py-[8px]"
       >
         {!isEnding && children}
         <div
-          className={`flex flex-col text-left  text-gray_dark_1 w-[400px]
+          className={`flex flex-col text-left  text-gray_dark_1 w-[400px] gap-y-[2px]
         sm:text-[11px]
         md:text-normal
         ${isEnding ? 'ml-[15px]' : ''}
@@ -77,9 +79,8 @@ const PinLayout = ({
           {pin !== null && typeof pin === 'object' && 'address' in pin && (
             <span>{pin.address}</span>
           )}
-          {isEnding && pin !== null && typeof pin === 'object' && 'cost' in pin &&  (
-            <span className=' absolute top-[5px] right-[10px]'>
-            
+          {pin !== null && typeof pin === 'object' && 'cost' in pin && (
+            <span>
               {pin.cost !== null && pin.cost !== undefined
                 ? formatNumberWithCommas(pin.cost) + ' 원'
                 : ''}
@@ -89,9 +90,9 @@ const PinLayout = ({
         {!isEnding && updatePin && deletePin && (
           <DropDown>
             <ul
-              className="absolute border rounded-md bg-white z-10 
+              className="absolute border border-gray_dark_1 rounded-md bg-white z-10 
               md:left-[40px] md:bottom-[-50px] md:text-[16px]
-              sm:left-[20px] sm:bottom-[-25px] sm:text-[12px]
+              sm:left-[20px] sm:bottom-[-25px] sm:text-[10px]
             "
             >
               <li
@@ -101,12 +102,15 @@ const PinLayout = ({
                 onClick={() => {
                   updatePin(idx);
                 }}
-                className="flex-center rounded-t-md border-b bg-white cursor-pointer hover:bg-gray_light_3
+                className="flex-center rounded-t-md border-b border-gray_dark_1 bg-white cursor-pointer hover:bg-gray_light_3
                 md:w-[80px] md:h-[40px]
                 sm:w-[40px] sm:h-[20px]
                 "
               >
-                수정
+                <div className="flex items-center">
+                  <IconEditSolid w="w-[10px]" h="h-[10px]" fill="#6E6F76" />
+                  <span className="ml-[5px] md:ml-[20px]">수정</span>
+                </div>
               </li>
               <li
                 onMouseDown={(e) => {
@@ -120,7 +124,10 @@ const PinLayout = ({
                 sm:w-[40px] sm:h-[20px]
                 "
               >
-                삭제
+                <div className="flex items-center">
+                  <IconDeleteSolid w="w-[10px]" h="h-[10px]" fill="#6E6F76" />
+                  <span className="ml-[5px] md:ml-[20px]">삭제</span>
+                </div>
               </li>
             </ul>
           </DropDown>

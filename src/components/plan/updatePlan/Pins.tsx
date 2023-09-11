@@ -150,7 +150,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
           type="button"
           onClick={openModal}
           className=" hover:bg-navy_light_1 duration-200  border border-dashed rounded-lg font-bold  text-gray_dark_1
-          sm:w-[240px] sm:h-[65px] sm:mr-[2px] sm:text-[11px]
+          sm:w-[240px] sm:h-[80px] sm:mr-[2px] sm:text-[11px]
           md:w-pin_card md:h-pin_card md:text-[18px]"
         >
           장소 추가하기

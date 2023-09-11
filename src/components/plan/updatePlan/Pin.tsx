@@ -99,8 +99,15 @@ const Pin = (props: PinProps) => {
         deletePin={handleDelete}
         isEnding={false}
       >
-        <button ref={dragRef} className="flex-center md:w-[50px] md:p-3 sm:w-[30px] sm:p-1">
-          <IconSixDots w="md:w-[25px] sm:md:w-[15px]" h="md:h-[29px] sm:h-[18px]" fill="orange" />
+        <button
+          ref={dragRef}
+          className="flex-center md:w-[50px] md:p-3 sm:w-[30px] sm:p-1"
+        >
+          <IconSixDots
+            w="md:w-[25px] sm:md:w-[15px]"
+            h="md:h-[29px] sm:h-[18px]"
+            fill="#646464"
+          />
         </button>
       </PinLayout>
     </li>

@@ -90,9 +90,9 @@ const PinLayout = ({
         {!isEnding && updatePin && deletePin && (
           <DropDown>
             <ul
-              className="absolute border border-gray_dark_1 rounded-md bg-white z-10 
-              md:left-[40px] md:bottom-[-50px] md:text-[16px]
-              sm:left-[20px] sm:bottom-[-25px] sm:text-[10px]
+              className="absolute border border-gray_dark_1  bg-white z-10 overflow-hidden
+              md:left-[40px] md:bottom-[-50px] md:text-[16px] md:w-[100px] md:rounded-md
+              sm:left-[-22px] sm:bottom-[-27px] sm:text-[10px] sm:h-[80px] sm:w-[45px] sm:rounded-l-none sm:rounded-r-md
             "
             >
               <li
@@ -102,14 +102,14 @@ const PinLayout = ({
                 onClick={() => {
                   updatePin(idx);
                 }}
-                className="flex-center rounded-t-md border-b border-gray_dark_1 bg-white cursor-pointer hover:bg-gray_light_3
-                md:w-[80px] md:h-[40px]
-                sm:w-[40px] sm:h-[20px]
+                className="flex-center border-b border-gray_dark_1 cursor-pointer hover:bg-gray_light_3
+                md:w-[100px] md:h-[40px]
+                sm:w-[45px] sm:h-[40px]
                 "
               >
                 <div className="flex items-center">
                   <IconEditSolid w="w-[10px]" h="h-[10px]" fill="#6E6F76" />
-                  <span className="ml-[5px] md:ml-[20px]">수정</span>
+                  <span className="ml-[3px] md:ml-[20px]">수정</span>
                 </div>
               </li>
               <li
@@ -119,14 +119,14 @@ const PinLayout = ({
                 onClick={() => {
                   handleDelete(idx);
                 }}
-                className="flex-center rounded-b-md bg-white cursor-pointer hover:bg-gray_light_3
-                md:w-[80px] md:h-[40px]
-                sm:w-[40px] sm:h-[20px]
+                className="flex-center border-b border-gray_dark_1 cursor-pointer hover:bg-gray_light_3
+                md:w-[100px] md:h-[40px]
+                sm:w-[45px] sm:h-[40px]
                 "
               >
                 <div className="flex items-center">
                   <IconDeleteSolid w="w-[10px]" h="h-[10px]" fill="#6E6F76" />
-                  <span className="ml-[5px] md:ml-[20px]">삭제</span>
+                  <span className="ml-[3px] md:ml-[20px]">삭제</span>
                 </div>
               </li>
             </ul>

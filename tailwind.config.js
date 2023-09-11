@@ -74,7 +74,7 @@ module.exports = {
         modal_1: '575px',
         modal_2: '675px',
         card: '150px',
-        pin_card: '100px',
+        pin_card: '120px',
       },
       padding: {
         modal: '36px 40px',

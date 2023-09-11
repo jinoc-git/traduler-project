@@ -93,7 +93,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
           onBlur={() => {
             setFunc(false);
           }}
-          className={`flex justify-center items-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
+          className={`flex-center w-[40px] h-[40px] rounded-lg transition-all duration-300 ease-in-out 
           ${isOpen ? focusColor[filter] : ''} ${hoverColor[filter]} `}
         >
           {iconList[filter]}

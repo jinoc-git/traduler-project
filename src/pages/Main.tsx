@@ -18,8 +18,8 @@ const Main = () => {
         isVisibleSideBar
           ? isSideBarOpen
             ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[20px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
+            : 'sidebar-close sm:ml-[0px]'
+          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
       }`}
     >
       <div className="absolute top-0 left-0 w-[100vw] h-[363px] bg-blue_dark z-[-1]"></div>
@@ -27,7 +27,7 @@ const Main = () => {
       <section className="flex main-layout ">
         <button
           className="group flex items-center font-Bold justify-center rounded-[7px] hover:text-blue_dark gap-3 hover:bg-white
-          sm:w-[320px] sm:h-[46px] sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:font-bold sm:text-sm sm:text-blue_dark  sm:bg-white 
+          sm:w-[310px] sm:h-[46px] sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:font-bold sm:text-sm sm:text-blue_dark  sm:bg-white 
           md:md:w-[160px] md:h-[45px] mt-[35px] md:ml-auto md:border md:border-white md:text-white md:bg-blue_dark md:fill-white"
           onClick={() => {
             navigate('/addPlan');

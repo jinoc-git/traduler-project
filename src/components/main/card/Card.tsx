@@ -165,8 +165,8 @@ const Card: React.FC<CardProps> = ({
               >
                 <div
                   className="
-                  sm:w-[20px] sm:mt-[20px] sm:ml-[15px] 
-                md:w-1/5 md:h-[16px] md:mt-[22px] md:ml-[28px]"
+                  sm:w-[55px] sm:mt-[23px] 
+                md:w-[80px] md:h-[16px] md:mt-[25px] md:ml-[28px]"
                 >
                   <BookMark
                     isFavorite={Boolean(isFavorite)}
@@ -175,12 +175,12 @@ const Card: React.FC<CardProps> = ({
                       isFavorite?.id !== undefined ? isFavorite.id : ''
                     }
                   />
-                  <div className="mt-[7px] h-[12px]">
+                  <div className="mt-[0px] h-[12px]">
                     {plan.plan_state === 'end' ? null : (
                       <p
                         className="text-yellow text-center font-bold
                         sm:text-[10px] 
-                      md:text-[18px]"
+                      md:text-[18px] md:mt-[11px]"
                       >
                         {calculateDday(new Date(plan.dates[0]))}
                       </p>
@@ -189,12 +189,12 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
                 <div
-                  className="sm:w-[2100px] sm:h-2/3 sm:mx-[15px]
-                md:w-3/5 md:h-[16px]"
+                  className="sm:w-[283px] sm:h-2/3 sm:ml-[5px]
+                md:w-4/5 md:h-[16px] md:items-center "
                 >
                   <div
                     className="flex items-center 
-                  sm:mt-[12px] 
+                  sm:mt-[20px] 
                   md:mt-[22px]"
                   >
                     <p className="text-gray_dark_1 sm:text-sm md:text-xlg font-bold mr-[16px]">
@@ -203,7 +203,7 @@ const Card: React.FC<CardProps> = ({
                     {plan.plan_state === 'planning' ? (
                       <div
                         className="flex-center text-white bg-yellow rounded-3xl 
-                      sm:w-[50px] sm:h-[16px] sm:text-[8px] 
+                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
                       md:w-[72px] md:h-[26px] md:text-[12px]"
                       >
                         예정된 여행
@@ -211,7 +211,7 @@ const Card: React.FC<CardProps> = ({
                     ) : plan.plan_state === 'traveling' ? (
                       <div
                         className="flex-center font-normal text-white bg-blue rounded-3xl 
-                      sm:w-[50px] sm:h-[16.8px] sm:text-[8px] 
+                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
                       md:w-[72px] md:h-[26px] md:text-[12px]"
                       >
                         여행중
@@ -219,7 +219,7 @@ const Card: React.FC<CardProps> = ({
                     ) : (
                       <div
                         className="flex-center font-normal text-white bg-orange rounded-3xl 
-                      sm:w-[50px] sm:h-[16.8px] sm:text-[8px] 
+                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
                       md:w-[72px] md:h-[26px] md:text-[12px] "
                       >
                         다녀온 여행
@@ -228,7 +228,7 @@ const Card: React.FC<CardProps> = ({
                   </div>
                   <div
                     className="text-gray_dark_1 font-semibold
-                  sm:text-[10px] sm:mt-[0px] 
+                  sm:text-[10px] sm:mt-[5px] 
                   md:text-lg md:mt-[8px]"
                   >
                     {startDate}~{endDate} {plan.dates.length - 1}박{' '}
@@ -241,9 +241,9 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
                 <div
-                  className="flex h-[16px]
-                sm:w-[15px] sm:mr-[18px] sm:mt-[14px] 
-                md:w-1/5 md:mr-[25px] md:mt-[22px]"
+                  className="flex justify-center h-[16px]
+                sm:w-[15px] sm:ml-[10px] sm:mr-[10px] sm:mt-[20px] 
+                md:w-[80px] md:mr-[25px] md:mt-[22px]"
                 >
                   <button
                     onClick={(e) => {
@@ -254,7 +254,7 @@ const Card: React.FC<CardProps> = ({
                     <IconDeleteDefault
                       w="w-[24px]"
                       h="h-[24px]"
-                      fill="#E1E2E3"
+                      fill="#FFB979"
                     />
                   </button>
                 </div>

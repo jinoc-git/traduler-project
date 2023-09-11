@@ -6,9 +6,9 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
   const [isHovered, setIsHovered] = useState(false);
 
   // 밖 컬러
-  const outerStrokeColor = isHovered ? '#FFC803' : '#E1E2E3';
+  const outerStrokeColor = isHovered ? '#D46D0E' : '#FFB979';
   // 안 컬러
-  const innerFillColor = isHovered ? '#FFC803' : '#E1E2E3';
+  const innerFillColor = isHovered ? '#D46D0E' : '#FFB979';
 
   return (
     <svg

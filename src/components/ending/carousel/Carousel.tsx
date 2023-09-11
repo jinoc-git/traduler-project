@@ -94,7 +94,7 @@ const Carousel = () => {
               onClick={(e) => {
                 onClickImage(e, url);
               }}
-              className=" cursor-pointer brightness-[0.8] hover:brightness-100 transition-filter duration-400
+              className=" cursor-pointer brightness-[0.95] hover:brightness-100 transition-filter duration-400
                 md:w-[230px] md:h-[230px] md:p-[10px]
                 sm:w-[90px] sm:h-[90px] sm:p-[5px]
               "

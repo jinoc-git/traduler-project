@@ -20,7 +20,7 @@ const Landing = () => {
         "
         >
           <div className="md:w-[1030px] md:h-[245px] sm:mt-[-60px]">
-            {screenSize === 'md' && (
+            {screenSize !== 'sm' && (
               <p className="flex items-center gap-[10px] text-yellow font-normal text-[36px]">
                 <IconMapDefault w="50" h="50" fill="#FFC803" />
                 It`s time to travel

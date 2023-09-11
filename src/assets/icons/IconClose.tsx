@@ -14,14 +14,14 @@ const IconClose = ({ w, h, fill }: IconType) => {
     >
       <path
         d="M16 1L1 16"
-        stroke="#606060"
+        stroke={fill ?? "#606060"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M1 1L16 16"
-        stroke="#606060"
+        stroke={fill ?? "#606060"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

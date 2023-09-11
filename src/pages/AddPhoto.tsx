@@ -130,8 +130,8 @@ const AddPhoto = () => {
           : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[20px]'
       }`}
     >
-      <section className="main-layout">
-        <div className="flex flex-col w-plan mt-[76px]">
+      <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
+        <section>
           <div
             className="flex items-center 
           sm:mb-[35px]
@@ -151,6 +151,8 @@ const AddPhoto = () => {
           <EndingDate planDates={dates as string[]} />
           <Invite />
           <EndingPay pay={pay as number} />
+        </section>
+        <section>
           <div
             className="flex items-center font-semibold text-normal text-gray_dark_1 gap-[8px] mx-[6px]
           sm:my-[35px] sm:text-sm
@@ -160,6 +162,8 @@ const AddPhoto = () => {
             <label>여행 지역</label>
           </div>
           <EndingMap dates={dates as string[]} />
+        </section>
+        <section>
           <div className="flex items-center mt-[20px] gap-[8px] mx-[6px]">
             <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div
@@ -178,10 +182,12 @@ const AddPhoto = () => {
             10개 까지 추가 가능합니다.
           </p>
           <AddPicture setUploadedFiles={setUploadedFiles} limit={10} />
+        </section>
+        <section>
           <div
             className="flex items-center justify-end gap-5
-           sm:my-[55px] sm:w-[286px] sm:justify-normal
-           md:my-[100px] md:w-[720px] md:justify-end"
+          sm:my-[55px] sm:w-[286px] sm:justify-normal
+          md:my-[100px] md:w-[720px] md:justify-end"
           >
             <span
               className="text-gray_dark_1 font-Regular 
@@ -200,8 +206,8 @@ const AddPhoto = () => {
               {isSubmiting ? '저장 중' : '여행 저장'}
             </button>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 };

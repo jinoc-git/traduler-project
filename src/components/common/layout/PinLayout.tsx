@@ -4,6 +4,7 @@ import React, { type ReactNode } from 'react';
 import { type PinContentsType } from '@api/pins';
 import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
+import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
   pin: PinContentsType | [];
@@ -45,7 +46,7 @@ const PinLayout = ({
       <div className="flex items-center">
         <div
           className="absolute -z-10 border border-l-black 
-        sm:h-[102px] sm:translate-x-[15px]
+        sm:h-[82px] sm:translate-x-[15px] 
         md:h-[147px] md:translate-x-[17.5px]"
         />
         <p
@@ -58,15 +59,17 @@ const PinLayout = ({
       </div>
       {isEnding && children}
       <div
-        className="flex items-center justify-between border rounded-lg border-gray_dark_1 
-      sm:w-[239px] sm:h-[65px] sm:mb-0 sm:mr-[2px] sm:px-[8px] sm:py-[17px] 
-      md:w-pin_card md:h-pin_card md:mb-[10px] md:p-[30px] md:py-[8px]"
+        className="relative flex items-center justify-between border rounded-lg border-gray_dark_1 
+      sm:w-[239px] sm:h-[65px] sm:mb-0 sm:mr-[2px] sm:px-0 sm:py-[17px] 
+      md:w-pin_card md:h-pin_card md:mb-[10px] md:px-[15px] md:py-[8px]"
       >
         {!isEnding && children}
         <div
-          className="flex flex-col text-left  text-gray_dark_1 w-[400px]
+          className={`flex flex-col text-left  text-gray_dark_1 w-[400px]
         sm:text-[11px]
-        md:text-normal"
+        md:text-normal
+        ${isEnding ? 'ml-[15px]' : ''}
+        `}
         >
           {pin !== null && typeof pin === 'object' && 'placeName' in pin && (
             <span className="font-bold">{pin.placeName}</span>
@@ -74,18 +77,23 @@ const PinLayout = ({
           {pin !== null && typeof pin === 'object' && 'address' in pin && (
             <span>{pin.address}</span>
           )}
-          {/* {pin !== null && typeof pin === 'object' && 'cost' in pin && (
-            <span>
-              ￦
+          {isEnding && pin !== null && typeof pin === 'object' && 'cost' in pin &&  (
+            <span className=' absolute top-[5px] right-[10px]'>
+            
               {pin.cost !== null && pin.cost !== undefined
-                ? formatNumberWithCommas(pin.cost)
+                ? formatNumberWithCommas(pin.cost) + ' 원'
                 : ''}
             </span>
-          )} */}
+          )}
         </div>
         {!isEnding && updatePin && deletePin && (
           <DropDown>
-            <ul className="absolute left-[40px] bottom-[-50px] border rounded-md bg-white z-10">
+            <ul
+              className="absolute border rounded-md bg-white z-10 
+              md:left-[40px] md:bottom-[-50px] md:text-[16px]
+              sm:left-[20px] sm:bottom-[-25px] sm:text-[12px]
+            "
+            >
               <li
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -93,7 +101,10 @@ const PinLayout = ({
                 onClick={() => {
                   updatePin(idx);
                 }}
-                className="flex-center w-[80px] h-[40px] rounded-t-md border-b bg-white cursor-pointer hover:bg-gray_light_3"
+                className="flex-center rounded-t-md border-b bg-white cursor-pointer hover:bg-gray_light_3
+                md:w-[80px] md:h-[40px]
+                sm:w-[40px] sm:h-[20px]
+                "
               >
                 수정
               </li>
@@ -104,7 +115,10 @@ const PinLayout = ({
                 onClick={() => {
                   handleDelete(idx);
                 }}
-                className="flex-center w-[80px] h-[40px] rounded-b-md bg-white cursor-pointer hover:bg-gray_light_3"
+                className="flex-center rounded-b-md bg-white cursor-pointer hover:bg-gray_light_3
+                md:w-[80px] md:h-[40px]
+                sm:w-[40px] sm:h-[20px]
+                "
               >
                 삭제
               </li>

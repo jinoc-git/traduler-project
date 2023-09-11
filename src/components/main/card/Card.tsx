@@ -165,7 +165,7 @@ const Card: React.FC<CardProps> = ({
               >
                 <div
                   className="
-                  sm:w-[20px] sm:mt-[23px] sm:ml-[15px] 
+                  sm:w-[20px] sm:mt-[23px] sm:ml-[10px] 
                 md:w-[80px] md:h-[16px] md:mt-[25px] md:ml-[28px]"
                 >
                   <BookMark
@@ -189,7 +189,7 @@ const Card: React.FC<CardProps> = ({
                 </div>
 
                 <div
-                  className="sm:w-[210px] sm:h-2/3 sm:mx-[15px]
+                  className="sm:w-[283px] sm:h-2/3 sm:mx-[15px]
                 md:w-4/5 md:h-[16px] md:items-center "
                 >
                   <div
@@ -242,7 +242,7 @@ const Card: React.FC<CardProps> = ({
 
                 <div
                   className="flex justify-center h-[16px]
-                sm:w-[15px] sm:ml-[10px] sm:mr-[18px] sm:mt-[20px] 
+                sm:w-[15px] sm:ml-[10px] sm:mr-[10px] sm:mt-[20px] 
                 md:w-[80px] md:mr-[25px] md:mt-[22px]"
                 >
                   <button

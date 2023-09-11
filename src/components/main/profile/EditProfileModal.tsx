@@ -10,13 +10,15 @@ import { ic_name_1x } from '@assets/icons/1x';
 import IconCamera from '@assets/icons/IconCamera';
 import IconClose from '@assets/icons/IconClose';
 import { profileDefaultBlack, defaultImageGray } from '@assets/index';
+import MapModalLayout from '@components/plan/common/ModalLayout';
 import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
 
 interface EditProfileModalProps {
-  handler: React.Dispatch<React.SetStateAction<boolean>>;
+  onClickCloseModalHandler: () => void;
+  animate: boolean;
 }
 
 interface EditProfileForm {
@@ -31,7 +33,10 @@ interface ShouldBlockSubmitBtn {
   result: boolean;
 }
 
-const EditProfileModal = ({ handler }: EditProfileModalProps) => {
+const EditProfileModal = ({
+  onClickCloseModalHandler,
+  animate,
+}: EditProfileModalProps) => {
   const [previewImg, setPreviewImg] = useState<string>('');
   const [shouldBlockSubmitBtn, setShouldBlockSubmitBtn] =
     useState<ShouldBlockSubmitBtn>({
@@ -44,10 +49,6 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   const user = userStore((state) => state.user);
   const setUser = userStore((state) => state.setUser);
   const queryClient = useQueryClient();
-
-  const onClickCloseModalHandler = () => {
-    handler(false);
-  };
 
   const { nicknameValidator } = useFormValidator();
 
@@ -197,9 +198,9 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
   }, []);
 
   return (
-    <div className="absolute top-0 left-0 z-[40] flex-center w-screen h-screen bg-black/70">
+    <MapModalLayout value={animate}>
       <form
-        className="relative flex flex-col p-10 items-center justify-between align-middle bg-white h-[575px] rounded-xl"
+        className="relative  flex flex-col p-10 items-center justify-between align-middle h-[575px] rounded-xl"
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}
       >
         <button
@@ -296,7 +297,7 @@ const EditProfileModal = ({ handler }: EditProfileModalProps) => {
           </button>
         </div>
       </form>
-    </div>
+    </MapModalLayout>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type IconType from 'types/icon';
+
 const IconCamera = ({ w, h, fill }: IconType) => {
   return (
     <svg

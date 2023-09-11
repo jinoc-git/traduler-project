@@ -3,16 +3,26 @@ import React, { useState } from 'react';
 import IconEditDefault from '@assets/icons/IconEditDefault';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import EditProfileModal from '@components/main/profile/EditProfileModal';
+import useBooleanState from '@hooks/useBooleanState';
 import { userStore } from '@store/userStore';
 
 const Profile = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const { value: animate, setNeedValue: setAnimate } = useBooleanState(true);
   const user = userStore((state) => state.user);
 
   const profileImg = user?.profileImg;
 
   const onClickOpenModalHandler = () => {
+    setAnimate(true);
     setIsEditModalOpen(true);
+  };
+
+  const onClickCloseModalHandler = () => {
+    setAnimate(false);
+    setTimeout(() => {
+      setIsEditModalOpen(false);
+    }, 400);
   };
 
   return (
@@ -56,7 +66,9 @@ const Profile = () => {
           님의 여행 계획
         </p>
       </div>
-      {isEditModalOpen && <EditProfileModal handler={setIsEditModalOpen} />}
+      {isEditModalOpen && (
+        <EditProfileModal animate={animate} onClickCloseModalHandler={onClickCloseModalHandler} />
+      )}
     </section>
   );
 };

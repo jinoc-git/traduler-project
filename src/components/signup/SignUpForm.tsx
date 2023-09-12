@@ -17,6 +17,7 @@ import IconLocked from '@assets/icons/IconLocked';
 import IconMessage from '@assets/icons/IconMessage';
 import IconName from '@assets/icons/IconName';
 import IconVisible from '@assets/icons/IconVisible';
+import { signUpBG } from '@assets/index';
 import useBooleanState from '@hooks/useBooleanState';
 import useFormValidator from '@hooks/useFormValidator';
 import { AuthError } from '@supabase/supabase-js';
@@ -112,15 +113,16 @@ const SignUpForm = () => {
 
   return (
     <main className="flex-center w-screen h-screen">
-      <div
-        className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/131771098/fd90f3f8-15f5-458c-8e4e-c5b35e781f10)] bg-left bg-cover bg-no-repeat 
-        md:w-[880px]"
+      <img
+        src={signUpBG}
+        alt="back-ground-img"
+        className="absolute inset-0 object-cover h-[100vh]"
       />
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
         className="relative flex flex-col   rounded-xl bg-[#F9F9FB]
           md:w-[450px] md:h-[540px] md:px-[50px] md:py-[37px] md:gap-y-2.5
-          sm:px-[30px] sm:py-[22px] sm:gap-y-2
+          sm:w-[320px] sm:px-[30px] sm:py-[22px] sm:gap-y-2
         "
       >
         <h2 className="text-blue border-blue border-b-2 w-[64px] text-lg font-semibold	">

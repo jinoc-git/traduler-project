@@ -92,7 +92,7 @@ const Comments = () => {
     >
       <div
         className="flex items-center 
-      sm:w-[116px] sm:mb-[20px] mt-[30px]
+      sm:w-[116px] sm:mb-[20px] mt-[30px] sm:ml-[6px]
       md:w-[116px] md:my-[30px]"
       >
         <IconCommentory
@@ -101,7 +101,7 @@ const Comments = () => {
           fill="#4E4F54"
         />
         <div
-          className="ml-[8px] font-bold text-gray_dark_1
+          className="ml-[8px] font-SemiBold text-gray_dark_1
         sm:w-[66px] sm:text-sm
         md:w-[84px] md:text-lg
         "
@@ -111,9 +111,9 @@ const Comments = () => {
       </div>
       {data === null || data === undefined || data.length === 0 ? (
         <div
-          className="my-[30px] ml-[20px] text-gray_dark_1 leading-6 tracking-tighter
-        sm:text-sm
-        md:text-normal
+          className="  text-gray_dark_1 leading-6 tracking-tighter
+        sm:text-sm sm:ml-[10px] sm:mb-[11px]
+        md:text-normal md:ml-[20px] md:my-[33px]
         "
         >
           첫 코멘트를 입력해보세요!
@@ -130,8 +130,8 @@ const Comments = () => {
             <div
               key={comment.id}
               className="flex items-center my-[10px] text-sm text-gray_dark_1 leading-6 tracking-tighter
-              sm:gap-2
-              md:gap-5"
+              sm:gap-2 sm:ml-[6px]
+              md:gap-5 md:ml-0"
             >
               <img
                 src={isUserImg != null ? isUserImg : defaultImageGray}
@@ -168,7 +168,7 @@ const Comments = () => {
       )}
       <div
         className="text-gray_dark_1 leading-6 tracking-tighter 
-        sm:text-sm sm:font-semibold sm:ml-[0px]
+        sm:text-sm sm:font-semibold sm:ml-[6px]
         md:hidden"
       >
         소감 작성
@@ -200,7 +200,7 @@ const Comments = () => {
                 required: true,
               })}
               className="outline-none input-border 
-              sm:w-[255px] sm:h-[28px] sm:ml-[0px]
+              sm:w-[255px] sm:h-[28px] sm:ml-[6px]
               md:w-[360px] md:h-[30px] md:ml-[0px]"
             />
             <p className="h-[20px] pt-1.5 text-sm">

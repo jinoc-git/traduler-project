@@ -29,7 +29,6 @@ interface CardProps {
   bookMarkData: BookMarkType[];
   planDataList: PlanType[] | undefined;
   usersDataList: UsersDataList[];
-  bookMarkPlan: PlanType[] ;
 }
 
 export interface PlanCountList {
@@ -43,7 +42,6 @@ const Card: React.FC<CardProps> = ({
   usersDataList,
   planDataList,
   bookMarkData,
-  bookMarkPlan,
 }) => {
   const navigate = useNavigate();
 
@@ -122,7 +120,7 @@ const Card: React.FC<CardProps> = ({
   useEffect(() => {
     if (planDataList != null) {
       setPlanCount({
-        bookMark: bookMarkPlan.length,
+        bookMark: bookMarkData.length,
         planning: planDataList.filter((plan) => plan.plan_state === 'planning')
           .length,
         traveling: planDataList.filter(
@@ -134,7 +132,7 @@ const Card: React.FC<CardProps> = ({
         ).length,
       });
     }
-  }, [planDataList, bookMarkData, bookMarkPlan]);
+  }, [planDataList, bookMarkData]);
 
   return (
     <div className="flex flex-col gap-[16px]">

@@ -13,7 +13,6 @@ interface Contents {
   contents: Content[];
 }
 
-// 좌표 불러오기
 export const getCoordinate = async (planId: string) => {
   const { data: dates, error: plansError } = await supabase
     .from('plans')
@@ -42,7 +41,6 @@ export const getCoordinate = async (planId: string) => {
   }
 };
 
-// 좌표 변환 후 거리 계산하기
 export const calcAllPath = async (distance: PinContentsType[][]) => {
   const convertParameters = [];
   for (const pinArr of distance) {
@@ -81,7 +79,6 @@ export const calcAllPath = async (distance: PinContentsType[][]) => {
   return newDataArr;
 };
 
-// 비용 불러오기
 export const getCost = async (planId: string) => {
   const { data: dates, error: plansError } = await supabase
     .from('plans')
@@ -106,7 +103,6 @@ export const getCost = async (planId: string) => {
   }
 };
 
-// 비용 총합 구하기
 export const calcCostAndInsertPlansEnding = async (planId: string) => {
   const datesCost: number[] = [];
   const response = await getCost(planId);
@@ -124,14 +120,6 @@ export const calcCostAndInsertPlansEnding = async (planId: string) => {
   }
 };
 
-// interface Options {
-//   id: string;
-//   distance: Json[];
-//   dates_cost: number[];
-//   pictures: string[];
-// }
-
-// 구한 날짜별 거리 및 날짜별 총 비용 supabase에 데이터 insert
 export const insertPlanEnding = async (options: PlansEndingType) => {
   const { status, error } = await supabase.from('plans_ending').insert(options);
 
@@ -140,7 +128,6 @@ export const insertPlanEnding = async (options: PlansEndingType) => {
   }
 };
 
-// plans_ending 데이터 불러오기
 export const getEndingCost = async (planId: string) => {
   const { data: distanceData, error: distanceError } = await supabase
     .from('plans_ending')
@@ -184,7 +171,6 @@ export const getPhoto = async (planId: string) => {
   return endingData;
 };
 
-// plans 날짜 불러오기
 export const getDates = async (planId: string) => {
   const { data, error: plansError } = await supabase
     .from('plans')

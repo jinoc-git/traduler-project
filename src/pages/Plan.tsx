@@ -214,7 +214,7 @@ const Plan = () => {
         />
         <UpdatePlan />
         <div
-          className="flex 
+          className="flex  sm:mb-[60px]
         md:justify-end md:mt-[100px]  md:mr-[30px]
         sm:justify-start sm:mt-[82px] sm:ml-[4px]
         "
@@ -249,7 +249,7 @@ const Plan = () => {
           ) : (
             <div
               className="flex items-center gap-5
-              sm:w-[286px]  sm:h-[41px] sm:justify-normal sm:mb-[60px]
+              sm:w-[286px]  sm:h-[41px] sm:justify-normal
               md:w-[300px] md:h-[43px] md:justify-end"
             >
               <p

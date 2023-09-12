@@ -49,7 +49,7 @@ const usePlanValidate = (args: UsePlanValidateArgs) => {
         return false;
       }
       if (
-        modifyInputWatch('totalCost') > 100000000 ||
+        modifyInputWatch('totalCost') > 10000000 ||
         modifyInputWatch('totalCost') <= 0
       ) {
         toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');

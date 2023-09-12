@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 
 import { type PinContentsType } from '@api/pins';
@@ -10,6 +9,7 @@ import MapPoly from '@components/plan/common/MapPoly';
 import useBooleanState from '@hooks/useBooleanState';
 import { datesStore } from '@store/datesStore';
 import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
 interface PropsType {
   currentPage: number;
@@ -38,7 +38,6 @@ const AddPlanContents = ({
   };
   const { oldDates, dates } = datesStore();
 
-  // pin 수정 버튼
   const { updateClick } = updatePinStore();
   const updatePin = (idx: number) => {
     const pin = pins[currentPage][idx];
@@ -46,7 +45,6 @@ const AddPlanContents = ({
     openModal();
   };
 
-  // pin 삭제 버튼
   const deletePin = (idx: number) => {
     const deletedPins = pins.map((pin, i) => {
       if (i === currentPage) {
@@ -99,7 +97,7 @@ const AddPlanContents = ({
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (
-              <div key={pin.id}>
+              <div key={uuid()}>
                 <PinLayout
                   pin={pin}
                   idx={idx}
@@ -113,7 +111,7 @@ const AddPlanContents = ({
           {dates.length !== 0 && (
             <div
               className="flex items-center justify-between
-            sm:w-[286px]
+            sm:w-[286px] 
             md:w-[651px] md:mx-[25px] md:my-[8px]"
             >
               {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}

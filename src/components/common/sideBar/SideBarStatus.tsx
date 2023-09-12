@@ -45,7 +45,6 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
       const startDay = activePlan.dates[0];
       const endDay = activePlan.dates[activePlan.dates.length - 1];
       const percent = calcDateProgress(startDay, endDay);
-      // const progressWidth = ((160 / 100) * +percent).toFixed();
       setProgress(percent);
     }
   }, [activePlan]);

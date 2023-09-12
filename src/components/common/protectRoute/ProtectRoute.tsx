@@ -16,11 +16,6 @@ const ProtectRoute = () => {
         navigate('/signin');
       }
     } 
-    // else {
-    //   if (pathname === '/signin' || pathname === '/signup') {
-    //     navigate('/main');
-    //   }
-    // }
   }, [pathname, isLogin]);
 
   return null;

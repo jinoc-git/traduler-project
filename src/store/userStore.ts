@@ -69,7 +69,6 @@ export const userStore = create<UserStore>((set, get) => {
 
   return {
     user: null,
-    // isLogin: false,
     authObserver,
     setUser,
     resetUser,

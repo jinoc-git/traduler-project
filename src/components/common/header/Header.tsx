@@ -151,7 +151,6 @@ const Header = () => {
             onClick={() => {
               navigate('/signup');
             }}
-            // className={`w-[147px] ${pathname === '/' ? 'text-white' : ''}`}
             className={`w-[147px] ${pathname === '/' ? 'text-white' : ''} ${
               pathname === '/'
                 ? 'sm:hidden md:block md:w-[147px] md:mt-[24px] '

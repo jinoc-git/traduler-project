@@ -186,7 +186,7 @@ const AddPhoto = () => {
         <section>
           <div
             className="flex items-center justify-end gap-5
-          sm:my-[55px] sm:w-[286px] sm:justify-normal
+          sm:my-[55px] sm:w-[286px] sm:justify-normal sm:mx-auto
           md:my-[100px] md:w-[720px] md:justify-end"
           >
             <span

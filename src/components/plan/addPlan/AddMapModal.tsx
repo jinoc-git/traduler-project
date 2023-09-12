@@ -59,7 +59,7 @@ const AddMapModal = ({
       cost: data.cost,
       address,
     };
-    // 수정하기 시
+
     if (pin !== null) {
       const confTitle = '장소 수정';
       const confDesc = '이대로 수정하시겠습니까?';
@@ -78,7 +78,7 @@ const AddMapModal = ({
       };
       confirm.default(confTitle, confDesc, confFunc);
     }
-    // 장소추가 시
+
     else {
       const confTitle = '장소 추가';
       const confDesc = '이대로 추가하시겠습니까?';

@@ -1,4 +1,4 @@
-import { type BookMarkType } from 'types/supabase';
+import { type InsertBookMarkType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
@@ -15,7 +15,7 @@ export const getBookMark = async (userId: string | undefined) => {
   return data;
 };
 
-export const addBookMark = async (newBookMark: BookMarkType) => {
+export const addBookMark = async (newBookMark: InsertBookMarkType) => {
   const { plan_id: planId, user_id: userId } = newBookMark;
   const { error } = await supabase.from('book_mark').insert({
     plan_id: planId,

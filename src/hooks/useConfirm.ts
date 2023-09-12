@@ -12,6 +12,9 @@ const useConfirm = () => {
     delete: (title: string, desc: string, func: () => void) => {
       openConfirm(title, desc, 'delete', func);
     },
+    quit: (title: string, desc: string, func: () => void) => {
+      openConfirm(title, desc, 'quit', func);
+    },
   };
   return { confirm };
 };

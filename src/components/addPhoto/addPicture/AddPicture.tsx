@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import IconUploadPicture from '@assets/icons/IconUploadPicture';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import imageCompression from 'browser-image-compression';
+import heic2any from 'heic2any';
 
 interface TypePicture {
   limit: number;
@@ -15,7 +16,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
   const [imgSrcList, setImgSrcList] = useState<string[]>([]);
 
   const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    let file = e.target.files?.[0];
 
     const options = {
       maxSizeMB: 2,
@@ -23,6 +24,28 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
     };
 
     if (file != null) {
+      if (
+        file.type === 'image/heic' ||
+        file.type === 'image/HEIC' ||
+        file.type === 'image/HEIF' ||
+        file.type === 'image/heif'
+      ) {
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: 'image/jpeg', // JPEG로 변환
+        });
+
+        const convertedFile = new File(
+          [convertedBlob as Blob],
+          file.name.split('.')[0] + '.jpeg',
+          {
+            type: 'image/jpeg',
+          },
+        );
+
+        file = convertedFile;
+      }
+
       const compressedFile = await imageCompression(file, options);
       const url = URL.createObjectURL(compressedFile);
 
@@ -53,7 +76,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
       {limit !== imgSrcList?.length ? (
         <div className="sm:mx-auto md:mx-0">
           <input
-            accept=".jpg, .jpeg, .png"
+            accept=".jpg, .jpeg, .png .heic .heif .HEIC .HEIF "
             ref={fileRef}
             onChange={onFileChange}
             type="file"

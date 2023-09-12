@@ -76,12 +76,11 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
       address,
     };
 
+    if (watch('cost') > 10000000) {
+      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+      return;
+    }
     if (pin !== null) {
-      if (watch('cost') > 10000000) {
-        toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
-        return;
-      }
-
       const confTitle = '장소 수정';
       const confDesc = '이대로 수정하시겠습니까?';
       const confFunc = () => {

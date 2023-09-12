@@ -19,18 +19,20 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
 
   return (
     <PayLayout>
-      <div className="flex items-center sm:h-[27px]">
-        <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
-        <p
-          className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] 
-        md:mr-[51px] md:ml-[8px]"
-        >
-          전체 예산
-        </p>
+      <div className="flex items-center sm:h-[27px] sm:w-[286px] md:w-full md:justify-normal sm:justify-between">
+        <div className='flex items-center'>
+          <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
+          <p
+            className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] 
+          md:mr-[51px] md:ml-[8px]"
+          >
+            전체 예산
+          </p>
+        </div>
         {modifyState === 'readOnly' ? (
           <p
             id="totalCost"
-            className="text-[16px] font-SemiBold border rounded-lg px-[16px] outline-none w-[150px] border-gray read-only:cursor-default read-only:border-none read-only:font-semibold
+            className="text-[16px] font-SemiBold border rounded-lg outline-none border-gray read-only:cursor-default read-only:border-none read-only:font-semibold
             sm:read-only:text-[14px] 
             md:read-only:text-normal"
           >
@@ -56,7 +58,7 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
               })}
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             />
-            <span className=" absolute right-[-20px] top-[3px]">원</span>
+            <span className=" absolute right-[10px] top-[4px]">원</span>
             <p className="h-[10px] pl-2 pt-1 text-xs text-red-600">
               {errors?.totalCost?.message}
             </p>

@@ -154,7 +154,11 @@ const SideBar: React.FC = () => {
             <div
               className={`flex flex-col gap-2 md:min-h-[382px] sm:min-h-[358px]`}
             >
-              <p className="text-sm">TRIPS</p>
+              <p
+                className={`font-semibold text-xs text-gray_dark_1 ${isSideBarOpen ? 'md:pl-[8px]' : ' text-center'}`}
+              >
+                TRIPS
+              </p>
               <SideBarPlanList
                 toggleFunc={toggleBookMarkPlansOpen}
                 setFunc={setBookMarkNeedValue}
@@ -178,7 +182,7 @@ const SideBar: React.FC = () => {
               />
             </div>
           </div>
-          <div >
+          <div>
             <SideBarETC />
           </div>
         </aside>

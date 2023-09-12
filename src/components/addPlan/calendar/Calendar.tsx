@@ -34,10 +34,10 @@ const Calendar: React.FC<CalendarProps> = ({
   return (
     <div
       className="relative z-10 flex items-center 
-    sm:w-[286px] sm:block sm:pt-[15px]
-    md:w-[638px] md:py-[10px] md:pr-[62px] md:flex"
+    sm:w-[286px] sm:block sm:pt-[15px] sm:mx-auto
+    md:w-[638px] md:py-[10px] md:pr-[62px] md:flex md:mx-[6px]"
     >
-      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
+      <div className="sm:flex sm:justify-between sm:w-[286px] md:w-[280px]">
         <div
           className="flex items-center font-semibold text-gray_dark_1
         sm:gap-[7px] sm:mb-[16px]
@@ -72,7 +72,7 @@ const Calendar: React.FC<CalendarProps> = ({
           portalId="datepiker-portal"
         />
       </div>
-      <div className="sm:flex sm:justify-between sm:mx-[6px] sm:w-[286px] md:w-[280px]">
+      <div className="sm:flex sm:justify-between sm:w-[286px] md:w-[280px]">
         <div
           className="flex items-center font-semibold text-gray_dark_1
         sm:gap-[7px] sm:mb-[16px]

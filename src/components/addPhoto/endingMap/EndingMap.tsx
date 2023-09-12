@@ -184,4 +184,4 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
   );
 };
 
-export default EndingMap;
+export default React.memo(EndingMap);

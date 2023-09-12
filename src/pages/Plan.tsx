@@ -163,7 +163,7 @@ const Plan = () => {
 
   return (
     <main
-      className={`transition-all duration-300 ease-in-out sm:pt-[125px] md:pt-[60px] ${
+      className={`transition-all duration-300 ease-in-out sm:pt-[125px] md:pt-[70px] ${
         isSideBarOpen
           ? 'sidebar-open sm:ml-0 md:ml-[270px]'
           : 'sidebar-close sm:ml-0 md:ml-[88px]'
@@ -177,7 +177,7 @@ const Plan = () => {
         modifyInputWatch={watch}
       />
       <PlanLayout>
-        <div className="flex items-center ">
+        <div className="flex items-center md:justify-normal sm:justify-between ">
           <input
             id="title"
             type="text"
@@ -249,7 +249,7 @@ const Plan = () => {
           ) : (
             <div
               className="flex items-center gap-5
-              sm:w-[286px]  sm:h-[41px] sm:justify-normal
+              sm:w-[286px]  sm:h-[41px] sm:justify-normal sm:mb-[60px]
               md:w-[300px] md:h-[43px] md:justify-end"
             >
               <p

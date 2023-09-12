@@ -22,6 +22,7 @@ const PlaceList = () => {
   const { data, isLoading } = useQuery(
     ['plansEndingDistance', planId],
     async () => await getPlaceWithDate(planId),
+    { refetchOnWindowFocus: false },
   );
 
   if (isLoading) {
@@ -42,7 +43,7 @@ const PlaceList = () => {
     sm:w-[100%]
     md:w-[720px]"
     >
-      <div className="flex items-center ml-[6px]">
+      <div className="flex items-center md:w-full md:mx-[6px] sm:w-[286px] sm:mx-auto">
         <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
         <div
           className="w-full ml-[8px] font-semibold text-gray_dark_1
@@ -98,4 +99,4 @@ const PlaceList = () => {
   );
 };
 
-export default PlaceList;
+export default React.memo(PlaceList);

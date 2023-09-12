@@ -18,15 +18,17 @@ const EndingDate = ({ planDates }: PropsType) => {
   const days = planDates?.length;
   return (
     <div>
-      <div className="flex mx-[6px] mb-[17px]">
-        <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
-        <p
-          className="ml-2 font-SemiBold text-gray_dark_1
-        sm:text-sm
-        md:text-normal"
-        >
-          여행 일정
-        </p>
+      <div className="flex md:mx-[6px] sm:mx-auto mb-[17px] md:justify-normal md:w-full sm:justify-between sm:w-[286px]">
+        <div className="flex">
+          <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
+          <p
+            className="ml-2 font-SemiBold text-gray_dark_1
+          sm:text-sm
+          md:text-normal"
+          >
+            여행 일정
+          </p>
+        </div>
         <div
           className="font-semibold ml-[50px] text-right text-gray_dark_1
         sm:text-[12px] sm:block
@@ -51,4 +53,4 @@ const EndingDate = ({ planDates }: PropsType) => {
   );
 };
 
-export default EndingDate;
+export default React.memo(EndingDate);

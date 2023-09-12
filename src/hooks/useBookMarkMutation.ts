@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-invalid-void-type */
+import { toast } from 'react-toastify';
+
 import { addBookMark, deleteBookMark } from '@api/bookMarks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
@@ -40,7 +42,7 @@ const useBookMarkMutation = (
     },
     onError: (err, newBookMark, context) => {
       if (err instanceof Error) {
-        console.log(err);
+        toast.error('즐겨찾기 오류가 발생했습니다.');
       }
       queryClient.setQueryData(['book_mark'], context?.previousData);
     },

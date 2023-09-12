@@ -1,29 +1,22 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
-import { deletePlan } from '@api/plans';
 import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
+import useQuitPlanMutation from '@hooks/useQuitPlanMutation';
 import { usePlanStore } from '@store/usePlanStore';
 import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
-import {
-  type BookMarkType,
-  type PlanType,
-  type UserType,
-} from 'types/supabase';
+import { type UsersDataList } from 'types/aboutPlan';
+import { type BookMarkType, type PlanType } from 'types/supabase';
 
 import CardAddNewPlan from './CardAddNewPlan';
 import CardTabMenu from './CardTabMenu';
 import CardUserList from './CardUserList';
-
-type UsersDataList = Record<string, UserType[]>;
 
 interface CardProps {
   bookMarkData: BookMarkType[];
@@ -45,7 +38,6 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
   const user = userStore((state) => state.user);
   const { selectedPlan } = usePlanStore();
 
@@ -56,15 +48,7 @@ const Card: React.FC<CardProps> = ({
     end: 0,
   });
 
-  const deletePlanMutation = useMutation(deletePlan, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(['plan_mates', user?.id]);
-      await queryClient.invalidateQueries(['book_mark']);
-    },
-    onError: () => {
-      toast.error('계획 삭제 중 오류가 발생했습니다.');
-    },
-  });
+  const quitPlanMutation = useQuitPlanMutation(user?.id);
   const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
@@ -99,12 +83,13 @@ const Card: React.FC<CardProps> = ({
   const { confirm } = useConfirm();
 
   const handleDeletePlan = (planId: string) => {
+    if (user === null) return;
+    
     const confTitle = '여행 삭제';
     const confDesc =
       '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
-
     const confFunc = () => {
-      deletePlanMutation.mutate(planId);
+      quitPlanMutation.mutate({ planId, userId: user.id });
     };
 
     confirm.delete(confTitle, confDesc, confFunc);

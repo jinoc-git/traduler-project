@@ -67,8 +67,12 @@ export const deletePlan = async (planId: string) => {
     .from('plans')
     .update({ isDeleted: true })
     .eq('id', planId);
+  const { error: bookMarkError } = await supabase
+    .from('book_mark')
+    .delete()
+    .eq('plan_id', planId);
 
-  if (error != null) {
+  if (error != null || bookMarkError != null) {
     throw new Error('계획 삭제 중 오류가 발생했습니다.');
   }
 };

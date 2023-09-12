@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import { getBookMark } from '@api/bookMarks';
-import { getPlanListAndMateList, getPlansWithBookmarks } from '@api/plans';
+import { getPlanListAndMateList } from '@api/plans';
 import Loading from '@components/loading/Loading';
 import Card from '@components/main/card/Card';
 import { userStore } from '@store/userStore';
@@ -32,20 +32,10 @@ const CardSection = () => {
     { enabled: user !== null, refetchOnWindowFocus: false },
   );
 
-  const {
-    data: bookMarkPlanData,
-    isLoading: bookMarkPlanLoading,
-    isError: bookMarkPlanError,
-  } = useQuery(
-    ['book_mark', 'plans', user?.id],
-    async () => await getPlansWithBookmarks(user === null ? '' : user.id),
-    { enabled: user !== null, refetchOnWindowFocus: false },
-  );
-
-  if (matesLoading || bookMarkLoading || bookMarkPlanLoading) {
+  if (matesLoading || bookMarkLoading) {
     return <Loading />;
   }
-  if (matesError || bookMarkError || bookMarkPlanError) {
+  if (matesError || bookMarkError) {
     navigate('/error');
     return;
   }
@@ -66,7 +56,6 @@ const CardSection = () => {
         planDataList={planDataList}
         usersDataList={usersDataList}
         bookMarkData={bookMarkData}
-        bookMarkPlan={bookMarkPlanData}
       />
     </section>
   );

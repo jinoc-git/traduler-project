@@ -24,15 +24,21 @@ const TotalPay = () => {
     | undefined
   >();
   const { id: planId } = useParams();
-
-  const { data: invitePeople } = useQuery(['planMates', planId], async () => {
-    if (planId !== undefined) {
-      const res = await getMates(planId);
-      return res;
-    } else return null;
-  });
-  const countPeople = invitePeople?.length;
   const screenSize = screenStore((state) => state.screenSize);
+
+  const { data: invitePeople } = useQuery(
+    ['planMates', planId],
+    async () => {
+      if (planId !== undefined) {
+        const res = await getMates(planId);
+        return res;
+      } else return null;
+    },
+    { refetchOnWindowFocus: false },
+  );
+
+  const countPeople = invitePeople?.length;
+
   useEffect(() => {
     const getRemainingBudget = async () => {
       if (planId !== undefined && countPeople !== undefined) {
@@ -62,12 +68,12 @@ const TotalPay = () => {
   return (
     <section
       className="
-      sm:w-[310px] sm:h-[382px] sm:mx-[5px] sm:mt-[30px] sm:mb-[32px]
+      sm:w-[310px] sm:h-[382px] sm:mt-[30px] sm:mb-[32px]
     md:w-[720px] md:h-[420px] md:mx-auto md:mt-[35px] md:mb-[46px]
     "
     >
       <div
-        className="flex items-center 
+        className="flex items-center md:w-full md:mx-[6px] sm:w-[286px] sm:mx-auto
       "
       >
         {screenSize === 'sm' ? (
@@ -87,14 +93,14 @@ const TotalPay = () => {
 
       <div
         className="flex items-center flex-col justify-center 
-      md:mx-auto md:mt-0
+      md:mx-auto md:mt-[25px]
       sm:mx-[24px] sm:mt-[20px]
       "
       >
         <div
           className="flex items-center justify-center  flex-shrink: 0 rounded-lg border-2 border-yellow
-         md:w-[325px] md:h-[435px] 
-         sm:w-[266px] sm:h-[343px]
+          md:w-[325px] 
+          sm:w-[266px] 
         "
         >
           <div
@@ -105,23 +111,23 @@ const TotalPay = () => {
           >
             <p
               className=" font-semibold text-gray_dark_1 
-            md:w-[175px] md:h-[24px] md:text-normal
-            sm:w-[142px]  sm:text-[13px]
+            md:h-[24px] md:text-normal
+              sm:text-[13px]
             "
             >
-              <span className="mr-[10px]">예산은 </span>
+              예산은 &nbsp;
               <span className="text-yellow font-Pretendard font-semibold  ">
-                {totalCost !== null ? formatNumberWithCommas(totalCost) : ''}원
+                {totalCost !== null ? formatNumberWithCommas(totalCost) : ''} 원
+                &nbsp;
               </span>
-              &nbsp;
-              <span>입니다.</span>
+              입니다.
             </p>
             {endingInfo != null ? (
               <>
                 <div
                   className="flex-col items-start ml-[8px] mb-[20px] text-grey-dark-1 font-Pretendard 
-                 md:text-sm
-                 sm:text-[13px]
+                  md:text-sm
+                  sm:text-[13px]
                 "
                 >
                   {endingInfo?.datesAndPaySum.map((item) => {
@@ -142,16 +148,16 @@ const TotalPay = () => {
                 <div className="mb-[100px] ">
                   <span
                     className="mr-[20px] font-semibold text-gray_dark_1 
-                             md:text-normal
-                             sm:text-[13px]
+                              md:text-normal
+                              sm:text-[13px]
                   "
                   >
                     총 사용 경비는
                   </span>
                   <span
                     className=" font-semibold text-blue 
-                             md:text-normal
-                             sm:text-[13px]
+                              md:text-normal
+                              sm:text-[13px]
                   "
                   >
                     {formatNumberWithCommas(endingInfo.totalPay)}원
@@ -159,8 +165,8 @@ const TotalPay = () => {
                   &nbsp;
                   <span
                     className=" font-semibold text-gray_dark_1
-                             md:text-normal
-                             sm:text-[13px]
+                              md:text-normal
+                              sm:text-[13px]
                   "
                   >
                     입니다.
@@ -200,17 +206,17 @@ const TotalPay = () => {
 
                 <div
                   className=" text-right font-semibold text-gray_dark_1
-                     md:text-normal
-                     sm:text-[13px]
+                      md:text-normal
+                      sm:text-[13px]
                 "
                 >
                   {endingInfo.perPersonCost >= 0 ? (
                     <p>
-                      인당{' '}
                       <span className="text-navy">
-                        {formatNumberWithCommas(endingInfo.perPersonCost)}원
+                        인당 {formatNumberWithCommas(endingInfo.perPersonCost)}
+                        원
                       </span>{' '}
-                      정산해주세요!
+                      정산해 주세요!
                     </p>
                   ) : (
                     <p>
@@ -236,4 +242,4 @@ const TotalPay = () => {
   );
 };
 
-export default TotalPay;
+export default React.memo(TotalPay);

@@ -22,6 +22,7 @@ const PlaceList = () => {
   const { data, isLoading } = useQuery(
     ['plansEndingDistance', planId],
     async () => await getPlaceWithDate(planId),
+    { refetchOnWindowFocus: false },
   );
 
   if (isLoading) {
@@ -37,10 +38,18 @@ const PlaceList = () => {
   }
 
   return (
-    <section className="md:w-[720px] sm:w-[100%]">
-      <div className="flex items-center">
+    <section
+      className="mt-[30px]
+    sm:w-[100%]
+    md:w-[720px]"
+    >
+      <div className="flex items-center md:w-full md:mx-[6px] sm:w-[286px] sm:mx-auto">
         <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
-        <div className="w-full ml-[8px] mx-auto font-bold text-lg text-gray_dark_1 py-[13px]">
+        <div
+          className="w-full ml-[8px] font-semibold text-gray_dark_1
+        sm:text-sm
+        md:text-lg"
+        >
           방문한 장소
         </div>
       </div>
@@ -56,9 +65,9 @@ const PlaceList = () => {
         return (
           <div key={uuid()} className="text-center">
             <p
-              className="font-bold text-gray_dark_1
+              className="font-semibold text-gray_dark_1
               md:mt-[15px] md:mb-[35px] md:text-lg
-              sm:mt-[15px] sm:mb-[5px] sm:text-[14px]
+              sm:mt-[15px] sm:mb-[14px] sm:text-[14px]
               "
             >
               {days[0]}
@@ -90,4 +99,4 @@ const PlaceList = () => {
   );
 };
 
-export default PlaceList;
+export default React.memo(PlaceList);

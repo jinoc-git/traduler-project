@@ -125,15 +125,15 @@ const AddPhoto = () => {
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[0px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
+            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+            : 'sidebar-close '
+          : 'md:w-[calc(100vw)] md:ml-0 '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
         <section>
           <div
-            className="flex items-center 
+            className="flex items-center justify-between
           sm:mb-[35px]
           md:mb-[18px]"
           >
@@ -144,7 +144,7 @@ const AddPhoto = () => {
             >
               {plan?.[0].title}
             </h3>
-            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
+            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
               완료된 여행
             </div>
           </div>
@@ -164,7 +164,7 @@ const AddPhoto = () => {
           <EndingMap dates={dates as string[]} />
         </section>
         <section>
-          <div className="flex items-center mt-[20px] gap-[8px] mx-[6px]">
+          <div className="flex items-center mt-[20px] gap-[8px] mx-[6px] md:w-full md:mx-[6px] sm:w-[286px] sm:mx-auto ">
             <IconCamera w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
             <div
               className="w-full mx-auto font-bold  text-gray_dark_1 py-[13px]
@@ -186,7 +186,7 @@ const AddPhoto = () => {
         <section>
           <div
             className="flex items-center justify-end gap-5
-          sm:my-[55px] sm:w-[286px] sm:justify-normal
+          sm:my-[55px] sm:w-[286px] sm:justify-normal sm:mx-auto
           md:my-[100px] md:w-[720px] md:justify-end"
           >
             <span

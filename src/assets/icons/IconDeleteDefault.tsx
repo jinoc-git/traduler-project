@@ -5,9 +5,7 @@ import type IconType from 'types/icon';
 const IconDeleteDefault = ({ w, h, fill }: IconType) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // 밖 컬러
   const outerStrokeColor = isHovered ? '#D46D0E' : '#FFB979';
-  // 안 컬러
   const innerFillColor = isHovered ? '#D46D0E' : '#FFB979';
 
   return (
@@ -18,7 +16,6 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`sm:w-[15px] sm:h-[15px] md:${w} md:${h}`}
-      // 밖컬러 변경
       onMouseEnter={() => {
         setIsHovered(true);
       }}
@@ -36,7 +33,6 @@ const IconDeleteDefault = ({ w, h, fill }: IconType) => {
         fill={fill ?? 'black'}
         stroke={outerStrokeColor}
       />
-      {/* 전체컬러 */}
       <path
         fillRule="evenodd"
         clipRule="evenodd"

@@ -65,7 +65,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
   const { data: pin } = useQuery({
     queryKey: ['pin', planId, currentPage],
     queryFn: async () => await getPin(planId, currentPage),
-    // cacheTime: 600000,
     staleTime: 60 * 1000,
   });
 
@@ -84,7 +83,6 @@ const Pins = ({ currentPage, dates }: PropsType) => {
     deleteMutation([dates[currentPage], planId, deletedPin]);
   };
 
-  // drang drop
   const movePins = useCallback((beforeIdx: number, afterIdx: number) => {
     if (beforeIdx === afterIdx) return;
     setPinArr((prev) =>

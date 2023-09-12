@@ -2,8 +2,6 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
 import { supabase } from './supabaseAuth';
 
-// const imageUrl = URL.createObjectURL();
-
 export const addPicture = async (fileList: File[], planId: string) => {
   const pathList: string[] = [];
 

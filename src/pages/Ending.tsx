@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// import Carousel from '@components/carousel/Carousel';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +29,7 @@ const Ending = () => {
   } = useQuery(
     ['planEnding', planId],
     async () => await getPlanEnding(planId as string),
+    { refetchOnWindowFocus: false },
   );
   const navigate = useNavigate();
 
@@ -72,26 +72,26 @@ const Ending = () => {
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[0px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
+            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+            : 'sidebar-close '
+          : 'md:w-[calc(100vw)] md:ml-0 '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
         <section>
           <div
-            className="flex items-center 
+            className="flex items-center md:justify-normal sm:justify-between
           sm:mb-[35px]
           md:mb-[18px]"
           >
             <h3
               className="font-bold text-gray_dark_1
-            sm:text-[20px]
-            md:text-[24px]"
+            sm:text-[20px] sm:w-[235px]
+            md:text-[24px] md:w-[275px]"
             >
               {title}
             </h3>
-            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
+            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
               완료된 여행
             </div>
           </div>
@@ -100,7 +100,11 @@ const Ending = () => {
           <EndingPay pay={pay as number} />
         </section>
         <section>
-          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+          <div
+            className="flex items-center mt-[30px] mb-[20px] font-semibold text-gray_dark_1 gap-[8px]
+          sm:text-sm sm:w-[286px] sm:mx-auto
+          md:text-normal md:w-full md:mx-[6px]"
+          >
             <IconLocationDefault w="20" h="20" />
             <label>여행 지역</label>
           </div>

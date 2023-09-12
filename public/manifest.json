@@ -3,27 +3,82 @@
   "name": "Traduler Project",
   "icons": [
     {
-      "src": "./image/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "./images/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
     },
     {
-      "src": "./images/icon-144x144.png",
+      "src": "./images/favicon16x16.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/favicon24x24.ico",
+      "sizes": "24x24",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/favicon32x32.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/favicon64x64.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./images/apple-touch-icon-57x57.png",
+      "type": "image/png",
+      "sizes": "57x57"
+    },
+    {
+      "src": "./images/apple-touch-icon-60x60.png",
+      "type": "image/png",
+      "sizes": "60x60"
+    },
+    {
+      "src": "./images/apple-touch-icon-72x72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "./images/apple-touch-icon-76x76.png",
+      "type": "image/png",
+      "sizes": "76x76"
+    },
+    {
+      "src": "./images/apple-touch-icon-114x114.png",
+      "type": "image/png",
+      "sizes": "114x114"
+    },
+    {
+      "src": "./images/apple-touch-icon-120x120.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "./images/apple-touch-icon-144x144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
     {
-      "src": "./images/icon-152x152.png",
+      "src": "./images/apple-touch-icon-152x152.png",
       "type": "image/png",
       "sizes": "152x152"
     },
     {
-      "src": "./images/icon-256x256.png",
+      "src": "./images/apple-touch-icon-256x256.png",
       "type": "image/png",
       "sizes": "256x256"
     },
     {
-      "src": "./images/icon-512x512.png",
+      "src": "./images/apple-touch-icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -31,5 +86,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "prefer_related_applications": true
 }

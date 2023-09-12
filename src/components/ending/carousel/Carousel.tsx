@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
@@ -23,10 +23,11 @@ const Carousel = () => {
 
   const { id: planId } = useParams<{ id: string }>();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['ending_photo', planId],
-    queryFn: async () => await getPhoto(planId as string),
-  });
+  const { data, isLoading } = useQuery(
+    ['ending_photo', planId],
+    async () => await getPhoto(planId as string),
+    { refetchOnWindowFocus: false },
+  );
 
   const onClickImage = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -64,14 +65,14 @@ const Carousel = () => {
   }
 
   return photoData.length > 3 ? (
-    <section className="md:w-[720px] sm:w-[286px]">
-      <div className="flex items-center mt-[30px]">
+    <section className="md:w-[720px] sm:w-[310px]">
+      <div className="flex items-center mt-[30px] md:w-[720px] md:mx-[6px] sm:w-[286px] sm:mx-auto">
         <IconCamera w="w-[21px]" h="h-[18px]" fill="#4E4F54" />
-        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
+        <div className="ml-[8px] text-lg font-bold text-gray_dark_1 md:text-[18px] sm:text-[14px]">
           사진첩
         </div>
       </div>
-      <div className="p-[10px] md:w-[720px] sm:w-[286px]">
+      <div className="p-[10px] md:w-[720px] sm:w-[286px] sm:mx-auto">
         <Slider
           focusOnSelect
           infinite
@@ -115,4 +116,4 @@ const Carousel = () => {
   ) : null;
 };
 
-export default Carousel;
+export default React.memo(Carousel);

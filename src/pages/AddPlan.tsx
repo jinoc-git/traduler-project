@@ -154,7 +154,7 @@ const AddPlan = () => {
         >
           {errors?.title?.message}
         </p>
-        <div className="flex flex-col mx-auto w-[700px]">
+        <div className="flex flex-col mx-auto md:w-[700px] sm:w-[310px]">
           <PostPlan state={'addPlan'} />
           <Invite />
           <Pay register={register} errors={errors} />

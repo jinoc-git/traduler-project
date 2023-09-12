@@ -28,7 +28,7 @@ const Profile = () => {
   return (
     <section>
       <div
-        className="flex items-center main-layout mt=[150px]
+        className="flex items-center main-layout
       sm:gap-[16px] 
       md:gap-[40px]"
       >

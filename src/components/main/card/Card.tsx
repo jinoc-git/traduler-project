@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import { usePlanStore } from '@store/usePlanStore';
 import { userStore } from '@store/userStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
@@ -154,7 +154,7 @@ const Card: React.FC<CardProps> = ({
           );
 
           return (
-            <div key={plan.id}>
+            <div key={uuid()}>
               <div
                 className="flex bg-white shadow-card rounded-[7px] cursor-pointer
                 sm:w-[318px] sm:h-[80px] sm:mx-[1px]

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import IconUploadPicture from '@assets/icons/IconUploadPicture';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import imageCompression from 'browser-image-compression';
 
 interface TypePicture {
@@ -78,7 +79,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
       {imgSrcList?.map((el, i) => {
         return (
           <div
-            key={i}
+            key={uuid()}
             className="relative  bg-black  flex-center
             sm:w-[128px] sm:h-[128px] sm:mt-0 sm:mr-0
             md:w-[200px] md:h-[200px] "

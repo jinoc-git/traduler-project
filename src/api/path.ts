@@ -17,7 +17,6 @@ interface Routes {
   routes: Route[];
 }
 
-// 카카오 모빌리티 API를 사용
 export const getPath = async (params: Parameters) => {
   const { data } = await axios.get<Routes>(
     'https://apis-navi.kakaomobility.com/v1/directions',
@@ -34,7 +33,6 @@ export const getPath = async (params: Parameters) => {
   return data.routes[0].summary.distance;
 };
 
-// 카카오 모빌리티에서 원하는 좌표로 가공 후 거리로 변환
 export const calcPath = async (distance: PinContentsType[]) => {
   const convertParameters = distance.map(({ lng, lat }) => {
     if (lat !== undefined && lng !== undefined) {

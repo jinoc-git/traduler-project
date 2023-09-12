@@ -32,10 +32,9 @@ const SearchPeople = ({ closeModal }: PropsType) => {
   } = useForm<InputType>({ mode: 'onChange' });
   const [people, setPeople] = useState<UserType[]>([]);
   const { id: planId } = useParams();
-  // 반응형 확인
+
   const screenSize = screenStore((state) => state.screenSize);
-  console.log(screenSize);
-  // 유저 검색
+
   const searchUser: SubmitHandler<InputType> = async (data) => {
     if (data.userInfo === '') {
       setPeople([]);
@@ -69,7 +68,6 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     confirm.default(confTitle, confDesc, confFunc);
   };
 
-  // 유저 초대 react-query
   const queryClient = useQueryClient();
   const inviteMutation = useMutation({
     mutationFn: async ([usersId, planId]: [string[], string]) => {
@@ -80,7 +78,6 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     },
   });
 
-  // 저장 버튼 눌렀을 때 실행
   const inviteData = () => {
     const Ids = invitedUser.map((item) => item.id);
     if (Ids !== undefined && planId !== undefined) {
@@ -92,7 +89,6 @@ const SearchPeople = ({ closeModal }: PropsType) => {
     syncInviteduser();
   };
 
-  // 초대한 유저 삭제
   const deleteUser = (idx: number) => {
     const confTitle = '동행 초대 삭제';
     const confDesc = '해당 여행에서 삭제하시겠습니까?';

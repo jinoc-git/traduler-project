@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
-/* eslint-disable @typescript-eslint/return-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React, { useEffect, useState } from 'react';
 import {
   CustomOverlayMap,
@@ -15,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import { type PinContentsType, getAllPins } from '@api/pins';
 import Loading from '@components/loading/Loading';
 import { screenStore } from '@store/screenStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';
 
 const EndingMap = ({ dates }: { dates: string[] }) => {
@@ -104,11 +104,11 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
               lng: pins?.[0].lng !== undefined ? pins[0].lng : 126.978652258309,
             }}
             level={level}
-            className="w-[95vw] sm:h-[227px] md:h-[400px] rounded-lg"
+            style={style}
           >
             {pins?.map((pin, idx) => {
               return (
-                <div key={idx}>
+                <div key={uuid()}>
                   <MapMarker
                     position={{
                       lat: pin?.lat as number,
@@ -132,7 +132,9 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
                             {pin?.placeName}
                           </div>
                           <div
-                            onClick={() => toggleMarkerInfo(idx)}
+                            onClick={() => {
+                              toggleMarkerInfo(idx);
+                            }}
                             className="pl-3 font-bold cursor-pointer text-navy"
                           >
                             X

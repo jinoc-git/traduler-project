@@ -109,7 +109,6 @@ const EditProfileModal = ({
       }
     }
 
-    // 프로필 사진 변경
     if (data.avatar !== undefined && preview.length !== 0) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
 
@@ -124,7 +123,6 @@ const EditProfileModal = ({
       }
     }
 
-    // 프로필 이미지 삭제
     if (shouldBlockSubmitBtn.isRemoveAvatar) {
       const res = await removeUserAvartar(user.id);
 

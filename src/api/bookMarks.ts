@@ -18,7 +18,6 @@ export const getBookMark = async (userId: string | undefined) => {
 export const addBookMark = async (newBookMark: BookMarkType) => {
   const { plan_id: planId, user_id: userId } = newBookMark;
   const { error } = await supabase.from('book_mark').insert({
-    // id: newBookMarkId,
     plan_id: planId,
     user_id: userId,
   });

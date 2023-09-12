@@ -2,7 +2,6 @@ import { type UserType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
-// 친구 검색
 export const findUsers = async (input: string) => {
   const { data: nickname, error } = await supabase
     .from('users')
@@ -20,7 +19,6 @@ export const findUsers = async (input: string) => {
   return { nickname, email };
 };
 
-// 초대한 목록 가져오기
 export const getMates = async (planId: string) => {
   const { data: matesId, error } = await supabase
     .from('plan_mates')
@@ -30,8 +28,6 @@ export const getMates = async (planId: string) => {
     console.log(error);
   }
 
-  // data에는 userId 배열
-  // user에 대한 정보는 users table에서 가져와야함
   const matesInfo: UserType[] = [];
   if (matesId != null) {
     const matesIdArr = matesId?.[0].users_id;
@@ -51,7 +47,6 @@ export const getMates = async (planId: string) => {
   return matesInfo;
 };
 
-// 친구 초대
 export const updateMates = async (newMates: string[], planId: string) => {
   const { data, error } = await supabase
     .from('plan_mates')

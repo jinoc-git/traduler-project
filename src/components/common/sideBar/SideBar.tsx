@@ -114,7 +114,6 @@ const SideBar: React.FC = () => {
       )}
       {isVisibleSideBar ? (
         <aside
-          // touch-none은 완성 후 어떻게 할지 생각
           className={` touch-none fixed h-[100vh] border-r border-slate-300 rounded-r-[12px] z-[31] overflow-hidden bg-white transition-all duration-300 ease-in-out  ${
             isSideBarOpen
               ? 'sm:w-[357px] sm:px-[24px] md:w-[270px] md:px-[24px]  '

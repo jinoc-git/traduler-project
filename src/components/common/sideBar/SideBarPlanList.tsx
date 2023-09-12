@@ -9,6 +9,7 @@ import IconPlannedTime from '@assets/icons/IconPlannedTime';
 import IconPreviousTime from '@assets/icons/IconPreviousTime';
 import { sideBarStore } from '@store/sideBarStore';
 import { usePlanStore } from '@store/usePlanStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { changeSideBarFormat } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
 
@@ -140,7 +141,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
               md:w-[175px] md:my-[5px]
               sm:w-[234px] sm:mt-[5px]
               "
-              key={plan.id}
+              key={uuid()}
             >
               <p
                 className={`text-[13px]   ${

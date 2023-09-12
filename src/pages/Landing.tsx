@@ -26,7 +26,7 @@ const Landing = () => {
             alt="랜딩 메인 이미지"
             className="w-[100vw] h-[520px] object-cover md:h-screen"
           />
-          <div className="md:w-[1030px] md:h-[245px] md:translate-y-[-190px] md:ml-[205px] sm:w-[280px] sm:mt-[-380px] sm:mx-auto sm:mb-[220px]">
+          <div className="md:w-[1030px] md:h-[245px] md:translate-y-[-240px] md:ml-[205px] sm:w-[280px] sm:mt-[-380px] sm:mx-auto sm:mb-[220px]">
             {screenSize !== 'sm' && (
               <p className="flex items-center gap-[10px] text-yellow font-normal text-[36px]">
                 <IconMapDefault w="50" h="50" fill="#FFC803" />

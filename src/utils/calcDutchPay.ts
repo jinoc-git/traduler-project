@@ -31,7 +31,6 @@ export const calcDutchPay = async (planId: string, countPeople: number) => {
   }
 };
 
-// 세자리 수 콤마
 export const formatNumberWithCommas = (number: number): string => {
   return new Intl.NumberFormat('en-US').format(number);
 };

@@ -53,7 +53,6 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
   });
   const { confirm } = useConfirm();
 
-  // 장소 검색
   const searchMap = (address: string) => {
     if (address === '') return;
     const ps = new kakao.maps.services.Places();
@@ -67,7 +66,6 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
     });
   };
 
-  // 저장 버튼
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
     const newObj: PinContentsType = {
       id: uuid(),
@@ -77,7 +75,7 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
       cost: data.cost,
       address,
     };
-    // 수정하기 시
+
     if (pin !== null) {
       if (watch('cost') > 10000000) {
         toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
@@ -106,9 +104,7 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
         }
       };
       confirm.default(confTitle, confDesc, confFunc);
-    }
-    // 장소추가 시
-    else {
+    } else {
       const confTitle = '장소 추가';
       const confDesc = '이대로 추가하시겠습니까?';
       const confFunc = () => {

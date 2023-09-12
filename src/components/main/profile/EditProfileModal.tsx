@@ -285,7 +285,7 @@ const EditProfileModal = ({
                 type="button"
                 disabled={!isValid || nickname === ''}
                 onClick={checkNicknameDuplication}
-                className="md:hidden absolute top-[3px] right-[3px] w-[68px] h-[33px] rounded-md bg-blue border text-white text-[14px] disabled:bg-gray_light_3"
+                className="md:hidden absolute top-[3px] right-[3px] w-[68px] h-[33px] rounded border text-sm text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white"
               >
                 중복확인
               </button>
@@ -294,7 +294,7 @@ const EditProfileModal = ({
               type="button"
               disabled={!isValid || nickname === ''}
               onClick={checkNicknameDuplication}
-              className="md:block sm:hidden  w-[87px] h-[40px] rounded-md bg-blue border text-white  disabled:bg-gray_light_3"
+              className="md:block sm:hidden  w-[87px] h-[40px] rounded-md border text-[#6E6F76] bg-white  hover:font-semibold disabled:bg-gray_light_3 disabled:text-white"
             >
               중복확인
             </button>

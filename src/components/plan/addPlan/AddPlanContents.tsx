@@ -110,7 +110,7 @@ const AddPlanContents = ({
           })}
           {dates.length !== 0 && (
             <div
-              className="flex items-center justify-between
+              className="flex items-center justify-between  pb-[60px]
             sm:w-[286px] 
             md:w-[651px] md:mx-[25px] md:my-[8px]"
             >

@@ -37,21 +37,42 @@
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_JAVASCRIPT_KEY%&libraries=services,clusterer"
     ></script>
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!-- <script
+      type="text/babel"
+      src="/myproject/scripts/common/pushNotifications/sw.js"
+    ></script> -->
 
-    <title>Traduler</title>
-    <!-- 
-    <script>
+    <!-- <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
+        navigator.serviceWorker
+          .register('./service-worker.js')
+          .then(function (registration) {
+            console.log(
+              'Service Worker registered with scope:',
+              registration.scope,
+            );
+          })
+          .catch(function (error) {
+            console.error('Service Worker registration failed:', error);
+          });
       }
     </script> -->
 
-    <script type="module">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <title>Traduler</title>
+
+    <!-- <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js');
+      }
+    </script> -->
+
+    <!-- <script type="module">
       import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
       const el = document.createElement('pwa-update');
       document.body.appendChild(el);
-    </script>
+    </script> -->
   </head>
 
   <body>

@@ -46,7 +46,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
   return (
     <div
       className="flex flex-wrap
-    sm:w-[267px] sm:gap-[6px]
+    sm:w-[267px] sm:gap-[6px] sm:mx-auto
     md:w-full md:justify-normal"
     >
       {limit !== imgSrcList?.length ? (

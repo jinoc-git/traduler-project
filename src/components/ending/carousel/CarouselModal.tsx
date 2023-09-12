@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import IconClose from '@assets/icons/IconClose';
 
@@ -8,14 +8,24 @@ interface CarouselModalProps {
 }
 
 const CarouselModal: React.FC<CarouselModalProps> = ({ url, closeFunc }) => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  });
+
   return (
     <div className="flex-center fixed top-0 left-0 w-screen h-screen z-[40] bg-black/40">
-      <div className=' relative'>
-        <button onClick={closeFunc} className=" absolute top-[0px] right-[-25px] p-2 rounded-xl bg-white opacity-20 hover:opacity-50">
+      <div className=" relative">
+        <button
+          onClick={closeFunc}
+          className=" absolute top-[0px] right-[-25px] p-2 rounded-xl bg-white opacity-20 hover:opacity-50"
+        >
           <IconClose
             w={'md:w-[24px] sm:w-[16px]'}
             h={'md:h-[24px] sm:h-[16px]'}
-            fill='#222'
+            fill="#222"
           />
         </button>
         <img

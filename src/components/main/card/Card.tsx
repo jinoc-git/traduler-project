@@ -9,9 +9,10 @@ import useQuitPlanMutation from '@hooks/useQuitPlanMutation';
 import { usePlanStore } from '@store/usePlanStore';
 import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { cardListing, tabMenu } from '@utils/arrayCallbackFunctions';
 import { formatPlanDates } from '@utils/changeFormatDay';
 import { calculateDday } from '@utils/dateFormat';
-import { type UsersDataList } from 'types/aboutPlan';
+import { type PlanCountList, type UsersDataList } from 'types/aboutPlan';
 import { type BookMarkType, type PlanType } from 'types/supabase';
 
 import CardAddNewPlan from './CardAddNewPlan';
@@ -22,13 +23,6 @@ interface CardProps {
   bookMarkData: BookMarkType[];
   planDataList: PlanType[] | undefined;
   usersDataList: UsersDataList[];
-}
-
-export interface PlanCountList {
-  bookMark: number;
-  planning: number;
-  traveling: number;
-  end: number;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -52,47 +46,22 @@ const Card: React.FC<CardProps> = ({
   const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
-    ?.filter((plan) => {
-      if (selectedPlan === 'bookMark') {
-        return bookMarkPlanIdList.find((id) => id === plan.id);
-      }
-      if (selectedPlan === 'end') {
-        return (
-          (plan.plan_state === selectedPlan && !plan.isDeleted) ||
-          (plan.plan_state === 'recording' && !plan.isDeleted)
-        );
-      }
-      return plan.plan_state === selectedPlan && !plan.isDeleted;
-    })
-    ?.sort((a, b) => {
-      if (selectedPlan === 'bookMark') {
-        const bookMarkA = bookMarkData.find(
-          (bookMark) => bookMark.plan_id === a.id,
-        )!;
-        const bookMarkB = bookMarkData.find(
-          (bookMark) => bookMark.plan_id === b.id,
-        )!;
-        return (
-          new Date(bookMarkA.created_at!).getTime() -
-          new Date(bookMarkB.created_at!).getTime()
-        );
-      }
-      return new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime();
-    });
+    ?.filter(tabMenu.filtering(selectedPlan, bookMarkPlanIdList))
+    .sort(tabMenu.sorting(selectedPlan, bookMarkData));
 
   const { confirm } = useConfirm();
 
   const handleDeletePlan = (planId: string) => {
     if (user === null) return;
-    
-    const confTitle = '여행 삭제';
+
+    const confTitle = '여행 나가기';
     const confDesc =
-      '삭제한 여행은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
+      '동행자가 없으면 여행은 삭제됩니다. 정말로 나가시겠습니까?';
     const confFunc = () => {
       quitPlanMutation.mutate({ planId, userId: user.id });
     };
 
-    confirm.delete(confTitle, confDesc, confFunc);
+    confirm.quit(confTitle, confDesc, confFunc);
   };
 
   const onClickListItem = (state: string, id: string) => {
@@ -106,15 +75,9 @@ const Card: React.FC<CardProps> = ({
     if (planDataList != null) {
       setPlanCount({
         bookMark: bookMarkData.length,
-        planning: planDataList.filter((plan) => plan.plan_state === 'planning')
-          .length,
-        traveling: planDataList.filter(
-          (plan) => plan.plan_state === 'traveling',
-        ).length,
-        end: planDataList.filter(
-          (plan) =>
-            plan.plan_state === 'end' || plan.plan_state === 'recording',
-        ).length,
+        planning: planDataList.filter(tabMenu.counting('planning')).length,
+        traveling: planDataList.filter(tabMenu.counting('traveling')).length,
+        end: planDataList.filter(tabMenu.counting('end')).length,
       });
     }
   }, [planDataList, bookMarkData]);
@@ -127,17 +90,14 @@ const Card: React.FC<CardProps> = ({
       ) : (
         filteredData?.map((plan) => {
           const { startDate, endDate } = formatPlanDates(plan);
-          const isFavorite = bookMarkData.find(
-            (bookMark) => bookMark.plan_id === plan.id,
-          );
-          const participants = usersDataList.find((users) => users[plan.id])!;
-          const participantsAvatarList = participants[plan.id].map(
-            (user) => user.avatar_url,
-          );
 
-          const participantsNicknameList = participants[plan.id].map(
-            (user) => user.nickname,
-          );
+          const isBookMark = bookMarkData.find(cardListing.isBookMark(plan.id));
+
+          const participants = usersDataList.find(
+            cardListing.withPlanId(plan.id),
+          )!;
+          const avatarList = participants[plan.id].map(cardListing.avatar);
+          const nicknameList = participants[plan.id].map(cardListing.nickname);
 
           return (
             <div key={uuid()}>
@@ -155,10 +115,10 @@ const Card: React.FC<CardProps> = ({
                 md:w-[80px] md:h-[16px] md:mt-[25px] md:ml-[28px]"
                 >
                   <BookMark
-                    isFavorite={Boolean(isFavorite)}
+                    isBookMark={Boolean(isBookMark)}
                     planId={plan.id}
                     bookMarkId={
-                      isFavorite?.id !== undefined ? isFavorite.id : ''
+                      isBookMark?.id !== undefined ? isBookMark.id : ''
                     }
                   />
                   <div className="mt-[0px] h-[12px]">
@@ -221,8 +181,8 @@ const Card: React.FC<CardProps> = ({
                     {plan.dates.length}일
                   </div>
                   <CardUserList
-                    participantsAvatarList={participantsAvatarList}
-                    participantsNicknameList={participantsNicknameList}
+                    avatarList={avatarList}
+                    nicknameList={nicknameList}
                   />
                 </div>
 

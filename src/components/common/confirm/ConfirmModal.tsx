@@ -7,6 +7,7 @@ import ComfirmModalLayout from './ComfirmModalLayout';
 enum ButtonText {
   modify = '수정하기',
   delete = '삭제하기',
+  quit = '나가기',
   defalut = '확인',
 }
 
@@ -24,6 +25,8 @@ const ConfirmModal = () => {
         return ButtonText.modify;
       case 'delete':
         return ButtonText.delete;
+      case 'quit':
+        return ButtonText.quit;
       default:
         return ButtonText.defalut;
     }

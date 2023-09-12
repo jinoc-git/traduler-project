@@ -4,10 +4,12 @@ import { toast } from 'react-toastify';
 import { addBookMark, deleteBookMark } from '@api/bookMarks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
-import { type BookMarkType } from 'types/supabase';
+import { type InsertBookMarkType, type BookMarkType } from 'types/supabase';
 
 interface UseBookMarkMutationReturnType {
-  throttleAddMutaion: _.DebouncedFunc<(newBookMark: BookMarkType) => void>;
+  throttleAddMutaion: _.DebouncedFunc<
+    (newBookMark: InsertBookMarkType) => void
+  >;
   throttleDeleteMutaion: _.DebouncedFunc<(bookMarkId: string) => void>;
 }
 
@@ -19,10 +21,10 @@ const useBookMarkMutation = (
   const addMutation = useMutation<
     void,
     Error,
-    BookMarkType,
+    InsertBookMarkType,
     { previousData: BookMarkType[] | undefined }
   >(addBookMark, {
-    onMutate: async (newBookMark: BookMarkType) => {
+    onMutate: async (newBookMark: InsertBookMarkType) => {
       await queryClient.cancelQueries(['book_mark']);
       const previousData = queryClient.getQueryData<BookMarkType[]>([
         'book_mark',
@@ -84,7 +86,7 @@ const useBookMarkMutation = (
     },
   });
 
-  const throttleAddMutaion = _.throttle((newBookMark: BookMarkType) => {
+  const throttleAddMutaion = _.throttle((newBookMark: InsertBookMarkType) => {
     addMutation.mutate(newBookMark);
   }, 250);
 

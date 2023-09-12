@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { quitPlan } from '@api/plans';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { withPlanId } from '@utils/filterFunctions';
+import { withPlanId } from '@utils/arrayCallbackFunctions';
 import { type QuitPlanParam, type UserAndPlanList } from 'types/aboutPlan';
 
 const useQuitPlanMutation = (userId: string | undefined) => {

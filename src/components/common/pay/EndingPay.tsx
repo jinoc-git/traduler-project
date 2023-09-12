@@ -12,7 +12,7 @@ const EndingPay = ({ pay }: PropsType) => {
   return (
     <PayLayout>
       <div className="flex items-center  sm:h-[27px] w-full md:justify-normal sm:justify-between ">
-        <div className='flex items-center '>
+        <div className="flex items-center ">
           <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
           <p
             className="sm:mr-[30px] sm:ml-[8px]
@@ -29,4 +29,4 @@ const EndingPay = ({ pay }: PropsType) => {
   );
 };
 
-export default EndingPay;
+export default React.memo(EndingPay);

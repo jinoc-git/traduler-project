@@ -24,15 +24,21 @@ const TotalPay = () => {
     | undefined
   >();
   const { id: planId } = useParams();
-
-  const { data: invitePeople } = useQuery(['planMates', planId], async () => {
-    if (planId !== undefined) {
-      const res = await getMates(planId);
-      return res;
-    } else return null;
-  });
-  const countPeople = invitePeople?.length;
   const screenSize = screenStore((state) => state.screenSize);
+
+  const { data: invitePeople } = useQuery(
+    ['planMates', planId],
+    async () => {
+      if (planId !== undefined) {
+        const res = await getMates(planId);
+        return res;
+      } else return null;
+    },
+    { refetchOnWindowFocus: false },
+  );
+
+  const countPeople = invitePeople?.length;
+
   useEffect(() => {
     const getRemainingBudget = async () => {
       if (planId !== undefined && countPeople !== undefined) {
@@ -236,4 +242,4 @@ const TotalPay = () => {
   );
 };
 
-export default TotalPay;
+export default React.memo(TotalPay);

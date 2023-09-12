@@ -22,6 +22,7 @@ const PlaceList = () => {
   const { data, isLoading } = useQuery(
     ['plansEndingDistance', planId],
     async () => await getPlaceWithDate(planId),
+    { refetchOnWindowFocus: false },
   );
 
   if (isLoading) {
@@ -98,4 +99,4 @@ const PlaceList = () => {
   );
 };
 
-export default PlaceList;
+export default React.memo(PlaceList);

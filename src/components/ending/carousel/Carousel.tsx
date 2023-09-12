@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 
@@ -23,10 +23,11 @@ const Carousel = () => {
 
   const { id: planId } = useParams<{ id: string }>();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['ending_photo', planId],
-    queryFn: async () => await getPhoto(planId as string),
-  });
+  const { data, isLoading } = useQuery(
+    ['ending_photo', planId],
+    async () => await getPhoto(planId as string),
+    { refetchOnWindowFocus: false },
+  );
 
   const onClickImage = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -115,4 +116,4 @@ const Carousel = () => {
   ) : null;
 };
 
-export default Carousel;
+export default React.memo(Carousel);

@@ -30,6 +30,7 @@ const Ending = () => {
   } = useQuery(
     ['planEnding', planId],
     async () => await getPlanEnding(planId as string),
+    { refetchOnWindowFocus: false },
   );
   const navigate = useNavigate();
 

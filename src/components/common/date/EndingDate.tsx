@@ -19,7 +19,7 @@ const EndingDate = ({ planDates }: PropsType) => {
   return (
     <div>
       <div className="flex md:mx-[6px] sm:mx-auto mb-[17px] md:justify-normal md:w-full sm:justify-between sm:w-[286px]">
-        <div className='flex'>
+        <div className="flex">
           <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
           <p
             className="ml-2 font-SemiBold text-gray_dark_1
@@ -53,4 +53,4 @@ const EndingDate = ({ planDates }: PropsType) => {
   );
 };
 
-export default EndingDate;
+export default React.memo(EndingDate);

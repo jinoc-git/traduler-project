@@ -133,7 +133,7 @@ const Comments = () => {
               sm:w-[286px] sm:mx-auto
               md:w-full md:mx-[6px]"
             >
-              <div className='flex md:gap-5 sm:gap-2'>
+              <div className="flex md:gap-5 sm:gap-2">
                 <img
                   src={isUserImg != null ? isUserImg : defaultImageGray}
                   className="object-cover rounded-full
@@ -149,7 +149,9 @@ const Comments = () => {
                 >
                   {userNickname}
                 </p>
-                <p className="md:w-[365px] sm:w-[150px] md:text-sm sm:text-[11px]">{comment.content}</p>
+                <p className="md:w-[365px] sm:w-[150px] md:text-sm sm:text-[11px]">
+                  {comment.content}
+                </p>
               </div>
               {comment.user_id === user?.id && (
                 <button

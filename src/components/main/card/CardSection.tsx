@@ -1,7 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 
 import { getBookMark } from '@api/bookMarks';
-import { getPlanListAndMateList } from '@api/plans';
+import { getPlanListAndMateList, getPlansWithBookmarks } from '@api/plans';
 import Loading from '@components/loading/Loading';
 import Card from '@components/main/card/Card';
 import { userStore } from '@store/userStore';
@@ -9,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const CardSection = () => {
   const user = userStore((state) => state.user);
+  const navigate = useNavigate();
 
   const {
     data: matesData,
@@ -27,14 +29,25 @@ const CardSection = () => {
   } = useQuery(
     ['book_mark', user?.id],
     async () => await getBookMark(user?.id),
-    { enabled: user !== null },
+    { enabled: user !== null, refetchOnWindowFocus: false },
   );
 
-  if (matesLoading || bookMarkLoading) {
+  const {
+    data: bookMarkPlanData,
+    isLoading: bookMarkPlanLoading,
+    isError: bookMarkPlanError,
+  } = useQuery(
+    ['book_mark', 'plans', user?.id],
+    async () => await getPlansWithBookmarks(user === null ? '' : user.id),
+    { enabled: user !== null, refetchOnWindowFocus: false },
+  );
+
+  if (matesLoading || bookMarkLoading || bookMarkPlanLoading) {
     return <Loading />;
   }
-  if (matesError || bookMarkError) {
-    return <div>에러 발생</div>;
+  if (matesError || bookMarkError || bookMarkPlanError) {
+    navigate('/error');
+    return;
   }
 
   if (matesData == null || bookMarkData == null) {
@@ -53,6 +66,7 @@ const CardSection = () => {
         planDataList={planDataList}
         usersDataList={usersDataList}
         bookMarkData={bookMarkData}
+        bookMarkPlan={bookMarkPlanData}
       />
     </section>
   );

@@ -86,12 +86,12 @@ const Ending = () => {
           >
             <h3
               className="font-bold text-gray_dark_1
-            sm:text-[20px]
+            sm:text-[20px] sm:w-[235px]
             md:text-[24px]"
             >
               {title}
             </h3>
-            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white ml-[50px]">
+            <div className="bg-orange rounded-3xl w-[65px] h-[20px] text-[9px] flex-center font-normal text-white">
               완료된 여행
             </div>
           </div>
@@ -100,7 +100,11 @@ const Ending = () => {
           <EndingPay pay={pay as number} />
         </section>
         <section>
-          <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+          <div
+            className="flex items-center mt-[30px] mb-[20px] ml-[6px] font-semibold text-gray_dark_1 gap-[8px]
+          sm:text-sm
+          md:text-normal"
+          >
             <IconLocationDefault w="20" h="20" />
             <label>여행 지역</label>
           </div>

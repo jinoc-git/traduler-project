@@ -23,6 +23,7 @@
     "eslint": "^8.0.1",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "heic2any": "^0.0.4",
     "immutability-helper": "^3.1.1",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -44,8 +45,6 @@
     "slick-carousel": "^1.8.1",
     "typescript": "*",
     "web-vitals": "^2.1.0",
-
-    "zustand": "^4.4.1",
     "workbox-background-sync": "^6.4.2",
     "workbox-broadcast-update": "^6.4.2",
     "workbox-cacheable-response": "^6.4.2",
@@ -57,8 +56,8 @@
     "workbox-range-requests": "^6.4.2",
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2",
-    "workbox-streams": "^6.4.2"
-
+    "workbox-streams": "^6.4.2",
+    "zustand": "^4.4.1"
   },
   "scripts": {
     "start": "craco start",

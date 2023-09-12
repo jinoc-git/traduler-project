@@ -44,7 +44,7 @@ const SideBar: React.FC = () => {
   const { data: bookMarkPlanData } = useQuery(
     ['book_mark', 'plans', user?.id],
     async () => await getPlansWithBookmarks(user === null ? '' : user.id),
-    { enabled: user !== null },
+    { enabled: user !== null, refetchOnWindowFocus: false },
   );
 
   const onClickLogo = () => {
@@ -154,7 +154,9 @@ const SideBar: React.FC = () => {
               className={`flex flex-col gap-2 md:min-h-[382px] sm:min-h-[358px]`}
             >
               <p
-                className={`font-semibold text-xs text-gray_dark_1 ${isSideBarOpen ? 'md:pl-[8px]' : ' text-center'}`}
+                className={`font-semibold text-xs text-gray_dark_1 ${
+                  isSideBarOpen ? 'md:pl-[8px]' : ' text-center'
+                }`}
               >
                 TRIPS
               </p>

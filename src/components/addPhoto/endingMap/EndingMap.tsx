@@ -93,8 +93,8 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
   return (
     <div
       className="flex justify-center 
-      sm:w-[263px] sm:ml-[23px]
-      md:w-[650px] md:mx-auto"
+      sm:w-[263px] sm:ml-[23px] sm:h-[227px]
+      md:w-[650px] md:mx-auto md:h-[400px]"
     >
       {pins?.length !== 0 && (
         <>

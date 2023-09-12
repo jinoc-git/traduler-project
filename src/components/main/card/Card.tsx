@@ -29,6 +29,7 @@ interface CardProps {
   bookMarkData: BookMarkType[];
   planDataList: PlanType[] | undefined;
   usersDataList: UsersDataList[];
+  bookMarkPlan: PlanType[] ;
 }
 
 export interface PlanCountList {
@@ -42,6 +43,7 @@ const Card: React.FC<CardProps> = ({
   usersDataList,
   planDataList,
   bookMarkData,
+  bookMarkPlan,
 }) => {
   const navigate = useNavigate();
 
@@ -59,6 +61,7 @@ const Card: React.FC<CardProps> = ({
   const deletePlanMutation = useMutation(deletePlan, {
     onSuccess: async () => {
       await queryClient.invalidateQueries(['plan_mates', user?.id]);
+      await queryClient.invalidateQueries(['book_mark']);
     },
     onError: () => {
       toast.error('계획 삭제 중 오류가 발생했습니다.');
@@ -119,7 +122,7 @@ const Card: React.FC<CardProps> = ({
   useEffect(() => {
     if (planDataList != null) {
       setPlanCount({
-        bookMark: bookMarkData.length,
+        bookMark: bookMarkPlan.length,
         planning: planDataList.filter((plan) => plan.plan_state === 'planning')
           .length,
         traveling: planDataList.filter(
@@ -131,7 +134,7 @@ const Card: React.FC<CardProps> = ({
         ).length,
       });
     }
-  }, [planDataList, bookMarkData]);
+  }, [planDataList, bookMarkData, bookMarkPlan]);
 
   return (
     <div className="flex flex-col gap-[16px]">

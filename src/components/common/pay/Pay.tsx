@@ -58,7 +58,7 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
               })}
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             />
-            <span className=" absolute right-[10px] top-[4px]">원</span>
+            <span className=" absolute right-[35px] top-[4px]">원</span>
             <p className="h-[10px] pl-2 pt-1 text-xs text-red-600">
               {errors?.totalCost?.message}
             </p>

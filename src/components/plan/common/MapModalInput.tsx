@@ -41,6 +41,10 @@ const MapModalInput = ({ register, errors, searchMap }: PropsType) => {
                 value: 1,
                 message: '장소 이름은 1자 이상이어야 합니다.',
               },
+              maxLength: {
+                value: 12,
+                message: '장소 이름은 12자 이하여야 합니다.',
+              },
               pattern: {
                 value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
                 message: '모음, 자음 안됨',
@@ -49,7 +53,7 @@ const MapModalInput = ({ register, errors, searchMap }: PropsType) => {
             className="input-border mb-[16px] 
             sm:h-[44px] sm:text-sm sm:font-medium"
           />
-          <p>{errors?.placeName?.message}</p>
+          <p className='text-red-400'>{errors?.placeName?.message}</p>
         </div>
         <div className="flex flex-col">
           <label htmlFor="address" className="mb-2 text-sm font-semibold">

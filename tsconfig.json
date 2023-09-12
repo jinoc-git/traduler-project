@@ -29,10 +29,6 @@
     },
     "types": ["kakao.maps.d.ts"]
   },
-  "include": [
-    "src",
-    "craco.config.js",
-    "public/serviceWorkerRegistration.ts",
-    "public/service-worker.js"
-  ]
+
+  "include": ["src", "craco.config.js", "src/service-worker.js"]
 }

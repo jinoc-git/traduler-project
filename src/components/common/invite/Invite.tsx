@@ -58,8 +58,8 @@ const Invite = () => {
     <>
       <div
         className="flex items-center 
-      sm:w-[286px] sm:mx-[6px] sm:justify-normal
-      md:w-[650px] md:h-[30px] md:my-[10px] md:justify-normal"
+      sm:w-[286px] sm:mx-auto sm:justify-normal
+      md:w-[650px] md:h-[30px] md:mx-[6px] md:my-[10px] md:justify-normal"
       >
         <div
           className="flex items-center 
@@ -116,7 +116,7 @@ const Invite = () => {
             oldInvitedUser.map((user) => (
               <div
                 key={user.id}
-                className="mr-[2px]
+                className="mr-[2px] md:text-sm
               sm:text-xs sm:font-semibold sm:text-gray_dark_1"
               >
                 {user.nickname}&nbsp;

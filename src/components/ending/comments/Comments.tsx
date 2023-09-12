@@ -92,8 +92,8 @@ const Comments = () => {
     >
       <div
         className="flex items-center 
-      sm:w-[116px] sm:mb-[20px] mt-[30px] sm:ml-[6px]
-      md:w-[116px] md:my-[30px]"
+      sm:w-[286px] sm:mb-[20px] mt-[30px] sm:mx-auto
+      md:w-full md:my-[30px] md:mx-[6px]"
       >
         <IconCommentory
           w="sm:w-[18px] md:w-[25px]"
@@ -129,26 +129,28 @@ const Comments = () => {
           return (
             <div
               key={comment.id}
-              className="flex items-center my-[10px] text-sm text-gray_dark_1 leading-6 tracking-tighter
-              sm:gap-2 sm:ml-[6px]
-              md:gap-5 md:ml-0"
+              className="flex my-[10px] justify-between text-sm text-gray_dark_1 leading-6 tracking-tighter
+              sm:w-[286px] sm:mx-auto
+              md:w-full md:mx-[6px]"
             >
-              <img
-                src={isUserImg != null ? isUserImg : defaultImageGray}
-                className="object-cover rounded-full
+              <div className='flex md:gap-5 sm:gap-2'>
+                <img
+                  src={isUserImg != null ? isUserImg : defaultImageGray}
+                  className="object-cover rounded-full
                 sm:hidden
                 md:w-6 md:h-6 md:block
                 "
-              />
-              <p
-                className="
-                sm:text-[11px] w-[60px] sm:font-semibold
-                md:text-sm md:font-semibold
+                />
+                <p
+                  className="
+                sm:text-[11px] sm:font-semibold
+                md:text-sm md:font-semibold w-[60px]
               "
-              >
-                {userNickname}
-              </p>
-              <p className="w-[365px]">{comment.content}</p>
+                >
+                  {userNickname}
+                </p>
+                <p className="md:w-[365px] sm:w-[150px] md:text-sm sm:text-[11px]">{comment.content}</p>
+              </div>
               {comment.user_id === user?.id && (
                 <button
                   className="flex justify-center items-center border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter
@@ -167,8 +169,8 @@ const Comments = () => {
         })
       )}
       <div
-        className="text-gray_dark_1 leading-6 tracking-tighter 
-        sm:text-sm sm:font-semibold sm:ml-[6px]
+        className="text-gray_dark_1 leading-6 tracking-tighter w-[286px] mx-auto
+        sm:text-sm sm:font-semibold 
         md:hidden"
       >
         소감 작성
@@ -221,8 +223,8 @@ const Comments = () => {
       </div>
       <div
         className="flex items-center justify-end gap-5 
-       sm:my-[60px]
-       md:my-[100px]
+        sm:mt-[60px] sm:pb-[60px] 
+        md:mt-[100px] md:pb-[100px]
       "
       >
         <p
@@ -237,7 +239,7 @@ const Comments = () => {
           onClick={() => {
             navigate('/main');
           }}
-          className="p-3 border rounded-lg font-bold border-blue text-blue hover:bg-blue_light_1 duration-200
+          className="flex-center p-3 border rounded-lg font-bold border-blue text-blue hover:bg-blue_light_1 duration-200
           sm:w-[114px] sm:h-[41px] sm:text-sm
           md:w-[130px] md:h-[43px] md:text-normal
           "

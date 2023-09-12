@@ -80,14 +80,14 @@ const Ending = () => {
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
         <section>
           <div
-            className="flex items-center 
+            className="flex items-center md:justify-normal sm:justify-between
           sm:mb-[35px]
           md:mb-[18px]"
           >
             <h3
               className="font-bold text-gray_dark_1
             sm:text-[20px] sm:w-[235px]
-            md:text-[24px]"
+            md:text-[24px] md:w-[275px]"
             >
               {title}
             </h3>
@@ -101,9 +101,9 @@ const Ending = () => {
         </section>
         <section>
           <div
-            className="flex items-center mt-[30px] mb-[20px] ml-[6px] font-semibold text-gray_dark_1 gap-[8px]
-          sm:text-sm
-          md:text-normal"
+            className="flex items-center mt-[30px] mb-[20px] font-semibold text-gray_dark_1 gap-[8px]
+          sm:text-sm sm:w-[286px] sm:mx-auto
+          md:text-normal md:w-full md:mx-[6px]"
           >
             <IconLocationDefault w="20" h="20" />
             <label>여행 지역</label>

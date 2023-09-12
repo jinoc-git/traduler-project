@@ -177,7 +177,7 @@ const Plan = () => {
         modifyInputWatch={watch}
       />
       <PlanLayout>
-        <div className="flex items-center ">
+        <div className="flex items-center md:justify-normal sm:justify-between ">
           <input
             id="title"
             type="text"

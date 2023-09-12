@@ -64,14 +64,14 @@ const Carousel = () => {
   }
 
   return photoData.length > 3 ? (
-    <section className="md:w-[720px] sm:w-[286px]">
-      <div className="flex items-center mt-[30px]">
+    <section className="md:w-[720px] sm:w-[310px]">
+      <div className="flex items-center mt-[30px] md:w-[720px] md:mx-[6px] sm:w-[286px] sm:mx-auto">
         <IconCamera w="w-[21px]" h="h-[18px]" fill="#4E4F54" />
-        <div className="ml-[8px] text-lg font-bold text-gray_dark_1">
+        <div className="ml-[8px] text-lg font-bold text-gray_dark_1 md:text-[18px] sm:text-[14px]">
           사진첩
         </div>
       </div>
-      <div className="p-[10px] md:w-[720px] sm:w-[286px]">
+      <div className="p-[10px] md:w-[720px] sm:w-[286px] sm:mx-auto">
         <Slider
           focusOnSelect
           infinite

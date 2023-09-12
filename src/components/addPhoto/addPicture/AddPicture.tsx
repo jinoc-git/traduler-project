@@ -19,7 +19,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
     let file = e.target.files?.[0];
 
     const options = {
-      maxSizeMB: 2,
+      maxSizeMB: 5,
       maxWidthOrHeight: 1920,
     };
 
@@ -47,6 +47,8 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
       }
 
       const compressedFile = await imageCompression(file, options);
+
+
       const url = URL.createObjectURL(compressedFile);
 
       setImgSrcList((prev) => [...prev, url]);

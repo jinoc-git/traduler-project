@@ -1,20 +1,9 @@
-import {
-  type PlanMatesType,
-  type Json,
-  type PlanType,
-  type UserType,
-} from 'types/supabase';
+import { type QuitPlanParam, type AddPlanObj } from 'types/aboutPlan';
+import { type PlanMatesType, type Json, type PlanType } from 'types/supabase';
 
-import { type PinContentsType } from './pins';
 import { supabase } from './supabaseAuth';
 
-interface addPlanObj {
-  newPlan: PlanType;
-  pins: PinContentsType[][];
-  invitedUser: UserType[];
-}
-
-export const addPlan = async (addPlanObj: addPlanObj) => {
+export const addPlan = async (addPlanObj: AddPlanObj) => {
   const { newPlan, pins, invitedUser } = addPlanObj;
 
   const plan: PlanType = { ...newPlan };
@@ -68,8 +57,38 @@ export const deletePlan = async (planId: string) => {
     .update({ isDeleted: true })
     .eq('id', planId);
 
-  if (error != null) {
+  const { error: bookMarkError } = await supabase
+    .from('book_mark')
+    .delete()
+    .eq('plan_id', planId);
+
+  if (error != null || bookMarkError != null) {
     throw new Error('계획 삭제 중 오류가 발생했습니다.');
+  }
+};
+
+export const quitPlan = async ({ userId, planId }: QuitPlanParam) => {
+  const { data, error } = await supabase
+    .from('plan_mates')
+    .select('users_id')
+    .eq('id', planId);
+
+  if (error != null) {
+    throw new Error('계획 나가기 중 오류가 발생했습니다.');
+  }
+
+  const updateMates = data[0].users_id.filter((id) => id !== userId);
+
+  if (updateMates.length === 0) await deletePlan(planId);
+
+  const { error: updateError } = await supabase
+    .from('plan_mates')
+    .update({ users_id: updateMates })
+    .eq('id', planId)
+    .select();
+
+  if (updateError != null) {
+    throw new Error('계획 나가기 중 오류가 발생했습니다.');
   }
 };
 

@@ -17,7 +17,7 @@ interface SideBarPlanListProps {
   toggleFunc: () => void;
   setFunc: (val: boolean) => void;
   planList: PlanType[];
-  filter: 'bookMark' | 'start' | 'end';
+  filter: 'bookMark' | 'planning' | 'end';
   isOpen: boolean;
 }
 
@@ -29,31 +29,31 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
 
   const iconList = {
     bookMark: <IconFavoriteList w="w-[20px]" h="h-[20px]" fill="#6E6F76" />,
-    start: <IconPlannedTime w="w-[20px]" h="h-[20px]" />,
+    planning: <IconPlannedTime w="w-[20px]" h="h-[20px]" />,
     end: <IconPreviousTime w="w-[19px]" h="h-[19px]" />,
   };
 
   const listName = {
     bookMark: '즐겨찾기 한 목록',
-    start: '예정된 여행',
+    planning: '예정된 여행',
     end: '다녀온 여행',
   };
 
   const hoverColor = {
     bookMark: 'md:hover:bg-red_light_1',
-    start: 'md:hover:bg-yellow_light_1',
+    planning: 'md:hover:bg-yellow_light_1',
     end: 'md:hover:bg-orange_light_1',
   };
 
   const focusColor = {
     bookMark: 'focus:bg-red_light_1',
-    start: 'focus:bg-yellow_light_1',
+    planning: 'focus:bg-yellow_light_1',
     end: 'focus:bg-orange_light_1 ',
   };
 
   const activeColor = {
     bookMark: 'bg-red_light_1',
-    start: 'bg-yellow_light_1',
+    planning: 'bg-yellow_light_1',
     end: 'bg-orange_light_1',
   };
 
@@ -65,15 +65,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
   };
 
   const onClickMoreBtn = () => {
-    if (filter === 'bookMark') {
-      setSelectedPlan('bookMark');
-    }
-    if (filter === 'start') {
-      setSelectedPlan('planning');
-    }
-    if (filter === 'end') {
-      setSelectedPlan('end');
-    }
+    setSelectedPlan(filter);
     setFunc(false);
     navigate('/main');
   };

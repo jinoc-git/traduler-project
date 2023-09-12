@@ -5,12 +5,12 @@ import IconUserDefault from '@assets/icons/IconUserDefault';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
 interface CardUserListProps {
-  participantsAvatarList: Array<string | null | undefined>;
-  participantsNicknameList: string[];
+  avatarList: Array<string | null | undefined>;
+  nicknameList: string[];
 }
 
 const CardUserList: React.FC<CardUserListProps> = (props) => {
-  const { participantsAvatarList, participantsNicknameList } = props;
+  const { avatarList, nicknameList } = props;
 
   return (
     <div
@@ -19,7 +19,7 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
     md:mt-[8px] md:flex"
     >
       <div className="flex">
-        {participantsAvatarList.map((avatar, i) => {
+        {avatarList.map((avatar, i) => {
           let gap = '';
           if (i > 0) {
             gap = '-ml-[8px]';
@@ -43,12 +43,12 @@ const CardUserList: React.FC<CardUserListProps> = (props) => {
         })}
       </div>
       <div className='"text-gray_dark_1 md:text-sm sm:text-[8px]'>
-        {participantsNicknameList.length <= 3 ? (
-          participantsNicknameList.map((name) => `${name}`).join(', ')
+        {nicknameList.length <= 3 ? (
+          nicknameList.map((name) => `${name}`).join(', ')
         ) : (
           <>
-            {participantsNicknameList.slice(0, 3).join(', ')} 외{' '}
-            {participantsNicknameList.length - 3}명
+            {nicknameList.slice(0, 3).join(', ')} 외{' '}
+            {nicknameList.length - 3}명
           </>
         )}
       </div>

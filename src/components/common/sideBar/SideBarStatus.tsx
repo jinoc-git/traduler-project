@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import SideBarProgressBar from '@components/common/sideBar/SideBarProgressBar';
 import calcDateProgress from '@utils/calcDateProgress';
@@ -20,6 +21,7 @@ interface SideBarStatusProps {
 
 const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
   const [progress, setProgress] = useState('');
+  const navigate = useNavigate();
   const { isOpen, activePlan, hasNextPlan, nextPlan } = props;
   const hasActivePlan = activePlan !== undefined;
 
@@ -29,15 +31,20 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
     ? '여행 예정'
     : '여행 없음';
 
-  const chipClassName = {
+  const chipBackgroudColor = {
     '여행 중': 'bg-blue',
     '여행 예정': 'bg-yellow',
     '여행 없음': 'bg-orange',
   };
-  const infoClassName = {
+  const infoBackgroudColor = {
     '여행 중': 'bg-blue_light_1',
     '여행 예정': 'bg-yellow_light_1',
     '여행 없음': 'bg-orange_light_2',
+  };
+
+  const onClickPlan = () => {
+    if (activePlan != null) navigate(`/plan/${activePlan.id}`);
+    else if (nextPlan != null) navigate(`/plan/${nextPlan.id}`);
   };
 
   useEffect(() => {
@@ -57,9 +64,7 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
     >
       <div
         className={`flex items-center justify-between mb-[15px] transition-all duration-300 ease-in-out ${
-          isOpen
-            ? 'sm:w-[309px] md:w-[197px] '
-            : ' md:w-[40px] md:flex-col '
+          isOpen ? 'sm:w-[309px] md:w-[197px] ' : ' md:w-[40px] md:flex-col '
         }`}
       >
         <span className="font-semibold text-xs text-gray_dark_1">STATUS</span>
@@ -68,19 +73,20 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
             isOpen
               ? 'sm:w-[72.5px] sm:h-[22px] md:w-[72.5px] h-[22px]'
               : 'md:w-[38px] md:h-[10px]'
-          } ${chipClassName[status]}`}
+          } ${chipBackgroudColor[status]}`}
         >
           {isOpen && status}
         </div>
       </div>
       <div
-        className={`flex flex-col items-center ${
+        onClick={onClickPlan}
+        className={`flex flex-col items-center cursor-pointer ${
           isOpen ? 'gap-2' : ''
         } rounded-xl overflow-hidden transition-all duration-300 ease-in-out ${
           isOpen
             ? 'flex-center flex-col sm:w-[308px] sm:h-[125px] md:w-[197px] h-[125px]'
             : 'md:w-[40px] h-[125px]'
-        } ${infoClassName[status]}`}
+        } ${infoBackgroudColor[status]}`}
       >
         {/* 닫혔을 때 여행 중, 예정일 때 날짜 표시 */}
         {!isOpen && status === '여행 중' && (
@@ -139,7 +145,9 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
         {/* 열렸을 때만 보여지는 내용 */}
         {isOpen && status === '여행 중' && (
           <div className="text-center">
-            <p className="w-[170px] font-semibold text-gray_dark_1 text-sm truncate">{activePlan?.title}</p>
+            <p className="w-[170px] font-semibold text-gray_dark_1 text-sm truncate">
+              {activePlan?.title}
+            </p>
             <p className="text-sm font-semibold text-gray_dark_1">
               ({changeDotFormatOfDate(activePlan?.dates[0])})
             </p>

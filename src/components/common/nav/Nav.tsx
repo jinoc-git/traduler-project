@@ -83,7 +83,7 @@ const Nav: React.FC<PropsType> = (props) => {
     <nav
       className="flex justify-between border-b-[1px] border-navy py-[11.5px] items-center bg-white z-30
       sm:fixed sm:w-[100vw] sm:mt-0 sm:top-[89px]
-      md:static md:w-full md:mt-0"
+      md:static md:w-full md:mt-[12px]"
     >
       <div
         className="text-navy_dark font-semibold

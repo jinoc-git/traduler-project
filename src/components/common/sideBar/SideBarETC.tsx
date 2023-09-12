@@ -56,4 +56,4 @@ const SideBarETC = () => {
   );
 };
 
-export default SideBarETC;
+export default React.memo(SideBarETC);

@@ -64,7 +64,7 @@ const SideBar: React.FC = () => {
     async () => {
       return await getPlanListAndMateList(user === null ? '' : user.id);
     },
-    { enabled: user !== null },
+    { enabled: user !== null, cacheTime: 20000 },
   );
 
   if (matesData === null) {
@@ -80,7 +80,7 @@ const SideBar: React.FC = () => {
   const startPlans = sortedData?.filter(sideBar.filtering('planning'));
   const endPlans = sortedData?.filter(sideBar.filtering('end'));
   const activePlan = sortedData?.find(sideBar.filtering('traveling'));
-  
+
   const nextPlan = startPlans ? startPlans[0] : undefined;
   const hasNextPlan = Boolean(nextPlan);
 
@@ -163,7 +163,7 @@ const SideBar: React.FC = () => {
                 toggleFunc={toggleStartPlansOpen}
                 setFunc={setStartPlansNeedValue}
                 planList={startPlans ?? []}
-                filter="start"
+                filter="planning"
                 isOpen={startPlansOpen}
               />
               <SideBarPlanList

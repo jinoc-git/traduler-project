@@ -69,10 +69,10 @@ export const sideBar = {
     if (status === 'planning') {
       return plan.plan_state === status;
     }
-    if (status === 'end') {
+    if (status === 'traveling') {
       return plan.plan_state === status;
     }
-    if (status === 'planning') {
+    if (status === 'end') {
       return plan.plan_state === status || plan.plan_state === 'recording';
     }
   },

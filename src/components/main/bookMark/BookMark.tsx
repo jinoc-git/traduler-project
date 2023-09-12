@@ -9,11 +9,11 @@ import { userStore } from '@store/userStore';
 interface BookMarkProps {
   planId: string;
   bookMarkId: string;
-  isFavorite: boolean;
+  isBookMark: boolean;
 }
 
 const BookMark: React.FC<BookMarkProps> = ({
-  isFavorite,
+  isBookMark,
   bookMarkId,
   planId,
 }) => {
@@ -28,7 +28,7 @@ const BookMark: React.FC<BookMarkProps> = ({
   ) => {
     e.stopPropagation();
 
-    if (isFavorite) {
+    if (isBookMark) {
       throttleDeleteMutaion(bookMarkId);
     } else {
       if (userId !== undefined) {
@@ -44,7 +44,7 @@ const BookMark: React.FC<BookMarkProps> = ({
       sm:w-[21px] sm:h-[21px] sm:ml-[11px] 
       md:w-[30px] md:h-[30px] md:ml-[20px]"
     >
-      {isFavorite ? (
+      {isBookMark ? (
         <IconFavoriteFill w="w-[24px]" h="h-[24px]" fill="#FFC803" />
       ) : (
         <IconFavoriteDefault w="w-[24px]" h="h-[24px]" fill="#E1E2E3" />

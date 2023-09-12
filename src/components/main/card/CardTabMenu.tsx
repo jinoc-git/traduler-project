@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { usePlanStore } from '@store/usePlanStore';
-
-import { type PlanCountList } from './Card';
+import { type PlanCountList } from 'types/aboutPlan';
 
 interface CardTabMenuProps {
   planCount: PlanCountList;

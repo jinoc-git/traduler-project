@@ -140,9 +140,9 @@ const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
         {/* 열렸을 때만 보여지는 내용 */}
         {isOpen && status === '여행 중' && (
           <div className="text-center">
-            <p className="w-[170px] text-sm truncate">{activePlan?.title}</p>
-            <p className="text-sm">
-              {changeDotFormatOfDate(activePlan?.dates[0])}
+            <p className="w-[170px] font-semibold text-gray_dark_1 text-sm truncate">{activePlan?.title}</p>
+            <p className="text-sm font-semibold text-gray_dark_1">
+              ({changeDotFormatOfDate(activePlan?.dates[0])})
             </p>
           </div>
         )}

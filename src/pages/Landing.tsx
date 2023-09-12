@@ -16,23 +16,17 @@ import { screenStore } from '@store/screenStore';
 const Landing = () => {
   const navigate = useNavigate();
   const screenSize = screenStore((state) => state.screenSize);
-  console.log(screenSize);
 
   return (
     <>
       <main className="flex flex-col justify-center md:gap-y-[120px]">
-        <section
-        //   className="bg-[landingMain] bg-cover bg-no-repeat flex-center
-        // md:h-[100vh]
-        // sm:w-[100vw] sm:h-[70vh]
-        // "
-        >
+        <section>
           <img
             src={landingMain}
             alt="랜딩 메인 이미지"
-            className="w-[100vw] h-[520px] object-cover md:h-auto"
+            className="w-[100vw] h-[520px] object-cover md:h-screen"
           />
-          <div className="md:w-[1030px] md:h-[245px] md:translate-y-[-190px] md:ml-[205px] sm:mt-[-380px] sm:ml-[48px] sm:mb-[220px]">
+          <div className="md:w-[1030px] md:h-[245px] md:translate-y-[-190px] md:ml-[205px] sm:w-[280px] sm:mt-[-380px] sm:mx-auto sm:mb-[220px]">
             {screenSize !== 'sm' && (
               <p className="flex items-center gap-[10px] text-yellow font-normal text-[36px]">
                 <IconMapDefault w="50" h="50" fill="#FFC803" />

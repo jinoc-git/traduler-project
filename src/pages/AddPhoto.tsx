@@ -125,9 +125,9 @@ const AddPhoto = () => {
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
         isVisibleSideBar
           ? isSideBarOpen
-            ? 'sidebar-open sm:ml-[20px] md:ml-[270px]'
-            : 'sidebar-close sm:ml-[0px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
+            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
+            : 'sidebar-close '
+          : 'md:w-[calc(100vw)] md:ml-0 '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">

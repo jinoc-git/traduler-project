@@ -27,7 +27,7 @@ const App = () => {
       if (screenWidth >= 1110 && screenWidth < 1440) setScreenSize('md');
       if (screenWidth >= 1440) setScreenSize('lg');
     }, 250);
-
+    resize()
     window.addEventListener('resize', resize);
 
     return () => {

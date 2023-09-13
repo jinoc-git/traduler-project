@@ -2,14 +2,124 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'Pretendard-Light';
+  src: local('Pretendard Light'),
+    url('./assets/font/Pretendard-Light.woff2') format('woff2'),
+    url('./assets/font/Pretendard-Light.woff') format('woff');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: local('Pretendard Medium'),
+    url('./assets/font/Pretendard-Medium.woff2') format('woff2'),
+    url('./assets/font/Pretendard-Medium.woff') format('woff');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-SemiBold';
+  src: local('Pretendard SemiBold'),
+    url('./assets/font/Pretendard-SemiBold.woff2') format('woff2'),
+    url('./assets/font/Pretendard-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Bold';
+  src: local('Pretendard Bold'),
+    url('./assets/font/Pretendard-Bold.woff2') format('woff2'),
+    url('./assets/font/Pretendard-Bold.woff') format('woff');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family: 'Pretendard-Light', 'Pretendard-Regular', 'Pretendard-SemiBold',
+    'Pretendard-Bold';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  letter-spacing: -0.02rem;
+}
+
+.main-layout {
+  width: 800px;
+  margin: 0 auto;
+}
+
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-border {
+  border: 1px solid var(--grey-dark, #d1d1d1);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.sidebar-open {
+  margin-left: 270px;
+}
+
+.sidebar-close {
+  margin-left: 88px;
+}
+
+.sidebar-none {
+  width: 100vw;
+  margin-left: 0;
+}
+
+@media all and (max-width: 1110px) {
+  .main-layout {
+    width: 310px;
+    margin: 0 auto;
+  }
+  .sidebar-open {
+    margin: 0 auto;
+  }
+
+  .sidebar-close {
+    margin: 0 auto;
+  }
+
+  .sidebar-none {
+    width: 100vw;
+    margin-left: 25px;
+  }
+}
+
+h2 {
+  font-size: 0px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+.react-datepicker {
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  text-align: center !important;
+}
+
+.slick-slider.slick-initialized {
+  position: relative;
+}
+
+.slick-center.slick-current > div > div {
+  filter: brightness(1);
 }

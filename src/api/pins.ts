@@ -1,57 +1,126 @@
-import { type Json } from 'types/supabase';
+import { type PinType, type Json, type PinInsertType } from 'types/supabase';
 
 import { supabase } from './supabaseAuth';
 
 export interface PinContentsType {
+  id?: string;
   lat?: number;
   lng?: number;
   placeName?: string;
+  cost?: number | null;
+  address?: string;
+  distance?: number | undefined;
 }
 
-export const getPins = async () => {
-  const date = '2023-08-21';
-  const planId = '39022bd5-4c1e-4ee0-bb5b-b802baa9bbaf';
+export const getPin = async (planId: string, currentpage: number) => {
+  const { data: dates, error: plansError } = await supabase
+    .from('plans')
+    .select('dates')
+    .eq('id', planId);
 
-  const { data, error } = await supabase
-    .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
-
-  if (error != null) {
-    console.log(error);
+  if (plansError !== null) {
+    throw new Error('핀 불러오기 오류');
   }
-
-  if (data !== null) {
-    return data[0].contents;
+  if (dates !== null) {
+    const { data, error } = await supabase
+      .from('pins')
+      .select()
+      .match({ plan_id: planId, date: dates[0].dates[currentpage] });
+    if (error !== null) {
+      throw new Error('핀 콘텐츠 불러오기 오류');
+    }
+    return data;
   }
 };
 
-export const addPin = async (newContents: PinContentsType) => {
-  const date = '2023-08-21';
-  const planId = '39022bd5-4c1e-4ee0-bb5b-b802baa9bbaf';
-
-  const { data: oldContents, error: olderror } = await supabase
+export const addPin = async (newPin: PinType) => {
+  const { error } = await supabase
     .from('pins')
-    .select('contents')
-    .match({ plan_id: planId, date });
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
 
-  const Arr = [];
-  if (oldContents != null) {
-    Arr.push(...oldContents[0].contents, newContents);
+  if (error != null) {
+    throw new Error('핀 추가 오류');
   }
+};
 
+export const deletePin = async (
+  date: string,
+  planId: string,
+  deletedPin: PinContentsType[],
+) => {
   const { data, error } = await supabase
     .from('pins')
-    .update({ contents: Arr as Json[] })
-    .match({ plan_id: planId, date })
-    .select();
+    .update({ contents: deletedPin as Json[] })
+    .match({ plan_id: planId, date });
 
-  if (data?.length !== 0) {
-    console.log('pins contents 추가됨', data);
+  if (error != null) {
+    throw new Error('핀 삭제 오류');
   }
 
-  if (error != null || olderror != null) {
-    console.log('olderror', olderror);
-    console.log(error);
+  return data;
+};
+
+export const updatePin = async (newPin: PinType) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update(newPin)
+    .match({ plan_id: newPin.plan_id, date: newPin.date });
+
+  if (error != null) {
+    throw new Error('핀 업데이트 오류');
   }
+
+  return data;
+};
+
+export const newDatePin = async (newPin: PinInsertType) => {
+  const { error } = await supabase.from('pins').insert(newPin);
+
+  if (error !== null) {
+    throw new Error('새 핀 추가 오류');
+  }
+};
+
+export const getAllPins = async (planId: string, dates: string[]) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .select('contents')
+    .in('date', dates)
+    .eq('plan_id', planId);
+
+  if (error !== null) {
+    throw new Error('핀 가져오기 에러발생');
+  }
+  return data;
+};
+
+export const changeOrderPins = async (
+  date: string,
+  planId: string,
+  newOrder: PinContentsType[],
+) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .update({ contents: newOrder as Json[] })
+    .match({ plan_id: planId, date });
+
+  if (error != null) {
+    throw new Error('핀 삭제 오류');
+  }
+
+  return data;
+};
+
+export const getAllPinsDate = async (planId: string) => {
+  const { data, error } = await supabase
+    .from('pins')
+    .select('date')
+    .eq('plan_id', planId);
+
+  if (error !== null) {
+    throw new Error('핀 날짜 가져오기 에러발생');
+  }
+  const res = data.map((item) => item.date);
+  return res;
 };

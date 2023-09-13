@@ -17,8 +17,8 @@ export interface Database {
           user_id: string;
         };
         Insert: {
-          created_at: string;
-          id: string;
+          created_at?: string;
+          id?: string;
           plan_id: string;
           user_id: string;
         };
@@ -53,8 +53,8 @@ export interface Database {
         };
         Insert: {
           content: string;
-          created_at: string;
-          id: string;
+          created_at?: string;
+          id?: string;
           plan_id: string;
           user_id: string;
         };
@@ -114,7 +114,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          plan_state: 'planning' | 'traveling' | 'end';
+          plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
           total_cost: number;
           users_id: string;
@@ -124,7 +124,7 @@ export interface Database {
           dates: string[];
           id: string;
           isDeleted: boolean;
-          plan_state: 'planning' | 'traveling' | 'end';
+          plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
           total_cost: number;
           users_id: string;
@@ -134,7 +134,7 @@ export interface Database {
           dates?: string[];
           id?: string;
           isDeleted?: boolean;
-          plan_state?: 'planning' | 'traveling' | 'end';
+          plan_state?: 'planning' | 'traveling' | 'recording' | 'end';
           title?: string;
           total_cost?: number;
           users_id?: string;
@@ -150,25 +150,25 @@ export interface Database {
       };
       users: {
         Row: {
+          avatar_url: string | null;
           created_at: string;
           email: string;
           id: string;
           nickname: string;
-          password: string;
         };
         Insert: {
+          avatar_url?: string | null;
           created_at?: string;
           email: string;
           id: string;
           nickname: string;
-          password: string;
         };
         Update: {
+          avatar_url?: string | null;
           created_at?: string;
           email?: string;
           id?: string;
           nickname?: string;
-          password?: string;
         };
 
         Relationships: [
@@ -176,6 +176,65 @@ export interface Database {
             foreignKeyName: 'users_id_fkey';
             columns: ['id'];
             referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      plan_mates: {
+        Row: {
+          id: string;
+          users_id: string[];
+        };
+        Insert: {
+          id: string;
+          users_id: string[];
+        };
+        Update: {
+          id?: string;
+          users_id?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'plan_mates_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'plans';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      plans_ending: {
+        Row: {
+          dates: string[];
+          dates_cost: number[] | null;
+          distance: Json[] | null;
+          id: string;
+          pictures: string[];
+          title: string;
+          total_cost: number | null;
+        };
+        Insert: {
+          dates?: string[];
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id: string;
+          pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
+        };
+        Update: {
+          dates?: string[];
+          dates_cost?: number[] | null;
+          distance?: Json[] | null;
+          id?: string;
+          pictures?: string[];
+          title?: string;
+          total_cost?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'plans_ending_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'plans';
             referencedColumns: ['id'];
           },
         ];
@@ -197,5 +256,13 @@ export interface Database {
 }
 
 export type PinType = Database['public']['Tables']['pins']['Update'];
-export type UserType = Database['public']['Tables']['users']['Row'];
+export type PinInsertType = Database['public']['Tables']['pins']['Insert'];
+export type UserType = Database['public']['Tables']['users']['Insert'];
 export type PlanType = Database['public']['Tables']['plans']['Insert'];
+export type BookMarkType = Database['public']['Tables']['book_mark']['Row'];
+export type InsertBookMarkType = Database['public']['Tables']['book_mark']['Insert'];
+export type PlanMatesType =
+  Database['public']['Tables']['plan_mates']['Insert'];
+export type CommentsType = Database['public']['Tables']['comments']['Insert'];
+export type PlansEndingType =
+  Database['public']['Tables']['plans_ending']['Row'];

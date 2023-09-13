@@ -3,24 +3,29 @@ import { create } from 'zustand';
 
 interface updatePinStoreType {
   pin: PinContentsType | null;
-  updateClick: (data: PinContentsType) => void;
+  idx: number;
+  updateClick: (data: PinContentsType, idx: number) => void;
   resetPin: () => void;
 }
 
 export const updatePinStore = create<updatePinStoreType>((set) => ({
   pin: null,
-  updateClick: (data: PinContentsType) => {
+  idx: 0,
+  updateClick: (data: PinContentsType, idx: number) => {
     set(() => ({
       pin: {
         lat: data.lat,
         lng: data.lng,
         placeName: data.placeName,
+        cost: data.cost,
       },
+      idx,
     }));
   },
   resetPin: () => {
     set(() => ({
       pin: null,
+      idx: 0,
     }));
   },
 }));

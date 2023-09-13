@@ -1,21 +1,25 @@
 import { create } from 'zustand';
 
 interface datesStoreType {
-  dates: string[] | null;
+  oldDates: string[];
+  dates: string[];
   setDates: (data: string[]) => void;
   resetDates: () => void;
 }
 
 export const datesStore = create<datesStoreType>((set) => ({
-  dates: null,
+  oldDates: [],
+  dates: [],
   setDates: (data: string[]) => {
-    set(() => ({
+    set((state) => ({
+      oldDates: state.dates,
       dates: data,
     }));
   },
   resetDates: () => {
     set(() => ({
-      dates: null,
+      oldDates: [],
+      dates: [],
     }));
   },
 }));

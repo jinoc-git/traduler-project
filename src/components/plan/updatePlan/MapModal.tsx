@@ -1,181 +1,188 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { type PinContentsType, addPin } from '@api/pins';
+import { type PinContentsType, addPin, updatePin } from '@api/pins';
+import MapModalButton from '@components/plan/common/MapModalButton';
+import MapModalInput from '@components/plan/common/MapModalInput';
+import MapModalPay from '@components/plan/common/MapModalPay';
+import MapNonePoly from '@components/plan/common/MapNonePoly';
+import MapModalLayout from '@components/plan/common/ModalLayout';
+import useConfirm from '@hooks/useConfirm';
+import { updatePinStore } from '@store/updatePinStore';
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type PinInsertType, type Json } from 'types/supabase';
 
 interface InputType {
   address?: string;
   placeName?: string;
+  cost: number;
 }
 
-const MapModal = ({ openModal }: { openModal: () => void }) => {
-  const [position, setPosition] = useState({ La: 0, Ma: 0 });
-  const [markers, setMarkers] = useState<any[]>([]);
-  const mapRef = useRef<any>(null);
+interface PropsType {
+  pinQuery?:
+    | { contents: Json[]; date: string; id: string; plan_id: string }
+    | undefined;
+  currentPage: number;
+  closeModal: () => void;
+  value: boolean;
+}
+
+const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
+  const { id } = useParams();
+  const planId: string = id as string;
+  const { pin, idx, resetPin } = updatePinStore();
+  const [position, setPosition] = useState({
+    lat: pin !== null ? (pin.lat as number) : 0,
+    lng: pin !== null ? (pin.lng as number) : 0,
+  });
+  const [address, setAddress] = useState<string>('');
+  const [map, setMap] = useState<any>();
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>();
-  const {
-    register: registerPlaceName,
-    watch: watchPlaceName,
-    handleSubmit: handleSubmitPlaceName,
-    formState: { errors: errorsPlaceName, isSubmitting: isSubmittingPlaceName },
   } = useForm<InputType>({
     defaultValues: {
-      placeName: '',
+      placeName: pin != null ? pin.placeName : '',
+      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
     },
   });
+  const { confirm } = useConfirm();
 
-  useEffect(() => {
-    getMap(' ', mapRef);
-  }, []);
-
-  const getMap = (data: string, mapRef: any) => {
-    if (mapRef.current === null) {
-      const mapContainer = document.getElementById('mapModal');
-      const mapOption = {
-        center: new window.kakao.maps.LatLng(37.566826004661, 126.978652258309),
-        level: 3,
-      };
-      const map = new window.kakao.maps.Map(mapContainer, mapOption);
-      mapRef.current = map;
-    } else {
-      const ps = new window.kakao.maps.services.Places();
-      ps.keywordSearch(data, placesSearchCB);
-    }
-    function placesSearchCB(data: string | any[], status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const bounds = new window.kakao.maps.LatLngBounds();
-        displayMarker(data[0]);
-        bounds.extend(new window.kakao.maps.LatLng(data[0].y, data[0].x));
-        mapRef.current.setBounds(bounds);
+  const searchMap = (address: string) => {
+    if (address === '') return;
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(address, (data, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        const bounds = new kakao.maps.LatLngBounds();
+        bounds.extend(new kakao.maps.LatLng(+data[0].y, +data[0].x));
+        setPosition({ lat: +data[0].y, lng: +data[0].x });
+        map.setBounds(bounds);
       }
-    }
-
-    function displayMarker(place: { y: any; x: any }) {
-      for (const marker of markers) {
-        marker.setMap(null);
-      }
-      const marker = new window.kakao.maps.Marker({
-        map: mapRef.current,
-        position: new window.kakao.maps.LatLng(place.y, place.x),
-      });
-      setMarkers((state) => [...state, marker]);
-      setPosition({ La: place.y, Ma: place.x });
-      window.kakao.maps.event.addListener(marker, 'dragend', function () {
-        setPosition({
-          La: marker.getPosition().Ma,
-          Ma: marker.getPosition().La,
-        });
-      });
-      marker.setDraggable(true);
-    }
-  };
-
-  const onSubmit: SubmitHandler<InputType> = (data) => {
-    if (data.address !== undefined) {
-      getMap(data.address, mapRef);
-    }
+    });
   };
 
   const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
-    const newContents: PinContentsType = {
-      lat: position.La,
-      lng: position.Ma,
+    const newObj: PinContentsType = {
+      id: uuid(),
+      lat: position.lat,
+      lng: position.lng,
       placeName: data.placeName as string,
+      cost: data.cost,
+      address,
     };
 
-    mutation.mutate(newContents);
+    if (watch('cost') > 10000000) {
+      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+      return;
+    }
+    if (pin !== null) {
+      const confTitle = '장소 수정';
+      const confDesc = '이대로 수정하시겠습니까?';
+      const confFunc = () => {
+        if (pinQuery !== undefined) {
+          const newContents = pinQuery.contents.map((item, index) => {
+            if (index === idx) {
+              return newObj;
+            } else {
+              return item;
+            }
+          });
+          const newPin: PinInsertType = {
+            contents: newContents as Json[],
+            date: pinQuery.date,
+            plan_id: pinQuery.plan_id,
+          };
+          updateMutation.mutate(newPin);
+          closeModal();
+          resetPin();
+        }
+      };
+      confirm.default(confTitle, confDesc, confFunc);
+    } else {
+      const confTitle = '장소 추가';
+      const confDesc = '이대로 추가하시겠습니까?';
+      const confFunc = () => {
+        if (pinQuery !== undefined) {
+          const newContents = [...pinQuery.contents, newObj];
+          const newPin: PinInsertType = {
+            contents: newContents as Json[],
+            date: pinQuery.date,
+            plan_id: pinQuery.plan_id,
+          };
+          addMutation.mutate(newPin);
+          closeModal();
+        }
+      };
+      confirm.default(confTitle, confDesc, confFunc);
+    }
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const addMutation = useMutation({
     mutationFn: addPin,
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['pins'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['pin', planId, currentPage],
+      });
+    },
+  });
+  const updateMutation = useMutation({
+    mutationFn: updatePin,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ['pin', planId, currentPage],
+      });
     },
   });
 
+  const disabledSubmit = () => {
+    if (
+      position.lat === 0 ||
+      position.lng === 0 ||
+      isSubmitting ||
+      watch('placeName')?.length === 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  });
+
   return (
-    <div className="absolute top-0 z-10 flex items-center justify-center w-screen h-screen bg-black/70">
-      <div className="flex-col p-10 items-center justify-center align-middle bg-white h-[800px]">
-        <div className="w-[50vw]">
-          <div id="mapModal" style={{ width: '50vw', height: '500px' }}>
-            지도지도
-          </div>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="address">주소</label>
-          <input
-            id="address"
-            type="text"
-            placeholder="주소를 검색하세요"
-            {...register('address', {
-              required: '주소를 입력하고 검색해주세요.',
-              minLength: {
-                value: 2,
-                message: '주소는 2글자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errors?.address?.message}</p>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="bg-slate-400"
-          >
-            검색
-          </button>
-        </form>
-        <form onSubmit={handleSubmitPlaceName(onSubmitPlaceName)}>
-          <label htmlFor="placeName">장소 이름</label>
-          <input
-            id="placeName"
-            type="text"
-            placeholder="장소 이름을 입력하세요"
-            {...registerPlaceName('placeName', {
-              required: '장소 이름은 필수 입력값입니다.',
-              minLength: {
-                value: 2,
-                message: '장소 이름은 2자 이상이어야 합니다.',
-              },
-              pattern: {
-                value: /^[가-힣|a-z|A-Z|0-9|\s-]*$/,
-                message: '모음, 자음 안됨',
-              },
-            })}
-          />
-          <p>{errorsPlaceName?.placeName?.message}</p>
-          <button
-            type="submit"
-            disabled={isSubmittingPlaceName}
-            className="bg-slate-400"
-          >
-            저장
-          </button>
-        </form>
-        <div>
-          위도, 경도
-          <br />
-          {position.La}, {position.Ma}
-          <br />
-          장소이름
-          <br />
-          {watchPlaceName('placeName')}
-        </div>
-        <button className="bg-slate-400" onClick={openModal}>
-          닫기
-        </button>
-      </div>
-    </div>
+    <MapModalLayout value={value}>
+      <MapModalInput
+        register={register}
+        errors={errors}
+        searchMap={searchMap}
+      />
+      <MapNonePoly
+        pin={pin}
+        setMap={setMap}
+        position={position}
+        setPosition={setPosition}
+        setAddress={setAddress}
+      />
+      <MapModalPay register={register} />
+      <MapModalButton
+        handleSubmit={handleSubmit}
+        onSubmitPlaceName={onSubmitPlaceName}
+        closeModal={closeModal}
+        resetPin={resetPin}
+        disabledSubmit={disabledSubmit}
+        pin={pin}
+      />
+    </MapModalLayout>
   );
 };
 

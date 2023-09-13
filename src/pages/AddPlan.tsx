@@ -32,6 +32,9 @@ const AddPlan = () => {
   const user = userStore((state) => state.user);
   const userId = user?.id;
   const { dates, resetDates } = datesStore();
+  const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
+  const { currentPage, handleNextPage, handlePreviousPage, setCurrentPage } =
+    useHandlePage();
   const [pins, setPins] = useState<PinContentsType[][]>([]);
   const navigate = useNavigate();
 
@@ -40,7 +43,7 @@ const AddPlan = () => {
     handleSubmit,
     setFocus,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isValid },
   } = useForm<InputType>({
     mode: 'onChange',
     defaultValues: {
@@ -48,7 +51,6 @@ const AddPlan = () => {
     },
   });
 
-  const { invitedUser, inviteUser, syncInviteduser } = inviteUserStore();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: addPlan,
@@ -82,15 +84,6 @@ const AddPlan = () => {
     }
   };
 
-  const buttonDisabled =
-    isSubmitting ||
-    watch('totalCost') === undefined ||
-    watch('title')?.length === 0 ||
-    dates.length === 0;
-
-  const { currentPage, handleNextPage, handlePreviousPage, setCurrentPage } =
-    useHandlePage();
-
   useEffect(() => {
     setFocus('title');
     return () => {
@@ -123,38 +116,37 @@ const AddPlan = () => {
         isValid={isValid}
         page={'addPlan'}
         onClick={handleSubmit(submitPlan)}
-        buttonDisabled={buttonDisabled}
         addInputSetFocus={setFocus}
         addInputWatch={watch}
       />
       <PlanLayout>
-        <input
-          id="title"
-          type="text"
-          placeholder="여행 제목을 입력하세요."
-          {...register('title', {
-            required: '제목은 필수입니다.',
-            minLength: {
-              value: 2,
-              message: '제목은 2글자 이상이어야 합니다.',
-            },
-            maxLength: {
-              value: 12,
-              message: '제목은 12글자 이하여야 합니다.',
-            },
-          })}
-          className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-black
-          sm:text-[20px]
-          md:text-[24px] "
-        />
-        <p
-          className="text-xs font-bold text-red-600
-        sm:h-[8px] sm:w-[297px]
-        md:h-[15px]"
-        >
-          {errors?.title?.message}
-        </p>
         <div className="flex flex-col mx-auto md:w-[700px] sm:w-[310px]">
+          <input
+            id="title"
+            type="text"
+            placeholder="여행 제목을 입력하세요."
+            {...register('title', {
+              required: '제목은 필수입니다.',
+              minLength: {
+                value: 1,
+                message: '제목은 1글자 이상이어야 합니다.',
+              },
+              maxLength: {
+                value: 12,
+                message: '제목은 12글자 이하여야 합니다.',
+              },
+            })}
+            className="border-b-[1px] border-gray w-full outline-none font-bold placeholder:text-gray  text-black
+            sm:text-[20px]
+            md:text-[24px] "
+          />
+          <p
+            className="text-xs font-bold text-red-600
+            sm:h-[8px] sm:w-[297px]
+            md:h-[15px]"
+          >
+            {errors?.title?.message}
+          </p>
           <PostPlan state={'addPlan'} />
           <Invite />
           <Pay register={register} errors={errors} />

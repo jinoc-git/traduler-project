@@ -57,9 +57,14 @@ const UpdatePlan = ({ dataPlanDates }: { dataPlanDates: string[] }) => {
         currentPage={currentPage}
       />
       <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center my-[10px] text-normal font-semibold text-gray_dark_1 gap-[8px]">
+        <div
+          className="flex items-center my-[10px] font-semibold text-gray_dark_1 gap-[8px]
+          md:text-normal md:w-[700px] md:mx-[6px]
+          sm:text-sm sm:w-[286px] sm:mx-auto
+          "
+        >
           <IconLocationDefault w="20" h="20" />
-          <label>여행 지역</label>
+          <p>여행 지역</p>
         </div>
         <MapPoly pins={pinArr} />
       </div>

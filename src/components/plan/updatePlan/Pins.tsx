@@ -107,13 +107,14 @@ const Pins = ({ currentPage, dates }: PropsType) => {
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-5">
-        <div className="flex items-center mt-[36px] mb-[32px]">
-          <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
-          <div className="w-full ml-[8px] mx-auto font-bold text-normal text-gray_dark_1 py-[13px]">
-            방문할 장소
-          </div>
-        </div>
+      <div
+        className="flex items-center my-[10px] font-semibold text-gray_dark_1 gap-[8px] mt-[36px] mb-[32px]
+        md:text-normal md:w-[700px] md:mx-[6px]
+        sm:text-sm sm:w-[286px] sm:mx-auto
+        "
+      >
+        <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
+        <p>방문할 장소</p>
       </div>
       <DndProvider options={HTML5toTouch}>
         <ul className="flex flex-col ">
@@ -136,8 +137,8 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       </DndProvider>
       <div
         className="flex items-center justify-between
-            sm:w-[286px]
-            md:w-[651px] md:mx-[25px] md:my-[8px]"
+            sm:w-[286px] sm:ml-[6px]
+            md:w-[651px] md:mx-0 md:my-[8px]"
       >
         <p
           className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100%  w-[35px] h-[35px] font-semibold text-white border-[5px] border-white

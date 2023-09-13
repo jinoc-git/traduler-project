@@ -18,15 +18,18 @@ interface InputType {
 }
 
 const Comments = () => {
+  const navigate = useNavigate();
   const user = userStore((state) => state.user);
   const inviteduser = inviteUserStore((state) => state.invitedUser);
   const { id: planId } = useParams();
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<InputType>({ mode: 'onChange' });
+
   const { data, isError } = useQuery({
     queryKey: ['comments', planId],
     queryFn: async () => {
@@ -81,7 +84,6 @@ const Comments = () => {
   if (isError) {
     return <div>댓글 불러오기 오류 발생...</div>;
   }
-  const navigate = useNavigate();
 
   return (
     <section
@@ -253,4 +255,4 @@ const Comments = () => {
   );
 };
 
-export default Comments;
+export default React.memo(Comments);

@@ -154,12 +154,12 @@ const AddPhoto = () => {
         </section>
         <section>
           <div
-            className="flex items-center font-semibold text-normal text-gray_dark_1 gap-[8px] mx-[6px]
-          sm:my-[35px] sm:text-sm
-          md:my-[10px] md:text-normal"
+            className="flex items-center font-semibold text-normal text-gray_dark_1 gap-[8px] 
+          sm:w-[286px] sm:my-[35px] sm:text-sm sm:mx-auto
+          md:w-[700px] md:my-[10px] md:text-normal md:mx-[6px]"
           >
             <IconLocationDefault w="20" h="20" />
-            <label>여행 지역</label>
+            <p>여행 지역</p>
           </div>
           <EndingMap dates={dates as string[]} />
         </section>

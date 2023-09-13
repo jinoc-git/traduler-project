@@ -75,7 +75,6 @@ export const updatePin = async (newPin: PinType) => {
 };
 
 export const newDatePin = async (newPin: PinInsertType) => {
-  console.log('api', newPin);
   const { error } = await supabase.from('pins').insert(newPin);
 
   if (error !== null) {

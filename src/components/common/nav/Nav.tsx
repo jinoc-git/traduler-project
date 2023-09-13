@@ -13,7 +13,6 @@ import { modifyStateStore } from '@store/modifyStateStore';
 
 interface PropsType {
   onClick: () => void;
-  buttonDisabled?: boolean;
   page?: string;
   setIsModified?: React.Dispatch<React.SetStateAction<boolean>>;
   isValid: boolean;

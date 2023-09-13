@@ -10,12 +10,15 @@ interface InviteUserStoreType {
   syncInviteduser: () => void;
 }
 
-export const inviteUserStore = create<InviteUserStoreType>((set) => ({
+export const inviteUserStore = create<InviteUserStoreType>((set, get) => ({
   oldInvitedUser: [],
   invitedUser: [],
   inviteUser: (data: UserType) => {
+    const oldInvitedUser = get().invitedUser;
+    const isExist = oldInvitedUser.find((user) => user.id === data.id);
+    if (isExist != null) return;
+
     set((state) => ({
-      // oldInvitedUser: state.invitedUser,
       invitedUser: [...state.invitedUser, data],
     }));
   },

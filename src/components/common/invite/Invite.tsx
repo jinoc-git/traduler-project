@@ -58,7 +58,7 @@ const Invite = () => {
       <div
         className="flex 
       sm:w-[286px] sm:mx-auto sm:justify-normal sm:flex-col
-      md:w-[650px] md:h-[30px] md:mx-[6px] md:my-[10px]  md:flex-row md:justify-normal md:items-center "
+      md:w-[700px] md:h-[30px] md:mx-[6px] md:my-[10px]  md:flex-row md:justify-normal md:items-center "
       >
         <div className="flex justify-start">
           <div
@@ -151,4 +151,4 @@ const Invite = () => {
   );
 };
 
-export default Invite;
+export default React.memo(Invite);

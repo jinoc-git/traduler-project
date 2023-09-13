@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getAllPinsDate, newDatePin } from '@api/pins';
-import { getPlan, updateDatePlan } from '@api/plans';
+import { updateDatePlan } from '@api/plans';
 import Calendar from '@components/addPlan/calendar/Calendar';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
@@ -17,35 +17,29 @@ export interface PlanFormData {
 
 interface PropsType {
   state?: string;
+  dataPlanDates?: string[];
 }
-const PostPlan: React.FC<PropsType> = ({ state }) => {
+const PostPlan: React.FC<PropsType> = ({ state, dataPlanDates }) => {
   const { id } = useParams();
 
   const { setDates } = datesStore();
   const setRequiredDates = modifyStateStore((state) => state.setRequiredDates);
-  
-  let dataPinDates: string[] = [];
-  let dataPlanDates: string[] = [];
-  const planId: string = id as string;
-  
 
-  if (state !== 'addPlan') {
-    if (planId !== undefined) {
-      const { data } = useQuery(
-        ['pinDate', planId],
-        async () => await getAllPinsDate(planId),
-      );
-      dataPinDates = data as string[];
-      const { data: plan } = useQuery(
-        ['plan', planId],
-        async () => await getPlan(planId),
-      );
-      dataPlanDates = plan?.[0].dates as string[];
-    }
+  let dataPinDates: string[] = [];
+  const planId: string = id as string;
+
+  if (state !== 'addPlan' && planId !== undefined) {
+    const { data } = useQuery(
+      ['pinDate', planId],
+      async () => await getAllPinsDate(planId),
+    );
+    dataPinDates = data as string[];
   }
-  
-  const planStartDate = new Date(dataPlanDates?.[0]);
-  const planEndDate = new Date(dataPlanDates?.[dataPlanDates.length - 1]);
+
+  const planStartDate = new Date(dataPlanDates?.[0] as string);
+  const planEndDate = new Date(
+    dataPlanDates?.[dataPlanDates.length - 1] as string,
+  );
   const [startDate, setStartDate] = useState<Date | null>(
     state === 'addPlan' ? null : planStartDate,
   );

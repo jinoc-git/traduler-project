@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { type PinContentsType, getPin } from '@api/pins';
-import { getPlan } from '@api/plans';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
 import DatePage from '@components/addPlan/datePage/DatePage';
 import Loading from '@components/loading/Loading';
@@ -12,7 +11,7 @@ import Pins from '@components/plan/updatePlan/Pins';
 import useHandlePage from '@hooks/useHandlePage';
 import { useQuery } from '@tanstack/react-query';
 
-const UpdatePlan = () => {
+const UpdatePlan = ({ dataPlanDates }: { dataPlanDates: string[] }) => {
   const { id } = useParams();
   const planId: string = id as string;
   const [dates, setDates] = useState<string[]>();
@@ -20,11 +19,10 @@ const UpdatePlan = () => {
     useHandlePage();
   const [pinArr, setPinArr] = useState<PinContentsType[]>([]);
   const {
-    data: plan,
+    data: pin,
     isLoading,
     isError,
-  } = useQuery(['plan', planId], async () => await getPlan(planId));
-  const { data: pin } = useQuery(
+  } = useQuery(
     ['pin', planId, currentPage],
     async () => await getPin(planId, currentPage),
   );
@@ -36,11 +34,11 @@ const UpdatePlan = () => {
   }, [pin]);
 
   useEffect(() => {
-    if (plan !== undefined && plan !== null) {
-      setDates(plan[0].dates);
+    if (dataPlanDates !== undefined && dataPlanDates !== null) {
+      setDates(dataPlanDates);
       setCurrentPage(0);
     }
-  }, [plan]);
+  }, [dataPlanDates]);
 
   if (isLoading) {
     return <Loading />;

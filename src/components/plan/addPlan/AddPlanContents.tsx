@@ -72,7 +72,7 @@ const AddPlanContents = ({
     <>
       <div
         className="flex flex-col justify-center gap-5 
-        sm:w-[286px]
+        sm:w-[286px] sm:mx-auto
         md:w-[700px]"
       >
         <div
@@ -81,19 +81,18 @@ const AddPlanContents = ({
         md:text-normal md:my-[10px] "
         >
           <IconLocationDefault w="20" h="20" />
-          <label>여행 지역</label>
+          <p>여행 지역</p>
         </div>
         <MapPoly pins={pins[currentPage]} />
-        <div className="flex flex-col justify-center">
-          <div className="flex items-center sm:mt-[28px] sm:mb-[30px]">
+        <div className="flex flex-col justify-center gap-5">
+          <div
+            className="flex items-center my-[10px] font-semibold text-gray_dark_1 gap-[8px]
+            md:text-normal md:w-[700px] md:mx-[6px]
+            sm:text-sm sm:w-[286px] sm:mx-auto
+            "
+          >
             <IconPin w="w-[20px]" h="h-[25px]" fill="#4E4F54" />
-            <div
-              className="w-full font-bold ml-[8px] mx-auto text-gray_dark_1 
-            sm:text-sm sm:py-0
-            md:text-normal md:py-[13px]"
-            >
-              방문할 장소
-            </div>
+            <p>방문할 장소</p>
           </div>
           {pins[currentPage]?.map((pin, idx: number) => {
             return (

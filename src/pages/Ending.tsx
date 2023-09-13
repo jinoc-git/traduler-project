@@ -16,7 +16,6 @@ import TotalPay from '@components/ending/totalPay/TotalPay';
 import Loading from '@components/loading/Loading';
 import { sideBarStore } from '@store/sideBarStore';
 import { useQuery } from '@tanstack/react-query';
-import { type Json } from 'types/supabase';
 
 const Ending = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
@@ -36,7 +35,6 @@ const Ending = () => {
   const [dates, setDates] = useState<string[]>();
   const [pay, setPay] = useState<number>();
   const [title, setTitle] = useState<string>();
-  const [distance, setDistance] = useState<Json[]>();
 
   useEffect(() => {
     window.addEventListener('popstate', () => {
@@ -54,7 +52,6 @@ const Ending = () => {
       setDates(planEnding[0].dates);
       setPay(planEnding[0].total_cost as number);
       setTitle(planEnding[0].title);
-      setDistance(planEnding[0].distance as Json[]);
     }
   }, [planEnding]);
 

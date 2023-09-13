@@ -48,7 +48,7 @@ const MapPoly = ({ pins }: PropsType) => {
   }, [screenSize]);
 
   return (
-    <div className="flex justify-center sm:w-[310px] sm:ml-0 md:w-[650px] md:ml-[25px]">
+    <div className="flex justify-center sm:w-[286px] sm:ml-0 md:w-[650px] md:ml-[25px]">
       <Map
         center={{
           lat:

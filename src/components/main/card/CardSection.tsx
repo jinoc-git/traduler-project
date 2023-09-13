@@ -61,4 +61,4 @@ const CardSection = () => {
   );
 };
 
-export default CardSection;
+export default React.memo(CardSection);

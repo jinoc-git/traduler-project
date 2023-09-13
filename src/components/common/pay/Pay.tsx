@@ -20,7 +20,7 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
   return (
     <PayLayout>
       <div className="flex items-center sm:h-[27px] sm:w-[286px] md:w-full md:justify-normal sm:justify-between">
-        <div className='flex items-center'>
+        <div className="flex items-center">
           <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
           <p
             className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] 

@@ -205,14 +205,14 @@ const Plan = () => {
             {planState === 'planning' ? '여행 계획 중' : '여행 중'}
           </div>
         </div>
-        <PostPlan />
+        <PostPlan dataPlanDates={data?.[0].dates} />
         <Invite />
         <Pay
           total_Cost={watch('totalCost')}
           register={register}
           errors={errors}
         />
-        <UpdatePlan />
+        <UpdatePlan dataPlanDates={data?.[0].dates as string[]} />
         <div
           className="flex  sm:mb-[60px]
         md:justify-end md:mt-[100px]  md:mr-[30px]

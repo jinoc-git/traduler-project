@@ -74,8 +74,7 @@ export const signInWithGoogle = async () => {
   await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      // redirectTo: 'http://localhost:3000/welcome',
-      redirectTo: 'https://traduler-project.vercel.app/welcome',
+      redirectTo: 'https://traduler.com/welcome',
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',

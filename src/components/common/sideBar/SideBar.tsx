@@ -15,6 +15,7 @@ import { screenStore } from '@store/screenStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
+import { sideBar } from '@utils/arrayCallbackFunctions';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const SideBar: React.FC = () => {
     async () => {
       return await getPlanListAndMateList(user === null ? '' : user.id);
     },
-    { enabled: user !== null },
+    { enabled: user !== null, cacheTime: 20000 },
   );
 
   if (matesData === null) {
@@ -74,21 +75,12 @@ const SideBar: React.FC = () => {
     return <div>오류</div>;
   }
 
-  const sortedData = matesData?.planDataList?.sort(
-    (a, b) => new Date(a.dates[0]).getTime() - new Date(b.dates[0]).getTime(),
-  );
+  const sortedData = matesData?.planDataList?.sort(sideBar.sorting);
 
-  const startPlans = sortedData?.filter(
-    (plan) => plan.plan_state === 'planning',
-  );
+  const startPlans = sortedData?.filter(sideBar.filtering('planning'));
+  const endPlans = sortedData?.filter(sideBar.filtering('end'));
+  const activePlan = sortedData?.find(sideBar.filtering('traveling'));
 
-  const endPlans = sortedData?.filter(
-    (plan) => plan.plan_state === 'end' || plan.plan_state === 'recording',
-  );
-
-  const activePlan = sortedData?.find(
-    (plan) => plan.plan_state === 'traveling',
-  );
   const nextPlan = startPlans ? startPlans[0] : undefined;
   const hasNextPlan = Boolean(nextPlan);
 
@@ -171,7 +163,7 @@ const SideBar: React.FC = () => {
                 toggleFunc={toggleStartPlansOpen}
                 setFunc={setStartPlansNeedValue}
                 planList={startPlans ?? []}
-                filter="start"
+                filter="planning"
                 isOpen={startPlansOpen}
               />
               <SideBarPlanList

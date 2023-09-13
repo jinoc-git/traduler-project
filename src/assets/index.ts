@@ -16,3 +16,5 @@ export { default as landingGroupOne } from './landing-group-photo-01-4x.png';
 export { default as landingGroupTwo } from './landing-group-photo-02-4x.png';
 export { default as landingGroupThree } from './landing-group-photo-03-4x.png';
 export { default as landingMockupTwo } from './img-landing-mockup2-2.5x.png';
+export { default as signUpBG } from './purple-sky-photo.png';
+export { default as signInBG } from './photo-sky-4x.png';

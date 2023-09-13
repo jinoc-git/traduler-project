@@ -9,6 +9,7 @@ import IconHidden from '@assets/icons/IconHidden';
 import IconLocked from '@assets/icons/IconLocked';
 import IconMessage from '@assets/icons/IconMessage';
 import IconVisible from '@assets/icons/IconVisible';
+import { signInBG } from '@assets/index';
 import useFormValidator from '@hooks/useFormValidator';
 import { sideBarStore } from '@store/sideBarStore';
 import { AuthError } from '@supabase/supabase-js';
@@ -57,16 +58,17 @@ const SignInForm = () => {
 
   return (
     <main className="flex relative w-screen h-screen">
-      <div
-        className="absolute inset-0 bg-[url(https://github.com/jinoc-git/traduler-project/assets/132889294/f89f7efe-d6da-45fb-b469-3c96f8ce5840)] bg-left bg-cover bg-no-repeat 
-        md:w-[880px]"
+      <img
+        src={signInBG}
+        alt="back-ground-img"
+        className="absolute inset-0 object-cover h-[100vh]"
       />
       <div className="flex items-center justify-center flex-grow">
         <form
           onSubmit={handleSubmit(onSubmitSignInHandler)}
           className="relative flex flex-col   gap-y-2.5 rounded-xl bg-[#F9F9FB]
             md:w-[450px] md:h-[410px] md:px-[50px] md:py-[37px]
-            sm:px-[30px] sm:py-[22px]
+            sm:w-[320px] sm:px-[30px] sm:py-[22px]
           "
         >
           <h2 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">

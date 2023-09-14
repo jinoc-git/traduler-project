@@ -146,6 +146,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
         md:w-[35px] md:h-[35px]"
         ></p>
         <button
+          name="pins-add-btn"
           type="button"
           onClick={openModal}
           className=" hover:bg-navy_light_1 duration-200  border border-dashed rounded-lg font-bold  text-gray_dark_1

@@ -120,6 +120,7 @@ const AddPlanContents = ({
               md:w-[35px] md:h-[35px]"
               ></p>
               <button
+                name="addplancontents-placeadd-btn"
                 type="button"
                 onClick={openModal}
                 className="border border-dashed rounded-lg font-bold  text-gray_dark_1 hover:bg-navy_light_1 duration-200

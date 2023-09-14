@@ -23,10 +23,12 @@ const MapModalButton = ({
 }: PropsType) => {
   return (
     <form
+      name="mapmodalbutton-form"
       onSubmit={handleSubmit(onSubmitPlaceName)}
       className="flex gap-[8px] h-[44px] items-center"
     >
       <button
+        name="mapmodalbutton-cancle-btn"
         type="button"
         className="border border-navy text-navy rounded-lg px-[20px] py-[8px] w-[100%] mr-[8px] hover:bg-navy_light_1 duration-200"
         onClick={() => {
@@ -37,6 +39,7 @@ const MapModalButton = ({
         취소
       </button>
       <button
+        name="mapmodalbutton-add-btn"
         type="submit"
         disabled={disabledSubmit()}
         className="bg-navy text-white rounded-lg hover:bg-navy_light_3 px-[20px] py-[8px] disabled:bg-gray w-[100%] duration-200"

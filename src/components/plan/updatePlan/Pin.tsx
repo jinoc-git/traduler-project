@@ -100,6 +100,7 @@ const Pin = (props: PinProps) => {
         isEnding={false}
       >
         <button
+          name="pin-drag-btn"
           ref={dragRef}
           className="flex-center md:w-[50px] md:p-3 sm:w-[30px] sm:p-1"
         >

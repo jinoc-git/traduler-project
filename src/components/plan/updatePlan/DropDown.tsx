@@ -13,6 +13,7 @@ const DropDown = ({ children }: DropDownProps) => {
   return (
     <div className="relative">
       <button
+        name="dropdown-btn"
         onClick={toggleValue}
         onBlur={() => {
           setNeedValue(false);

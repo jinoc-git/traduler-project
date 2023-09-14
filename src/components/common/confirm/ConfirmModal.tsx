@@ -38,6 +38,7 @@ const ConfirmModal = () => {
       <div className=" text-gray_dark_1 md:mb-6 sm:mb-3">{desc}</div>
       <div className="flex justify-center">
         <button
+          name="confirm-cancel-btn"
           onClick={closeConfirm}
           className="border border-navy text-navy rounded-lg  hover:bg-navy_light_1 duration-200
           md:px-[20px] md:py-[14px] md:w-[210px] md:mr-[24px]
@@ -47,6 +48,7 @@ const ConfirmModal = () => {
           취소
         </button>
         <button
+          name="confirm-multifunctional-btn"
           onClick={handleConfirm}
           className="bg-navy text-white rounded-lg hover:bg-navy_light_3 disabled:bg-grayduration-200
           md:px-[20px] md:py-[14px] md:w-[210px]

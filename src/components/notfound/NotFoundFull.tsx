@@ -35,13 +35,13 @@ const NotFoundFull = () => {
         </p>
         <div className="flex justify-center gap-4">
           <button
-            onClick={goToMain}
+            onClick={goToBack}
             className="cursor-pointer w-[140px] h-[36px] rounded-lg bg-white text-blue border border-blue hover:bg-blue_light_1 hover:text-blue_dark hover:border-blue_dark"
           >
             이전 페이지
           </button>
           <button
-            onClick={goToBack}
+            onClick={goToMain}
             className="cursor-pointer w-[140px] h-[36px] rounded-lg bg-gradient-to-r from-blue_dark to-blue text-white border border-blue_dark hover:bg-white hover:text-blue_dark hover:border-blue_dark"
           >
             홈으로

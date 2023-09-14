@@ -180,6 +180,7 @@ const Plan = () => {
         <div className="flex items-center md:justify-normal sm:justify-between ">
           <input
             id="title"
+            aria-label="title"
             type="text"
             {...register('title', {
               required: '제목은 필수입니다.',

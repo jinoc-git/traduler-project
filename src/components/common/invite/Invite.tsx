@@ -81,6 +81,7 @@ const Invite = () => {
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                   return (
                     <img
+                      alt='profile-img'
                       key={uuid()}
                       src={
                         user.avatar_url != null
@@ -132,6 +133,7 @@ const Invite = () => {
         <div className="md:mt-0 sm:flex sm:justify-end sm:h-[30px] sm:mt-[5px]">
           {modifyState === 'modify' && (
             <button
+              name='invite-invite-btn'
               className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200
             sm:w-[40px] sm:h-[28px]
             md:w-[45px] md:h-[30px]"

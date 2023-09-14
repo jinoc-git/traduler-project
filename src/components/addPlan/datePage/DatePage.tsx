@@ -26,16 +26,20 @@ const DatePage = ({
         <div className="sm:flex sm:justify-center sm:w-[310px] sm:gap-[14px]">
           <button
             onClick={handlePreviousPage}
+            aria-label="date-prev-btn"
             disabled={currentPage === 0}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
+            name="date-page-previous-page-btn"
           >
             <IconChevronLeft w="w-[14px]" h="h-[22px]" />
           </button>
           <h1>{dates[currentPage]}</h1>
           <button
             onClick={handleNextPage}
+            aria-label="date-next-btn"
             disabled={currentPage === dates.length - 1}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
+            name="date-page-next-page-btn"
           >
             <IconChevronRight w="w-[14px]" h="h-[22px]" />
           </button>

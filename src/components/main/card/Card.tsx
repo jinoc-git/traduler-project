@@ -192,6 +192,7 @@ const Card: React.FC<CardProps> = ({
                 md:w-[80px] md:mr-[25px] md:mt-[22px]"
                 >
                   <button
+                    aria-label="card-quit-plan-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeletePlan(plan.id);

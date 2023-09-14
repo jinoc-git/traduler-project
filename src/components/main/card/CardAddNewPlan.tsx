@@ -71,6 +71,7 @@ const CardAddNewPlan = () => {
       {selectedPlan !== 'bookMark' && (
         <div>
           <button
+            name="card-add-btn"
             className="group flex-center border border-#969696 rounded-[7px] text-[#969696] bg-white hover:bg-blue_dark hover:text-white hover:border-none
             sm:font-bold sm:gap-[10px] sm:mt-[32px] sm:w-[160px] sm:h-[47px]
             md:gap-[10px] md:mt-[35px] md:w-[160px] md:h-[45px]"

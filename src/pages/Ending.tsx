@@ -19,7 +19,6 @@ import { useQuery } from '@tanstack/react-query';
 
 const Ending = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
-  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const { id: planId } = useParams();
   const {
     data: planEnding,
@@ -67,24 +66,20 @@ const Ending = () => {
   return (
     <main
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
-        isVisibleSideBar
-          ? isSideBarOpen
-            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
-            : 'sidebar-close '
-          : 'md:w-[calc(100vw)] md:ml-0 '
+        isSideBarOpen ? 'sidebar-open sm:ml-0 md:ml-[270px]' : 'sidebar-close '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
         <section>
           <div
             className="flex items-center md:justify-normal sm:justify-between
-          sm:mb-[35px]
-          md:mb-[18px]"
+              sm:mb-[35px]
+              md:mb-[18px]"
           >
             <h3
               className="font-bold text-gray_dark_1
-            sm:text-[20px] sm:w-[235px]
-            md:text-[24px] md:w-[275px]"
+                sm:text-[20px] sm:w-[235px]
+                md:text-[24px] md:w-[275px]"
             >
               {title}
             </h3>

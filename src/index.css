@@ -103,7 +103,7 @@ body {
 }
 
 h2 {
-  font-size: 0px;
+  display: none;
 }
 
 h3 {

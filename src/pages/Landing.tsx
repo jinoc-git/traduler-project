@@ -54,7 +54,7 @@ const Landing = () => {
         <section>
           <img
             src={landingMockup}
-            alt="랜딩 목업 이미지"
+            alt="사이트 이용 예시 이미지"
             className="w-full h-auto"
           />
           <div className="text-center mt-[60px]">
@@ -68,17 +68,17 @@ const Landing = () => {
           <div className="flex justify-center gap-[5px] mt-[10px] mx-auto md:gap-[27px] md:mt-[65px]">
             <img
               src={landingGroupOne}
-              alt="랜딩 그룹 이미지"
+              alt="랜딩 그룹 이미지1"
               className=" w-[83px] h-[57px] md:w-[359px] md:h-[246px] rounded-lg"
             />
             <img
               src={landingGroupTwo}
-              alt="랜딩 그룹 이미지"
+              alt="랜딩 그룹 이미지2"
               className="w-[83px] h-[57px] md:w-[359px] md:h-[246px] rounded-lg"
             />
             <img
               src={landingGroupThree}
-              alt="랜딩 그룹 이미지"
+              alt="랜딩 그룹 이미지3"
               className="w-[83px] h-[57px] md:w-[359px] md:h-[246px] rounded-lg"
             />
           </div>
@@ -90,17 +90,17 @@ const Landing = () => {
           <div className="md:flex md:flex-row-reverse">
             <img
               src={landingMockupTwo}
-              alt="랜딩 그룹 이미지"
+              alt="랜딩 그룹 이미지4"
               className="w-[200px] h-[124px] md:w-[750px] md:h-[454px] rounded-lg mx-auto mt-[16px]"
             />
             <div
               className="flex mx-auto md:flex-row md:mt-[42px]
-          sm:flex-col md:mr-[82px]
-        "
+              sm:flex-col md:mr-[82px]
+              "
             >
               <div
                 className="flex md:flex-row  md:mt-0 
-          sm:flex-col sm:mx-auto sm:mt-[45px] "
+                sm:flex-col sm:mx-auto sm:mt-[45px] "
               >
                 <div className="md:flex md:flex-col">
                   <div>

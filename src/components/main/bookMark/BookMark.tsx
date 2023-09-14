@@ -39,6 +39,7 @@ const BookMark: React.FC<BookMarkProps> = ({
 
   return (
     <button
+      name="bookmark-toggle-btn"
       onClick={favoriteHandler}
       className="flex justify-center 
       sm:w-[21px] sm:h-[21px] sm:ml-[11px] 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
+import PWABTN from '@components/landing/PWABTN';
 import CardSection from '@components/main/card/CardSection';
 import Profile from '@components/main/profile/Profile';
 import { screenStore } from '@store/screenStore';
@@ -10,7 +11,7 @@ import { sideBarStore } from '@store/sideBarStore';
 const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
-  const screenSize = screenStore((state) => state.screenSize)
+  const screenSize = screenStore((state) => state.screenSize);
 
   const navigate = useNavigate();
 
@@ -43,11 +44,16 @@ const Main = () => {
             navigate('/addPlan');
           }}
         >
-          <IconAdd w="w-[16px]" h="h-[16px]" fill={`${screenSize === 'sm' ? 'fill-[#1A68DB]' : 'fill-white'}`} />
+          <IconAdd
+            w="w-[16px]"
+            h="h-[16px]"
+            fill={`${screenSize === 'sm' ? 'fill-[#1A68DB]' : 'fill-white'}`}
+          />
           여행 생성하기
         </button>
       </section>
       <CardSection />
+      <PWABTN />
     </main>
   );
 };

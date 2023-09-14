@@ -11,6 +11,7 @@ import {
   landingMockupTwo,
 } from '@assets/index';
 import Footer from '@components/common/footer/Footer';
+import PWABTN from '@components/landing/PWABTN';
 import { screenStore } from '@store/screenStore';
 
 const Landing = () => {
@@ -133,7 +134,7 @@ const Landing = () => {
             </div>
           </div>
         </section>
-        <p
+        {/* <p
           className=" font-bold text-center text-blue underline underline-offset-[6px] mx-auto p-3 cursor-pointer
           md:text-[30px] md:mb-[120px] md:w-[300px]
           sm:text-[17px] sm:mt-[20px] sm:mb-[30px] sm:w-[180px] 
@@ -143,7 +144,8 @@ const Landing = () => {
           }}
         >
           로그인하고 사용해보기
-        </p>
+        </p> */}
+        <PWABTN />
       </main>
       <Footer />
     </>

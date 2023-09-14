@@ -1,6 +1,6 @@
 {
-  "short_name": "Traduler",
   "name": "Traduler Project",
+  "short_name": "Traduler",
   "icons": [
     {
       "src": "./images/favicon.ico",
@@ -542,5 +542,5 @@
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0078d4"
+  "theme_color": "#ffffff"
 }

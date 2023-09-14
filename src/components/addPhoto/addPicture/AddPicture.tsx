@@ -48,7 +48,6 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
 
       const compressedFile = await imageCompression(file, options);
 
-
       const url = URL.createObjectURL(compressedFile);
 
       setImgSrcList((prev) => [...prev, url]);
@@ -82,6 +81,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
             ref={fileRef}
             onChange={onFileChange}
             type="file"
+            name="addpicture-input"
             className="hidden"
           />
           <div
@@ -114,6 +114,7 @@ const AddPicture = ({ setUploadedFiles, limit }: TypePicture) => {
               onClick={() => {
                 handleRemoveImage(i);
               }}
+              name="addpicture-delete-photo-btn"
             >
               X
             </button>

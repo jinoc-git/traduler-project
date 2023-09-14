@@ -26,6 +26,7 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
           <img
             src={defaultImageGray}
             className="object-cover rounded-full w-[45px] h-[45px]"
+            alt="Avatar img"
           />
         )}
         <div>
@@ -35,6 +36,7 @@ const UserList = ({ person, idx, handleInvite, deleteUser }: PropsType) => {
       </div>
       {user?.id !== person.id && (
         <button
+          name="userlist-multifunctional-btn"
           className="md:w-[45px] md:h-[30px] sm:w-[35px] sm:h-[20px] border rounded-lg cursor-pointer text-gray_dark_2 border-gray_dark_1 hover:bg-blue_dark hover:text-white text-xs hover:border-blue font-semibold"
           onClick={
             handleInvite != null

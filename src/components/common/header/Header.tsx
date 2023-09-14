@@ -133,7 +133,7 @@ const Header = () => {
       ) : pathname === '/' ? (
         <div
           className="flex 
-        sm:w-[147px] 
+        sm:w-[87px] 
         md:w-[300px]"
         >
           <button

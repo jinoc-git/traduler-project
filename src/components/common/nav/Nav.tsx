@@ -97,6 +97,7 @@ const Nav: React.FC<PropsType> = (props) => {
       md:text-normal"
       >
         <button
+          name="nav-multifunctional-btn"
           className="text-navy_dark flex items-center gap-2
           sm:mr-[25px] 
           md:mr-[80px] "

@@ -137,6 +137,7 @@ const Comments = () => {
             >
               <div className="flex md:gap-5 sm:gap-2">
                 <img
+                  alt="comments-user-profile"
                   src={isUserImg != null ? isUserImg : defaultImageGray}
                   className="object-cover rounded-full
                 sm:hidden
@@ -157,6 +158,7 @@ const Comments = () => {
               </div>
               {comment.user_id === user?.id && (
                 <button
+                  name="comments-delete-btn"
                   className="flex justify-center items-center border border-gray rounded-lg text-xs text-gray_dark_1 leading-6 tracking-tighter
                   sm:w-[50px] sm:h-[25px]
                   md:w-[45px] md:h-[30px]
@@ -191,7 +193,7 @@ const Comments = () => {
         >
           소 감
         </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form name="comments-form" onSubmit={handleSubmit(onSubmit)}>
           <div
             className="flex items-center 
           sm:w-[310px] sm:h-[28px] sm:gap-3
@@ -213,6 +215,7 @@ const Comments = () => {
               {errors?.comments?.message}
             </p>
             <button
+              name="comments-submit-btn"
               className="flex justify-center items-center border border-gray rounded-lg text-gray_dark_1 leading-6 tracking-tighter
               sm:w-[32px] sm:h-[25px] sm:text-[11px]
               md:w-[45px] md:h-[30px] md:text-xs
@@ -240,6 +243,7 @@ const Comments = () => {
           다른 여행 일정도 둘러보세요!
         </p>
         <button
+          name="comments-move-main-btn"
           onClick={() => {
             navigate('/main');
           }}

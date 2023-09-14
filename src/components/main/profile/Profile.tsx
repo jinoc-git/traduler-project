@@ -40,6 +40,7 @@ const Profile = () => {
         >
           {user !== null && typeof profileImg === 'string' ? (
             <img
+              alt="main-profile-img"
               src={profileImg}
               className="rounded-full border-[2.5px] border-blue_light_1 object-cover cursor-pointer
               sm:w-[66px] sm:h-[66px]
@@ -67,7 +68,10 @@ const Profile = () => {
         </p>
       </div>
       {isEditModalOpen && (
-        <EditProfileModal animate={animate} onClickCloseModalHandler={onClickCloseModalHandler} />
+        <EditProfileModal
+          animate={animate}
+          onClickCloseModalHandler={onClickCloseModalHandler}
+        />
       )}
     </section>
   );

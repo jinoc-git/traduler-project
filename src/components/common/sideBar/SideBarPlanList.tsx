@@ -84,6 +84,7 @@ const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
         onClick={toggleFunc}
       >
         <button
+          aria-label="sidebar-trips-list-btn"
           onBlur={() => {
             setFunc(false);
           }}

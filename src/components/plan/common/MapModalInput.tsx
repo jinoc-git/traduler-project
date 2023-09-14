@@ -53,7 +53,7 @@ const MapModalInput = ({ register, errors, searchMap }: PropsType) => {
             className="input-border mb-[16px] 
             sm:h-[44px] sm:text-sm sm:font-medium"
           />
-          <p className='text-red-400'>{errors?.placeName?.message}</p>
+          <p className="text-red-400">{errors?.placeName?.message}</p>
         </div>
         <div className="flex flex-col">
           <label htmlFor="address" className="mb-2 text-sm font-semibold">

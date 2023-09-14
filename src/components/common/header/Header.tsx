@@ -15,8 +15,7 @@ const Header = () => {
   const user = userStore((state) => state.user);
   const isLogin = localStorage.getItem('isLogin');
 
-  const { setVisibilityIcon, isSideBarOpen, isNotFoundPage } =
-    sideBarStore();
+  const { setVisibilityIcon, isSideBarOpen, isNotFoundPage } = sideBarStore();
 
   const goToMain = () => {
     if (user !== null) {
@@ -73,7 +72,7 @@ const Header = () => {
           )}
         <h1
           onClick={goToMain}
-          className=" cursor-pointer 
+          className=" cursor-pointer w-[134px] h-[33px]
           sm:mt-[13px]
           md:mt-[0px] md:ml-[88px]"
         >
@@ -81,24 +80,24 @@ const Header = () => {
             isSideBarOpen ? (
               <img
                 src={logoColor}
-                alt="로고"
-                className=" w-[134px] ml-[10px] "
+                alt="logo"
+                className=" w-[134px] h-[33px] ml-[10px] "
               />
             ) : (
-              <img src={logoWhite} alt="로고" className="w-[134px] ml-[10px]" />
+              <img src={logoWhite} alt="logo" className="w-[134px] ml-[10px]" />
             )
           ) : pathname === '/' ||
             pathname === '/signin' ||
             pathname === '/signup' ? (
             <img
               src={logoColor}
-              alt="로고"
+              alt="logo"
               className="w-[134px] sm:ml-[20px] md:ml-[10px] "
             />
           ) : (
             <img
               src={logoColor}
-              alt="로고"
+              alt="logo"
               className="w-[134px] md:ml-[10px] "
             />
           )}
@@ -114,7 +113,7 @@ const Header = () => {
             {user.profileImg != null ? (
               <img
                 src={user.profileImg}
-                alt="프로필 이미지"
+                alt="profile-image"
                 className="object-cover rounded-full border border-navy/50 
                 sm:w-[37px] sm:h-[37px] 
                 md:w-[37px] md:h-[37px] "
@@ -138,6 +137,7 @@ const Header = () => {
         md:w-[300px]"
         >
           <button
+            name="header-signin-btn"
             onClick={() => {
               navigate('/signin');
             }}
@@ -148,6 +148,7 @@ const Header = () => {
             로그인
           </button>
           <button
+            name="header-signup-btn"
             onClick={() => {
               navigate('/signup');
             }}
@@ -162,6 +163,7 @@ const Header = () => {
         </div>
       ) : pathname === '/signin' ? (
         <button
+          name="header-signup-btn"
           onClick={() => {
             navigate('/signup');
           }}
@@ -173,6 +175,7 @@ const Header = () => {
         </button>
       ) : (
         <button
+          name="header-signin-btn"
           onClick={() => {
             navigate('/signin');
           }}

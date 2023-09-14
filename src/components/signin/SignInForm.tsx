@@ -60,20 +60,21 @@ const SignInForm = () => {
     <main className="flex relative w-screen h-screen">
       <img
         src={signInBG}
-        alt="back-ground-img"
+        alt="sign-in-background-img"
         className="absolute inset-0 object-cover h-[100vh]"
       />
       <div className="flex items-center justify-center flex-grow">
         <form
           onSubmit={handleSubmit(onSubmitSignInHandler)}
+          name="signin-form"
           className="relative flex flex-col   gap-y-2.5 rounded-xl bg-[#F9F9FB]
             md:w-[450px] md:h-[410px] md:px-[50px] md:py-[37px]
             sm:w-[320px] sm:px-[30px] sm:py-[22px]
           "
         >
-          <h2 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">
+          <h3 className="border-b-2 w-[48px] text-lg font-semibold	text-blue border-blue">
             로그인
-          </h2>
+          </h3>
           <div className="relative">
             <label
               htmlFor="signin-email"
@@ -105,6 +106,7 @@ const SignInForm = () => {
             />
             <button
               type="button"
+              aria-label="signin-toggle-show-password-btn"
               onClick={onClickShowPassword}
               className="absolute top-1/2 -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
             >
@@ -119,7 +121,7 @@ const SignInForm = () => {
             <label className="text-sm text-slate-400 cursor-pointer flex items-center">
               <input
                 type="checkbox"
-                name="keep"
+                name="keep-login"
                 className="mr-2"
                 defaultChecked
               />
@@ -131,6 +133,7 @@ const SignInForm = () => {
           </div>
           <button
             type="submit"
+            name="signin-submit-btn"
             disabled={isSubmitting || !isValid}
             className="bg-blue text-white h-[45px] rounded-lg hover:bg-blue_dark disabled:bg-gray_light_3"
           >
@@ -143,13 +146,14 @@ const SignInForm = () => {
           </div>
           <button
             type="button"
+            name="signin-with-google-btn"
             onClick={signInWithGoogle}
             className="h-[45px] border rounded-lg border-gray_light_3 hover:bg-gray_dark_1 hover:text-white"
           >
             <div className="flex justify-center items-center ">
               <img
                 src={ic_google_1x}
-                alt="구글"
+                alt="구글 로고"
                 className="w-[18px] h-[18px] mr-1"
               />
               <span>구글 계정으로 로그인 하기</span>

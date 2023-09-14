@@ -26,19 +26,19 @@ const Main = () => {
     >
       <div
         className="absolute top-0 left-0 w-[100vw] bg-blue_dark z-[-1]
-      sm:h-[313px]
-      md:h-[363px]"
+        sm:h-[313px]
+        md:h-[363px]"
       ></div>
       <Profile />
       <section
         className="flex mx-auto my-0
-      sm:w-[320px] 
-      md:w-[800px] "
+        sm:w-[320px] 
+        md:w-[800px] "
       >
         <button
           className="group flex items-center font-Bold justify-center rounded-[7px] hover:text-blue_dark gap-3 hover:bg-white
-          sm:w-[320px] sm:h-[46px] sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:font-bold sm:text-sm sm:text-blue_dark  sm:bg-white 
-          md:md:w-[160px] md:h-[45px] mt-[35px] md:ml-auto md:border md:border-white md:text-white md:bg-blue_dark md:fill-white"
+            sm:w-[320px] sm:h-[46px] sm:mt-[16px] sm:mb-[26px] sm:ml-auto sm:font-bold sm:text-sm sm:text-blue_dark  sm:bg-white 
+            md:md:w-[160px] md:h-[45px] mt-[35px] md:ml-auto md:border md:border-white md:text-white md:bg-blue_dark md:fill-white"
           onClick={() => {
             navigate('/addPlan');
           }}

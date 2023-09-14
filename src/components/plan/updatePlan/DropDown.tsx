@@ -13,7 +13,7 @@ const DropDown = ({ children }: DropDownProps) => {
   return (
     <div className="relative">
       <button
-        name="dropdown-btn"
+        aria-label="dropdown-btn"
         onClick={toggleValue}
         onBlur={() => {
           setNeedValue(false);

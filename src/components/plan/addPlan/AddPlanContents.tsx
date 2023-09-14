@@ -113,14 +113,13 @@ const AddPlanContents = ({
             sm:w-[286px] 
             md:w-[651px] md:mx-[25px] md:my-[8px]"
             >
-              {/* <div className="absolute translate-x-[17.5px] translate-y-[-25px] -z-10 border border-l-gray_dark_1 h-[70px]" /> */}
               <p
                 className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100% font-semibold text-white border-[5px] border-white 
               sm:w-[30px] sm:h-[30px]
               md:w-[35px] md:h-[35px]"
               ></p>
               <button
-                name="addplancontents-placeadd-btn"
+                aria-label="addplancontents-placeadd-btn"
                 type="button"
                 onClick={openModal}
                 className="border border-dashed rounded-lg font-bold  text-gray_dark_1 hover:bg-navy_light_1 duration-200

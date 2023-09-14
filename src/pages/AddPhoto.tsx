@@ -26,7 +26,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PlansEndingType } from 'types/supabase';
 
 const AddPhoto = () => {
-  const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const user = userStore((state) => state.user);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dates, setDates] = useState<string[]>();
@@ -123,11 +123,7 @@ const AddPhoto = () => {
   return (
     <main
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
-        isVisibleSideBar
-          ? isSideBarOpen
-            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
-            : 'sidebar-close '
-          : 'md:w-[calc(100vw)] md:ml-0 '
+        isSideBarOpen ? 'sidebar-open sm:ml-0 md:ml-[270px]' : 'sidebar-close '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">

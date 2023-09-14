@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   CustomOverlayMap,
   Map,
@@ -45,7 +45,7 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
     setInfoStates(newInfoStates);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (screenSize === 'sm') {
       setStyle({
         width: '263px',
@@ -55,14 +55,14 @@ const EndingMap = ({ dates }: { dates: string[] }) => {
     }
     if (screenSize === 'md') {
       setStyle({
-        width: '95vw',
+        width: '650px',
         height: '400px',
         borderRadius: '8px',
       });
     }
     if (screenSize === 'lg') {
       setStyle({
-        width: '95vw',
+        width: '650px',
         height: '400px',
         borderRadius: '8px',
       });

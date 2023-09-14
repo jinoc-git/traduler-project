@@ -115,19 +115,20 @@ const SignUpForm = () => {
     <main className="flex-center w-screen h-screen">
       <img
         src={signUpBG}
-        alt="back-ground-img"
+        alt="signup-background-img"
         className="absolute inset-0 object-cover h-[100vh]"
       />
       <form
         onSubmit={handleSubmit(onSubmitSignUpHandler)}
+        name="sign-up-form"
         className="relative flex flex-col   rounded-xl bg-[#F9F9FB]
           md:w-[450px] md:h-[540px] md:px-[50px] md:py-[37px] md:gap-y-2.5
           sm:w-[320px] sm:px-[30px] sm:py-[22px] sm:gap-y-2
         "
       >
-        <h2 className="text-blue border-blue border-b-2 w-[64px] text-lg font-semibold	">
+        <h3 className="text-blue border-blue border-b-2 w-[64px] text-lg font-semibold	">
           회원가입
-        </h2>
+        </h3>
         <div className="relative">
           <label
             htmlFor="nickname"
@@ -144,6 +145,7 @@ const SignUpForm = () => {
           />
           <button
             type="button"
+            name="signup-check-nickname-duplication-btn"
             onClick={checkNicknameDuplication}
             disabled={
               Boolean(errors?.nickname?.message) ||
@@ -174,6 +176,7 @@ const SignUpForm = () => {
           />
           <button
             type="button"
+            name="signup-check-email-duplication-btn"
             onClick={checkEmailDuplication}
             disabled={
               Boolean(errors?.email?.message) ||
@@ -185,7 +188,6 @@ const SignUpForm = () => {
             중복확인
           </button>
           <p className="h-[20px] pt-1.5 text-center text-sm text-red-400">
-            {/* {showNicknameWarning} */}
             {errors?.email?.message}
           </p>
         </div>
@@ -205,6 +207,7 @@ const SignUpForm = () => {
           />
           <button
             onClick={onClickShowPassword}
+            aria-label="signup-toggle-show-password-btn"
             className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
           >
             {showPassword ? (
@@ -236,6 +239,7 @@ const SignUpForm = () => {
           />
           <button
             onClick={onClickShowCheckPassword}
+            aria-label="signup-toggle-show-confirm-password-btn"
             className="absolute top-[20px] -translate-y-1/2 flex-center right-[10px] w-[24px] h-[24px]"
           >
             {showCheckPassword ? (
@@ -252,6 +256,7 @@ const SignUpForm = () => {
           disabled={
             isSubmitting || !isValid || isNicknameDuplicate || isEmailDuplicate
           }
+          name="signup-submit-btn"
           className="h-[45px] rounded-lg text-white bg-blue hover:bg-blue_dark disabled:bg-gray_light_3"
         >
           회원가입
@@ -263,16 +268,17 @@ const SignUpForm = () => {
         </div>
         <button
           type="button"
+          name="signup-with-google-btn"
           onClick={signInWithGoogle}
           className="h-[45px] border rounded-lg border-gray_light_3 hover:bg-gray_dark_1 hover:text-white"
         >
           <div className="flex-center">
             <img
               src={ic_google_1x}
-              alt="구글"
+              alt="구글 로고"
               className="w-[18px] h-[18px] mr-1"
             />
-            <span>구글 계정으로 로그인 하기</span>
+            <span>구글 계정으로 시작 하기</span>
           </div>
         </button>
         <p

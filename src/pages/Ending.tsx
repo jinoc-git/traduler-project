@@ -78,13 +78,13 @@ const Ending = () => {
         <section>
           <div
             className="flex items-center md:justify-normal sm:justify-between
-          sm:mb-[35px]
-          md:mb-[18px]"
+              sm:mb-[35px]
+              md:mb-[18px]"
           >
             <h3
               className="font-bold text-gray_dark_1
-            sm:text-[20px] sm:w-[235px]
-            md:text-[24px] md:w-[275px]"
+                sm:text-[20px] sm:w-[235px]
+                md:text-[24px] md:w-[275px]"
             >
               {title}
             </h3>

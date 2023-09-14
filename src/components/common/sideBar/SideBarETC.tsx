@@ -33,7 +33,10 @@ const SideBarETC = () => {
           sm:w-[310px]
         ${isSideBarOpen ? 'bg-navy w-[222px]' : 'bg-white md:w-[40px]'}`}
       >
-        <button className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy group-hover/side:bg-navy_dark ">
+        <button
+          aria-label="sidebar-add-plan-btn"
+          className="flex-center w-[40px] h-[40px] rounded-[8px] bg-navy group-hover/side:bg-navy_dark "
+        >
           <IconAdd w="w-[16px]" h="h-[16px]" fill="#FFF" />
         </button>
         {isSideBarOpen && (
@@ -47,7 +50,10 @@ const SideBarETC = () => {
           sm:w-[310px]
         ${isSideBarOpen ? 'w-[222px]' : 'md:w-[40px]'}`}
       >
-        <button className="flex-center w-[40px] h-[40px]">
+        <button
+          aria-label="sidebar-signout-btn"
+          className="flex-center w-[40px] h-[40px]"
+        >
           <IconSignOut w="w-[20px]" h="h-[21px]" fill="#162F70" />
         </button>
         {isSideBarOpen && <span className=" text-navy">로그아웃</span>}

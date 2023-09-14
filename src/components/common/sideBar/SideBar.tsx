@@ -88,6 +88,7 @@ const SideBar: React.FC = () => {
     <>
       {isVisibleIcon && (
         <button
+          aria-label="sidebar-toggle-btn"
           onClick={toggleSideBar}
           className=" fixed left-[24px] flex-center z-[32]
           sm:w-[34px] sm:h-[34px] sm:top-[36px] 
@@ -125,7 +126,7 @@ const SideBar: React.FC = () => {
             />
             <img
               src={logoColor}
-              alt="로고"
+              alt="logo"
               onClick={onClickLogo}
               className="cursor-pointer w-[134px]
               sm:mt-[12px]

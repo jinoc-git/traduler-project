@@ -145,7 +145,10 @@ const SearchPeople = ({ closeModal }: PropsType) => {
             <label className="text-gray-dark-1 font-inter font-bold md:text-xs sm:sm leading-[24px]">
               동행 찾기
             </label>
-            <form onSubmit={handleSubmit(debouncedSearchUser)}>
+            <form
+              name="search-people-form"
+              onSubmit={handleSubmit(debouncedSearchUser)}
+            >
               <div className="relative flex items-center ">
                 <span className="absolute ml-3 text-gray-400 focus-within:text-gray ">
                   {screenSize === 'md' ? (
@@ -200,12 +203,14 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           {/* 버튼 */}
           <div className="flex items-center justify-center mt-auto space-x-4">
             <button
+              name="invite-cancel-btn"
               onClick={closeModal}
               className="md:w-[12.5rem] md:h-[2.75rem] sm:w-[150px] sm:h-[40px] rounded-lg border border-navy bg-white text-navy  hover:bg-navy_light_1 hover:text-navy_dark hover:border-navy_light_3"
             >
               취소
             </button>
             <button
+              name="invite-add-person-btn"
               onClick={inviteData}
               className="md:w-[12.5rem] md:h-[2.75rem] sm:w-[150px] sm:h-[40px] bottom-0 mx-auto  rounded-lg border border-navy bg-navy text-white  hover:bg-navy_light_3 hover:border-bg-navy_light_3"
             >

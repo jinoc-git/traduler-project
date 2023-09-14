@@ -49,7 +49,6 @@ const SearchPeople = ({ closeModal }: PropsType) => {
           (user, idx) => searchedPeople[idx]?.id !== user?.id,
         ),
       );
-      console.log(searchedPeople);
       setPeople(searchedPeople);
     }
   };

@@ -28,6 +28,7 @@ const DatePage = ({
             onClick={handlePreviousPage}
             disabled={currentPage === 0}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
+            name="date-page-previous-page-btn"
           >
             <IconChevronLeft w="w-[14px]" h="h-[22px]" />
           </button>
@@ -36,6 +37,7 @@ const DatePage = ({
             onClick={handleNextPage}
             disabled={currentPage === dates.length - 1}
             className="cursor-pointer disabled:cursor-none disabled:opacity-0"
+            name="date-page-next-page-btn"
           >
             <IconChevronRight w="w-[14px]" h="h-[22px]" />
           </button>

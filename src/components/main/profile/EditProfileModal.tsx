@@ -198,6 +198,7 @@ const EditProfileModal = ({
   return (
     <MapModalLayout value={animate}>
       <form
+        name="profile-edit-form"
         className="relative  flex flex-col  items-center  align-middle  rounded-xl
         md:h-[575px] md:w-[396px] md:justify-between md:gap-0
         sm:h-[404px] sm:w-[310px] sm:gap-[15px]
@@ -205,6 +206,7 @@ const EditProfileModal = ({
         onSubmit={handleSubmit(onSubmitEditProfileBtn)}
       >
         <button
+          name="profile-close-btn"
           className="absolute w-6 h-6 md:top-2 md:right-2 sm:top-0 sm:right-0"
           type="button"
           onClick={onClickCloseModalHandler}
@@ -282,6 +284,7 @@ const EditProfileModal = ({
                 placeholder={user?.nickname}
               />
               <button
+                name="profile-nickname-dup-btn"
                 type="button"
                 disabled={!isValid || nickname === ''}
                 onClick={checkNicknameDuplication}
@@ -291,6 +294,7 @@ const EditProfileModal = ({
               </button>
             </div>
             <button
+              name="profile-nickname-dup-btn"
               type="button"
               disabled={!isValid || nickname === ''}
               onClick={checkNicknameDuplication}
@@ -308,6 +312,7 @@ const EditProfileModal = ({
 
         <div className="flex justify-between md:w-[408px] sm:w-[310px]">
           <button
+            name="profile-remove-avatar-btn"
             type="button"
             onClick={removeAvatarBtnHandler}
             className="border border-navy rounded-lg text-navy hover:bg-navy_light_1  disabled:bg-gray_light_3 
@@ -319,6 +324,7 @@ const EditProfileModal = ({
             사진 제거
           </button>
           <button
+            name="profile-change-profile-btn"
             disabled={shouldBlockSubmitBtn.result}
             type="submit"
             className="border rounded-lg bg-navy text-white hover:bg-navy_light_3 disabled:bg-gray_light_3

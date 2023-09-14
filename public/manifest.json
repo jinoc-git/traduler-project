@@ -527,14 +527,8 @@
   ],
   "screenshots": [
     {
-      "src": "./images/screenshots/screenshot1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./images/screenshots/screenshot2.png",
-      "sizes": "1280x720",
+      "src": "./traduler_intro.png",
+      "sizes": "1920x1080",
       "type": "image/png",
       "purpose": "any"
     }

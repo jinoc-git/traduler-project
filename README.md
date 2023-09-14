@@ -114,8 +114,7 @@
 
 ---
 
-<img src="https://img.shields.io/badge/ReactDatePicker-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/reacthookform-DFECFF?style=for-the-badge&logo=reacthookform&logoColor=white"><img src="https://img.shields.io/badge/ReactDND-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/ReactDndHtml5Backend-DFECFF?style=for-the-badge&logo=&logoColor=white"><br/>
-<img src="https://img.shields.io/badge/FlickingReact-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/ReactToastify-DFECFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/BrowserImgCompression-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-DFECFF?style=for-the-badge&logo=reactrouter&logoColor=white">
+<img src="https://img.shields.io/badge/ReactDatePicker-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/reacthookform-DFECFF?style=for-the-badge&logo=reacthookform&logoColor=white"><img src="https://img.shields.io/badge/ReactDND-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/ReactDndHtml5Backend-DFECFF?style=for-the-badge&logo=&logoColor=white"><br/><img src="https://img.shields.io/badge/FlickingReact-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/ReactToastify-DFECFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/BrowserImgCompression-5E9FFF?style=for-the-badge&logo=&logoColor=white"><img src="https://img.shields.io/badge/reactrouter-DFECFF?style=for-the-badge&logo=reactrouter&logoColor=white">
 
 <br/>
 
@@ -145,6 +144,8 @@
 
 ---
 
+![아키텍처](https://github.com/jinoc-git/traduler-project/assets/108923582/b803a94a-24d1-4320-8db4-65d5a334411a)
+
 <br/>
 
 ---
@@ -156,22 +157,25 @@
 ![schema](https://github.com/jinoc-git/traduler-project/assets/108923582/b0f7c4fd-aae2-438e-aea1-856790f5d954)
 
 <br/>
-
-| Number | Method   | URL                | Description             | Request                                                                                                                | Response                                                                                                             |
-| ------ | -------- | ------------------ | ----------------------- | ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| 1      | `POST`   | /api/auth/register | 회원가입                | {email: string,password: string,userName:string,}                                                                      | Success (HTTP 200 OK){"message": "회원가입 성공"},Error (HTTP [Error Code]){"error": "회원가입 에러"}                |
-| 2      | `POST`   | /api/auth/login    | 로그인                  | { email: string, password: string}                                                                                     |                                                                                                                      |
-| 3      | `POST`   | /api/plans/create  | 계획 작성               | { planState:string, planId: string, planTitle: string, place: string, cost: number, isDeleted: boolean date: string[]} |                                                                                                                      |
-| 4      | `GET`    | /api/plans/get     | 내 계획 리스트 가져오기 |                                                                                                                        |                                                                                                                      |
-| 5      | `GET`    | /api/plans/get     | 계획 가져오기           | { planId : string}                                                                                                     | { planState:string, planId: string, planTitle: string, lace: string, cost: number isDeleted: boolean date: string[]} |
-| 6      | `PATCH`  | /api/plans/get     | 계획 수정[여행중]       | { planId:string, lanTitle: string, place: string, cost: number, date: string}                                          |                                                                                                                      |
-| 7      | `PATCH`  | /api/plans/get     | 계획 삭제               | { planId: string, isDeleted: boolean}                                                                                  |                                                                                                                      |
-| 8      | `GET`    | /api/plans/get     | 즐겨찾기 조회           | { userId:string}                                                                                                       | [ { userId:string, planId:string }, …]                                                                               |
-| 9      | `POST`   | /api/plans/get     | 즐겨찾기 추가           | { userId:string, planId:string}                                                                                        |                                                                                                                      |
-| 10     | `POST`   | /api/plans/get     | 즐겨찾기 삭제           | { userId:string, planId:string}                                                                                        |                                                                                                                      |
-| 11     | `GET`    | /api/plans/get     | 한 줄 코멘트 조회       | { planId: string, date: string}                                                                                        | { userId:string, planId:string, commentId:string, date: string, contents:string}                                     |
-| 12     | `POST`   | /api/plans/get     | 한 줄 코멘트 작성       | { userId:string, planId:string, commentId:string, date: string, contents:string}                                       |                                                                                                                      |
-| 13     | `DELETE` | /api/plans/get     | 한 줄 코멘트 삭제       | { commentId: string}                                                                                                   |                                                                                                                      |
+| API 명 	| Method 	| URL 	| query string 	| Request body 	| Response 	|
+|---	|---	|---	|---	|---	|---	|
+| 회원가입 	|  	| /api/auth/register 	|  	| {<br>  email: string,<br>  password: string,<br>  nickname:string,<br>  avatar_url:string<br>} 	| Success (HTTP 200 OK)<br>{<br>"message": "회원가입 성공"<br>},<br>Error (HTTP [Error Code])<br>{<br>"error": "회원가입 에러"<br>} 	|
+| 로그인 	|  	| /api/auth/login 	|  	| {<br>  email: string,<br>  password: string<br>} 	|  	|
+| 계획 작성[여행계획중] 	|  	| /api/plans/insert<br>/api/pins/insert<br>/api/plans_mates/insert 	|  	| {<br>  id: string,<br>  created_at: string,<br>  users_id: string,<br>  title: string,<br>  plan_state: string,<br>  total_cost: number,<br>  isDeleted: boolean,<br>  date: string[]<br>},<br>{<br>id: string,<br>users_id: string<br>},<br>{<br>id: string,<br>plan_id: string,<br>contents: json[],<br>date: string<br>} 	|  	|
+| 내 계획 리스트 가져오기 	|  	| /api/plans/get<br><br>/api/plan_mates/get 	| ?isDeleted=false<br><br>?column=users_id&value=contain.<br>${userId} 	|  	| {<br>  id: string,<br>  created_at: string,<br>  users_id: string,<br>  title: string,plan_state: string,total_cost: number,isDeleted: boolean,<br>  date: string[]},<br>{<br>  id: string,<br>  users_id: string<br>}, 	|
+| 계획 가져오기 	|  	| /api/plans/get 	| ?id=planId 	|  	| {<br>  id: string,<br>  users_id:string,<br>  plan_state:string,<br>  title: string,<br>  total_cost: number,<br>  isDeleted: boolean<br>  date: string[]<br>} 	|
+| 계획 수정[여행중] 	|  	| /api/plans/update 	|  	| {<br>  id: string,<br>  users_id:string,<br>  title: string,<br>  total_cost: number,<br>  date: string[]<br>} 	|  	|
+| 즐겨찾기 조회 	|  	| /api/book_marks/get 	| ?userId=userId 	|  	| [<br>  {<br>    id:string,<br>    userId:string,<br>    planId:string<br>  },<br>  …<br>] 	|
+| 즐겨찾기 추가 	|  	| /api/book_marks/insert 	|  	| {<br>  userId:string,<br>  planId:string<br>} 	|  	|
+| 즐겨찾기 삭제 	|  	| /api/book_marks/delete 	| ?id=id 	|  	|  	|
+| 한 줄 코멘트 작성 	|  	| /api/comments/create 	|  	| {<br>  id:string,<br>  user_id:string,<br>  plan_id:string,<br>  content:string<br>} 	|  	|
+| 한 줄 코멘트 수정 	|  	| /api/comments/update 	|  	| {<br>  id:string,<br>  user_id:string,<br>  plan_id:string,<br>  content:string<br>} 	|  	|
+| 한 줄 코멘트 삭제 	|  	| /api/comments/delete 	| ?id=commentId 	|  	|  	|
+| 한 줄 코멘트 조회 	|  	| /api/comments/get 	| ?id=planId 	|  	| {<br>  id:string,<br>  user_id:string,<br>  plan_id:string,<br>  content:string<br>} 	|
+| 여행 나가기 	|  	| /api/plans/update<br><br>/api/plan_mates/update 	| ?id=planId 	| X<br><br>{ users_id: updateMates } 	|  	|
+| 여행 상태 변경하기 	|  	| /api/comments/get 	| ?id=planId 	| { plan_state: planState } 	|  	|
+| plans_ending 데이터 불러오기 	|  	| /api/plans_ending/get 	| ?id=planId 	|  	|  	|
+| plans ending 저장하기 	|  	| /api/plans_ending/insert 	|  	|  	|  	|
 
 <br/>
 

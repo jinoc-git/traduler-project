@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import IconClose from '@assets/icons/IconClose';
+import { enableScrollLock } from '@utils/withScrollLock';
 
 interface CarouselModalProps {
   url: string;
@@ -10,6 +11,8 @@ interface CarouselModalProps {
 const CarouselModal: React.FC<CarouselModalProps> = ({ url, closeFunc }) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
+
     return () => {
       document.body.style.overflow = 'auto';
     };

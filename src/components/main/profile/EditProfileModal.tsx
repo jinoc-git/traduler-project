@@ -15,6 +15,7 @@ import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
+import { enableScrollLock } from '@utils/withScrollLock';
 
 interface EditProfileModalProps {
   onClickCloseModalHandler: () => void;
@@ -184,6 +185,7 @@ const EditProfileModal = ({
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (user !== null && user.profileImg !== null) {
       setPreviewImg(user.profileImg);
@@ -259,8 +261,8 @@ const EditProfileModal = ({
         />
 
         <p className="text-center md:text-[16px] sm:text-[12px]">
-          프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
-          정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
+          프로필 사진은 정사각형 비율로 된 사진을 업로드해 주세요. <br />
+          (100 X 100픽셀 권장)
         </p>
 
         <div>

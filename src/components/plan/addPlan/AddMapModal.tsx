@@ -11,6 +11,7 @@ import MapModalLayout from '@components/plan/common/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { enableScrollLock } from '@utils/withScrollLock';
 
 import { type MapModalInputType } from '../updatePlan/MapModal';
 
@@ -139,6 +140,7 @@ const AddMapModal = ({
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     return () => {
       document.body.style.overflow = 'auto';
     };

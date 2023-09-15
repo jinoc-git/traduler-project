@@ -87,7 +87,12 @@ export const quitPlan = async ({ userId, planId }: QuitPlanParam) => {
     .eq('id', planId)
     .select();
 
-  if (updateError != null) {
+  const { error: bookMarkError } = await supabase
+    .from('book_mark')
+    .delete()
+    .match({ plan_id: planId, user_id: userId });
+
+  if (updateError != null || bookMarkError !== null) {
     throw new Error('계획 나가기 중 오류가 발생했습니다.');
   }
 };

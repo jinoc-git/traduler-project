@@ -14,7 +14,7 @@ interface SideBarStore {
 }
 
 export const sideBarStore = create<SideBarStore>((set) => ({
-  isSideBarOpen: true,
+  isSideBarOpen: false,
   isVisibleSideBar: false,
   isErrorPage: false,
   isNotFoundPage: false,

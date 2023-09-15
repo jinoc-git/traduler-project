@@ -11,7 +11,6 @@ import {
   landingMockupTwo,
 } from '@assets/index';
 import Footer from '@components/common/footer/Footer';
-import PWABTN from '@components/landing/PWABTN';
 import { screenStore } from '@store/screenStore';
 
 const Landing = () => {
@@ -145,7 +144,6 @@ const Landing = () => {
         >
           로그인하고 사용해보기
         </p> */}
-        <PWABTN />
       </main>
       <Footer />
     </>

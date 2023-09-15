@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -5,7 +6,7 @@ import { toast } from 'react-toastify';
 import { sideBarStore } from '@store/sideBarStore';
 
 const PWABTN = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
@@ -16,7 +17,7 @@ const PWABTN = () => {
       return;
     }
 
-    (deferredPrompt as any).prompt();
+    deferredPrompt.prompt();
   };
 
   useEffect(() => {
@@ -36,11 +37,11 @@ const PWABTN = () => {
         handleBeforeInstallPrompt,
       );
     };
-  }, [window]);
+  }, []);
 
-  // useEffect(() => {
-  //   console.log('deferredPrompt', deferredPrompt);
-  // }, [deferredPrompt]);
+  useEffect(() => {
+    console.log('deferredPrompt', deferredPrompt);
+  }, [deferredPrompt]);
 
   return (
     <>
@@ -74,7 +75,8 @@ const PWABTN = () => {
             로그인하고 사용해보기
           </button>
         ))}
-      {pathname === '/main' && (
+      {pathname !== '/' && (
+        //  deferredPrompt !== null &&
         <div
           className={`flex flex-col fixed left-0 bottom-0 md:mb-[20px] sm:mb-[10px] items-center w-full
           ${isSideBarOpen ? 'md:pl-[270px]' : ''} duration-300

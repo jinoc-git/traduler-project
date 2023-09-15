@@ -93,7 +93,7 @@ const PinLayout = ({
             <ul
               className="absolute border border-gray_dark_1  bg-white z-10 overflow-hidden
               md:left-[40px] md:bottom-[-50px] md:text-[16px] md:w-[100px] md:rounded-md
-              sm:left-[-22px] sm:bottom-[-27px] sm:text-[10px] sm:h-[80px] sm:w-[45px] sm:rounded-l-none sm:rounded-r-md
+              sm:left-[-22px] sm:bottom-[-28px] sm:text-[10px] sm:h-[80px] sm:w-[45px] sm:rounded-l-none sm:rounded-r-md
             "
             >
               <li

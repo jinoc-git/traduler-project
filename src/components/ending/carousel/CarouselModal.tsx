@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import IconClose from '@assets/icons/IconClose';
-import { enableScrollLock } from '@utils/withScrollLock';
+import { disableScrollLock, enableScrollLock } from '@utils/withScrollLock';
 
 interface CarouselModalProps {
   url: string;
@@ -15,12 +15,13 @@ const CarouselModal: React.FC<CarouselModalProps> = ({ url, closeFunc }) => {
 
     return () => {
       document.body.style.overflow = 'auto';
+      disableScrollLock();
     };
   });
 
   return (
     <div className="flex-center fixed top-0 left-0 w-screen h-screen z-[40] bg-black/40">
-      <div className=" relative">
+      <div className="relative ">
         <button
           name="carousel-close-btn"
           onClick={closeFunc}

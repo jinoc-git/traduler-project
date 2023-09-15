@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { signInWithGoogle, signInWithSB } from '@api/supabaseAuth';
-import { ic_google_1x } from '@assets/icons/1x';
+import IconGoogle from '@assets/icons/IconGoogle';
 import IconHidden from '@assets/icons/IconHidden';
 import IconLocked from '@assets/icons/IconLocked';
 import IconMessage from '@assets/icons/IconMessage';
@@ -151,12 +151,9 @@ const SignInForm = () => {
             className="h-[45px] border rounded-lg border-gray_light_3 hover:bg-gray_dark_1 hover:text-white"
           >
             <div className="flex justify-center items-center ">
-              <img
-                src={ic_google_1x}
-                alt="구글 로고"
-                className="w-[18px] h-[18px] mr-1"
-              />
-              <span>구글 계정으로 로그인 하기</span>
+              <IconGoogle w="w-[18px]" h="h-[18px]" />
+
+              <span className="ml-1">구글 계정으로 로그인 하기</span>
             </div>
           </button>
           <p

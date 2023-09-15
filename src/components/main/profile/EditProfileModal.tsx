@@ -15,6 +15,7 @@ import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
+import { enableScrollLock } from '@utils/withScrollLock';
 
 interface EditProfileModalProps {
   onClickCloseModalHandler: () => void;
@@ -184,6 +185,7 @@ const EditProfileModal = ({
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
     if (user !== null && user.profileImg !== null) {
       setPreviewImg(user.profileImg);

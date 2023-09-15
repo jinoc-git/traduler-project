@@ -13,6 +13,7 @@ import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { enableScrollLock } from '@utils/withScrollLock';
 import { type PinInsertType, type Json } from 'types/supabase';
 
 export interface MapModalInputType {
@@ -169,6 +170,7 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     return () => {
       document.body.style.overflow = 'auto';
     };

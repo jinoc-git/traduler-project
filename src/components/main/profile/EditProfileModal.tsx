@@ -259,8 +259,8 @@ const EditProfileModal = ({
         />
 
         <p className="text-center md:text-[16px] sm:text-[12px]">
-          프로필 사진은 이미지 파일 (jpg, jpeg, png)만 가능하며, <br />
-          정사각형 비율로 된 사진을 업로드해 주세요. (100 X 100 픽셀 권장)
+          프로필 사진은 정사각형 비율로 된 사진을 업로드해 주세요. <br />
+          (100 X 100픽셀 권장)
         </p>
 
         <div>

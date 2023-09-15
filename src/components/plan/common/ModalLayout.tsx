@@ -16,7 +16,8 @@ const MapModalLayout = ({
         className={`flex flex-col justify-center bg-bg_white rounded-lg md:animate-fadeIn
       md:w-modal  md:px-[52px] md:py-[48px] md:rounded-lg md:static
       sm:w-[360px] sm:px-[25px] sm:py-[36px] sm:gap-[16px] sm:fixed sm:bottom-0 sm:rounded-b-none
-      ${value ? 'sm:animate-slideUp' : 'sm:animate-slideDown'} 
+      ${value ? 'md:animate-fadeIn' : 'md:animate-fadeOut'}
+      ${value ? 'sm:animate-slideUp' : 'sm:animate-slideDown'}
       `}
       >
         {children}

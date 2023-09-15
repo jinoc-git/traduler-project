@@ -48,9 +48,9 @@ const CardSection = () => {
 
   return (
     <section
-      className="mx-auto my-0
-      sm:w-[320px] 
-      md:w-[800px]"
+      className="mx-auto mt-0
+      sm:w-[320px] sm:mb-[55px] 
+      md:w-[800px] md:mb-[90px]"
     >
       <Card
         planDataList={planDataList}

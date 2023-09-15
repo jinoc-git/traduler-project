@@ -115,6 +115,37 @@ h3 {
   text-align: center !important;
 }
 
+.react-datepicker__header {
+  background-color: white !important;
+}
+
+.react-datepicker__startDay {
+  color: #fff;
+  background-color: #1a68db !important;
+}
+
+.react-datepicker__day:not(.react-datepicker__day--disabled) {
+  &:hover {
+    background-color: #1a68db !important;
+    color: #fff;
+  }
+}
+
+.react-datepicker__day--selecting-range-start {
+  color: #fff !important;
+}
+
+.react-datepicker__day--selecting-range-end {
+  color: #fff !important;
+  background-color: #1a68db !important;
+}
+
+.react-datepicker__day--in-range:not(
+    .react-datepicker__day--selecting-range-start
+  ):not(.react-datepicker__day--selecting-range-end) {
+  background-color: #bad9f1 !important;
+}
+
 .slick-slider.slick-initialized {
   position: relative;
 }

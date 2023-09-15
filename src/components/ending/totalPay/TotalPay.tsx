@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { getMates } from '@api/planMates';
 import { getTotalCost } from '@api/plans';
-import IconReceipt from '@assets/IconReceipt';
+import IconReceipt from '@assets/icons/IconReceipt';
 import { screenStore } from '@store/screenStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useQuery } from '@tanstack/react-query';

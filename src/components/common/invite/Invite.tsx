@@ -1,5 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import uuid from 'react-uuid';
 
@@ -7,17 +7,26 @@ import { getMates } from '@api/planMates';
 import IconFriends from '@assets/icons/IconFriends';
 import { defaultImageGray } from '@assets/index';
 import SearchPeople from '@components/common/invite/SearchPeople';
+import useBooleanState from '@hooks/useBooleanState';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { useQuery } from '@tanstack/react-query';
 
 const Invite = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const switchModal = () => {
-    setIsOpen((state) => !state);
+  // const [isOpen, setIsOpen] = useState(false);
+
+  const { value: isOpen, setNeedValue: setIsOpen } = useBooleanState(false);
+  const { value: isAnimation, setNeedValue: setIsAnimation } =
+    useBooleanState(false);
+  const openModal = () => {
+    setIsOpen(true);
+    setIsAnimation(true);
   };
   const closeModal = () => {
-    setIsOpen(false);
+    setIsAnimation(false);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 400);
   };
 
   const { oldInvitedUser, inviteUser, resetInvitedUser, syncInviteduser } =
@@ -81,7 +90,7 @@ const Invite = () => {
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user) => {
                   return (
                     <img
-                      alt='profile-img'
+                      alt="profile-img"
                       key={uuid()}
                       src={
                         user.avatar_url != null
@@ -101,11 +110,7 @@ const Invite = () => {
           )}
           {isOldInvitedUser ? (
             oldInvitedUser.length > maxDisplayCount ? (
-              <div
-                className="flex items-center text-gray_dark_1
-            sm:text-xs sm:font-semibold 
-            md:text-sm md:font-semibold"
-              >
+              <div className="flex items-center text-gray_dark_1 sm:text-xs sm:font-semibold md:text-sm md:font-semibold">
                 {oldInvitedUser.slice(0, maxDisplayCount).map((user) => (
                   <div key={uuid()} className="mr-[2px]">
                     {user.nickname}
@@ -133,11 +138,11 @@ const Invite = () => {
         <div className="md:mt-0 sm:flex sm:justify-end sm:h-[30px] sm:mt-[5px]">
           {modifyState === 'modify' && (
             <button
-              name='invite-invite-btn'
+              name="invite-invite-btn"
               className="border border-gray rounded-md text-xs p-1 ml-[8px] font-bold text-gray_dark_1 w-[45px] h-[30px] hover:bg-navy_dark hover:text-white duration-200
             sm:w-[40px] sm:h-[28px]
             md:w-[45px] md:h-[30px]"
-              onClick={switchModal}
+              onClick={openModal}
             >
               추가
             </button>
@@ -145,9 +150,7 @@ const Invite = () => {
         </div>
       </div>
       {isOpen && (
-        <div className="fixed inset-0 z-40 w-screen h-screen bg-black/20">
-          <SearchPeople closeModal={closeModal} />
-        </div>
+        <SearchPeople closeModal={closeModal} isAnimation={isAnimation} />
       )}
     </>
   );

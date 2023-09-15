@@ -538,5 +538,6 @@
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "categories": ["travel"],
-  "description": "다 같이 여행을 떠날 때 저희 서비스와 함께해요! - 국내 여행 일정 관리 웹사이트"
+  "description": "다 같이 여행을 떠날 때 저희 서비스와 함께해요! - 국내 여행 일정 관리 웹사이트",
+  "orientation": "portrait"
 }

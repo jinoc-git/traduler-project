@@ -23,8 +23,8 @@ const Pay = ({ total_Cost, register, errors, onChangeCost }: PropsType) => {
         <div className="flex items-center">
           <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
           <p
-            className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] 
-          md:mr-[51px] md:ml-[8px]"
+            className="font-semibold sm:mr-[37px] sm:ml-[8px] 
+          md:mr-[53px] md:ml-[8px]"
           >
             전체 예산
           </p>

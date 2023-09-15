@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
+import PWABTN from '@components/landing/PWABTN';
 import CardSection from '@components/main/card/CardSection';
 import Profile from '@components/main/profile/Profile';
 import { screenStore } from '@store/screenStore';
@@ -52,6 +53,7 @@ const Main = () => {
         </button>
       </section>
       <CardSection />
+      <PWABTN />
     </main>
   );
 };

@@ -83,7 +83,6 @@ const SideBar: React.FC = () => {
 
   const nextPlan = startPlans ? startPlans[0] : undefined;
   const hasNextPlan = Boolean(nextPlan);
-  console.log(isSideBarOpen)
   return (
     <>
       {isVisibleIcon && (

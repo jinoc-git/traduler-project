@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 
 import { getPlanListAndMateList } from '@api/plans';
 import { checkUserNickname, updateUserNickname } from '@api/supabaseAuth';
-import { ic_name_1x } from '@assets/icons/1x';
 import IconClose from '@assets/icons/IconClose';
+import IconName from '@assets/icons/IconName';
 import IconProfileCamera from '@assets/icons/IconProfileCamera';
 import { profileDefaultBlack, defaultImageGray } from '@assets/index';
 import MapModalLayout from '@components/plan/common/ModalLayout';
@@ -267,11 +267,9 @@ const EditProfileModal = ({
           <div className="flex justify-between md:w-[370px] sm:w-[310px]">
             <div className="relative">
               <label htmlFor="edit-nickname">
-                <img
-                  src={ic_name_1x}
-                  alt="닉네임 아이콘"
-                  className="absolute top-1/2 -translate-y-1/2 left-[10px] w-[12px] h-[12px] cursor-pointer"
-                />
+                <div className="absolute top-1/2 -translate-y-1/2 left-[10px] cursor-pointer">
+                  <IconName w="w-[12px]" h="h-[12px]" fill="#000" />
+                </div>
               </label>
               <input
                 type="text"

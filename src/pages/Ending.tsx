@@ -102,7 +102,6 @@ const Ending = () => {
           </div>
           <EndingMap dates={dates as string[]} />
         </section>
-
         <Carousel />
         <PlaceList />
         <TotalPay />

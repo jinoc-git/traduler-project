@@ -9,6 +9,13 @@ interface DropDownProps {
 
 const DropDown = ({ children }: DropDownProps) => {
   const { value, toggleValue, setNeedValue } = useBooleanState(false);
+  const isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  const handleMouseOut = () => {
+    if (isIos) {
+      setNeedValue(false);
+    }
+  };
 
   return (
     <div className="relative">
@@ -18,6 +25,7 @@ const DropDown = ({ children }: DropDownProps) => {
         onBlur={() => {
           setNeedValue(false);
         }}
+        onMouseOut={handleMouseOut}
         className="md:p-3 sm:p-1"
       >
         <IconMicroMenu w="w-[24px]" h="h-[24px]" />

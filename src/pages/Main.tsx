@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
@@ -10,9 +10,14 @@ import { sideBarStore } from '@store/sideBarStore';
 
 const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
+  const setMenuIsOpen = sideBarStore((state) => state.setMenuIsOpen);
   const screenSize = screenStore((state) => state.screenSize);
 
   const navigate = useNavigate();
+
+  useLayoutEffect(() => {
+    setMenuIsOpen(false);
+  }, []);
 
   return (
     <main

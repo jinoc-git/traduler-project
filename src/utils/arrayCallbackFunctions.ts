@@ -77,3 +77,13 @@ export const sideBar = {
     }
   },
 };
+
+export const search = {
+  notInvite: (searchedPeople: UserType[]) => (user: UserType, idx: number) => {
+    return searchedPeople[idx]?.id !== user?.id;
+  },
+  noInvite: (idx: number) => (_: UserType, index: number) => index !== idx,
+  removeExist: (invitedUser: UserType[]) => (person: UserType) => {
+    return invitedUser.filter((user) => user.id === person.id).length === 0;
+  },
+};

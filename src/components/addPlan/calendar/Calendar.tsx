@@ -36,13 +36,13 @@ const Calendar: React.FC<CalendarProps> = ({
     <div
       className="relative z-10 flex items-center  
     sm:w-[286px] sm:block sm:pt-[15px] sm:mx-auto sm:justify-between
-    md:w-[680px] md:py-[10px] md:pr-[62px] md:flex md:mx-[6px]"
+    md:w-[680px] md:py-[10px] md:flex md:mx-[6px]"
     >
       <div className="sm:flex sm:justify-between sm:w-[286px] md:w-[280px] ">
         <div
           className="flex items-center font-semibold text-gray_dark_1 
         sm:gap-[7px] sm:mb-[16px]
-        md:gap-2 md:mr-[46px]"
+        md:gap-2 md:mr-[30px]"
         >
           <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
           <label className="sm:text-sm sm:w-[63px] md:w-[80px] md:text-normal">
@@ -100,8 +100,8 @@ const Calendar: React.FC<CalendarProps> = ({
               : ``
           }
           className="text-center react-datepicker read-only:cursor-default 
-          sm:w-[132px] sm:h-[28px]
-          md:w-[120px] md:mr-[46px]"
+            sm:w-[132px] sm:h-[28px]
+            md:w-[120px] md:mr-[46px]"
           readOnly={modifyState === 'readOnly'}
           placeholderText="YYYY / MM / DD"
           required
@@ -109,11 +109,11 @@ const Calendar: React.FC<CalendarProps> = ({
           portalId="datepiker-portal"
         />
       </div>
-      <div className="sm:flex sm:justify-between sm:w-[286px] md:w-[280px] ">
+      <div className="sm:flex sm:justify-between sm:w-[286px] md:w-[280px]">
         <div
           className="flex items-center font-semibold text-gray_dark_1
         sm:gap-[7px] sm:mb-[16px]
-        md:gap-2 md:mr-[46px]"
+        md:gap-2 md:mr-[30px]"
         >
           <IconCalendarDefault w="w-[20px]" h="h-[20px]" fill="#4E4F54" />
           <label className="sm:text-sm sm:w-[63px] md:w-[80px] md:text-normal">
@@ -168,8 +168,8 @@ const Calendar: React.FC<CalendarProps> = ({
               : ``
           }
           className="text-center react-datepicker read-only:cursor-default
-        sm:w-[132px] sm:h-[28px]
-        md:w-[120px]"
+            sm:w-[132px] sm:h-[28px]
+            md:w-[120px] md:mr-[46px]"
           readOnly={modifyState === 'readOnly'}
           placeholderText="YYYY / MM / DD"
           required

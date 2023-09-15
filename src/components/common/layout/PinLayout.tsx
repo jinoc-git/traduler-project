@@ -41,7 +41,7 @@ const PinLayout = ({
   return (
     <div
       className="relative flex items-center justify-between gap-4
-      sm:w-[286px] sm:mb-[37px] sm:ml-[6px]
+      sm:w-[286px] sm:mb-[37px] 
       md:w-[651px] md:mx-[25px] md:ml-0"
     >
       <div className="flex items-center">

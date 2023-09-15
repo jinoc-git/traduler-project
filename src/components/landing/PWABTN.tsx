@@ -9,8 +9,7 @@ const PWABTN = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
-  const installEvent = installEventStore((state) => state.installEvent);
-  const setEvent = installEventStore((state) => state.setEvent);
+  const { installEvent, setEvent } = installEventStore();
 
   const installApp = async () => {
     installEvent.prompt();

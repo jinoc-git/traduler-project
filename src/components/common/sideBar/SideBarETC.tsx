@@ -11,7 +11,7 @@ import { userStore } from '@store/userStore';
 const SideBarETC = () => {
   const navigate = useNavigate();
   const resetUser = userStore((state) => state.resetUser);
-  const { isSideBarOpen } = sideBarStore();
+  const { isSideBarOpen, setMenuIsOpen } = sideBarStore();
 
   const onClickAddPlan = () => {
     navigate('/addPlan');
@@ -20,12 +20,13 @@ const SideBarETC = () => {
   const onClickSignOutHandler = async () => {
     await signOutForSB();
     toast.success('로그아웃에 성공하였습니다.');
+    setMenuIsOpen(false)
     navigate('/signin');
     resetUser();
   };
 
   return (
-    <div className="flex flex-col gap-2 mt-[20px] ">
+    <div className="flex flex-col gap-2 mt-[20px] mb-[10px] ">
       <div
         onClick={onClickAddPlan}
         className={`group/side flex items-center gap-4 rounded-[8px] hover:bg-navy_dark  cursor-pointer 

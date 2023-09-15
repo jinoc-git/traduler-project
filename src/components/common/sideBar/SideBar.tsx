@@ -83,7 +83,7 @@ const SideBar: React.FC = () => {
 
   const nextPlan = startPlans ? startPlans[0] : undefined;
   const hasNextPlan = Boolean(nextPlan);
-
+  console.log(isSideBarOpen)
   return (
     <>
       {isVisibleIcon && (
@@ -107,7 +107,7 @@ const SideBar: React.FC = () => {
       )}
       {isVisibleSideBar ? (
         <aside
-          className={` touch-none fixed h-[100vh] border-r border-slate-300 rounded-r-[12px] z-[31] overflow-hidden bg-white transition-all duration-300 ease-in-out  ${
+          className={` touch-none fixed h-[100vh] sm:w-[0px] md:w-[88px] border-r border-slate-300 rounded-r-[12px] z-[31] overflow-hidden bg-white transition-all duration-300 ease-in-out  ${
             isSideBarOpen
               ? 'sm:w-[357px] sm:px-[24px] md:w-[270px] md:px-[24px]  '
               : 'sm:w-[0px] sm:px-[0px] md:w-[88px] md:px-[24px]'
@@ -116,8 +116,7 @@ const SideBar: React.FC = () => {
           <div
             className={`flex items-center bg-white
             sm:w-[310px] sm:h-[65px] sm:gap-[58px] sm:mt-[12px]
-            md:w-[222px] md:h-[70px] md:gap-[34px]
-            ${isSideBarOpen ? ' md:mt-0' : 'md:mt-0'}`}
+            md:w-[222px] md:h-[70px] md:gap-[34px]`}
           >
             <div
               className="flex
@@ -144,7 +143,7 @@ const SideBar: React.FC = () => {
             />
 
             <div
-              className={`flex flex-col gap-2 md:min-h-[382px] sm:min-h-[358px]`}
+              className={`flex flex-col gap-2 md:min-h-[382px] sm:min-h-[338px]`}
             >
               <p
                 className={`font-semibold text-xs text-gray_dark_1 ${

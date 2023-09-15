@@ -24,6 +24,9 @@ const MapModalPay = ({
         placeholder="지출 비용을 입력해주세요."
         {...register('cost', {
           onChange: onChangeCost,
+          setValueAs(value) {
+            return value === '' ? '0' : value;
+          },
         })}
         className="input-border
           sm:h-[44px] sm:text-sm sm:font-medium"

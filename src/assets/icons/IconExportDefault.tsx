@@ -15,7 +15,7 @@ const IconExportDefault = ({ w, h, fill }: IconType) => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`sm:w-[24px] sm:h-[24px] ${w} ${h}`}
+      className={`sm:w-[16px] sm:h-[16px] md:${w} md:${h}`}
       onMouseEnter={() => {
         setIsHovered(true);
       }}

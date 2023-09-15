@@ -11,6 +11,7 @@ import MapModalLayout from '@components/plan/common/ModalLayout';
 import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
+import { disableScrollLock, enableScrollLock } from '@utils/withScrollLock';
 
 import { type MapModalInputType } from '../updatePlan/MapModal';
 
@@ -51,8 +52,8 @@ const AddMapModal = ({
   const onSubmitPlaceName: SubmitHandler<MapModalInputType> = (data) => {
     const removeComma = data.cost.replaceAll(',', '');
     const addCost = Number(removeComma);
-    if (addCost > 10000000 || addCost <= 0) {
-      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+    if (addCost > 10000000 || addCost < 0) {
+      toast.error('지출 비용은 0원 초과 1천만원 이하로 입력해 주세요');
       return;
     }
 
@@ -139,8 +140,10 @@ const AddMapModal = ({
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     return () => {
       document.body.style.overflow = 'auto';
+      disableScrollLock();
     };
   }, []);
 

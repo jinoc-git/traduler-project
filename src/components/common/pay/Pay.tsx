@@ -11,7 +11,7 @@ interface PropsType {
   register: UseFormRegister<InputType>;
   errors?: FieldErrors<InputType>;
   total_Cost?: string;
-  onChangeCost?:  (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChangeCost?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Pay = ({ total_Cost, register, errors, onChangeCost }: PropsType) => {
@@ -23,8 +23,8 @@ const Pay = ({ total_Cost, register, errors, onChangeCost }: PropsType) => {
         <div className="flex items-center">
           <IconWallet w="w-[20px]" h="h-[18px]" fill="#4E4F54" />
           <p
-            className="sm:font-semibold sm:mr-[37px] sm:ml-[8px] 
-          md:mr-[51px] md:ml-[8px]"
+            className="font-semibold sm:mr-[37px] sm:ml-[8px] 
+          md:mr-[53px] md:ml-[8px]"
           >
             전체 예산
           </p>
@@ -46,7 +46,10 @@ const Pay = ({ total_Cost, register, errors, onChangeCost }: PropsType) => {
               placeholder="예산을 입력하세요."
               {...register('totalCost', {
                 required: '예산은 필수입니다.',
-                onChange: onChangeCost
+                onChange: onChangeCost,
+                setValueAs(value) {
+                  return value === '' ? '0' : value;
+                },
               })}
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             />

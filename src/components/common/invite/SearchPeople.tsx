@@ -12,6 +12,8 @@ import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { screenStore } from '@store/screenStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { search } from '@utils/arrayCallbackFunctions';
+import { disableScrollLock, enableScrollLock } from '@utils/withScrollLock';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
 
@@ -25,39 +27,42 @@ interface PropsType {
 }
 
 const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
+  const { id: planId } = useParams();
+  const [people, setPeople] = useState<UserType[]>([]);
+  const screenSize = screenStore((state) => state.screenSize);
+  const { invitedUser, inviteUser, setUser, syncInviteduser } =
+    inviteUserStore();
+  const queryClient = useQueryClient();
+  const { confirm } = useConfirm();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<InputType>({ mode: 'onChange' });
-  const [people, setPeople] = useState<UserType[]>([]);
-  const { id: planId } = useParams();
-
-  const screenSize = screenStore((state) => state.screenSize);
 
   const searchUser: SubmitHandler<InputType> = async (data) => {
     if (data.userInfo === '') {
       setPeople([]);
       return;
     }
+
     const res = await findUsers(data.userInfo);
+
     if (res.nickname != null && res.email != null) {
       const searchedPeople: UserType[] = [];
       searchedPeople.push(...res.nickname);
       searchedPeople.push(
-        ...res.email.filter(
-          (user, idx) => searchedPeople[idx]?.id !== user?.id,
-        ),
+        ...res.email.filter(search.notInvite(searchedPeople)),
       );
       setPeople(searchedPeople);
     }
   };
+
   const debouncedSearchUser = _.debounce(searchUser, 300);
 
-  const { invitedUser, inviteUser, setUser, syncInviteduser } =
-    inviteUserStore();
   const usersId = invitedUser.map((item) => item.id);
-  const { confirm } = useConfirm();
+
   const handleInvite = async (user: UserType) => {
     const confTitle = '동행 초대';
     const confDesc = '해당 여행에 초대하시겠습니까?';
@@ -67,7 +72,6 @@ const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
     confirm.default(confTitle, confDesc, confFunc);
   };
 
-  const queryClient = useQueryClient();
   const inviteMutation = useMutation({
     mutationFn: async ([usersId, planId]: [string[], string]) => {
       await updateMates(usersId, planId);
@@ -92,16 +96,20 @@ const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
     const confTitle = '동행 초대 삭제';
     const confDesc = '해당 여행에서 삭제하시겠습니까?';
     const confFunc = () => {
-      const deletedUser = invitedUser.filter((_, index) => index !== idx);
+      const deletedUser = invitedUser.filter(search.noInvite(idx));
       setUser(deletedUser);
     };
     confirm.delete(confTitle, confDesc, confFunc);
   };
 
+  const searchResult = people.filter(search.removeExist(invitedUser));
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    enableScrollLock();
     return () => {
       document.body.style.overflow = 'auto';
+      disableScrollLock();
     };
   });
 
@@ -119,7 +127,11 @@ const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
           <label className="text-gray-dark-1 font-inter font-bold md:text-xs sm:sm leading-[24px]">
             초대한 사람 보기
           </label>
-          <div className="flex flex-col items-center overflow-scroll md:w-[396px] sm:w-full h-[126px] bg-white rounded-lg ">
+          <div
+            className={`flex flex-col items-center md:w-[396px] sm:w-full h-[126px] bg-white rounded-lg ${
+              invitedUser.length > 2 ? 'overflow-y-scroll' : ''
+            }`}
+          >
             {invitedUser.length !== 0 &&
               invitedUser.map((person, idx) => {
                 return (
@@ -170,29 +182,27 @@ const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
           </form>
         </div>
         {/* 검색결과 */}
-        <div className="flex flex-col items-center overflow-scroll w-full md:h-[240px] sm:h-[240px] bg-white rounded-lg md:mt-3 sm:mt-0">
-          {people?.length === 0 && (
+        <div
+          className={`flex flex-col items-center w-full md:h-[240px] sm:h-[240px] bg-white rounded-lg md:mt-3 sm:mt-0 ${
+            people.length === 0 ? '' : 'overflow-y-scroll'
+          }`}
+        >
+          {people.length === 0 && (
             <div className="flex items-center justify-center text-center mt-[110px] md:text-normal sm:text-sm">
               검색 결과가 없습니다.
             </div>
           )}
-          {people
-            .filter(
-              (person) =>
-                invitedUser.filter((user) => user.id === person.id).length ===
-                0,
-            )
-            .map((person: UserType, idx) => {
-              return (
-                <div key={uuid()} className="w-full">
-                  <UserList
-                    person={person}
-                    idx={idx}
-                    handleInvite={handleInvite}
-                  />
-                </div>
-              );
-            })}
+          {searchResult.map((person: UserType, idx) => {
+            return (
+              <div key={uuid()} className="w-full">
+                <UserList
+                  person={person}
+                  idx={idx}
+                  handleInvite={handleInvite}
+                />
+              </div>
+            );
+          })}
         </div>
         {/* 버튼 */}
         <div className="flex items-center justify-center mt-auto space-x-4">

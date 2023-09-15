@@ -5,6 +5,7 @@ import { ToastContainer, Zoom } from 'react-toastify';
 
 import ConfirmModal from '@components/common/confirm/ConfirmModal';
 import { confirmStore } from '@store/confirmStore';
+import { installEventStore } from '@store/installEventStore';
 import { screenStore } from '@store/screenStore';
 import _ from 'lodash';
 
@@ -15,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const { isOpen } = confirmStore();
   const { setScreenSize } = screenStore();
+  const { setEvent } = installEventStore();
 
   useEffect(() => {
     const resize = _.debounce(() => {
@@ -27,11 +29,22 @@ const App = () => {
       if (screenWidth >= 1110 && screenWidth < 1440) setScreenSize('md');
       if (screenWidth >= 1440) setScreenSize('lg');
     }, 250);
-    resize()
+    resize();
     window.addEventListener('resize', resize);
+
+    const handleBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setEvent(event);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
       window.removeEventListener('resize', resize);
+      window.removeEventListener(
+        'beforeinstallprompt',
+        handleBeforeInstallPrompt,
+      );
     };
   }, []);
 

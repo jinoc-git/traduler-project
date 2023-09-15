@@ -13,7 +13,7 @@ import { inviteUserStore } from '@store/inviteUserStore';
 import { screenStore } from '@store/screenStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { search } from '@utils/arrayCallbackFunctions';
-import { enableScrollLock } from '@utils/withScrollLock';
+import { disableScrollLock, enableScrollLock } from '@utils/withScrollLock';
 import _ from 'lodash';
 import { type UserType } from 'types/supabase';
 
@@ -109,6 +109,7 @@ const SearchPeople = ({ closeModal, isAnimation }: PropsType) => {
     enableScrollLock();
     return () => {
       document.body.style.overflow = 'auto';
+      disableScrollLock();
     };
   });
 

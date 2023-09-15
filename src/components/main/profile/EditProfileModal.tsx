@@ -15,7 +15,7 @@ import useFormValidator from '@hooks/useFormValidator';
 import { userStore } from '@store/userStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeUserAvartar, updateUserAvatar } from '@utils/updateUserProfile';
-import { enableScrollLock } from '@utils/withScrollLock';
+import { disableScrollLock, enableScrollLock } from '@utils/withScrollLock';
 
 interface EditProfileModalProps {
   onClickCloseModalHandler: () => void;
@@ -194,6 +194,7 @@ const EditProfileModal = ({
     return () => {
       document.body.style.overflow = 'auto';
       setPreviewImg('');
+      disableScrollLock();
     };
   }, []);
 

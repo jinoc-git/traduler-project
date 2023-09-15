@@ -10,13 +10,14 @@ import { useQuery } from '@tanstack/react-query';
 import { calcDutchPay, formatNumberWithCommas } from '@utils/calcDutchPay';
 import { removeYearOfDate } from '@utils/changeFormatDay';
 
-type DatesAndPaySum = Record<string, number>;
+type DatesAndPaySum = Record<string, string>;
 
 const TotalPay = () => {
-  const [totalCost, setTotalCost] = useState<number | null>(null);
+  const [totalCost, setTotalCost] = useState<string | null>(null);
   const [endingInfo, setEndingInfo] = useState<
     | {
         remainingBudget: number;
+        dailyPaySum: string[];
         totalPay: number;
         perPersonCost: number;
         datesAndPaySum: DatesAndPaySum[];
@@ -117,8 +118,7 @@ const TotalPay = () => {
             >
               예산은 &nbsp;
               <span className="text-yellow font-Pretendard font-semibold  ">
-                {totalCost !== null ? formatNumberWithCommas(totalCost) : ''} 원
-                &nbsp;
+                {totalCost !== null ? totalCost : ''} 원 &nbsp;
               </span>
               입니다.
             </p>
@@ -132,7 +132,7 @@ const TotalPay = () => {
                 >
                   {endingInfo?.datesAndPaySum.map((item) => {
                     const day = removeYearOfDate(Object.keys(item)[0]);
-                    const pay = formatNumberWithCommas(Object.values(item)[0]);
+                    const pay = Object.values(item)[0];
                     return (
                       <div className="mt-[5px] mb-[5px]" key={uuid()}>
                         <span className="font-semibold mr-[65px] text-gray_dark_1">

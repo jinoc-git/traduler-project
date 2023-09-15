@@ -7,7 +7,7 @@ export interface PinContentsType {
   lat?: number;
   lng?: number;
   placeName?: string;
-  cost?: number | null;
+  cost?: string | null;
   address?: string;
   distance?: number | undefined;
 }

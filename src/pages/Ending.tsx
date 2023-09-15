@@ -32,7 +32,7 @@ const Ending = () => {
   const navigate = useNavigate();
 
   const [dates, setDates] = useState<string[]>();
-  const [pay, setPay] = useState<number>();
+  const [pay, setPay] = useState<string>('');
   const [title, setTitle] = useState<string>();
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const Ending = () => {
   useEffect(() => {
     if (planEnding !== undefined && planEnding !== null) {
       setDates(planEnding[0].dates);
-      setPay(planEnding[0].total_cost as number);
+      setPay(planEnding[0].total_cost);
       setTitle(planEnding[0].title);
     }
   }, [planEnding]);
@@ -89,7 +89,7 @@ const Ending = () => {
           </div>
           <EndingDate planDates={dates as string[]} />
           <Invite />
-          <EndingPay pay={pay as number} />
+          <EndingPay pay={pay} />
         </section>
         <section>
           <div

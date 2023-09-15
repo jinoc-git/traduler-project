@@ -1,12 +1,14 @@
 import React from 'react';
 import { type UseFormRegister } from 'react-hook-form';
 
-import { type InputType } from '@components/plan/addPlan/AddMapModal';
+import { type MapModalInputType } from '../updatePlan/MapModal';
 
 const MapModalPay = ({
   register,
+  onChangeCost,
 }: {
-  register: UseFormRegister<InputType>;
+  register: UseFormRegister<MapModalInputType>;
+  onChangeCost: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <div className="flex flex-col">
@@ -18,16 +20,10 @@ const MapModalPay = ({
       </label>
       <input
         id="cost"
-        type="number"
-        step={'10000'}
-        min={0}
-        max={10000000}
+        type="text"
         placeholder="지출 비용을 입력해주세요."
         {...register('cost', {
-          setValueAs(value) {
-            return value === '' ? 0 : parseInt(value);
-          },
-          valueAsNumber: true,
+          onChange: onChangeCost,
         })}
         className="input-border
           sm:h-[44px] sm:text-sm sm:font-medium"

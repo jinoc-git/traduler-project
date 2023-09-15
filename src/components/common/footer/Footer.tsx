@@ -51,6 +51,7 @@ const Footer = () => {
             <p className="font-bold text-white mb-2 md:mt-8  sm:mt-[24px]">GitHub</p>
             <a
               href="https://github.com/jinoc-git/traduler-project"
+              aria-label='깃허브 링크'
               target="_blank"
               rel="noopener noreferrer"
               className="flex-center w-[56px] h-[56px] bg-gray_dark_1 rounded-full"

@@ -10,7 +10,6 @@ import { sideBarStore } from '@store/sideBarStore';
 
 const Main = () => {
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
-  const isVisibleSideBar = sideBarStore((state) => state.isVisibleSideBar);
   const screenSize = screenStore((state) => state.screenSize);
 
   const navigate = useNavigate();
@@ -18,11 +17,7 @@ const Main = () => {
   return (
     <main
       className={`transition-all duration-300 ease-in-out pt-[108px]  ${
-        isVisibleSideBar
-          ? isSideBarOpen
-            ? ' md:ml-[270px]'
-            : ' sm:ml-[0px]'
-          : 'md:w-[calc(100vw)] md:ml-0 sm:ml-[0px]'
+        isSideBarOpen ? ' md:ml-[270px]' : ' sm:ml-[0px]'
       }`}
     >
       <div

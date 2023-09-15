@@ -13,6 +13,7 @@ import { type PinContentsType } from '@api/pins';
 import { changePlanState, getPlan } from '@api/plans';
 import IconCamera from '@assets/icons/IconCamera';
 import IconLocationDefault from '@assets/icons/IconLocationDefault';
+import { LoadingGif } from '@assets/index';
 import AddPicture from '@components/addPhoto/addPicture/AddPicture';
 import EndingMap from '@components/addPhoto/endingMap/EndingMap';
 import EndingDate from '@components/common/date/EndingDate';
@@ -26,7 +27,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { type PlansEndingType } from 'types/supabase';
 
 const AddPhoto = () => {
-  const { isSideBarOpen, isVisibleSideBar } = sideBarStore();
+  const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const user = userStore((state) => state.user);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dates, setDates] = useState<string[]>();
@@ -123,11 +124,7 @@ const AddPhoto = () => {
   return (
     <main
       className={`transition-all duration-300 ease-in-out pt-[60px]  ${
-        isVisibleSideBar
-          ? isSideBarOpen
-            ? 'sidebar-open sm:ml-0 md:ml-[270px]'
-            : 'sidebar-close '
-          : 'md:w-[calc(100vw)] md:ml-0 '
+        isSideBarOpen ? 'sidebar-open sm:ml-0 md:ml-[270px]' : 'sidebar-close '
       }`}
     >
       <div className="flex flex-col mt-[76px] mx-auto md:w-plan sm:w-[310px]">
@@ -199,11 +196,20 @@ const AddPhoto = () => {
             <button
               disabled={isSubmiting}
               onClick={handleSubmitButton}
-              className="p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1 hover:bg-blue_light_1 duration-200
+              className="flex-center p-3 border border-blue rounded-lg font-bold text-blue disabled:border-gray_dark_1 disabled:cursor-default disabled:bg-gray_light_3 disabled:text-gray_dark_1 hover:bg-blue_light_1 duration-200
               sm:w-[113px] sm:text-sm
               md:w-[130px] md:text-normal"
             >
               {isSubmiting ? '저장 중' : '여행 저장'}
+              {isSubmiting && (
+                <img
+                  src={LoadingGif}
+                  alt="저장 중"
+                  className="ml-[10px]
+                    sm:w-[20px] sm:h-[20px]
+                    md:w-[27px] md:h-[27px]"
+                />
+              )}
             </button>
           </div>
         </section>

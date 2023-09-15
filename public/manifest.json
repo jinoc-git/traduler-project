@@ -1,6 +1,6 @@
 {
+  "name": "Traduler",
   "short_name": "Traduler",
-  "name": "Traduler Project",
   "icons": [
     {
       "src": "./images/favicon.ico",
@@ -527,20 +527,17 @@
   ],
   "screenshots": [
     {
-      "src": "./images/screenshots/screenshot1.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./images/screenshots/screenshot2.png",
-      "sizes": "1280x720",
+      "src": "./traduler_intro.png",
+      "sizes": "1920x1080",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0078d4"
+  "theme_color": "#ffffff",
+  "categories": ["travel"],
+  "description": "다 같이 여행을 떠날 때 저희 서비스와 함께해요! - 국내 여행 일정 관리 웹사이트",
+  "orientation": "portrait"
 }

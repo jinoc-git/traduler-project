@@ -31,7 +31,7 @@ const AddPhoto = () => {
   const user = userStore((state) => state.user);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [dates, setDates] = useState<string[]>();
-  const [pay, setPay] = useState<number>();
+  const [pay, setPay] = useState<string>('');
 
   const { id } = useParams();
   const planId: string = id as string;
@@ -76,7 +76,7 @@ const AddPhoto = () => {
         dates_cost: datesCostList,
         pictures,
         title: plan?.[0].title as string,
-        total_cost: plan?.[0].total_cost as number,
+        total_cost: plan?.[0].total_cost as string,
         dates: plan?.[0].dates as string[],
       };
       await insertPlanEnding(planEnding);
@@ -147,7 +147,7 @@ const AddPhoto = () => {
           </div>
           <EndingDate planDates={dates as string[]} />
           <Invite />
-          <EndingPay pay={pay as number} />
+          <EndingPay pay={pay} />
         </section>
         <section>
           <div

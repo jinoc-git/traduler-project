@@ -21,7 +21,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface ModifyInputType {
   title: string;
-  totalCost: number;
+  totalCost: string;
 }
 
 const Plan = () => {
@@ -57,7 +57,7 @@ const Plan = () => {
   } = useForm<ModifyInputType>({
     mode: 'onChange',
     defaultValues: {
-      totalCost: 0,
+      totalCost: '0',
     },
   });
 
@@ -73,6 +73,12 @@ const Plan = () => {
     } else {
       setModify();
     }
+  };
+
+  const onChangeCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const removeString = e.target.value.replace(/[^0-9]+/g, '');
+    const addComma = removeString.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    setValue('totalCost', addComma);
   };
 
   const handleChangePlanState = () => {
@@ -99,7 +105,7 @@ const Plan = () => {
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async ([planId, title, cost]: [string, string, number]) => {
+    mutationFn: async ([planId, title, cost]: [string, string, string]) => {
       await updatePlan(planId, title, cost);
     },
     onSuccess: () => {
@@ -209,6 +215,7 @@ const Plan = () => {
         <PostPlan dataPlanDates={data?.[0].dates} />
         <Invite />
         <Pay
+          onChangeCost={onChangeCost}
           total_Cost={watch('totalCost')}
           register={register}
           errors={errors}

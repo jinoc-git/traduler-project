@@ -2,11 +2,12 @@ import React from 'react';
 import { type UseFormHandleSubmit, type SubmitHandler } from 'react-hook-form';
 
 import { type PinContentsType } from '@api/pins';
-import { type InputType } from '@components/plan/addPlan/AddMapModal';
+
+import { type MapModalInputType } from '../updatePlan/MapModal';
 
 interface PropsType {
-  handleSubmit: UseFormHandleSubmit<InputType, undefined>;
-  onSubmitPlaceName: SubmitHandler<InputType>;
+  handleSubmit: UseFormHandleSubmit<MapModalInputType, undefined>;
+  onSubmitPlaceName: SubmitHandler<MapModalInputType>;
   closeModal: () => void;
   resetPin: () => void;
   disabledSubmit: () => boolean;

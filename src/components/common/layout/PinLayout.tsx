@@ -6,7 +6,6 @@ import IconDeleteSolid from '@assets/icons/IconDeleteSolid';
 import IconEditSolid from '@assets/icons/IconEditSolid';
 import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
-import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
   pin: PinContentsType | [];
@@ -42,7 +41,7 @@ const PinLayout = ({
   return (
     <div
       className="relative flex items-center justify-between gap-4
-      sm:w-[286px] sm:mb-[37px] sm:ml-[6px]
+      sm:w-[286px] sm:mb-[37px] 
       md:w-[651px] md:mx-[25px] md:ml-0"
     >
       <div className="flex items-center">
@@ -84,7 +83,7 @@ const PinLayout = ({
           {pin !== null && typeof pin === 'object' && 'cost' in pin && (
             <span>
               {pin.cost !== null && pin.cost !== undefined
-                ? formatNumberWithCommas(pin.cost) + ' 원'
+                ? pin.cost + ' 원'
                 : ''}
             </span>
           )}

@@ -116,7 +116,7 @@ export interface Database {
           isDeleted: boolean;
           plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
-          total_cost: number;
+          total_cost: string;
           users_id: string;
         };
         Insert: {
@@ -126,7 +126,7 @@ export interface Database {
           isDeleted: boolean;
           plan_state: 'planning' | 'traveling' | 'recording' | 'end';
           title: string;
-          total_cost: number;
+          total_cost: string;
           users_id: string;
         };
         Update: {
@@ -136,7 +136,7 @@ export interface Database {
           isDeleted?: boolean;
           plan_state?: 'planning' | 'traveling' | 'recording' | 'end';
           title?: string;
-          total_cost?: number;
+          total_cost?: string;
           users_id?: string;
         };
         Relationships: [
@@ -205,30 +205,30 @@ export interface Database {
       plans_ending: {
         Row: {
           dates: string[];
-          dates_cost: number[] | null;
+          dates_cost: string[] | null;
           distance: Json[] | null;
           id: string;
           pictures: string[];
           title: string;
-          total_cost: number | null;
+          total_cost: string;
         };
         Insert: {
           dates?: string[];
-          dates_cost?: number[] | null;
+          dates_cost?: string[] | null;
           distance?: Json[] | null;
           id: string;
           pictures?: string[];
           title?: string;
-          total_cost?: number | null;
+          total_cost?: string;
         };
         Update: {
           dates?: string[];
-          dates_cost?: number[] | null;
+          dates_cost?: string[] | null;
           distance?: Json[] | null;
           id?: string;
           pictures?: string[];
           title?: string;
-          total_cost?: number | null;
+          total_cost?: string;
         };
         Relationships: [
           {

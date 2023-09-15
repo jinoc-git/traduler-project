@@ -15,10 +15,10 @@ import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type PinInsertType, type Json } from 'types/supabase';
 
-interface InputType {
-  address?: string;
-  placeName?: string;
-  cost: number;
+export interface MapModalInputType {
+  address: string;
+  placeName: string;
+  cost: string;
 }
 
 interface PropsType {
@@ -40,15 +40,18 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
   });
   const [address, setAddress] = useState<string>('');
   const [map, setMap] = useState<any>();
+
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({
+  } = useForm<MapModalInputType>({
+    mode: 'onChange',
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
-      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
+      cost: pin !== null && typeof pin.cost === 'string' ? pin.cost : '0',
     },
   });
   const { confirm } = useConfirm();
@@ -66,20 +69,32 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
     });
   };
 
-  const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
+  const onChangeCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let removeString = e.target.value.replace(/[^0-9]+/g, '');
+    if (removeString[0] === '0') {
+      removeString = removeString.substring(1, removeString.length);
+    }
+    const addComma = removeString.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    setValue('cost', addComma);
+  };
+
+  const onSubmitPlaceName: SubmitHandler<MapModalInputType> = (data) => {
+    const removeComma = data.cost.replaceAll(',', '');
+    const addCost = Number(removeComma);
+    if (addCost > 10000000 || addCost <= 0) {
+      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+      return;
+    }
+
     const newObj: PinContentsType = {
       id: uuid(),
       lat: position.lat,
       lng: position.lng,
-      placeName: data.placeName as string,
+      placeName: data.placeName,
       cost: data.cost,
       address,
     };
 
-    if (watch('cost') > 10000000) {
-      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
-      return;
-    }
     if (pin !== null) {
       const confTitle = '장소 수정';
       const confDesc = '이대로 수정하시겠습니까?';
@@ -173,7 +188,7 @@ const MapModal = ({ pinQuery, currentPage, closeModal, value }: PropsType) => {
         setPosition={setPosition}
         setAddress={setAddress}
       />
-      <MapModalPay register={register} />
+      <MapModalPay register={register} onChangeCost={onChangeCost} />
       <MapModalButton
         handleSubmit={handleSubmit}
         onSubmitPlaceName={onSubmitPlaceName}

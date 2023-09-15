@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import IconDeleteDefault from '@assets/icons/IconDeleteDefault';
+import IconExportDefault from '@assets/icons/IconExportDefault';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import useQuitPlanMutation from '@hooks/useQuitPlanMutation';
@@ -133,7 +133,6 @@ const Card: React.FC<CardProps> = ({
                     )}
                   </div>
                 </div>
-
                 <div
                   className="sm:w-[238px] sm:h-2/3 sm:ml-[5px]
                 md:w-4/5 md:h-[16px] md:items-center "
@@ -185,7 +184,6 @@ const Card: React.FC<CardProps> = ({
                     nicknameList={nicknameList}
                   />
                 </div>
-
                 <div
                   className="flex justify-center h-[16px]
                 sm:w-[15px] sm:ml-[10px] sm:mr-[10px] sm:mt-[20px] 
@@ -198,7 +196,7 @@ const Card: React.FC<CardProps> = ({
                       handleDeletePlan(plan.id);
                     }}
                   >
-                    <IconDeleteDefault
+                    <IconExportDefault
                       w="w-[24px]"
                       h="h-[24px]"
                       fill="#FFB979"

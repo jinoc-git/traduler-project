@@ -6,7 +6,7 @@ import { getPlansDate } from './plans';
 import { supabase } from './supabaseAuth';
 
 interface Content {
-  cost: number;
+  cost: string;
 }
 
 interface Contents {
@@ -104,17 +104,19 @@ export const getCost = async (planId: string) => {
 };
 
 export const calcCostAndInsertPlansEnding = async (planId: string) => {
-  const datesCost: number[] = [];
+  const datesCost: string[] = [];
   const response = await getCost(planId);
   if (response !== null && response !== undefined) {
     response.forEach((value) => {
       let cost = 0;
 
       value.contents.forEach((content) => {
-        cost += content.cost;
+        const removeComma = content.cost.replaceAll(',', '');
+        cost += Number(removeComma);
       });
+      const addComma = cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-      datesCost.push(cost);
+      datesCost.push(addComma);
     });
     return datesCost;
   }

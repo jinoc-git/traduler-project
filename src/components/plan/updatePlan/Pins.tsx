@@ -137,7 +137,7 @@ const Pins = ({ currentPage, dates }: PropsType) => {
       </DndProvider>
       <div
         className="flex items-center justify-between
-            sm:w-[286px] sm:ml-[6px]
+            sm:w-[286px] 
             md:w-[651px] md:mx-0 md:my-[8px]"
       >
         <p

@@ -111,7 +111,7 @@ const AddPlanContents = ({
             <div
               className="flex items-center justify-between  pb-[60px]
             sm:w-[286px] 
-            md:w-[651px] md:mx-[25px] md:my-[8px]"
+            md:w-[651px] md:my-[8px]"
             >
               <p
                 className="rounded-full bg-gradient-to-r from-[#5E9fff] from-0% to-[#1a68db] via-100% font-semibold text-white border-[5px] border-white 

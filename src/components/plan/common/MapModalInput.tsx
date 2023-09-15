@@ -3,15 +3,11 @@ import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
 
 import _ from 'lodash';
 
-interface InputType {
-  address?: string;
-  placeName?: string;
-  cost: number;
-}
+import { type MapModalInputType } from '../updatePlan/MapModal';
 
 interface PropsType {
-  register: UseFormRegister<InputType>;
-  errors: FieldErrors<InputType>;
+  register: UseFormRegister<MapModalInputType>;
+  errors: FieldErrors<MapModalInputType>;
   searchMap: (address: string) => void;
 }
 

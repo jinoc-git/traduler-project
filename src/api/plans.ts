@@ -111,7 +111,7 @@ export const getPlanList = async (planIds: string[]) => {
   }
 };
 
-export const getTotalCost = async (planId: string): Promise<number | null> => {
+export const getTotalCost = async (planId: string): Promise<string | null> => {
   const { data, error } = await supabase
     .from('plans')
     .select('total_cost')
@@ -257,7 +257,7 @@ export const getPlanListAndMateList = async (userId: string | undefined) => {
 export const updatePlan = async (
   planId: string,
   newTitle: string,
-  newCost: number,
+  newCost: string,
 ) => {
   const { error } = await supabase
     .from('plans')

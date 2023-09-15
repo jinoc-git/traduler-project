@@ -2,10 +2,9 @@ import React from 'react';
 
 import IconWallet from '@assets/icons/IconWallet';
 import PayLayout from '@components/common/layout/PayLayout';
-import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
-  pay: number;
+  pay: string;
 }
 
 const EndingPay = ({ pay }: PropsType) => {
@@ -22,7 +21,7 @@ const EndingPay = ({ pay }: PropsType) => {
           </p>
         </div>
         <p className="sm:read-only:text-xs md:read-only:text-normal">
-          {formatNumberWithCommas(pay) + '원'}
+          {pay + '원'}
         </p>
       </div>
     </PayLayout>

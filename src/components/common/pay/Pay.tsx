@@ -6,15 +6,15 @@ import IconWallet from '@assets/icons/IconWallet';
 import PayLayout from '@components/common/layout/PayLayout';
 import { type InputType } from '@pages/AddPlan';
 import { modifyStateStore } from '@store/modifyStateStore';
-import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
   register: UseFormRegister<InputType>;
   errors?: FieldErrors<InputType>;
-  total_Cost?: number;
+  total_Cost?: string;
+  onChangeCost?:  (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Pay = ({ total_Cost, register, errors }: PropsType) => {
+const Pay = ({ total_Cost, register, errors, onChangeCost }: PropsType) => {
   const modifyState = modifyStateStore((state) => state.modifyState);
 
   return (
@@ -36,29 +36,21 @@ const Pay = ({ total_Cost, register, errors }: PropsType) => {
             sm:read-only:text-[14px] 
             md:read-only:text-normal"
           >
-            {total_Cost !== undefined
-              ? formatNumberWithCommas(total_Cost) + ' 원'
-              : null}
+            {total_Cost !== undefined ? total_Cost + ' 원' : null}
           </p>
         ) : (
           <div className="relative flex flex-col mt-[10px]">
             <input
               id="totalCost"
-              type="number"
-              step={'10000'}
-              min={0}
-              max={10000000}
+              type="text"
               placeholder="예산을 입력하세요."
               {...register('totalCost', {
                 required: '예산은 필수입니다.',
-                setValueAs(value) {
-                  return value === '' ? 0 : parseInt(value);
-                },
-                valueAsNumber: true,
+                onChange: onChangeCost
               })}
               className="text-[14px] font-medium border rounded-lg px-[16px] outline-none w-[150px] h-[30px] border-gray read-only:cursor-default read-only:border-none read-only:text-normal read-only:font-semibold"
             />
-            <span className=" absolute right-[35px] top-[4px]">원</span>
+            <span className=" absolute right-[5px] top-[4px]">원</span>
             <p className="h-[10px] pl-2 pt-1 text-xs text-red-600">
               {errors?.totalCost?.message}
             </p>

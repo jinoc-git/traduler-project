@@ -6,7 +6,6 @@ import IconDeleteSolid from '@assets/icons/IconDeleteSolid';
 import IconEditSolid from '@assets/icons/IconEditSolid';
 import DropDown from '@components/plan/updatePlan/DropDown';
 import useConfirm from '@hooks/useConfirm';
-import { formatNumberWithCommas } from '@utils/calcDutchPay';
 
 interface PropsType {
   pin: PinContentsType | [];
@@ -84,7 +83,7 @@ const PinLayout = ({
           {pin !== null && typeof pin === 'object' && 'cost' in pin && (
             <span>
               {pin.cost !== null && pin.cost !== undefined
-                ? formatNumberWithCommas(pin.cost) + ' 원'
+                ? pin.cost + ' 원'
                 : ''}
             </span>
           )}

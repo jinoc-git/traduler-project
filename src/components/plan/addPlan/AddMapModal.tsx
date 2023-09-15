@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { type PinContentsType } from '@api/pins';
 import MapModalButton from '@components/plan/common/MapModalButton';
@@ -11,11 +12,7 @@ import useConfirm from '@hooks/useConfirm';
 import { updatePinStore } from '@store/updatePinStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 
-export interface InputType {
-  address?: string;
-  placeName?: string;
-  cost: number;
-}
+import { type MapModalInputType } from '../updatePlan/MapModal';
 
 interface PropsType {
   setPins: React.Dispatch<React.SetStateAction<PinContentsType[][]>>;
@@ -40,22 +37,30 @@ const AddMapModal = ({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({
+  } = useForm<MapModalInputType>({
     mode: 'onChange',
     defaultValues: {
       placeName: pin != null ? pin.placeName : '',
-      cost: pin !== null && typeof pin.cost === 'number' ? pin.cost : 0,
+      cost: pin !== null && typeof pin.cost === 'string' ? pin.cost : '0',
     },
   });
 
   const { confirm } = useConfirm();
-  const onSubmitPlaceName: SubmitHandler<InputType> = (data) => {
+  const onSubmitPlaceName: SubmitHandler<MapModalInputType> = (data) => {
+    const removeComma = data.cost.replaceAll(',', '');
+    const addCost = Number(removeComma);
+    if (addCost > 10000000 || addCost <= 0) {
+      toast.error('예산은 0원 초과 1천만원 이하로 입력해 주세요');
+      return;
+    }
+
     const newContents: PinContentsType = {
       id: uuid(),
       lat: position.lat,
       lng: position.lng,
-      placeName: data.placeName as string,
+      placeName: data.placeName,
       cost: data.cost,
       address,
     };
@@ -77,9 +82,7 @@ const AddMapModal = ({
         resetPin();
       };
       confirm.default(confTitle, confDesc, confFunc);
-    }
-
-    else {
+    } else {
       const confTitle = '장소 추가';
       const confDesc = '이대로 추가하시겠습니까?';
       const confFunc = () => {
@@ -110,6 +113,15 @@ const AddMapModal = ({
     return false;
   };
 
+  const onChangeCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let removeString = e.target.value.replace(/[^0-9]+/g, '');
+    if (removeString[0] === '0') {
+      removeString = removeString.substring(1, removeString.length);
+    }
+    const addComma = removeString.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    setValue('cost', addComma);
+  };
+
   const searchMap = (address: string) => {
     if (address === '') return;
     const ps = new kakao.maps.services.Places();
@@ -130,7 +142,7 @@ const AddMapModal = ({
     return () => {
       document.body.style.overflow = 'auto';
     };
-  });
+  }, []);
 
   return (
     <MapModalLayout value={value}>
@@ -146,7 +158,7 @@ const AddMapModal = ({
         setPosition={setPosition}
         setAddress={setAddress}
       />
-      <MapModalPay register={register} />
+      <MapModalPay register={register} onChangeCost={onChangeCost} />
       <MapModalButton
         handleSubmit={handleSubmit}
         onSubmitPlaceName={onSubmitPlaceName}

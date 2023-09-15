@@ -24,7 +24,7 @@ import { type PlanType, type UserType } from 'types/supabase';
 
 export interface InputType {
   title: string;
-  totalCost: number;
+  totalCost: string;
 }
 
 const AddPlan = () => {
@@ -42,12 +42,13 @@ const AddPlan = () => {
     register,
     handleSubmit,
     setFocus,
+    setValue,
     watch,
     formState: { errors, isValid },
   } = useForm<InputType>({
     mode: 'onChange',
     defaultValues: {
-      totalCost: 0,
+      totalCost: '0',
     },
   });
 
@@ -61,6 +62,15 @@ const AddPlan = () => {
       toast.error('여행 생성에 실패했습니다.');
     },
   });
+
+  const onChangeCost = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let removeString = e.target.value.replace(/[^0-9]+/g, '');
+    if (removeString[0] === '0') {
+      removeString = removeString.substring(1, removeString.length);
+    }
+    const addComma = removeString.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    setValue('totalCost', addComma);
+  };
 
   const submitPlan = async () => {
     if (userId !== null) {
@@ -149,7 +159,11 @@ const AddPlan = () => {
           </p>
           <PostPlan state={'addPlan'} />
           <Invite />
-          <Pay register={register} errors={errors} />
+          <Pay
+            register={register}
+            errors={errors}
+            onChangeCost={onChangeCost}
+          />
           <DatePage
             dates={dates}
             handleNextPage={handleNextPage}

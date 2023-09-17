@@ -217,7 +217,6 @@
 - 함수의 타입 지정은 interface 사용합니다.
 - 타입명은 파스칼 케이스를 사용합니다.
 - enum 사용, as const 지양, const enum 지양합니다.
-- any 사용 하지 않습니다. 필요하면 unknown 사용합니다.
 
 ---
 

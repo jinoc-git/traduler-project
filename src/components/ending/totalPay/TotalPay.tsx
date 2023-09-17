@@ -117,7 +117,7 @@ const TotalPay = () => {
             "
             >
               예산은 &nbsp;
-              <span className="text-yellow font-Pretendard font-semibold  ">
+              <span className="font-semibold text-yellow font-Pretendard ">
                 {totalCost !== null ? totalCost : ''} 원 &nbsp;
               </span>
               입니다.
@@ -138,7 +138,7 @@ const TotalPay = () => {
                         <span className="font-semibold mr-[65px] text-gray_dark_1">
                           {day}
                         </span>
-                        <span className="text-gray text-right font-Inter font-normal ">
+                        <span className="font-normal text-right text-gray font-Inter ">
                           {pay}원
                         </span>
                       </div>

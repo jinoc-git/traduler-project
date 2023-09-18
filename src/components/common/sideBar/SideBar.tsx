@@ -114,8 +114,8 @@ const SideBar: React.FC = () => {
         >
           <div
             className={`flex items-center bg-white
-            sm:w-[310px] sm:h-[65px] sm:gap-[58px] sm:mt-[12px]
-            md:w-[222px] md:h-[70px] md:gap-[34px]`}
+            sm:w-[310px] sm:h-[70px] sm:gap-[58px] sm:mt-[12px]
+            md:w-[222px] md:h-[55px] md:gap-[34px]`}
           >
             <div
               className="flex
@@ -128,7 +128,7 @@ const SideBar: React.FC = () => {
               onClick={onClickLogo}
               className="cursor-pointer w-[134px]
               sm:mt-[12px]
-              md:mt-[0px]
+              md:mt-[-10px]
               "
             />
           </div>

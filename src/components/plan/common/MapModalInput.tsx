@@ -46,10 +46,12 @@ const MapModalInput = ({ register, errors, searchMap }: PropsType) => {
                 message: '모음, 자음 안됨',
               },
             })}
-            className="input-border mb-[16px] 
+            className="input-border
             sm:h-[44px] sm:text-sm sm:font-medium"
           />
-          <p className="text-red-400">{errors?.placeName?.message}</p>
+          <p className="text-red-400 text-[12px] h-[24px] my-[5px]">
+            {errors?.placeName?.message}
+          </p>
         </div>
         <div className="flex flex-col">
           <label htmlFor="address" className="mb-2 text-sm font-semibold">

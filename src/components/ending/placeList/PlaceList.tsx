@@ -84,9 +84,14 @@ const PlaceList = () => {
                   idx={j}
                   isEnding={true}
                 >
-                  {distance !== '0' && distance !== undefined && (
+                  {distance !== '0.0' && distance !== undefined && (
                     <span className="absolute md:top-[-35px] left-[0px] text-gray_dark_2 py-1 bg-white md:text-[16px] sm:text-[12px] sm:top-[-30px]">
                       {distance}km
+                    </span>
+                  )}
+                  {distance === '0.0' && distance !== undefined && (
+                    <span className="absolute md:top-[-35px] left-[-13px] text-gray_dark_2 py-1 bg-white md:text-[16px] sm:text-[12px] sm:top-[-30px]">
+                      알 수 없음
                     </span>
                   )}
                 </PinLayout>

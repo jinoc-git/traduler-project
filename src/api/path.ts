@@ -8,6 +8,8 @@ interface Parameters {
 }
 
 interface Route {
+  result_code: number;
+  result_msg: string;
   summary: {
     distance: number;
   };
@@ -29,8 +31,11 @@ export const getPath = async (params: Parameters) => {
       params,
     },
   );
-
-  return data.routes[0].summary.distance;
+  if (data.routes[0].result_code === 0) {
+    return data.routes[0].summary.distance;
+  } else {
+    return 0;
+  }
 };
 
 export const calcPath = async (distance: PinContentsType[]) => {

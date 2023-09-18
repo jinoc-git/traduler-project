@@ -24,7 +24,7 @@ const Calendar: React.FC<CalendarProps> = ({
   EndDateChangeHandler,
 }) => {
   const { modifyState, clearRequiredDates } = modifyStateStore();
-  const today = new Date();
+  // const today = new Date();
   const screenSize = screenStore((state) => state.screenSize);
   useEffect(() => {
     return () => {
@@ -88,7 +88,7 @@ const Calendar: React.FC<CalendarProps> = ({
           onChange={(date) => {
             StartDateChangeHandler(date);
           }}
-          minDate={today}
+          // minDate={today}
           maxDate={endDate}
           selectsStart
           startDate={startDate}

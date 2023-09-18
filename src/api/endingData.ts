@@ -42,7 +42,6 @@ export const getCoordinate = async (planId: string) => {
 };
 
 export const calcAllPath = async (distance: PinContentsType[][]) => {
-  console.log(distance);
   const convertParameters = [];
   for (const pinArr of distance) {
     const pinsOfDate = [];

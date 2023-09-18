@@ -66,7 +66,6 @@ const AddPhoto = () => {
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
   const handleButton = async () => {
     setIsSubmiting(true);
-    console.log(distancePin);
     const distanceDataList = await calcAllPath(distancePin);
     const datesCostList = await calcCostAndInsertPlansEnding(planId);
     if (datesCostList !== undefined) {

@@ -17,7 +17,7 @@ import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 import { sideBar } from '@utils/arrayCallbackFunctions';
 
-const SideBar: React.FC = () => {
+const SideBar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isSideBarOpen, isVisibleSideBar, isVisibleIcon, toggleMenu } =

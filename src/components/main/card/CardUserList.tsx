@@ -9,7 +9,7 @@ interface CardUserListProps {
   nicknameList: string[];
 }
 
-const CardUserList: React.FC<CardUserListProps> = (props) => {
+const CardUserList = (props: CardUserListProps) => {
   const { avatarList, nicknameList } = props;
 
   return (

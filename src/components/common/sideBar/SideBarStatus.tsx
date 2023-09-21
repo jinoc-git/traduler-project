@@ -19,7 +19,7 @@ interface SideBarStatusProps {
   nextPlan: PlanType | undefined;
 }
 
-const SideBarStatus: React.FC<SideBarStatusProps> = (props) => {
+const SideBarStatus = (props: SideBarStatusProps) => {
   const [progress, setProgress] = useState('');
   const navigate = useNavigate();
   const { isOpen, activePlan, hasNextPlan, nextPlan } = props;

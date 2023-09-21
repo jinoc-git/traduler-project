@@ -15,7 +15,8 @@ export const withPlanId = {
 
 export const tabMenu = {
   filtering:
-    (selectedPlan: string, bookMarkPlanIdList: string[]) =>
+    (selectedPlan: string) =>
+    (bookMarkPlanIdList: string[]) =>
     (plan: PlanType) => {
       if (selectedPlan === 'bookMark') {
         return bookMarkPlanIdList.find((id) => id === plan.id);
@@ -29,7 +30,8 @@ export const tabMenu = {
       return plan.plan_state === selectedPlan && !plan.isDeleted;
     },
   sorting:
-    (selectedPlan: string, bookMarkData: BookMarkType[]) =>
+    (selectedPlan: string) =>
+    (bookMarkData: BookMarkType[]) =>
     (a: PlanType, b: PlanType) => {
       if (selectedPlan === 'bookMark') {
         const bookMarkA = bookMarkData.find(

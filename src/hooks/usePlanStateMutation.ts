@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-interface UserPlanStateMutationReturnType {
+interface UsePlanStateMutationReturnType {
   editMutate: UseMutateFunction<
     void,
     unknown,
@@ -20,7 +20,7 @@ interface UserPlanStateMutationReturnType {
 const usePlanStateMutation = (
   planId: string,
   userId: string | undefined,
-): UserPlanStateMutationReturnType=> {
+): UsePlanStateMutationReturnType=> {
   const queryClient = useQueryClient();
 
   const { mutate: editMutate } = useMutation({

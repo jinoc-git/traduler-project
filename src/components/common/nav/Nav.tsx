@@ -48,13 +48,12 @@ const Nav = (props: PropsType) => {
   const handleButtonClick = () => {
     if (modifyState === 'modify') {
       const isTitleAndCostValid = checkTitleAndCost();
-
       if (!isTitleAndCostValid) return;
 
-      if (
-        (!requiredDates.start || !requiredDates.end) &&
-        pathname === '/addPlan'
-      ) {
+      const isSelectDate =
+        (!requiredDates.start || !requiredDates.end) && pathname === '/addPlan';
+
+      if (isSelectDate) {
         toast.error('시작 날짜와 종료 날짜를 입력해 주세요.');
         return;
       }
@@ -68,11 +67,9 @@ const Nav = (props: PropsType) => {
   };
 
   useEffect(() => {
-    if (page === ' plan') {
-      setReadOnly();
-    } else if (page === 'addPlan') {
-      setModify();
-    }
+    if (page === ' plan') setReadOnly();
+    if (page === 'addPlan') setModify();
+
     return () => {
       setReadOnly();
     };

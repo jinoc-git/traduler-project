@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect } from 'react';
 import { type UseFormWatch, type UseFormSetFocus } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';

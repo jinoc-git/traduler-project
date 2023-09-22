@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
@@ -13,7 +12,7 @@ import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 import { type CommentsType } from 'types/supabase';
 
-interface InputType {
+interface CommentInputType {
   comments: string;
 }
 
@@ -22,6 +21,7 @@ const Comments = () => {
   const user = userStore((state) => state.user);
   const inviteduser = inviteUserStore((state) => state.invitedUser);
   const { id: planId } = useParams();
+  const { confirm } = useConfirm();
   const { addMutate, deleteMutate } = useCommentMutation(planId as string);
 
   const {
@@ -29,7 +29,7 @@ const Comments = () => {
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({ mode: 'onChange' });
+  } = useForm<CommentInputType>({ mode: 'onChange' });
 
   const { data, isError } = useQuery({
     queryKey: ['comments', planId],
@@ -41,7 +41,7 @@ const Comments = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<InputType> = (data) => {
+  const onSubmit: SubmitHandler<CommentInputType> = (data) => {
     const newComment: CommentsType = {
       content: data.comments,
       user_id: user?.id as string,
@@ -51,7 +51,6 @@ const Comments = () => {
     addMutate(newComment);
   };
 
-  const { confirm } = useConfirm();
   const handleDelete = (commentId: string) => {
     const deleteFunc = () => {
       deleteMutate(commentId);

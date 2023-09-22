@@ -2,14 +2,17 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { getBookMark } from '@api/bookMarks';
 import IconUserDefault from '@assets/icons/IconUserDefault';
 import { logoColor, logoWhite } from '@assets/index';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const queryClient = useQueryClient();
 
   const authObserver = userStore((state) => state.authObserver);
   const user = userStore((state) => state.user);
@@ -23,6 +26,15 @@ const Header = () => {
     } else {
       navigate('/');
     }
+  };
+
+  const prefetchBookMarkData = async () => {
+    if (user === null || pathname !== '/') return;
+    await queryClient.prefetchQuery(
+      ['book_mark', user.id],
+      async () => await getBookMark(user.id),
+      { staleTime: 20 * 1000 },
+    );
   };
 
   useEffect(() => {
@@ -72,6 +84,7 @@ const Header = () => {
           )}
         <h1
           onClick={goToMain}
+          onMouseEnter={prefetchBookMarkData}
           className=" cursor-pointer w-[134px] h-[33px]
           sm:mt-[13px]
           md:mt-[0px] md:ml-[88px]"

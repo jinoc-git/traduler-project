@@ -64,7 +64,7 @@ const SideBar = () => {
     async () => {
       return await getPlanListAndMateList(user === null ? '' : user.id);
     },
-    { enabled: user !== null, cacheTime: 20000 },
+    { enabled: user !== null, staleTime: 20 * 1000 },
   );
 
   if (matesData === null) {

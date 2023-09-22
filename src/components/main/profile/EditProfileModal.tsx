@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -66,7 +64,7 @@ const EditProfileModal = ({
 
   const checkNicknameDuplication = async () => {
     const res = await checkUserNickname(nickname);
-    if (res) {
+    if (res === true) {
       setShouldBlockSubmitBtn((prev) => ({
         ...prev,
         isDuplicate: false,
@@ -96,10 +94,10 @@ const EditProfileModal = ({
   ) => {
     if (user == null) return;
 
-    if (data.nickname !== '') {
+    const isNicknameChange = data.nickname !== '';
+    if (isNicknameChange) {
       const res = await updateUserNickname(data.nickname, user.id);
-
-      if (res) {
+      if (res != null) {
         const { id, email, nickname, profileImg } = res;
         setUser({
           id,
@@ -110,10 +108,10 @@ const EditProfileModal = ({
       }
     }
 
-    if (data.avatar !== undefined && preview.length !== 0) {
+    const isAvaratChange = data.avatar !== undefined && preview.length !== 0;
+    if (isAvaratChange) {
       const res = await updateUserAvatar(data.avatar[0], user.email, user.id);
-
-      if (res) {
+      if (res != null) {
         const { id, email, nickname, profileImg } = res;
         setUser({
           id,
@@ -126,8 +124,7 @@ const EditProfileModal = ({
 
     if (shouldBlockSubmitBtn.isRemoveAvatar) {
       const res = await removeUserAvartar(user.id);
-
-      if (res) {
+      if (res != null) {
         const { id, email, nickname, profileImg } = res;
         setUser({
           id,
@@ -172,7 +169,7 @@ const EditProfileModal = ({
   }, [nickname]);
 
   useEffect(() => {
-    if (preview && preview.length > 0) {
+    if (preview != null && preview.length > 0) {
       const file = preview[0];
       setPreviewImg(URL.createObjectURL(file));
       setShouldBlockSubmitBtn((prev) => ({

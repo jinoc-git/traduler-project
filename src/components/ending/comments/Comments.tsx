@@ -1,19 +1,18 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
-import { toast } from 'react-toastify';
 
-import { addComment, deleteComment, getComments } from '@api/commets';
+import { getComments } from '@api/commets';
 import IconCommentory from '@assets/icons/IconComentory';
 import { defaultImageGray } from '@assets/index';
+import useCommentMutation from '@hooks/useCommentMutation';
 import useConfirm from '@hooks/useConfirm';
 import { inviteUserStore } from '@store/inviteUserStore';
 import { userStore } from '@store/userStore';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { type CommentsType } from 'types/supabase';
 
-interface InputType {
+interface CommentInputType {
   comments: string;
 }
 
@@ -22,13 +21,15 @@ const Comments = () => {
   const user = userStore((state) => state.user);
   const inviteduser = inviteUserStore((state) => state.invitedUser);
   const { id: planId } = useParams();
+  const { confirm } = useConfirm();
+  const { addMutate, deleteMutate } = useCommentMutation(planId as string);
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<InputType>({ mode: 'onChange' });
+  } = useForm<CommentInputType>({ mode: 'onChange' });
 
   const { data, isError } = useQuery({
     queryKey: ['comments', planId],
@@ -40,46 +41,25 @@ const Comments = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<InputType> = (data) => {
+  const onSubmit: SubmitHandler<CommentInputType> = (data) => {
     const newComment: CommentsType = {
       content: data.comments,
       user_id: user?.id as string,
       plan_id: planId as string,
     };
     setValue('comments', '');
-    addMutation.mutate(newComment);
+    addMutate(newComment);
   };
 
-  const { confirm } = useConfirm();
   const handleDelete = (commentId: string) => {
     const deleteFunc = () => {
-      deleteMutation.mutate(commentId);
+      deleteMutate(commentId);
     };
     const confTitle = '댓글 삭제 확인';
     const confDesc =
       '삭제한 댓글은 다시 복구할 수 없습니다. 정말로 삭제하시겠습니까?';
     confirm.delete(confTitle, confDesc, deleteFunc);
   };
-
-  const queryClient = useQueryClient();
-  const addMutation = useMutation({
-    mutationFn: addComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', planId] });
-    },
-    onError: () => {
-      toast.error('댓글 작성에 실패했습니다.');
-    },
-  });
-  const deleteMutation = useMutation({
-    mutationFn: deleteComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['comments', planId] });
-    },
-    onError: () => {
-      toast.error('댓글 삭제에 실패했습니다.');
-    },
-  });
 
   if (isError) {
     return <div>댓글 불러오기 오류 발생...</div>;

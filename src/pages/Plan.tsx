@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
-import { changePlanState, getPlan, updatePlan } from '@api/plans';
+import { getPlan } from '@api/plans';
 import PlanLayout from '@components/addPlan/planLayout/PlanLayout';
 import PostPlan from '@components/addPlan/postPlan/PostPlan';
 import Invite from '@components/common/invite/Invite';
@@ -13,11 +12,12 @@ import Pay from '@components/common/pay/Pay';
 import Loading from '@components/loading/Loading';
 import UpdatePlan from '@components/plan/updatePlan/UpdatePlan';
 import useConfirm from '@hooks/useConfirm';
+import usePlanStateMutation from '@hooks/usePlanStateMutation';
 import { datesStore } from '@store/datesStore';
 import { modifyStateStore } from '@store/modifyStateStore';
 import { sideBarStore } from '@store/sideBarStore';
 import { userStore } from '@store/userStore';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface ModifyInputType {
   title: string;
@@ -29,19 +29,22 @@ const Plan = () => {
   const user = userStore((state) => state.user);
   const resetDates = datesStore((state) => state.resetDates);
 
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const planId = id as string;
+
   const { modifyState, setModify, setReadOnly } = modifyStateStore();
   const { confirm } = useConfirm();
-
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { editMutate, changeStateMutate } = usePlanStateMutation(
+    planId,
+    user?.id,
+  );
 
   const [planState, setPlanState] = useState<string>();
   const [isPossibleStart, setIsPossibleStart] = useState<boolean>(false);
   const [isPossibleEnd, setIsPossibleEnd] = useState<boolean>(false);
 
   const isModifying = modifyState === 'modify';
-
-  const planId = id as string;
 
   const scrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,7 +71,7 @@ const Plan = () => {
 
   const handleSubmitOrStateChangeBtn = () => {
     if (modifyState === 'modify') {
-      mutation.mutate([planId, watch('title'), watch('totalCost')]);
+      editMutate([planId, watch('title'), watch('totalCost')]);
       setReadOnly();
     } else {
       setModify();
@@ -87,7 +90,7 @@ const Plan = () => {
       const confDesc =
         '여행 중으로 변경할 경우 다시 계획 중으로 되돌릴 수 없습니다. 변경하시겠습니까?';
       const confFunc = () => {
-        changeMutation.mutate([planId, 'traveling']);
+        changeStateMutate([planId, 'traveling']);
         scrollTop();
       };
       confirm.default(confTitle, confDesc, confFunc);
@@ -96,40 +99,12 @@ const Plan = () => {
       const confDesc =
         '여행을 완료하시면 더 이상 여행 내용을 수정하실 수 없습니다. 완료하시겠습니까?';
       const confFunc = () => {
-        changeMutation.mutate([planId, 'recording']);
+        changeStateMutate([planId, 'recording']);
         navigate(`/addPhoto/${planId}`);
       };
       confirm.default(confTitle, confDesc, confFunc);
     }
   };
-
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async ([planId, title, cost]: [string, string, string]) => {
-      await updatePlan(planId, title, cost);
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error('계획 수정하기 오류 발생');
-    },
-  });
-
-  const changeMutation = useMutation({
-    mutationFn: changePlanState,
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['plan', planId] });
-      void queryClient.invalidateQueries({
-        queryKey: ['plan_mates', user?.id],
-      });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error('오류 발생');
-    },
-  });
 
   useEffect(() => {
     if (data?.[0] !== undefined) {

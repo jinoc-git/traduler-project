@@ -21,7 +21,7 @@ interface SideBarPlanListProps {
   isOpen: boolean;
 }
 
-const SideBarPlanList: React.FC<SideBarPlanListProps> = (props) => {
+const SideBarPlanList = (props: SideBarPlanListProps) => {
   const { toggleFunc, setFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
   const setSelectedPlan = usePlanStore((state) => state.setSelectedPlan);

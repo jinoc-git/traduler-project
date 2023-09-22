@@ -17,7 +17,7 @@ import { userStore } from '@store/userStore';
 import { useQuery } from '@tanstack/react-query';
 import { sideBar } from '@utils/arrayCallbackFunctions';
 
-const SideBar: React.FC = () => {
+const SideBar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isSideBarOpen, isVisibleSideBar, isVisibleIcon, toggleMenu } =
@@ -64,7 +64,7 @@ const SideBar: React.FC = () => {
     async () => {
       return await getPlanListAndMateList(user === null ? '' : user.id);
     },
-    { enabled: user !== null, cacheTime: 20000 },
+    { enabled: user !== null, staleTime: 20 * 1000 },
   );
 
   if (matesData === null) {

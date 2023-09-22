@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import IconMapDefault from '@assets/icons/IconMapDefault';
@@ -17,6 +17,13 @@ import { screenStore } from '@store/screenStore';
 const Landing = () => {
   const navigate = useNavigate();
   const screenSize = screenStore((state) => state.screenSize);
+
+  useEffect(() => {
+    const prefetchMain = async () => {
+      await import('@pages/Main');
+    };
+    void prefetchMain();
+  }, []);
 
   return (
     <>

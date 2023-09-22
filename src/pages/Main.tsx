@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 import IconAdd from '@assets/icons/IconAdd';
@@ -15,7 +15,12 @@ const Main = () => {
 
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const prefetchAddPlan = async () => {
+      await import('@pages/AddPlan');
+    };
+
+    void prefetchAddPlan();
     setMenuIsOpen(false);
   }, []);
 

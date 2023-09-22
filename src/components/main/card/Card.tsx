@@ -25,11 +25,11 @@ interface CardProps {
   usersDataList: UsersDataList[];
 }
 
-const Card: React.FC<CardProps> = ({
+const Card = ({
   usersDataList,
   planDataList,
   bookMarkData,
-}) => {
+}: CardProps) => {
   const navigate = useNavigate();
 
   const user = userStore((state) => state.user);

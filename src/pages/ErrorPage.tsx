@@ -2,7 +2,7 @@ import React from 'react';
 
 import ErrorPageFull from '@components/notfound/ErrorPageFull';
 
-const ErrorPage: React.FC = () => {
+const ErrorPage = () => {
   return <ErrorPageFull />;
 };
 

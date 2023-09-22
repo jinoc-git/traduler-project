@@ -17,12 +17,12 @@ interface CalendarProps {
   EndDateChangeHandler: (date: Date | null) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({
+const Calendar = ({
   startDate,
   endDate,
   StartDateChangeHandler,
   EndDateChangeHandler,
-}) => {
+}: CalendarProps) => {
   const { modifyState, clearRequiredDates } = modifyStateStore();
   const today = new Date();
   const screenSize = screenStore((state) => state.screenSize);

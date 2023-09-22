@@ -7,7 +7,7 @@ interface CardTabMenuProps {
   planCount: PlanCountList;
 }
 
-const CardTabMenu: React.FC<CardTabMenuProps> = (props) => {
+const CardTabMenu = (props: CardTabMenuProps) => {
   const { planCount } = props;
   const { selectedPlan, setSelectedPlan } = usePlanStore();
 

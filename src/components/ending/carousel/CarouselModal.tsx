@@ -8,7 +8,7 @@ interface CarouselModalProps {
   closeFunc: () => void;
 }
 
-const CarouselModal: React.FC<CarouselModalProps> = ({ url, closeFunc }) => {
+const CarouselModal = ({ url, closeFunc }: CarouselModalProps) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     enableScrollLock();

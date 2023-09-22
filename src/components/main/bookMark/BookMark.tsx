@@ -12,11 +12,11 @@ interface BookMarkProps {
   isBookMark: boolean;
 }
 
-const BookMark: React.FC<BookMarkProps> = ({
+const BookMark = ({
   isBookMark,
   bookMarkId,
   planId,
-}) => {
+}: BookMarkProps) => {
   const user = userStore((state) => state.user);
   const userId = user?.id;
 

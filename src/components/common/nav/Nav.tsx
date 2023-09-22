@@ -22,7 +22,7 @@ interface PropsType {
   modifyInputWatch?: UseFormWatch<ModifyInputType>;
 }
 
-const Nav: React.FC<PropsType> = (props) => {
+const Nav = (props: PropsType) => {
   const {
     onClick,
     page,

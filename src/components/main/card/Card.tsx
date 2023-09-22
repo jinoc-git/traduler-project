@@ -25,15 +25,16 @@ interface CardProps {
   usersDataList: UsersDataList[];
 }
 
-const Card: React.FC<CardProps> = ({
+const Card = ({
   usersDataList,
   planDataList,
   bookMarkData,
-}) => {
+}: CardProps) => {
   const navigate = useNavigate();
 
   const user = userStore((state) => state.user);
   const { selectedPlan } = usePlanStore();
+  const { confirm } = useConfirm();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({
     bookMark: 0,
@@ -46,10 +47,8 @@ const Card: React.FC<CardProps> = ({
   const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
-    ?.filter(tabMenu.filtering(selectedPlan, bookMarkPlanIdList))
-    .sort(tabMenu.sorting(selectedPlan, bookMarkData));
-
-  const { confirm } = useConfirm();
+    ?.filter(tabMenu.filtering(selectedPlan)(bookMarkPlanIdList))
+    .sort(tabMenu.sorting(selectedPlan)(bookMarkData));
 
   const handleDeletePlan = (planId: string) => {
     if (user === null) return;

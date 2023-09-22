@@ -19,7 +19,8 @@ interface PropsType {
   state?: string;
   dataPlanDates?: string[];
 }
-const PostPlan: React.FC<PropsType> = ({ state, dataPlanDates }) => {
+
+const PostPlan = ({ state, dataPlanDates }: PropsType) => {
   const { id } = useParams();
 
   const { setDates } = datesStore();

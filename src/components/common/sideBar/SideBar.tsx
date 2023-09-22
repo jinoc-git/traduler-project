@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/return-await */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -81,7 +79,7 @@ const SideBar = () => {
   const endPlans = sortedData?.filter(sideBar.filtering('end'));
   const activePlan = sortedData?.find(sideBar.filtering('traveling'));
 
-  const nextPlan = startPlans ? startPlans[0] : undefined;
+  const nextPlan = startPlans != null ? startPlans[0] : undefined;
   const hasNextPlan = Boolean(nextPlan);
   return (
     <>

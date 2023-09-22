@@ -103,12 +103,13 @@ const AddMapModal = ({
   };
 
   const disabledSubmit = () => {
-    if (
+    const shouldBlockBtn =
       position.lat === 0 ||
       position.lng === 0 ||
       isSubmitting ||
-      watch('placeName')?.length === 0
-    ) {
+      watch('placeName')?.length === 0;
+      
+    if (shouldBlockBtn) {
       return true;
     }
     return false;

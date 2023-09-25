@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { usePlanStore } from '@store/usePlanStore';
+import { planStore } from '@store/planStore';
 import { type PlanCountList } from 'types/aboutPlan';
 
 interface CardTabMenuProps {
@@ -9,7 +9,7 @@ interface CardTabMenuProps {
 
 const CardTabMenu = (props: CardTabMenuProps) => {
   const { planCount } = props;
-  const { selectedPlan, setSelectedPlan } = usePlanStore();
+  const { selectedPlan, setSelectedPlan } = planStore();
 
   return (
     <div

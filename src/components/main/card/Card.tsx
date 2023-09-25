@@ -6,7 +6,7 @@ import IconExportDefault from '@assets/icons/IconExportDefault';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import useQuitPlanMutation from '@hooks/useQuitPlanMutation';
-import { usePlanStore } from '@store/usePlanStore';
+import { planStore } from '@store/planStore';
 import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { cardListing, tabMenu } from '@utils/arrayCallbackFunctions';
@@ -25,15 +25,11 @@ interface CardProps {
   usersDataList: UsersDataList[];
 }
 
-const Card = ({
-  usersDataList,
-  planDataList,
-  bookMarkData,
-}: CardProps) => {
+const Card = ({ usersDataList, planDataList, bookMarkData }: CardProps) => {
   const navigate = useNavigate();
 
   const user = userStore((state) => state.user);
-  const { selectedPlan } = usePlanStore();
+  const { selectedPlan } = planStore();
   const { confirm } = useConfirm();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({

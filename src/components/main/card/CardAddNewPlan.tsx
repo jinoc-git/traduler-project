@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 import IconAdd from '@assets/icons/IconAdd';
 import { defaultMainPlan } from '@assets/index';
-import { usePlanStore } from '@store/usePlanStore';
+import { planStore } from '@store/planStore';
 
 const CardAddNewPlan = () => {
   const navigate = useNavigate();
-  const selectedPlan = usePlanStore((state) => state.selectedPlan);
+  const selectedPlan = planStore((state) => state.selectedPlan);
 
   return (
     <div

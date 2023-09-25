@@ -7,7 +7,7 @@ interface PlanStore {
   ) => void;
 }
 
-export const usePlanStore = create<PlanStore>((set) => ({
+export const planStore = create<PlanStore>((set) => ({
   selectedPlan: 'traveling',
   setSelectedPlan: (plan) => {
     set({ selectedPlan: plan });

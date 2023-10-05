@@ -7,8 +7,8 @@ import IconChevronUp from '@assets/icons/IconChevronUp';
 import IconFavoriteList from '@assets/icons/IconFavoriteList';
 import IconPlannedTime from '@assets/icons/IconPlannedTime';
 import IconPreviousTime from '@assets/icons/IconPreviousTime';
-import { planStore } from '@store/planStore';
 import { sideBarStore } from '@store/sideBarStore';
+import { tabMenuStore } from '@store/tabMenuStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { changeSideBarFormat } from '@utils/changeFormatDay';
 import { type PlanType } from 'types/supabase';
@@ -24,7 +24,7 @@ interface SideBarPlanListProps {
 const SideBarPlanList = (props: SideBarPlanListProps) => {
   const { toggleFunc, setFunc, planList, filter, isOpen } = props;
   const isSideBarOpen = sideBarStore((state) => state.isSideBarOpen);
-  const setSelectedPlan = planStore((state) => state.setSelectedPlan);
+  const setSelectedMenu = tabMenuStore((state) => state.setSelectedMenu);
   const navigate = useNavigate();
 
   const iconList = {
@@ -65,7 +65,7 @@ const SideBarPlanList = (props: SideBarPlanListProps) => {
   };
 
   const onClickMoreBtn = () => {
-    setSelectedPlan(filter);
+    setSelectedMenu(filter);
     setFunc(false);
     navigate('/main');
   };

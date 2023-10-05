@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import IconAdd from '@assets/icons/IconAdd';
 import { defaultMainPlan } from '@assets/index';
-import { planStore } from '@store/planStore';
+import { tabMenuStore } from '@store/tabMenuStore';
+
+import CardAddNewPlanGuideText from './CardAddNewPlanGuideText';
 
 const CardAddNewPlan = () => {
   const navigate = useNavigate();
-  const selectedPlan = planStore((state) => state.selectedPlan);
+  const selectedMenu = tabMenuStore((state) => state.selectedMenu);
 
   return (
     <div
@@ -23,52 +25,8 @@ const CardAddNewPlan = () => {
           md:w-[125px] md:h-[100px]"
         />
       </div>
-      {selectedPlan === 'planning' ? (
-        <div
-          className="font-SemiBold text-center text-[#969696]
-        sm:mt-[8px] sm:text-sm
-        md:mt-[12px] md:text-normal"
-        >
-          <p>아직 예정된 여행 일정이 없으시군요!</p>
-          <p className="sm:text-lg md:text-xlg">
-            새로운 Tra-duler을 만들어보세요 :)
-          </p>
-        </div>
-      ) : selectedPlan === 'traveling' ? (
-        <div
-          className="font-SemiBold text-center text-[#969696]      
-          sm:mt-[8px] sm:text-sm
-          md:mt-[12px] md:text-normal"
-        >
-          <p>여행 중인 일정이 없으시군요!</p>
-          <p className="sm:text-lg md:text-xlg">
-            새로운 Tra-duler을 만들어보세요 :)
-          </p>
-        </div>
-      ) : selectedPlan === 'end' ? (
-        <div
-          className="font-SemiBold text-center text-[#969696]
-          sm:mt-[8px] sm:text-sm
-          md:mt-[12px] md:text-normal"
-        >
-          <p>다녀온 여행 일정이 없으시군요!</p>
-          <p className="sm:text-lg md:text-xlg">
-            새로운 Tra-duler을 만들어보세요 :)
-          </p>
-        </div>
-      ) : (
-        <div
-          className="font-SemiBold text-center text-[#969696]
-          sm:mt-[8px] sm:text-sm
-          md:mt-[12px] md:text-normal"
-        >
-          <p>즐겨찾기한 여행이 없으시군요!</p>
-          <p className="sm:text-lg md:text-xlg">
-            중요한 여행을 즐겨찾기에 추가해 보세요 :)
-          </p>
-        </div>
-      )}
-      {selectedPlan !== 'bookMark' && (
+      <CardAddNewPlanGuideText select={selectedMenu} />
+      {selectedMenu !== 'bookMark' && (
         <div>
           <button
             name="card-add-btn"

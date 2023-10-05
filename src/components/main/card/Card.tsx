@@ -18,6 +18,7 @@ import { type BookMarkType, type PlanType } from 'types/supabase';
 import CardAddNewPlan from './CardAddNewPlan';
 import CardTabMenu from './CardTabMenu';
 import CardUserList from './CardUserList';
+import StateChip from './StateChip';
 
 interface CardProps {
   bookMarkData: BookMarkType[];
@@ -140,31 +141,7 @@ const Card = ({ usersDataList, planDataList, bookMarkData }: CardProps) => {
                     <p className="text-gray_dark_1 sm:text-sm md:text-xlg font-bold mr-[16px]">
                       {plan.title}
                     </p>
-                    {plan.plan_state === 'planning' ? (
-                      <div
-                        className="flex-center text-white bg-yellow rounded-3xl 
-                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
-                      md:w-[72px] md:h-[26px] md:text-[12px]"
-                      >
-                        예정된 여행
-                      </div>
-                    ) : plan.plan_state === 'traveling' ? (
-                      <div
-                        className="flex-center font-normal text-white bg-blue rounded-3xl 
-                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
-                      md:w-[72px] md:h-[26px] md:text-[12px]"
-                      >
-                        여행중
-                      </div>
-                    ) : (
-                      <div
-                        className="flex-center font-normal text-white bg-orange rounded-3xl 
-                      sm:w-[65px] sm:h-[21px] sm:text-[10px] 
-                      md:w-[72px] md:h-[26px] md:text-[12px] "
-                      >
-                        다녀온 여행
-                      </div>
-                    )}
+                    <StateChip state={plan.plan_state} />
                   </div>
                   <div
                     className="text-gray_dark_1 font-semibold

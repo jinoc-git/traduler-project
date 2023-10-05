@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import IconAdd from '@assets/icons/IconAdd';
 import { defaultMainPlan } from '@assets/index';
-import { planStore } from '@store/planStore';
+import { tabMenuStore } from '@store/tabMenuStore';
 
 import CardAddNewPlanGuideText from './CardAddNewPlanGuideText';
 
 const CardAddNewPlan = () => {
   const navigate = useNavigate();
-  const selectedPlan = planStore((state) => state.selectedPlan);
+  const selectedMenu = tabMenuStore((state) => state.selectedMenu);
 
   return (
     <div
@@ -25,8 +25,8 @@ const CardAddNewPlan = () => {
           md:w-[125px] md:h-[100px]"
         />
       </div>
-      <CardAddNewPlanGuideText select={selectedPlan} />
-      {selectedPlan !== 'bookMark' && (
+      <CardAddNewPlanGuideText select={selectedMenu} />
+      {selectedMenu !== 'bookMark' && (
         <div>
           <button
             name="card-add-btn"

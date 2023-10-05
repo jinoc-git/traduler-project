@@ -15,25 +15,25 @@ export const withPlanId = {
 
 export const tabMenu = {
   filtering:
-    (selectedPlan: string) =>
+    (selectedMenu: string) =>
     (bookMarkPlanIdList: string[]) =>
     (plan: PlanType) => {
-      if (selectedPlan === 'bookMark') {
+      if (selectedMenu === 'bookMark') {
         return bookMarkPlanIdList.find((id) => id === plan.id);
       }
-      if (selectedPlan === 'end') {
+      if (selectedMenu === 'end') {
         return (
-          (plan.plan_state === selectedPlan && !plan.isDeleted) ||
+          (plan.plan_state === selectedMenu && !plan.isDeleted) ||
           (plan.plan_state === 'recording' && !plan.isDeleted)
         );
       }
-      return plan.plan_state === selectedPlan && !plan.isDeleted;
+      return plan.plan_state === selectedMenu && !plan.isDeleted;
     },
   sorting:
-    (selectedPlan: string) =>
+    (selectedMenu: string) =>
     (bookMarkData: BookMarkType[]) =>
     (a: PlanType, b: PlanType) => {
-      if (selectedPlan === 'bookMark') {
+      if (selectedMenu === 'bookMark') {
         const bookMarkA = bookMarkData.find(
           (bookMark) => bookMark.plan_id === a.id,
         )!;

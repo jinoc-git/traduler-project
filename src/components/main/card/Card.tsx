@@ -6,7 +6,7 @@ import IconExportDefault from '@assets/icons/IconExportDefault';
 import BookMark from '@components/main/bookMark/BookMark';
 import useConfirm from '@hooks/useConfirm';
 import useQuitPlanMutation from '@hooks/useQuitPlanMutation';
-import { planStore } from '@store/planStore';
+import { tabMenuStore } from '@store/tabMenuStore';
 import { userStore } from '@store/userStore';
 import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers';
 import { cardListing, tabMenu } from '@utils/arrayCallbackFunctions';
@@ -16,7 +16,7 @@ import { type PlanCountList, type UsersDataList } from 'types/aboutPlan';
 import { type BookMarkType, type PlanType } from 'types/supabase';
 
 import CardAddNewPlan from './CardAddNewPlan';
-import CardTabMenu from './CardTabMenu';
+import CardTabMenuList from './CardTabMenuList';
 import CardUserList from './CardUserList';
 import StateChip from './StateChip';
 
@@ -30,7 +30,7 @@ const Card = ({ usersDataList, planDataList, bookMarkData }: CardProps) => {
   const navigate = useNavigate();
 
   const user = userStore((state) => state.user);
-  const { selectedPlan } = planStore();
+  const { selectedMenu } = tabMenuStore();
   const { confirm } = useConfirm();
 
   const [planCount, setPlanCount] = useState<PlanCountList>({
@@ -44,8 +44,8 @@ const Card = ({ usersDataList, planDataList, bookMarkData }: CardProps) => {
   const bookMarkPlanIdList = bookMarkData.map((bookMark) => bookMark.plan_id);
 
   const filteredData = planDataList
-    ?.filter(tabMenu.filtering(selectedPlan)(bookMarkPlanIdList))
-    .sort(tabMenu.sorting(selectedPlan)(bookMarkData));
+    ?.filter(tabMenu.filtering(selectedMenu)(bookMarkPlanIdList))
+    .sort(tabMenu.sorting(selectedMenu)(bookMarkData));
 
   const handleDeletePlan = (planId: string) => {
     if (user === null) return;
@@ -80,7 +80,7 @@ const Card = ({ usersDataList, planDataList, bookMarkData }: CardProps) => {
 
   return (
     <div className="flex flex-col gap-[16px]">
-      <CardTabMenu planCount={planCount} />
+      <CardTabMenuList planCount={planCount} />
       {filteredData?.length === 0 ? (
         <CardAddNewPlan />
       ) : (
